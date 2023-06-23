@@ -4,7 +4,7 @@
 
 <script>
 import tdTheme from './theme.json' // 引入默认主题
-import '../map/fujian.js'
+import '../map/chongqing.json'
 
 export default {
   name: 'echart',

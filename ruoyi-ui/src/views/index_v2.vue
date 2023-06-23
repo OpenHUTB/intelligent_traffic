@@ -921,13 +921,6 @@ export default {
     goTarget(href) {
       window.open(href, "_blank");
     },
-
-    handler ({BMap, map}) {
-      console.log(BMap, map)
-      this.center.lng = 116.404
-      this.center.lat = 39.915
-      this.zoom = 15
-    }
   }
 };
 </script>
