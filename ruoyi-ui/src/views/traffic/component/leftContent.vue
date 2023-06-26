@@ -2,7 +2,7 @@
   <div>
     <dv-border-box-1 style="padding: 5px"
       >
-      <h2 style="margin: 20px">各地区交通事故数量</h2>
+      <h2 style="margin: 20px">各地区车流量</h2>
       <dv-capsule-chart :config="config" style="width: 400px; height: 500px"
     /></dv-border-box-1>
   </div>

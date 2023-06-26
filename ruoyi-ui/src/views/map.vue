@@ -1,82 +1,84 @@
 <template>
-    <div id="index" ref="appRef">
-      <div class="bg">
-        <dv-loading v-if="loading">Loading...</dv-loading>
-        <div v-else class="host-body">
-          <!-- 头部样子 -->
-          <div class="d-flex jc-center">
-            <dv-decoration-10 class="dv-dec-10" />
+    <div class="app-container home">
+      <div id="index" ref="appRef">
+        <div class="bg">
+          <dv-loading v-if="loading">Loading...</dv-loading>
+          <div v-else class="host-body">
+            <!-- 头部样子 -->
             <div class="d-flex jc-center">
-              <dv-decoration-8 class="dv-dec-8" :color="decorationColor" />
-              <div class="title">
-                <span class="title-text">智慧城市大屏可视化</span>
-                <dv-decoration-6
-                  class="dv-dec-6"
+              <dv-decoration-10 class="dv-dec-10" />
+              <div class="d-flex jc-center">
+                <dv-decoration-8 class="dv-dec-8" :color="decorationColor" />
+                <div class="title">
+                  <span class="title-text">城市智慧交通</span>
+                  <dv-decoration-6
+                    class="dv-dec-6"
+                    :reverse="true"
+                    :color="['#50e3c2', '#67a1e5']"
+                  />
+                </div>
+                <dv-decoration-8
+                  class="dv-dec-8"
                   :reverse="true"
-                  :color="['#50e3c2', '#67a1e5']"
+                  :color="decorationColor"
                 />
               </div>
-              <dv-decoration-8
-                class="dv-dec-8"
-                :reverse="true"
-                :color="decorationColor"
-              />
+              <dv-decoration-10 class="dv-dec-10-s" />
             </div>
-            <dv-decoration-10 class="dv-dec-10-s" />
-          </div>
-  
-          <!-- 导航栏 -->
-          <div class="d-flex jc-between px-2">
-            <div class="d-flex aside-width">
-              <div
-                class="react-left ml-4 react-l-s"
-                :class="{ bgc: tabbarIndex == 0 }"
-              >
-                <span
-                  class="react-left"
+    
+            <!-- 导航栏 -->
+            <div class="d-flex jc-between px-2">
+              <div class="d-flex aside-width">
+                <div
+                  class="react-left ml-4 react-l-s"
                   :class="{ bgc: tabbarIndex == 0 }"
-                ></span>
-                <router-link to="/traffic"
-                  ><span class="text" @click="changeTabbarIndex(0)"
-                    >交通情况</span
-                  ></router-link
                 >
+                  <span
+                    class="react-left"
+                    :class="{ bgc: tabbarIndex == 0 }"
+                  ></span>
+                  <router-link to="/map/traffic"
+                    ><span class="text" @click="changeTabbarIndex(0)"
+                      >交通情况</span
+                    ></router-link
+                  >
+                </div>
+                <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+                  <router-link to="/map/population"
+                    ><span class="text" @click="changeTabbarIndex(1)"
+                      >城市人口</span
+                    ></router-link
+                  >
+                </div>
+                <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
+                  <router-link to="/map/environment"
+                    ><span class="text" @click="changeTabbarIndex(2)"
+                      >环境生态</span
+                    ></router-link
+                  >
+                </div>
               </div>
-              <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
-                <router-link to="/population"
-                  ><span class="text" @click="changeTabbarIndex(1)"
-                    >城市人口</span
-                  ></router-link
-                >
-              </div>
-              <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
-                <router-link to="/environment"
-                  ><span class="text" @click="changeTabbarIndex(2)"
-                    >环境生态</span
-                  ></router-link
-                >
+              <div class="d-flex aside-width">
+                <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 3 }">
+                  <router-link to="/map/economy"
+                    ><span class="text fw-b" @click="changeTabbarIndex(3)"
+                      >城市经济</span
+                    ></router-link
+                  >
+                </div>
+                <div class="react-right mr-4 react-l-s">
+                  <span class="react-after"></span>
+                  <span class="text"
+                    >{{ dateYear }} {{ dateWeek }} {{ dateDay }}</span
+                  >
+                </div>
               </div>
             </div>
-            <div class="d-flex aside-width">
-              <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 3 }">
-                <router-link to="/economy"
-                  ><span class="text fw-b" @click="changeTabbarIndex(3)"
-                    >城市经济</span
-                  ></router-link
-                >
-              </div>
-              <div class="react-right mr-4 react-l-s">
-                <span class="react-after"></span>
-                <span class="text"
-                  >{{ dateYear }} {{ dateWeek }} {{ dateDay }}</span
-                >
-              </div>
+            <!-- 数据内容 -->
+            <div class="body-box">
+              <router-view />
             </div>
           </div>
-          <!-- 数据内容 -->
-          <!-- <div class="body-box">
-            <router-view />
-          </div> -->
         </div>
       </div>
     </div>
