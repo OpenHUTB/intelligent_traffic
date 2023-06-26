@@ -31,34 +31,6 @@ import Layout from '@/layout'
 // 公共路由
 export const constantRoutes = [
   {
-    path: "/",
-    name: "index",
-    redirect: "/traffic",
-    component: () => import("../views/map.vue"),
-    children: [
-      {
-        path: "traffic",
-        name: "traffic",
-        component: () => import("../views/traffic/index.vue"),
-      },
-      {
-        path: "population",
-        name: "population",
-        component: () => import("../views/population/index.vue"),
-      },
-      {
-        path: "environment",
-        name: "environment",
-        component: () => import("../views/environment/index.vue"),
-      },
-      {
-        path: "economy",
-        name: "economy",
-        component: () => import("../views/economy/index.vue"),
-      },
-    ],
-  },  
-  {
     path: '/redirect',
     component: Layout,
     hidden: true,
@@ -101,6 +73,36 @@ export const constantRoutes = [
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
+  },
+  
+  {
+    path: "/map",
+    name: "map",
+    hidden: true,
+    component: () => import("../views/map.vue"),
+    children: [
+      {
+        path: "traffic",
+        name: "traffic",
+        component: () => import("../views/traffic/index.vue"),
+      },
+      {
+        path: "population",
+        name: "population",
+        component: () => import("../views/population/index.vue"),
+      },
+      {
+        path: "environment",
+        name: "environment",
+        component: () => import("../views/environment/index.vue"),
+      },
+      {
+        path: "economy",
+        name: "economy",
+        component: () => import("../views/economy/index.vue"),
+      },
+    ],
+    redirect: '/map/traffic',
   },
   {
     path: '/user',

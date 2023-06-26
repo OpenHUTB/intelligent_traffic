@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="colum_center">
-          <h2>交通事故数量</h2>
+          <h2>拥堵路段数量</h2>
           <div>
             <dv-active-ring-chart
               :config="accidentNum"
@@ -62,7 +62,7 @@ export default {
         activeRadius: "45%",
         data: [
           {
-            name: "重庆市",
+            // name: "重庆市",
             value: 320015,
           },
         ],
@@ -76,7 +76,7 @@ export default {
         activeRadius: "45%",
         data: [
           {
-            name: "重庆市",
+            // name: "重庆市",
             value: 130,
           },
         ],
@@ -90,7 +90,7 @@ export default {
         activeRadius: "45%",
         data: [
           {
-            name: "重庆市",
+            // name: "重庆市",
             value: 23,
           },
         ],
