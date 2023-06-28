@@ -5,10 +5,9 @@
       :center="center"
       :zoom="zoom"
       @ready="handler"
-      :mapStyle="mapStyle"
       :scroll-wheel-zoom="true">
-      <bm-traffic :predictDate="{weekday: 7, hour: 12}">
-      </bm-traffic>
+      <!-- <bm-traffic :predictDate="{weekday: 7, hour: 12}">
+      </bm-traffic> -->
     </baidu-map>
   </div>
 </template>
@@ -30,10 +29,12 @@ export default {
   mounted() {},
   methods: {
     handler({ BMap, map }) {
-      console.log(BMap, map);
+
       this.center.lng = 112.91992;
       this.center.lat = 28.21903;
       this.zoom = 15;
+
+      map.setMapStyle({style:'midnight'});    
     },
   },
 };
@@ -51,4 +52,7 @@ export default {
   width: 100%;
   height: 100%;
 }
+/deep/.anchorBL {
+                display: none!important;
+            }
 </style>

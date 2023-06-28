@@ -3,7 +3,7 @@
     <div>
       <dv-border-box-8 :reverse="true" style="padding: 10px">
         <div>
-          <h2>重庆市人民收入增长情况</h2>
+          <h2>各时段车流量情况</h2>
           <Echart :options="options1" height="400px" />
         </div>
       </dv-border-box-8>
@@ -29,7 +29,7 @@ export default {
           trigger: "axis",
         },
         legend: {
-          data: ["收入", "支出"],
+          data: ["车流量"],
         },
         grid: {
           left: "3%",
@@ -45,27 +45,28 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+          data: ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00"],
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            name: "收入",
+            name: "车流量",
             type: "line",
+            smooth: true,
             data: [800, 910, 900, 920, 1400, 1500, 1550],
           },
-          {
-            name: "支出",
-            type: "line",
-            data: [220, 610, 600, 620, 890, 1000, 1100],
-          },
+          // {
+          //   name: "支出",
+          //   type: "line",
+          //   data: [220, 610, 600, 620, 890, 1000, 1100],
+          // },
         ],
       },
       options2: {
   title: {
-    text: '重庆市人们支出占比',
+    text: '交通参与者类型占比',
     left: 'center'
   },
   tooltip: {
@@ -77,11 +78,9 @@ export default {
       type: 'pie',
        radius: ['40%', '70%'],
       data: [
-        { value: 32, name: '其它' },
-        { value: 21, name: '旅游' },
-        { value: 24, name: '饮食' },
-        { value: 10, name: '服装' },
-        { value: 13, name: '电影' }
+        { value: 12, name: '行人' },
+        { value: 28, name: '非机动车' },
+        { value: 60, name: '机动车' },
       ],
       emphasis: {
         itemStyle: {

@@ -3,28 +3,28 @@
     <div style="display: flex; justify-content: space-between; width: 100vw">
       <div style="display: flex">
         <div class="colum_center">
-          <h2>本市汽车总数</h2>
+          <h2>拥堵里程</h2>
           <div>
-            <dv-active-ring-chart
-              :config="carsNum"
+            <dv-charts
+              :option="carsNum"
               style="width: 300px; height: 300px"
             />
           </div>
         </div>
         <div class="colum_center">
-          <h2>拥堵路段数量</h2>
+          <h2>拥堵指数</h2>
           <div>
-            <dv-active-ring-chart
-              :config="accidentNum"
+            <dv-charts
+              :option="accidentNum"
               style="width: 300px; height: 300px"
             />
           </div>
         </div>
         <div class="colum_center">
-          <h2>今日处理事故数</h2>
+          <h2>平均速度</h2>
           <div>
-            <dv-active-ring-chart
-              :config="accidentNum2"
+            <dv-charts
+              :option="accidentNum2"
               style="width: 300px; height: 300px"
             />
           </div>
@@ -57,47 +57,59 @@
 export default {
   data() {
     return {
+      
       carsNum: {
-        radius: "40%",
-        activeRadius: "45%",
-        data: [
+        series: [
           {
-            // name: "重庆市",
-            value: 320015,
-          },
-        ],
-        digitalFlopStyle: {
-          fontSize: 20,
-        },
-        showOriginValue: true,
+            type: 'gauge',
+            data: [ { name: 'itemA', value: 55 } ],
+            axisLabel: {
+              formatter: '{value}%'
+            },
+            details: {
+              show: true,
+              offset: [0, 40],
+              formatter: '{value}Km'
+            },
+            animationCurve: 'easeOutBack'
+          }
+        ]        
       },
+
+
       accidentNum: {
-        radius: "40%",
-        activeRadius: "45%",
-        data: [
+        series: [
           {
-            // name: "重庆市",
-            value: 130,
-          },
-        ],
-        digitalFlopStyle: {
-          fontSize: 20,
-        },
-        showOriginValue: true,
+            type: 'gauge',
+            data: [ { name: 'itemA', value: '30' } ],
+            axisLabel: {
+              formatter: '{value}%'
+            },
+            details: {
+              show: true,
+              offset: [0, 40],
+              formatter: '畅通'
+            },
+            animationCurve: 'easeOutBack'
+          }
+        ] 
       },
       accidentNum2: {
-        radius: "40%",
-        activeRadius: "45%",
-        data: [
+        series: [
           {
-            // name: "重庆市",
-            value: 23,
-          },
-        ],
-        digitalFlopStyle: {
-          fontSize: 20,
-        },
-        showOriginValue: true,
+            type: 'gauge',
+            data: [ { name: 'itemA', value: 44 } ],
+            axisLabel: {
+              formatter: '{value}%'
+            },
+            details: {
+              show: true,
+              offset: [0, 40],
+              formatter: '{value}Km/h'
+            },
+            animationCurve: 'easeOutBack'
+          }
+        ] 
       },
       jam: {
         data: [

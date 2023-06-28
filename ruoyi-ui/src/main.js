@@ -53,6 +53,10 @@ import 'vue-awesome/icons/chart-bar.js';
 import 'vue-awesome/icons/chart-line.js';
 import 'vue-awesome/icons/chart-pie.js';
 import BaiduMap from 'vue-baidu-map';
+// 视频播放
+// import VideoPlayer from 'vue-video-player'
+// import 'vue-video-player/src/custom-theme.css'
+// import 'video.js/dist/video-js.css'
 
 
 // 全局方法挂载
@@ -81,7 +85,8 @@ Vue.use(plugins)
 Vue.use(VueMeta)
 Vue.use(dataV);
 //申请百度地图key
-Vue.use(BaiduMap, { ak: 'WF2mpNFOccklYBLmGbGz9WauC2z1m2vn' })
+Vue.use(BaiduMap, { ak: 'QRK4jPY5fbxIX0zx3BVr0DoN4GoCMjnK' })
+// Vue.use(VideoPlayer)
 DictData.install()
 
 /**
