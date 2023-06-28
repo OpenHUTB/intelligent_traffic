@@ -46,14 +46,14 @@
                 <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
                   <router-link to="/map/population"
                     ><span class="text" @click="changeTabbarIndex(1)"
-                      >城市人口</span
+                      >路网信息</span
                     ></router-link
                   >
                 </div>
                 <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
                   <router-link to="/map/environment"
                     ><span class="text" @click="changeTabbarIndex(2)"
-                      >环境生态</span
+                      >态势感知</span
                     ></router-link
                   >
                 </div>
@@ -62,7 +62,7 @@
                 <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 3 }">
                   <router-link to="/map/economy"
                     ><span class="text fw-b" @click="changeTabbarIndex(3)"
-                      >城市经济</span
+                      >路口实况</span
                     ></router-link
                   >
                 </div>

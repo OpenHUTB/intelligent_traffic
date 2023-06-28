@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      title: '智慧交通管理系统',
       logo: logoImg
     }
   }

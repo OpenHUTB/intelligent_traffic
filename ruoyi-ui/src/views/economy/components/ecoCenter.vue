@@ -4,12 +4,12 @@
       <dv-border-box-8 :reverse="true">
         <div class="head">
           <div class="head_content">
-            <h1>12344822</h1>
-            <h2>2022年收入情况</h2>
+            <h1>2.3</h1>
+            <h2>拥堵指数</h2>
           </div>
           <div class="head_content">
-            <h1>45620218</h1>
-            <h2>2022年总支出情况</h2>
+            <h1>21.2</h1>
+            <h2>平均速度Km/h</h2>
           </div>
         </div>
       </dv-border-box-8>
@@ -19,14 +19,15 @@
       <!-- 温度监测表 -->
       <dv-border-box-6 style="padding:10px">
         <div class="map-content">
-          <baidu-map
+          <!-- <baidu-map
             class="map"
             :center="center"
             :zoom="zoom"
             @ready="handler"
             :mapStyle="mapStyle"
             :scroll-wheel-zoom="true"
-          />
+          /> -->
+          <img :src="crossroad" class="cross">
         </div>
       </dv-border-box-6>
     </div>
@@ -36,6 +37,8 @@
 <script>
 // import Echart from "@/common/echart/index.vue";
 import mapStyle from "@/assets/mapStyle.json";
+import crossroad from '@/assets/traffic_images/red2green.gif'
+
 export default {
   components: {},
   data() {
@@ -45,7 +48,9 @@ export default {
       mapStyle: {
         styleJson: mapStyle,
       },
+      crossroad: crossroad + '?' + +new Date()
     };
+    
   },
   methods: {
     handler({ BMap, map }) {
@@ -88,5 +93,10 @@ export default {
 .map {
   width: 100%;
   height: 100%;
+}
+
+.cross {
+  width: auto;
+  height: auto;
 }
 </style>

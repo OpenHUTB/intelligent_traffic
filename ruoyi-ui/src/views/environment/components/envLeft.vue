@@ -4,16 +4,16 @@
       <dv-border-box-8 :reverse="true">
         <div class="head">
           <div class="head_content">
-            <h1>2.5</h1>
-            <h2>风力(级)</h2>
+            <h1>211</h1>
+            <h2>道路总数</h2>
           </div>
           <div class="head_content">
-            <h1>5</h1>
-            <h2>风速(m/s)</h2>
+            <h1>11</h1>
+            <h2>拥堵道路</h2>
           </div>
           <div class="head_content">
             <h1>45</h1>
-            <h2>光照(klm)</h2>
+            <h2>即将拥堵</h2>
           </div>
         </div>
       </dv-border-box-8>
