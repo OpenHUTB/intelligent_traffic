@@ -102,31 +102,31 @@ export default {
       jam: {
         data: [
           {
-            name: "渝北区",
+            name: "岳麓区",
             value: 55,
           },
           {
-            name: "巴南区",
+            name: "望城区",
             value: 120,
           },
           {
-            name: "云阳县",
+            name: "芙蓉区",
             value: 78,
           },
           {
-            name: "万州区",
+            name: "开福区",
             value: 66,
           },
           {
-            name: "江北区",
+            name: "天心区",
             value: 80,
           },
           {
-            name: "合川区",
+            name: "浏阳市",
             value: 45,
           },
           {
-            name: "黔江区",
+            name: "长沙县",
             value: 29,
           },
         ],

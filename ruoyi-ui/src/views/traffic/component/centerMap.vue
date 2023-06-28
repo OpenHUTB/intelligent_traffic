@@ -6,8 +6,10 @@
       :zoom="zoom"
       @ready="handler"
       :mapStyle="mapStyle"
-      :scroll-wheel-zoom="true"
-    />
+      :scroll-wheel-zoom="true">
+      <bm-traffic :predictDate="{weekday: 7, hour: 12}">
+      </bm-traffic>
+    </baidu-map>
   </div>
 </template>
 
@@ -29,8 +31,8 @@ export default {
   methods: {
     handler({ BMap, map }) {
       console.log(BMap, map);
-      this.center.lng = 106.505;
-      this.center.lat = 29.5332;
+      this.center.lng = 112.91992;
+      this.center.lat = 28.21903;
       this.zoom = 15;
     },
   },
