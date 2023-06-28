@@ -2,7 +2,7 @@
   <div>
     <dv-border-box-1 style="padding: 5px"
       >
-      <h2 style="margin: 20px">各地区车流量</h2>
+      <h2 style="margin: 20px">各区县车流量</h2>
       <dv-capsule-chart :config="config" style="width: 400px; height: 500px"
     /></dv-border-box-1>
   </div>
@@ -15,31 +15,31 @@ export default {
       config: {
         data: [
           {
-            name: "渝北区",
+            name: "岳麓区",
             value: 167,
           },
           {
-            name: "巴南区",
+            name: "芙蓉区",
             value: 67,
           },
           {
-            name: "万州区",
+            name: "开福区",
             value: 123,
           },
           {
-            name: "合川区",
+            name: "天心区",
             value: 55,
           },
           {
-            name: "江北区",
+            name: "望城区",
             value: 98,
           },
           {
-            name: "黔江区",
+            name: "长沙县",
             value: 55,
           },
           {
-            name: "渝中区",
+            name: "浏阳市",
             value: 85,
           },
         ],
