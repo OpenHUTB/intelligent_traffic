@@ -1,7 +1,7 @@
 package com.ruoyi.web.controller.traffic;
 
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.traffic.service.ITrafficPointService;
+import com.ruoyi.traffic.service.ITrafficLineService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,18 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * @classname: TrafficPointController
+ * @classname: TrafficLineController
  * @author: chengchangli
- * @description: 路网的点的Controller类
- * @date: 2023/7/18
+ * @description: 路网的线的管理
+ * @date: 2023/7/20
  * @version: v1.0
  **/
-@Api(value = "路网的点管理", tags = "路网的点管理")
+@Api(value = "路网的线管理", tags = "路网的线管理")
 @RestController
-@RequestMapping("/traffic/point")
-public class TrafficPointController extends BaseController {
+@RequestMapping("/traffic/line")
+public class TrafficLineController extends BaseController {
 
     @Resource
-    private ITrafficPointService trafficPointService;
-
+    private ITrafficLineService trafficLineService;
 }
