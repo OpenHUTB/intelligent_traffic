@@ -44,8 +44,8 @@
         <dv-border-box-12 style="padding: 20px; margin-left: 150px">
           <div class="air">
             <h1>今日天气</h1>
-            <p>当前天气晴朗，24°C。</p>
-            <p>今天日间预计有大雨。 最高气温25°。</p>
+            <p>当前天气晴朗，34°C。</p>
+            <p>今天日间预计有大雨。 最高气温35°。</p>
           </div>
         </dv-border-box-12>
       </div>
