@@ -23,6 +23,9 @@ public class TrafficArea extends BaseEntity implements Serializable {
     @ApiModelProperty("主键ID")
     private Long id;
 
+    @ApiModelProperty("名称")
+    private String name;
+
     @ApiModelProperty("大区编号+小区编号")
     private String code;
 

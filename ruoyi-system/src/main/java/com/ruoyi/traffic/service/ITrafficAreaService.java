@@ -2,6 +2,9 @@ package com.ruoyi.traffic.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.traffic.domain.TrafficArea;
+import com.ruoyi.traffic.domain.TrafficLine;
+
+import java.util.List;
 
 /**
  * @classname: ITrafficAreaService
@@ -11,4 +14,19 @@ import com.ruoyi.traffic.domain.TrafficArea;
  * @version: v1.0
  **/
 public interface ITrafficAreaService extends IService<TrafficArea> {
+
+    // 查询集合
+    List<TrafficArea> queryList(TrafficArea trafficArea);
+
+    // 新增路网的线
+    void addArea(TrafficArea trafficArea);
+
+    // 编辑路网的线
+    void updateArea(TrafficArea trafficArea);
+
+    // 删除路网的线
+    void deleteByIdList(List<Long> idList);
+
+    // 查询路网的线的详情
+    TrafficArea queryById(Long id);
 }
