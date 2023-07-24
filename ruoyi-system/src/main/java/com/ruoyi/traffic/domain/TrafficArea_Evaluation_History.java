@@ -8,6 +8,17 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+
+/**
+ * @classname: TrafficArea_Evaluation_History
+ * @author: ouyanghua
+ * @description: 历史区域评价的实体类
+ * @date: 2023/7/24
+ * @version: v1.0
+ **/
+
+
+
 @Data
 public class TrafficArea_Evaluation_History extends BaseEntity implements Serializable {
     @TableId(type = IdType.AUTO)
