@@ -12,6 +12,14 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+/**
+ * @classname: ITrafficArea_Evaluation_History_Impl
+ * @author: ouyanghua
+ * @description: 历史区域评价的服务实现类
+ * @date: 2023/7/24
+ * @version: v1.0
+ **/
 @Service
 public class ITrafficArea_Evaluation_History_Impl extends ServiceImpl<TrafficArea_Evaluation_History_Mapper, TrafficArea_Evaluation_History> implements ITrafficArea_Evaluation_History_Service {
     @Override

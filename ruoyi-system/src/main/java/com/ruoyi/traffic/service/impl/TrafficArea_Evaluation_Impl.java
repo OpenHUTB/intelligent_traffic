@@ -17,6 +17,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @classname: rafficArea_Evaluation_Impl
+ * @author: ouyanghua
+ * @description: 区域评价的服务实现类
+ * @date: 2023/7/24
+ * @version: v1.0
+ **/
 @Service
 public class TrafficArea_Evaluation_Impl extends ServiceImpl<TrafficArea_Evaluation_Mapper,TrafficArea_Evaluation> implements ITrafficArea_Evaluation_Service {
     @Override
