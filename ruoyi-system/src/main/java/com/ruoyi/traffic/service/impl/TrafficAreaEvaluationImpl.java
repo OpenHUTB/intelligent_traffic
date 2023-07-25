@@ -31,7 +31,8 @@ import java.util.List;
 
 public class TrafficAreaEvaluationImpl extends ServiceImpl<TrafficAreaEvaluationMapper, TrafficAreaEvaluation> implements ITrafficAreaEvaluationService {
 
-    @Qualifier("ITrafficAreaEvaluationHistoryService")
+
+
     @Autowired
     private ITrafficAreaEvaluationHistoryService iTrafficAreaEvaluationHistoryService;
 
