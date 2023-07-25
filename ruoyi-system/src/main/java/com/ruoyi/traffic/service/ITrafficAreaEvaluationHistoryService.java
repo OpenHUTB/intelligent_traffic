@@ -2,8 +2,6 @@ package com.ruoyi.traffic.service;
 
 
 import com.ruoyi.traffic.domain.TrafficAreaEvaluationHistory;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 /**
@@ -13,7 +11,7 @@ import java.util.List;
  * @date: 2023/7/24
  * @version: v1.0
  **/
-@Repository
+
 public interface ITrafficAreaEvaluationHistoryService {
     // 查询集合
     List<TrafficAreaEvaluationHistory> queryList(TrafficAreaEvaluationHistory trafficArea_evaluation_history);
