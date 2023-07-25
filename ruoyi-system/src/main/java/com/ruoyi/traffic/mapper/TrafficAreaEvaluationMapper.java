@@ -1,7 +1,7 @@
 package com.ruoyi.traffic.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ruoyi.traffic.domain.TrafficArea_Evaluation;
+import com.ruoyi.traffic.domain.TrafficAreaEvaluation;
 
 
 
@@ -12,5 +12,5 @@ import com.ruoyi.traffic.domain.TrafficArea_Evaluation;
  * @date: 2023/7/24
  * @version: v1.0
  **/
-public interface TrafficArea_Evaluation_Mapper extends BaseMapper<TrafficArea_Evaluation> {
+public interface TrafficAreaEvaluationMapper extends BaseMapper<TrafficAreaEvaluation> {
 }

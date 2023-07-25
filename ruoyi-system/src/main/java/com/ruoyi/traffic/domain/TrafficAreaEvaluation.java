@@ -8,19 +8,17 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-
 /**
- * @classname: TrafficArea_Evaluation_History
+ * @classname: TrafficArea_Evaluation
  * @author: ouyanghua
- * @description: 历史区域评价的实体类
+ * @description: 区域评价的实体类
  * @date: 2023/7/24
  * @version: v1.0
  **/
 
-
-
 @Data
-public class TrafficArea_Evaluation_History extends BaseEntity implements Serializable {
+public class TrafficAreaEvaluation extends BaseEntity implements Serializable {
+
     @TableId(type = IdType.AUTO)
     @ApiModelProperty("主键ID")
     private Long id;
@@ -40,13 +38,14 @@ public class TrafficArea_Evaluation_History extends BaseEntity implements Serial
     @ApiModelProperty("区域拥堵指数")
     private double congestionIndex;
 
-    @ApiModelProperty("历史评价年份")
+    @ApiModelProperty("评价年份")
     private String Year;
 
-    @ApiModelProperty("历史评价月份")
+    @ApiModelProperty("评价月份")
     private  String Month;
 
-    @ApiModelProperty("历史评价日期")
+    @ApiModelProperty("评价日期")
     private String Day;
+
 
 }
