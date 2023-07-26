@@ -23,14 +23,12 @@ public class ITrafficEvaluationDataServiceImpl extends ServiceImpl<TrafficEvalua
     @Override
     public List<TrafficEvaluationData> queryList(TrafficEvaluationData trafficEvaluationData) {
         LambdaQueryWrapper<TrafficEvaluationData> queryWrapper = new LambdaQueryWrapper<>();
-        String intersectionId = trafficEvaluationData.getIntersectionId().toString();
         //intersectionId
-        if (StringUtils.isNotBlank(intersectionId)) {
+        if (StringUtils.isNotNull(trafficEvaluationData.getIntersectionId())) {
             queryWrapper.like(TrafficEvaluationData::getIntersectionId, trafficEvaluationData.getIntersectionId());
         }
         //EvaluationId
-        String evaluationId = trafficEvaluationData.getEvaluationTypeId().toString();
-        if (StringUtils.isNotBlank(evaluationId)) {
+        if (StringUtils.isNotNull(trafficEvaluationData.getEvaluationTypeId())) {
             queryWrapper.like(TrafficEvaluationData::getEvaluationTypeId, trafficEvaluationData.getEvaluationTypeId());
         }
         List<TrafficEvaluationData> trafficEvaluationDataList = baseMapper.selectList(queryWrapper);
