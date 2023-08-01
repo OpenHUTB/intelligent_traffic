@@ -17,13 +17,7 @@ openstreemap、WebGL、three.js、vue-baidu-map
 
 
 # 业务逻辑
-
-> 宏观层
-
-
-
-> 中间层
-
+![image](https://github.com/OpenHUTB/intelligent_traffic/blob/master/img/%E6%99%BA%E6%85%A7%E4%BA%A4%E9%80%9A%E5%9F%BA%E7%A1%80%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png)
 
 
 ```mermaid
@@ -37,10 +31,6 @@ f --> e
 g[交通数据信息流] --> f
 f --> b
 ```
-
-> 微观层
-
-
 
 
 
