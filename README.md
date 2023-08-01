@@ -204,6 +204,7 @@ response
 
 - openstreetMap下载，arcGis数据转换导出(ccl)
 - Matlab对接UE虚幻引擎的仿真，导出为webgl（其他组）
+- swagger knife接口文档提供给前端
 
 ### 假数据
 
