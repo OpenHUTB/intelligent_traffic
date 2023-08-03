@@ -6,11 +6,11 @@
           <!-- <video autoplay="autoplay" width="100%" height="100%">
               <source src="../../../assets/webm/CAMERAV.webm" type="video/mp4"/>
           </video> -->
-          <video-player class="video-player vjs-custom-skin" 
-              ref="videoPlayer" 
-              :playsinline="true" 
+          <video-player class="video-player vjs-custom-skin"
+              ref="videoPlayer"
+              :playsinline="true"
               :options="playerOptions">
-          </video-player>         
+          </video-player>
       </div>
       <h2>路段统计</h2>
       <dv-scroll-board :config="config" style="width: 29vw; height: 220px" />
@@ -64,7 +64,7 @@ export default {
           remainingTimeDisplay: false, // 是否显示剩余时间功能
           fullscreenToggle: true // 是否显示全屏按钮
         }
-      }   
+      }
     };
   },
 

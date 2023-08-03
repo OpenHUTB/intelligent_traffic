@@ -6,7 +6,6 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.exception.base.BaseException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.traffic.domain.TrafficArea;
-import com.ruoyi.traffic.domain.TrafficLine;
 import com.ruoyi.traffic.mapper.TrafficAreaMapper;
 import com.ruoyi.traffic.service.ITrafficAreaService;
 import org.apache.commons.collections4.CollectionUtils;
