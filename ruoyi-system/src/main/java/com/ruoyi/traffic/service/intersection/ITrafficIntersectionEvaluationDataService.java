@@ -6,7 +6,7 @@ import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import java.util.List;
 
 /**
- * @classname: TrafficEvaluationDataService
+ * @classname: ITrafficIntersectionEvaluationDataService
  * @author: ouyangdelong
  * @description: 路口评价指标实时数据服务类
  * @date: 2023/7/25

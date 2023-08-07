@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.Date;
  * @version: v1.0
  **/
 @Data
+@Builder
 public class TrafficIntersectionEvaluationHistory extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -4287177392609425762L;
