@@ -43,6 +43,7 @@ public class BaseEntity implements Serializable
     private String remark;
 
     /** 请求参数 */
+    @TableField(exist = false)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
 
