@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -187,5 +188,33 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+    /**
+     * 获取年
+     */
+    public static String getYear (Date date) {
+        Calendar calendar = toCalendar(date);
+        int year = calendar.get(Calendar.YEAR);
+        return String.valueOf(year);
+    }
+
+
+    /**
+     * 获取月
+     */
+    public static String getMonth (Date date) {
+        Calendar calendar = toCalendar(date);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        return String.valueOf(month);
+    }
+
+    /**
+     * 获取日
+     */
+    public static String getDay (Date date) {
+        Calendar calendar = toCalendar(date);
+        int day = calendar.get(Calendar.DATE);
+        return String.valueOf(day);
     }
 }

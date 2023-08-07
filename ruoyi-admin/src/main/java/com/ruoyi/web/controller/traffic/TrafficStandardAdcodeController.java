@@ -3,7 +3,7 @@ package com.ruoyi.web.controller.traffic;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.traffic.dto.ProvinceDTO;
-import com.ruoyi.traffic.service.ITrafficStandardAdcodeService;
+import com.ruoyi.traffic.service.standAdcode.ITrafficStandardAdcodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
