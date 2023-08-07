@@ -1,9 +1,9 @@
 package com.ruoyi.web.controller.traffic;
 
 
-import com.ruoyi.traffic.service.ITrafficEvaluationDataService;
-import com.ruoyi.traffic.service.ITrafficEvaluationTypeService;
-import com.ruoyi.traffic.service.ITrafficIntersectionService;
+import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
+import com.ruoyi.traffic.service.evaluationType.ITrafficEvaluationTypeService;
+import com.ruoyi.traffic.service.intersection.ITrafficIntersectionService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +27,5 @@ public class TrafficIntersectionEvaluationController {
     @Resource
     private ITrafficEvaluationTypeService trafficEvaluationService;
     @Resource
-    private ITrafficEvaluationDataService trafficEvaluationDataService;
+    private ITrafficIntersectionEvaluationDataService trafficEvaluationDataService;
 }
