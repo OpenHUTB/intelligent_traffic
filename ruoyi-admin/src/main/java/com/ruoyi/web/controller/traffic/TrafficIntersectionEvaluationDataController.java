@@ -10,7 +10,6 @@ import com.ruoyi.traffic.service.intersection.ITrafficIntersectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.catalina.LifecycleState;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +21,14 @@ import java.util.List;
 /**
  * @classname: TrafficIntersectionEvaluationController
  * @author: ouyangdelong
- * @description: 路口和评价指标的控制类
+ * @description: 路口数据的控制类
  * @date: 2023/7/24
  * @version: v1.0
  **/
-@Api(value = "路口的管理", tags = "路口的管理")
+@Api(value = "路口数据的管理", tags = "路口数据的管理")
 @RestController
-@RequestMapping("/traffic/intersection")
-public class TrafficIntersectionEvaluationController extends BaseController {
+@RequestMapping("/traffic/intersectionData")
+public class TrafficIntersectionEvaluationDataController extends BaseController {
 
     @Resource
     private ITrafficIntersectionService trafficIntersectionService;
