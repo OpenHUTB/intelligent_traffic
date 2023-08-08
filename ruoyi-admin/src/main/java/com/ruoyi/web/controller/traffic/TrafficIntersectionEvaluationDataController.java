@@ -35,10 +35,6 @@ import java.util.List;
 public class TrafficIntersectionEvaluationDataController extends BaseController {
 
     @Resource
-    private ITrafficIntersectionService trafficIntersectionService;
-    @Resource
-    private ITrafficEvaluationTypeService trafficEvaluationService;
-    @Resource
     private ITrafficIntersectionEvaluationDataService trafficIntersectionEvaluationDataService;
 
     @ApiOperation("分页获取路口数据")

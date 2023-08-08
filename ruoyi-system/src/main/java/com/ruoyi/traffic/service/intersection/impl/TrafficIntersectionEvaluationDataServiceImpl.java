@@ -11,6 +11,7 @@ import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistory;
 import com.ruoyi.traffic.mapper.intersection.TrafficIntersectionEvaluationDataMapper;
+import com.ruoyi.traffic.service.evaluationType.ITrafficEvaluationTypeService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationHistoryService;
 import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
@@ -34,6 +35,8 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
 
     @Autowired
     private ITrafficIntersectionEvaluationHistoryService trafficIntersectionEvaluationHistoryService;
+    @Autowired
+    private ITrafficEvaluationTypeService trafficEvaluationTypeService;
     @Override
     public List<TrafficIntersectionEvaluationData> queryList(TrafficIntersectionEvaluationData trafficEvaluationData) {
         LambdaQueryWrapper<TrafficIntersectionEvaluationData> queryWrapper = new LambdaQueryWrapper<>();
@@ -103,17 +106,33 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
         //evaluationTypeId
         if (StringUtils.isNotNull(trafficIntersectionEvaluationData.getEvaluationTypeId())) {
             queryWrapper.like(TrafficIntersectionEvaluationData::getEvaluationTypeId,trafficIntersectionEvaluationData.getEvaluationTypeId());
+            TrafficEvaluationType trafficEvaluationType = trafficEvaluationTypeService.queryById(trafficIntersectionEvaluationData.getEvaluationTypeId());
+            //除了速度之外其余的都按字段升序
+            if (trafficEvaluationType.getName().contains("速度")) {
+                queryWrapper.orderByDesc(TrafficIntersectionEvaluationData::getValue);
+            } else {
+                queryWrapper.orderByAsc(TrafficIntersectionEvaluationData::getValue);
+            }
+        } else {
+            //默认按数据的收集时间降序
+            queryWrapper.orderByDesc(TrafficIntersectionEvaluationData::getCollectTime);
         }
         List<TrafficIntersectionEvaluationDataVo> list = baseMapper.selectJoinList(TrafficIntersectionEvaluationDataVo.class,
                 queryWrapper
                         .select(TrafficIntersection::getName, TrafficIntersection::getLongitude, TrafficIntersection::getLatitude)
                         .select(TrafficEvaluationType::getName, TrafficEvaluationType::getType)
-                        .select(TrafficIntersectionEvaluationData::getValue)
+                        .select(TrafficIntersectionEvaluationData::getValue, TrafficIntersectionEvaluationData::getCollectTime)
                         .selectAs(TrafficIntersection::getName, TrafficIntersectionEvaluationDataVo::getIntersectionName)
                         .selectAs(TrafficEvaluationType::getName, TrafficIntersectionEvaluationDataVo::getEvaluationName)
                         .leftJoin(TrafficIntersection.class, TrafficIntersection::getId, TrafficIntersectionEvaluationData::getIntersectionId)
                         .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficIntersectionEvaluationData::getEvaluationTypeId)
         );
+        return list;
+    }
+
+    @Override
+    public List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id) {
+        List<TrafficIntersectionEvaluationData> list = baseMapper.queryByIntersectionId(id);
         return list;
     }
 }

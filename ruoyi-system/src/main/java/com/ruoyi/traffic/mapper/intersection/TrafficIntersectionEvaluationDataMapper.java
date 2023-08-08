@@ -22,4 +22,7 @@ public interface TrafficIntersectionEvaluationDataMapper extends MPJBaseMapper<T
 
     //按路口id删除数据
     void deleteByIntersectionIds(@Param("idList") List<Long> idList);
+
+    //按路口id查询数据
+    List<TrafficIntersectionEvaluationData> queryByIntersectionId(@Param("id") Long id);
 }
