@@ -2,6 +2,7 @@ package com.ruoyi.framework.config;
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.github.yulichang.injector.MPJSqlInjector;
 import com.ruoyi.common.utils.StringUtils;
 import org.apache.ibatis.io.VFS;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -136,7 +137,7 @@ public class MybatisPlusConfig {
         // 全局配置
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setMetaObjectHandler(new MyMetaObjectHandler());
-        //globalConfig.setSqlInjector(new MPJSqlInjector());
+        globalConfig.setSqlInjector(new MPJSqlInjector());
         // 配置填充器
         sessionFactory.setGlobalConfig(globalConfig);
         return sessionFactory.getObject();
