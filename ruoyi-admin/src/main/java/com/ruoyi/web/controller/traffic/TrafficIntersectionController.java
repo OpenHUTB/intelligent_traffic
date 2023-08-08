@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.traffic.domain.area.TrafficArea;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
+import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,8 @@ public class TrafficIntersectionController extends BaseController {
 
     @Resource
     private ITrafficIntersectionService trafficIntersectionService;
+    @Resource
+    ITrafficIntersectionEvaluationDataService trafficIntersectionEvaluationDataService;
 
     @ApiOperation("分页查询路口")
     @PostMapping("/page")
@@ -57,10 +60,9 @@ public class TrafficIntersectionController extends BaseController {
     @ApiOperation("删除路口")
     @PostMapping("/delete")
     public AjaxResult delete(@ApiParam(value = "数据集ID集合", required = true) @RequestBody List<Long> idList) {
-        trafficIntersectionService.deleteIntersection(idList);
         //删除该路口时把数据中和该路口有关的删除
-
-
+        trafficIntersectionService.deleteIntersection(idList);
+        trafficIntersectionEvaluationDataService.deleteEvaluationDataByIntersectionIds(idList);
         return AjaxResult.success();
     }
 
@@ -69,9 +71,6 @@ public class TrafficIntersectionController extends BaseController {
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
         TrafficIntersection trafficIntersection = trafficIntersectionService.queryById(id);
-        //将与该路口相关的指标数据整合到一起
-
-
         return AjaxResult.success(trafficIntersection);
     }
 }
