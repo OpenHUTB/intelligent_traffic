@@ -2,17 +2,23 @@ package com.ruoyi.traffic.service.intersection.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.query.MPJLambdaQueryWrapper;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
+import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistory;
 import com.ruoyi.traffic.mapper.intersection.TrafficIntersectionEvaluationDataMapper;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationHistoryService;
+import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.soap.SAAJResult;
 import java.util.List;
 
 /**
@@ -27,7 +33,7 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
         implements ITrafficIntersectionEvaluationDataService {
 
     @Autowired
-    ITrafficIntersectionEvaluationHistoryService trafficIntersectionEvaluationHistoryService;
+    private ITrafficIntersectionEvaluationHistoryService trafficIntersectionEvaluationHistoryService;
     @Override
     public List<TrafficIntersectionEvaluationData> queryList(TrafficIntersectionEvaluationData trafficEvaluationData) {
         LambdaQueryWrapper<TrafficIntersectionEvaluationData> queryWrapper = new LambdaQueryWrapper<>();
@@ -35,7 +41,7 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
         if (StringUtils.isNotNull(trafficEvaluationData.getIntersectionId())) {
             queryWrapper.like(TrafficIntersectionEvaluationData::getIntersectionId, trafficEvaluationData.getIntersectionId());
         }
-        //EvaluationId
+        //EvaluationTypeId
         if (StringUtils.isNotNull(trafficEvaluationData.getEvaluationTypeId())) {
             queryWrapper.like(TrafficIntersectionEvaluationData::getEvaluationTypeId, trafficEvaluationData.getEvaluationTypeId());
         }
@@ -68,11 +74,46 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
 
     @Override
     public void deleteEvaluationData(List<Long> idList) {
-        baseMapper.deleteBatchIds(idList);
+        if (StringUtils.isNotEmpty(idList)) {
+            baseMapper.deleteBatchIds(idList);
+        }
     }
 
     @Override
     public TrafficIntersectionEvaluationData queryById(Long id) {
         return baseMapper.selectById(id);
+    }
+
+    //按路口id删除数据
+    @Override
+    public void deleteEvaluationDataByIntersectionIds(List<Long> idList) {
+        if (StringUtils.isNotEmpty(idList)) {
+            baseMapper.deleteByIntersectionIds(idList);
+        }
+    }
+
+    //联表查询
+    @Override
+    public List<TrafficIntersectionEvaluationDataVo> relatedQueryList(TrafficIntersectionEvaluationData trafficIntersectionEvaluationData) {
+        MPJLambdaWrapper<TrafficIntersectionEvaluationData> queryWrapper = new MPJLambdaWrapper<>();
+        //intersectionId
+        if (StringUtils.isNotNull(trafficIntersectionEvaluationData.getIntersectionId())) {
+            queryWrapper.like(TrafficIntersectionEvaluationData::getIntersectionId,trafficIntersectionEvaluationData.getIntersectionId());
+        }
+        //evaluationTypeId
+        if (StringUtils.isNotNull(trafficIntersectionEvaluationData.getEvaluationTypeId())) {
+            queryWrapper.like(TrafficIntersectionEvaluationData::getEvaluationTypeId,trafficIntersectionEvaluationData.getEvaluationTypeId());
+        }
+        List<TrafficIntersectionEvaluationDataVo> list = baseMapper.selectJoinList(TrafficIntersectionEvaluationDataVo.class,
+                queryWrapper
+                        .select(TrafficIntersection::getName, TrafficIntersection::getLongitude, TrafficIntersection::getLatitude)
+                        .select(TrafficEvaluationType::getName, TrafficEvaluationType::getType)
+                        .select(TrafficIntersectionEvaluationData::getValue)
+                        .selectAs(TrafficIntersection::getName, TrafficIntersectionEvaluationDataVo::getIntersectionName)
+                        .selectAs(TrafficEvaluationType::getName, TrafficIntersectionEvaluationDataVo::getEvaluationName)
+                        .leftJoin(TrafficIntersection.class, TrafficIntersection::getId, TrafficIntersectionEvaluationData::getIntersectionId)
+                        .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficIntersectionEvaluationData::getEvaluationTypeId)
+        );
+        return list;
     }
 }

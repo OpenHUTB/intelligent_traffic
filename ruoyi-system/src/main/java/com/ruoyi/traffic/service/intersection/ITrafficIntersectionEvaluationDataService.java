@@ -2,6 +2,7 @@ package com.ruoyi.traffic.service.intersection;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
+import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
 
 import java.util.List;
 
@@ -28,4 +29,10 @@ public interface ITrafficIntersectionEvaluationDataService extends IService<Traf
 
     //查询实时数据详情
     TrafficIntersectionEvaluationData queryById(Long id);
+
+    //按路口id删除数据
+    void deleteEvaluationDataByIntersectionIds(List<Long> idList);
+
+    //联表查询
+    List<TrafficIntersectionEvaluationDataVo> relatedQueryList(TrafficIntersectionEvaluationData trafficIntersectionEvaluationData);
 }
