@@ -35,4 +35,7 @@ public interface ITrafficIntersectionEvaluationDataService extends IService<Traf
 
     //联表查询
     List<TrafficIntersectionEvaluationDataVo> relatedQueryList(TrafficIntersectionEvaluationData trafficIntersectionEvaluationData);
+
+    //根据路口id查询
+    List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id);
 }

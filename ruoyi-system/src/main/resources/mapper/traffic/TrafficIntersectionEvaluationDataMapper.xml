@@ -14,4 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </foreach>
         </where>
     </delete>
+
+    <select id="queryByIntersectionId" resultType="com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData">
+        select * from traffic_intersection_evaluation_data
+        <where>
+            intersection_id = #{id}
+        </where>
+    </select>
 </mapper>

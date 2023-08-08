@@ -1,32 +1,16 @@
 package com.ruoyi.traffic.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
-import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
-import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+
 
 @Data
 public class TrafficIntersectionEvaluationDataVo implements Serializable {
-
-    @JsonIgnore
-    @ApiModelProperty("路口对象")
-    TrafficIntersection trafficIntersection;
-
-    @JsonIgnore
-    @ApiModelProperty("路口数据对象")
-    TrafficIntersectionEvaluationData trafficIntersectionEvaluationData;
-
-    @JsonIgnore
-    @ApiModelProperty("指标类型对象")
-    TrafficEvaluationType trafficEvaluationType;
 
     @ApiModelProperty("路口名称")
     private String intersectionName;
@@ -46,15 +30,8 @@ public class TrafficIntersectionEvaluationDataVo implements Serializable {
     @ApiModelProperty("评价指标的值")
     private BigDecimal value;
 
-    public void result() {
-        this.intersectionName = trafficIntersection.getName();
-        this.longitude = trafficIntersection.getLongitude();
-        this.latitude = trafficIntersection.getLatitude();
-        this.evaluationName = trafficEvaluationType.getName();
-        if (trafficEvaluationType.getType().equals("1"))
-            this.type = "路口";
-        else
-            this.type = "区域";
-        this.value = trafficIntersectionEvaluationData.getValue();
-    }
+    @ApiModelProperty("数据采集时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date collectTime;
+
 }
