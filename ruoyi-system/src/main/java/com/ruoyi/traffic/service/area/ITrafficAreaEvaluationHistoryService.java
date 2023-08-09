@@ -1,7 +1,10 @@
 package com.ruoyi.traffic.service.area;
 
 
+import com.github.yulichang.base.MPJBaseService;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
+import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
+import com.ruoyi.traffic.vo.TrafficAreaEvaluationHistoryRankVo;
 
 import java.util.List;
 /**
@@ -12,7 +15,7 @@ import java.util.List;
  * @version: v1.0
  **/
 
-public interface ITrafficAreaEvaluationHistoryService {
+public interface ITrafficAreaEvaluationHistoryService  extends MPJBaseService<TrafficAreaEvaluationHistory> {
     // 查询集合
     List<TrafficAreaEvaluationHistory> queryList(TrafficAreaEvaluationHistory trafficAreaEvaluationHistory);
 
@@ -28,5 +31,7 @@ public interface ITrafficAreaEvaluationHistoryService {
     //查询历史区域评价详情
     TrafficAreaEvaluationHistory queryById(Long id);
 
+    // 查询前10名的指标排名
+    List<TrafficAreaEvaluationHistoryRankVo> queryEvaluationHistoryRankList(AreaEvaluationRankDTO dto);
 
 }
