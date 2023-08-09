@@ -2,7 +2,10 @@ package com.ruoyi.traffic.service.area;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import com.github.yulichang.base.MPJBaseService;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
+import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
+import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
 
 import java.util.List;
 
@@ -14,7 +17,7 @@ import java.util.List;
  * @date: 2023/7/24
  * @version: v1.0
  **/
-public interface ITrafficAreaEvaluationDataService extends IService<TrafficAreaEvaluationData> {
+public interface ITrafficAreaEvaluationDataService extends MPJBaseService<TrafficAreaEvaluationData> {
     // 查询集合
     List<TrafficAreaEvaluationData> queryList(TrafficAreaEvaluationData trafficAreaEvaluationData);
 
@@ -30,4 +33,7 @@ public interface ITrafficAreaEvaluationDataService extends IService<TrafficAreaE
 
     //查询区域评价详情
     TrafficAreaEvaluationData queryById(Long id);
+
+    // 查询前10名的指标排名
+    List<TrafficAreaEvaluationDataRankVO> queryEvaluationDataRankList(AreaEvaluationRankDTO dto);
 }
