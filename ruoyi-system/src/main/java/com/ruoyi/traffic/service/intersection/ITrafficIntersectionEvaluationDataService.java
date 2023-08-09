@@ -27,15 +27,17 @@ public interface ITrafficIntersectionEvaluationDataService extends IService<Traf
     //删除实时数据
     void deleteEvaluationData(List<Long> idList);
 
-    //查询实时数据详情
-    TrafficIntersectionEvaluationData queryById(Long id);
+    //根据路口id查询
+    List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id);
 
     //按路口id删除数据
     void deleteEvaluationDataByIntersectionIds(List<Long> idList);
 
+    //查询实时数据详情
+    TrafficIntersectionEvaluationDataVo queryById(Long id);
+
     //联表查询
     List<TrafficIntersectionEvaluationDataVo> relatedQueryList(TrafficIntersectionEvaluationData trafficIntersectionEvaluationData);
 
-    //根据路口id查询
-    List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id);
+
 }

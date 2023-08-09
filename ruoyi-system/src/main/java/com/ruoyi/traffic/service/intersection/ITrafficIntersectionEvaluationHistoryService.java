@@ -1,7 +1,10 @@
 package com.ruoyi.traffic.service.intersection;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistory;
+import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
+import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationHistoryVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +31,9 @@ public interface ITrafficIntersectionEvaluationHistoryService extends IService<T
     void deleteEvaluationHistory(List<Long> idList);
 
     //查询历史数据详情
-    TrafficIntersectionEvaluationHistory queryById(Long id);
+    TrafficIntersectionEvaluationHistoryVo queryById(Long id);
+
+    //联表查询历史数据
+    List<TrafficIntersectionEvaluationHistoryVo> relatedQueryList(TrafficIntersectionEvaluationHistory trafficIntersectionEvaluationHistory);
+
 }

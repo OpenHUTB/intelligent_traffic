@@ -1,6 +1,7 @@
 package com.ruoyi.traffic.mapper.intersection;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistory;
 
@@ -11,5 +12,5 @@ import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistor
  * @date: 2023/8/7
  * @version: v1.0
  **/
-public interface TrafficIntersectionEvaluationHistoryMapper extends BaseMapper<TrafficIntersectionEvaluationHistory> {
+public interface TrafficIntersectionEvaluationHistoryMapper extends MPJBaseMapper<TrafficIntersectionEvaluationHistory> {
 }
