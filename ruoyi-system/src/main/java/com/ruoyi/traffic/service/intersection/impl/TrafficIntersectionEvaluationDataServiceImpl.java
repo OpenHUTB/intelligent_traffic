@@ -118,8 +118,10 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
         //evaluationTypeId
         if (StringUtils.isNotNull(trafficIntersectionEvaluationData.getEvaluationTypeId())) {
             queryWrapper.like(TrafficIntersectionEvaluationData::getEvaluationTypeId,trafficIntersectionEvaluationData.getEvaluationTypeId());
+
+
             TrafficEvaluationType trafficEvaluationType = trafficEvaluationTypeService.queryById(trafficIntersectionEvaluationData.getEvaluationTypeId());
-            //除了速度之外其余的都按字段升序
+            //除了速度之外其余的都按字段升序(路口的指标现在暂时还没有包含速度的，如果后期增加，可以新增枚举类来代替查库，这种指标类别基本创建后不会修改)
             if (trafficEvaluationType.getName().contains("速度")) {
                 queryWrapper.orderByDesc(TrafficIntersectionEvaluationData::getValue);
             } else {

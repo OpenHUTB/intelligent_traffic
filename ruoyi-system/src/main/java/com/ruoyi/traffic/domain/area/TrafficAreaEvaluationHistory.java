@@ -30,13 +30,13 @@ public class TrafficAreaEvaluationHistory extends BaseEntity implements Serializ
     private Long id;
 
     @ApiModelProperty("历史评价年份")
-    private String Year;
+    private String year;
 
     @ApiModelProperty("历史评价月份")
-    private String Month;
+    private String month;
 
     @ApiModelProperty("历史评价日期")
-    private String Day;
+    private String day;
 
     @ApiModelProperty("区域ID")
     private Long areaId;
