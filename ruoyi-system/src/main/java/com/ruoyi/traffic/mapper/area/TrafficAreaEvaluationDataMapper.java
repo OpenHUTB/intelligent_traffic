@@ -1,6 +1,7 @@
 package com.ruoyi.traffic.mapper.area;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
 
 
@@ -12,5 +13,5 @@ import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
  * @date: 2023/7/24
  * @version: v1.0
  **/
-public interface TrafficAreaEvaluationDataMapper extends BaseMapper<TrafficAreaEvaluationData> {
+public interface TrafficAreaEvaluationDataMapper extends MPJBaseMapper<TrafficAreaEvaluationData> {
 }
