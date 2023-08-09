@@ -2,12 +2,19 @@ package com.ruoyi.traffic.service.area.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.ruoyi.common.utils.StringUtils;
 
+import com.ruoyi.traffic.domain.area.TrafficArea;
+import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
 
+import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
+import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
 import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationHistoryMapper;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationHistoryService;
+import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
+import com.ruoyi.traffic.vo.TrafficAreaEvaluationHistoryRankVo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +77,29 @@ public class TrafficAreaEvaluationHistoryImpl extends ServiceImpl<TrafficAreaEva
         return trafficAreaEvaluationHistory;
     }
 
+    @Override
+    public List<TrafficAreaEvaluationHistoryRankVo> queryEvaluationHistoryRankList(AreaEvaluationRankDTO dto) {
+        Integer limit = dto.getLimit() == null ? 10 : dto.getLimit();
+        String limitStr = String.format("LIMIT %s", limit);
+        Long evaluationTypeId = dto.getEvaluationTypeId();
+        MPJLambdaWrapper<TrafficAreaEvaluationHistory> queryWrapper = new MPJLambdaWrapper<>();
+        queryWrapper.selectAll(TrafficAreaEvaluationHistory.class)
+                .selectAs(TrafficArea::getName, TrafficAreaEvaluationHistoryRankVo::getAreaName)
+                .selectAs(TrafficEvaluationType::getName, TrafficAreaEvaluationHistoryRankVo::getEvaluationTypeName)
+                .leftJoin(TrafficArea.class, TrafficArea::getId, TrafficAreaEvaluationHistory::getAreaId)
+                .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficAreaEvaluationHistory::getEvaluationTypeId)
+                .eq(TrafficAreaEvaluationHistory::getEvaluationTypeId, evaluationTypeId);
+
+        if(evaluationTypeId!=6)   {
+            queryWrapper.orderByDesc(TrafficAreaEvaluationHistory::getValue);
+        }
+        else{
+            queryWrapper.orderByAsc(TrafficAreaEvaluationHistory::getValue);
+        }
+        queryWrapper.last(limitStr);
+        List<TrafficAreaEvaluationHistoryRankVo> rankVOList = baseMapper.selectJoinList(TrafficAreaEvaluationHistoryRankVo.class, queryWrapper);
+        return rankVOList;
+    }
 
 
 }
