@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.traffic.mapper.intersection.TrafficIntersectionEvaluationDataMapper">
+
+
+    <delete id="deleteByIntersectionIds">
+        delete from traffic_intersection_evaluation_data
+        <where>
+            intersection_id in
+            <foreach item="item" collection="idList" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="queryByIntersectionId" resultType="com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData">
+        select * from traffic_intersection_evaluation_data
+        <where>
+            intersection_id = #{id}
+        </where>
+    </select>
+</mapper>
