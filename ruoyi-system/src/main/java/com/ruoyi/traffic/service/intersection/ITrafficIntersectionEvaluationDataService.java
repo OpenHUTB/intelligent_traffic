@@ -2,11 +2,12 @@ package com.ruoyi.traffic.service.intersection;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
+import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
 
 import java.util.List;
 
 /**
- * @classname: TrafficEvaluationDataService
+ * @classname: ITrafficIntersectionEvaluationDataService
  * @author: ouyangdelong
  * @description: 路口评价指标实时数据服务类
  * @date: 2023/7/25
@@ -26,6 +27,17 @@ public interface ITrafficIntersectionEvaluationDataService extends IService<Traf
     //删除实时数据
     void deleteEvaluationData(List<Long> idList);
 
+    //根据路口id查询
+    List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id);
+
+    //按路口id删除数据
+    void deleteEvaluationDataByIntersectionIds(List<Long> idList);
+
     //查询实时数据详情
-    TrafficIntersectionEvaluationData queryById(Long id);
+    TrafficIntersectionEvaluationDataVo queryById(Long id);
+
+    //联表查询
+    List<TrafficIntersectionEvaluationDataVo> relatedQueryList(TrafficIntersectionEvaluationData trafficIntersectionEvaluationData);
+
+
 }
