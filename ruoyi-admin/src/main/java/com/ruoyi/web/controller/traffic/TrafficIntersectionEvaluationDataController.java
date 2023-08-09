@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @classname: TrafficIntersectionEvaluationController
+ * @classname: TrafficIntersectionEvaluationDataController
  * @author: ouyangdelong
  * @description: 路口数据的控制类
  * @date: 2023/7/24
@@ -70,8 +70,8 @@ public class TrafficIntersectionEvaluationDataController extends BaseController 
     @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
-        TrafficIntersectionEvaluationData trafficIntersectionEvaluationData = trafficIntersectionEvaluationDataService.queryById(id);
-        return AjaxResult.success(trafficIntersectionEvaluationData);
+        TrafficIntersectionEvaluationDataVo trafficIntersectionEvaluationDataVo = trafficIntersectionEvaluationDataService.queryById(id);
+        return AjaxResult.success(trafficIntersectionEvaluationDataVo);
     }
 
 

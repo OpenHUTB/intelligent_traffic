@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,6 +23,8 @@ import java.util.Date;
  **/
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TrafficIntersectionEvaluationHistory extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -4287177392609425762L;
@@ -30,13 +34,13 @@ public class TrafficIntersectionEvaluationHistory extends BaseEntity implements 
     private Long id;
 
     @ApiModelProperty("历史评价年份")
-    private String Year;
+    private String year;
 
     @ApiModelProperty("历史评价月份")
-    private String Month;
+    private String month;
 
     @ApiModelProperty("历史评价日期")
-    private String Day;
+    private String day;
 
     @ApiModelProperty("交通路口ID")
     private Long intersectionId;
@@ -51,6 +55,7 @@ public class TrafficIntersectionEvaluationHistory extends BaseEntity implements 
     @ApiModelProperty("数据采集时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date collectTime;
+
 
 
 }

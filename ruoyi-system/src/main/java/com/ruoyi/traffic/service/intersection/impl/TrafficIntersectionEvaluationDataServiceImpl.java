@@ -64,9 +64,9 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
                 .evaluationTypeId(trafficEvaluationData.getEvaluationTypeId())
                 .value(trafficEvaluationData.getValue())
                 .collectTime(trafficEvaluationData.getCollectTime())
-                .Year(year)
-                .Month(month)
-                .Day(day).build();
+                .year(year)
+                .month(month)
+                .day(day).build();
         trafficIntersectionEvaluationHistoryService.addEvaluationHistory(trafficIntersectionEvaluationHistory);
     }
 
@@ -83,8 +83,20 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
     }
 
     @Override
-    public TrafficIntersectionEvaluationData queryById(Long id) {
-        return baseMapper.selectById(id);
+    public TrafficIntersectionEvaluationDataVo queryById(Long id) {
+        MPJLambdaWrapper<TrafficIntersectionEvaluationData> queryWrapper = new MPJLambdaWrapper<>();
+        queryWrapper.like(TrafficIntersectionEvaluationData::getId, id);
+        TrafficIntersectionEvaluationDataVo vo = baseMapper.selectJoinOne(TrafficIntersectionEvaluationDataVo.class,
+                queryWrapper
+                        .select(TrafficIntersection::getName, TrafficIntersection::getLongitude, TrafficIntersection::getLatitude)
+                        .select(TrafficEvaluationType::getName, TrafficEvaluationType::getType)
+                        .select(TrafficIntersectionEvaluationData::getValue, TrafficIntersectionEvaluationData::getCollectTime)
+                        .selectAs(TrafficIntersection::getName, TrafficIntersectionEvaluationDataVo::getIntersectionName)
+                        .selectAs(TrafficEvaluationType::getName, TrafficIntersectionEvaluationDataVo::getEvaluationName)
+                        .leftJoin(TrafficIntersection.class, TrafficIntersection::getId, TrafficIntersectionEvaluationData::getIntersectionId)
+                        .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficIntersectionEvaluationData::getEvaluationTypeId)
+        );
+        return vo;
     }
 
     //按路口id删除数据

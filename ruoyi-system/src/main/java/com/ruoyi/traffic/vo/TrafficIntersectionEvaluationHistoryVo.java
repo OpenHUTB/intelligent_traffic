@@ -9,14 +9,23 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @classname: TrafficIntersectionEvaluationDataVo
+ * @classname: TrafficIntersectionEvaluationHistoryVo
  * @author: ouyangdelong
- * @description: 路口数据Vo类
- * @date: 2023/8/8
+ * @description: 路口历史数据Vo类
+ * @date: 2023/8/9
  * @version: v1.0
  **/
 @Data
-public class TrafficIntersectionEvaluationDataVo implements Serializable {
+public class TrafficIntersectionEvaluationHistoryVo implements Serializable {
+
+    @ApiModelProperty("历史评价年份")
+    private String year;
+
+    @ApiModelProperty("历史评价月份")
+    private String month;
+
+    @ApiModelProperty("历史评价日期")
+    private String day;
 
     @ApiModelProperty("路口名称")
     private String intersectionName;
