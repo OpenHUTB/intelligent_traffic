@@ -4,12 +4,12 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
-import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationDataMapper;
+import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationDataService;
+import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,13 +27,11 @@ import java.util.List;
  **/
 @Api(value = "区域评价的管理", tags = "区域评价的管理")
 @RestController
-@RequestMapping("/traffic/areaevaluation")
+@RequestMapping("/traffic/areaevaluationdata")
 public class TrafficAreaEvaluationDataController extends BaseController {
     @Resource
     private ITrafficAreaEvaluationDataService iTrafficAreaEvaluationDataService;
 
-    @Autowired
-    private TrafficAreaEvaluationDataMapper trafficAreaEvaluationDataMapper;
     @ApiOperation("分页获取区域评价数据")
     @PostMapping("/page")
     public TableDataInfo list(@ApiParam(value = "条件查询参数")@RequestBody TrafficAreaEvaluationData trafficAreaEvaluationData)
@@ -64,15 +62,11 @@ public class TrafficAreaEvaluationDataController extends BaseController {
         TrafficAreaEvaluationData trafficAreaEvaluationData = iTrafficAreaEvaluationDataService.queryById(id);
         return AjaxResult.success(trafficAreaEvaluationData );
     }
-    @ApiOperation("区域评价排名")
-    @PostMapping ("rank/{evaluationTypeId}")
-    public TableDataInfo Ranking(@PathVariable @ApiParam(name = "evaluationTypeId")
-                                  @NotNull(message = "不能为空") Long evaluationTypeId){
-
-        startPage();
-        List<TrafficAreaEvaluationData> list = trafficAreaEvaluationDataMapper.getEvaluationRankById(evaluationTypeId);
-        return getDataTable(list);
+    @ApiOperation("获取指标的排名")
+    @PostMapping("/queryRank")
+    public AjaxResult queryRank (@RequestBody AreaEvaluationRankDTO dto) {
+        List<TrafficAreaEvaluationDataRankVO> rankVOList = iTrafficAreaEvaluationDataService.queryEvaluationDataRankList(dto);
+        return AjaxResult.success(rankVOList);
     }
-
 
 }

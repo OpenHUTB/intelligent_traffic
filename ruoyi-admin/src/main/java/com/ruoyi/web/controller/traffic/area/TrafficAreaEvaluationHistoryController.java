@@ -3,10 +3,11 @@ package com.ruoyi.web.controller.traffic.area;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
+import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
 import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationHistoryMapper;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationHistoryService;
+import com.ruoyi.traffic.vo.TrafficAreaEvaluationHistoryRankVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -71,14 +72,11 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
         TrafficAreaEvaluationHistory trafficAreaEvaluationHistory =  iTrafficAreaEvaluationHistoryService.queryById(id);
         return AjaxResult.success(trafficAreaEvaluationHistory);
     }
-    @ApiOperation("区域评价历史记录排名")
-    @PostMapping ("rank/{evaluationTypeId}")
-    public TableDataInfo Ranking(@PathVariable @ApiParam(name = "evaluationTypeId")
-                                 @NotNull(message = "不能为空") Long evaluationTypeId){
-
-        startPage();
-        List<TrafficAreaEvaluationHistory> list = trafficAreaEvaluationHistoryMapper.getEvaluationRankById(evaluationTypeId);
-        return getDataTable(list);
+    @ApiOperation("获取指标的排名")
+    @PostMapping("/queryRank")
+    public AjaxResult queryRank (@RequestBody AreaEvaluationRankDTO dto) {
+        List<TrafficAreaEvaluationHistoryRankVo> rankVOList = iTrafficAreaEvaluationHistoryService.queryEvaluationHistoryRankList(dto);
+        return AjaxResult.success(rankVOList);
     }
 
 }
