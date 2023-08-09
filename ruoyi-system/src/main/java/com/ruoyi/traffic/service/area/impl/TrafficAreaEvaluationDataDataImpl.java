@@ -1,7 +1,7 @@
 package com.ruoyi.traffic.service.area.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
@@ -16,14 +16,14 @@ import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationDataMapper;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationHistoryService;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationDataService;
 import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
-import net.bytebuddy.description.field.FieldDescription;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.DataTruncation;
+
 import java.util.List;
 
 /**
@@ -102,12 +102,16 @@ public class TrafficAreaEvaluationDataDataImpl extends MPJBaseServiceImpl<Traffi
                 .selectAs(TrafficEvaluationType::getName, TrafficAreaEvaluationDataRankVO::getEvaluationTypeName)
                 .leftJoin(TrafficArea.class, TrafficArea::getId, TrafficAreaEvaluationData::getAreaId)
                 .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficAreaEvaluationData::getEvaluationTypeId)
-                .eq(TrafficAreaEvaluationData::getEvaluationTypeId, evaluationTypeId)
-                .orderByDesc(TrafficAreaEvaluationData::getValue)
-                .last(limitStr);
+                .eq(TrafficAreaEvaluationData::getEvaluationTypeId, evaluationTypeId);
+
+        if(evaluationTypeId!=6)   {
+            queryWrapper.orderByDesc(TrafficAreaEvaluationData::getValue);
+        }
+        else{
+            queryWrapper.orderByAsc(TrafficAreaEvaluationData::getValue);
+        }
+        queryWrapper.last(limitStr);
         List<TrafficAreaEvaluationDataRankVO> rankVOList = baseMapper.selectJoinList(TrafficAreaEvaluationDataRankVO.class, queryWrapper);
         return rankVOList;
     }
-
-
 }

@@ -1,9 +1,13 @@
 package com.ruoyi.traffic.mapper.area;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+
+import com.github.yulichang.base.MPJBaseMapper;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
 import org.apache.ibatis.annotations.Mapper;
+
+
+
 
 
 /**
@@ -14,8 +18,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @version: v1.0
  **/
 @Mapper
-public interface TrafficAreaEvaluationHistoryMapper extends BaseMapper<TrafficAreaEvaluationHistory> {
-
-
-
+public interface TrafficAreaEvaluationHistoryMapper extends MPJBaseMapper<TrafficAreaEvaluationHistory> {
 }
