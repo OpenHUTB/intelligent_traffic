@@ -11,6 +11,7 @@ import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
 
 import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
 import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
+import com.ruoyi.traffic.enums.AreaEvaluationTypeEnum;
 import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationHistoryMapper;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationHistoryService;
 import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
@@ -49,8 +50,8 @@ public class TrafficAreaEvaluationHistoryImpl extends ServiceImpl<TrafficAreaEva
             queryWrapper.eq(TrafficAreaEvaluationHistory::getDay, trafficAreaEvaluationHistory.getDay());
         }
 
-        List<TrafficAreaEvaluationHistory> trafficArea_evaluation_HistoryList = baseMapper.selectList(queryWrapper);
-        return trafficArea_evaluation_HistoryList;
+        List<TrafficAreaEvaluationHistory> trafficAreaEvaluationHistoryList = baseMapper.selectList(queryWrapper);
+        return trafficAreaEvaluationHistoryList;
 
     }
 
@@ -90,7 +91,7 @@ public class TrafficAreaEvaluationHistoryImpl extends ServiceImpl<TrafficAreaEva
                 .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficAreaEvaluationHistory::getEvaluationTypeId)
                 .eq(TrafficAreaEvaluationHistory::getEvaluationTypeId, evaluationTypeId);
 
-        if(evaluationTypeId!=6)   {
+        if(!evaluationTypeId.equals(AreaEvaluationTypeEnum.AVERAGE_SPEED.getEvaluationTypeId()))   {
             queryWrapper.orderByDesc(TrafficAreaEvaluationHistory::getValue);
         }
         else{

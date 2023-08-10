@@ -12,6 +12,7 @@ import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
 
 import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
 import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
+import com.ruoyi.traffic.enums.AreaEvaluationTypeEnum;
 import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationDataMapper;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationHistoryService;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationDataService;
@@ -69,9 +70,9 @@ public class TrafficAreaEvaluationDataDataImpl extends MPJBaseServiceImpl<Traffi
                 .evaluationTypeId(trafficAreaEvaluationData.getEvaluationTypeId())
                 .value(trafficAreaEvaluationData.getValue())
                 .collectTime(trafficAreaEvaluationData.getCollectTime())
-                .Year(year)
-                .Month(month)
-                .Day(day).build();
+                .year(year)
+                .month(month)
+                .day(day).build();
         trafficAreaEvaluationHistoryService.addAreaEvaluationHistory(trafficAreaEvaluationHistory);
 
     }
@@ -104,7 +105,7 @@ public class TrafficAreaEvaluationDataDataImpl extends MPJBaseServiceImpl<Traffi
                 .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficAreaEvaluationData::getEvaluationTypeId)
                 .eq(TrafficAreaEvaluationData::getEvaluationTypeId, evaluationTypeId);
 
-        if(evaluationTypeId!=6)   {
+        if(!evaluationTypeId.equals(AreaEvaluationTypeEnum.AVERAGE_SPEED.getEvaluationTypeId()))   {
             queryWrapper.orderByDesc(TrafficAreaEvaluationData::getValue);
         }
         else{
