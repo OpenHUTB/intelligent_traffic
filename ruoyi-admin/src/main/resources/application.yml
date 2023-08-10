@@ -129,3 +129,6 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+bigModel:
+  interpreterLocation: C:\Buffer\gpt\gpt-main\webui\python\python
+  scriptLocation: training_wizardcoder_mydata.py
