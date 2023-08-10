@@ -65,7 +65,7 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
         return AjaxResult.success();
     }
 
-    @ApiOperation("路网的面的详情")
+    @ApiOperation("获取区域评价的详情")
     @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
