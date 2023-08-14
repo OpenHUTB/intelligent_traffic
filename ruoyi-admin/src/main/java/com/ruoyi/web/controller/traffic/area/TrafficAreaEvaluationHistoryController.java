@@ -58,21 +58,21 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
         return AjaxResult.success();
     }
 
-    @ApiOperation("删除区域评价历史记录")
+    @ApiOperation("删除区域评价l历史记录")
     @PostMapping("delete")
     public AjaxResult delete(@ApiParam(value = "数据集ID集合", required = true) @RequestBody List<Long> ids) {
         iTrafficAreaEvaluationHistoryService.deleteByIdList(ids);
         return AjaxResult.success();
     }
 
-    @ApiOperation("获取区域评价的详情")
+    @ApiOperation("获取区域历史评价的详情")
     @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
         TrafficAreaEvaluationHistory trafficAreaEvaluationHistory =  iTrafficAreaEvaluationHistoryService.queryById(id);
         return AjaxResult.success(trafficAreaEvaluationHistory);
     }
-    @ApiOperation("获取指标的排名")
+    @ApiOperation("获取历史区域指标的排名")
     @PostMapping("/queryRank")
     public AjaxResult queryRank (@RequestBody AreaEvaluationRankDTO dto) {
         List<TrafficAreaEvaluationHistoryRankVo> rankVOList = iTrafficAreaEvaluationHistoryService.queryEvaluationHistoryRankList(dto);
