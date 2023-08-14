@@ -58,7 +58,7 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
         return AjaxResult.success();
     }
 
-    @ApiOperation("删除区域评价l历史记录")
+    @ApiOperation("删除区域评价历史记录")
     @PostMapping("delete")
     public AjaxResult delete(@ApiParam(value = "数据集ID集合", required = true) @RequestBody List<Long> ids) {
         iTrafficAreaEvaluationHistoryService.deleteByIdList(ids);
