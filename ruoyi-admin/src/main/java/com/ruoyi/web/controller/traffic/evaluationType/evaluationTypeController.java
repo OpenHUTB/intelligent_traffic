@@ -59,7 +59,7 @@ public class evaluationTypeController extends BaseController {
         return AjaxResult.success();
     }
 
-    @ApiOperation("路网的面的详情")
+    @ApiOperation("评价指标的详情")
     @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
