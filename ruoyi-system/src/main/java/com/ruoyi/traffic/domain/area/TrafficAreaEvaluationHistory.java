@@ -29,6 +29,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class TrafficAreaEvaluationHistory extends BaseEntity implements Serializable {
 
+    private static final long serialVersionUID = -1916727955064789114L;
+
     @TableId(type = IdType.AUTO)
     @ApiModelProperty("主键ID")
     private Long id;

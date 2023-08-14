@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,6 +23,9 @@ import java.util.Date;
  **/
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TrafficAreaEvaluationData extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -9133258544108942214L;
