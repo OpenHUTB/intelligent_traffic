@@ -35,7 +35,7 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
     @Autowired
     private TrafficAreaEvaluationHistoryMapper trafficAreaEvaluationHistoryMapper;
 
-    @ApiOperation("区域评价历史记录")
+    @ApiOperation("分页获取区域评价历史记录")
     @PostMapping("/page")
     public TableDataInfo list(@ApiParam(value = "条件查询参数")@RequestBody TrafficAreaEvaluationHistory trafficAreaEvaluationHistory)
     {
