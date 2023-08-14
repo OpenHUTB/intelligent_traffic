@@ -3,7 +3,10 @@ package com.ruoyi.traffic.domain.intersection;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @classname: TrafficIntersection
@@ -13,6 +16,9 @@ import lombok.Data;
  * @version: v1.0
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TrafficIntersection {
 
     @TableId(type = IdType.AUTO)
