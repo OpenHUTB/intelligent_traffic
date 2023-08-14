@@ -3,7 +3,10 @@ package com.ruoyi.traffic.domain.standardAdcode;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -15,6 +18,9 @@ import java.io.Serializable;
  * @version: v1.0
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TrafficStandardAdcode implements Serializable {
 
     private static final long serialVersionUID = 606647902503896130L;
