@@ -92,6 +92,10 @@ public class TrafficIntersectionEvaluationHistoryImpl extends ServiceImpl<Traffi
         if (StringUtils.isNotNull(trafficIntersectionEvaluationHistory.getIntersectionId())) {
             queryWrapper.like(TrafficIntersectionEvaluationHistory::getIntersectionId, trafficIntersectionEvaluationHistory.getIntersectionId());
         }
+        //指标id
+        if (StringUtils.isNotNull(trafficIntersectionEvaluationHistory.getEvaluationTypeId())) {
+            queryWrapper.like(TrafficIntersectionEvaluationHistory::getEvaluationTypeId, trafficIntersectionEvaluationHistory.getEvaluationTypeId());
+        }
         // 年份
         if (StringUtils.isNotBlank(trafficIntersectionEvaluationHistory.getYear())) {
             queryWrapper.eq(TrafficIntersectionEvaluationHistory::getYear, trafficIntersectionEvaluationHistory.getYear());
