@@ -35,7 +35,7 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
     @Autowired
     private TrafficAreaEvaluationHistoryMapper trafficAreaEvaluationHistoryMapper;
 
-    @ApiOperation("区域评价历史记录")
+    @ApiOperation("分页获取区域评价历史记录")
     @PostMapping("/page")
     public TableDataInfo list(@ApiParam(value = "条件查询参数")@RequestBody TrafficAreaEvaluationHistory trafficAreaEvaluationHistory)
     {
@@ -65,14 +65,14 @@ public class TrafficAreaEvaluationHistoryController extends BaseController {
         return AjaxResult.success();
     }
 
-    @ApiOperation("获取区域评价的详情")
+    @ApiOperation("获取区域历史评价的详情")
     @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
         TrafficAreaEvaluationHistory trafficAreaEvaluationHistory =  iTrafficAreaEvaluationHistoryService.queryById(id);
         return AjaxResult.success(trafficAreaEvaluationHistory);
     }
-    @ApiOperation("获取指标的排名")
+    @ApiOperation("获取历史区域指标的排名")
     @PostMapping("/queryRank")
     public AjaxResult queryRank (@RequestBody AreaEvaluationRankDTO dto) {
         List<TrafficAreaEvaluationHistoryRankVo> rankVOList = iTrafficAreaEvaluationHistoryService.queryEvaluationHistoryRankList(dto);

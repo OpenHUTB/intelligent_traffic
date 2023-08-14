@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -16,6 +19,9 @@ import java.io.Serializable;
  * @version: v1.0
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TrafficLine extends BaseEntity implements Serializable {
 
     @TableId(type = IdType.AUTO)
