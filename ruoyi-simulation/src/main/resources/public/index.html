@@ -23,7 +23,7 @@
     #section-audio_left, #section-audio_right{
       display: flex;
       flex-direction: column;
-      padding: 40px;
+      padding: 30px;
     }
     #section-audio_right > * {
       margin: 10px 0px;
@@ -43,29 +43,20 @@
   </style>
 </head>
 <body>
-  <header>音频录制和展示</header>
-  <section
-    id="section-audio_content"
-  >
-    <section
-      id="section-audio_left"
-    >
+  <header>大模型交通场景</header>
+  <section id="section-audio_content">
+    <section id="section-audio_left">
       <button id="record">录制</button>
       <button id="stop">停止</button>
-      <button id="play">播放</button>
-      <a href="javascript:void(0)" id="downPcm"  download="">下载pcm</a>
-      <a href="javascript:void(0)" id="downWav"  download="">下载wav</a>
+      <button id="send">发送</button>
     </section>
-    <section
-      id="section-audio_right"
-    >
-      <aside>播放录音：</aside>
-      <audio id="audio" controls autoplay></audio>
-      <aside>音频展示：</aside>
+    <section id="section-audio_right">
+      <audio id="audio" autoplay></audio>
       <canvas id='canvas'></canvas>
     </section>
   </section>
-  <script src="js/record.js"></script>
-  <script src="js/main.js"></script>
+  <script src="record.js"></script>
+  <script src="main.js"></script>
+  <script src="websocket.js"></script>
 </body>
 </html>

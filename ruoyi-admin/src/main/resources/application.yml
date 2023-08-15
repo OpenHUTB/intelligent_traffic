@@ -129,6 +129,14 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
-bigModel:
-  interpreterLocation: C:\Buffer\gpt\gpt-main\webui\python\python
-  scriptLocation: training_wizardcoder_mydata.py
+simulation:
+  python:
+    interpreterLocation: C:/Buffer/gpt/gpt-main/webui/python
+    scriptLocation:
+      getPaddleSpeechVoice: C:/Buffer/PaddleS/generateVoice.py
+      getPaddleSpeechText: C:/Buffer/PaddleS/generateText.py
+      generateCode: C:/Buffer/gpt/gpt-main/webui/training_wizardcoder_mydata.py
+  matlab:
+    interpreterLocation: C:/Users/Administrator/Desktop/RoadManager/matlab/matlab_2022b/bin
+    scriptLocation: C:/Buffer/gpt/gpt-main/webui/sim/main.m
+  filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation

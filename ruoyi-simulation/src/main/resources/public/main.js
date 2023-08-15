@@ -26,28 +26,8 @@ stop.addEventListener("click", () => {
   recorder.stop()
 })
 
-// 播放
-play.addEventListener("click", () => {
-  if(recorder === null) return alert("请先录音")
-  recorder.play(audio, ctx)
-  recorder.draw(ctx)
-})
-
-// 下载 wav 
-downWav.addEventListener("click", () => {
-  if(recorder === null) return alert("请先录音")
-  const src = recorder.wavSrc()
-  downWav.setAttribute("href", src)
-})
-
-// 下载 pcm 
-downPcm.addEventListener("click", () => {
-  if(recorder === null) return alert("请先录音")
-  const src = recorder.pcmSrc()
-  downPcm.setAttribute("href", src)
-})
 send.addEventListener("click",function(){
     if(recorder === null) return alert("请先录音");
-    var file = recorder.getBlob();
-    
+    var blob = recorder.getBlob();
+    websocket.send(blob);
 });
