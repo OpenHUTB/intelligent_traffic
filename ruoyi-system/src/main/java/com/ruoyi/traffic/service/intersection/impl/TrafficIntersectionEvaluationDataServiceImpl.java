@@ -4,15 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.query.MPJLambdaQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import com.ruoyi.common.exception.base.BaseException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
 import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistory;
-import com.ruoyi.traffic.enums.EvaluationTypeEnum;
 import com.ruoyi.traffic.mapper.intersection.TrafficIntersectionEvaluationDataMapper;
 import com.ruoyi.traffic.service.evaluationType.ITrafficEvaluationTypeService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.soap.SAAJResult;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,8 +55,10 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
     @Transactional
     @Override
     public void addEvaluationData(TrafficIntersectionEvaluationData trafficEvaluationData) {
-        // 校验指标类别
-        checkEvaluationType(trafficEvaluationData);
+        //若调用者不提供数据采集时间，则默认系统当前时间
+        if (trafficEvaluationData.getCollectTime() == null) {
+            trafficEvaluationData.setCollectTime(new Date());
+        }
         baseMapper.insert(trafficEvaluationData);
         // 同时新增一条历史记录
         // 添加年、月、日信息
@@ -77,8 +77,6 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
 
     @Override
     public void updateEvaluationData(TrafficIntersectionEvaluationData trafficEvaluationData) {
-        // 校验指标类别
-        checkEvaluationType(trafficEvaluationData);
         baseMapper.updateById(trafficEvaluationData);
     }
 
@@ -155,19 +153,5 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
     public List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id) {
         List<TrafficIntersectionEvaluationData> list = baseMapper.queryByIntersectionId(id);
         return list;
-    }
-
-
-    /**
-     * 检查传入的指标数据是否符合指标类别
-     * @param trafficIntersectionEvaluationData
-     */
-    private void checkEvaluationType (TrafficIntersectionEvaluationData trafficIntersectionEvaluationData) {
-        if (trafficIntersectionEvaluationData.getEvaluationTypeId() == null) {
-            throw new BaseException("指标类别不允许为空！");
-        }
-        if (!trafficIntersectionEvaluationData.getEvaluationTypeId().equals(EvaluationTypeEnum.INTERSECTION_TYPE.getEvaluationType())) {
-            throw new BaseException("指标类别不是路口类型！");
-        }
     }
 }
