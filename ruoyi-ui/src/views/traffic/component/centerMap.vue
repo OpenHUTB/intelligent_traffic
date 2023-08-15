@@ -43,7 +43,7 @@ export default {
 <style scoped>
 .content {
   width: 52%;
-  height: 75vh;
+  height: 65h;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import com.ruoyi.common.exception.base.BaseException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.traffic.domain.area.TrafficArea;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
@@ -13,6 +14,7 @@ import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationHistory;
 import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
 import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
 import com.ruoyi.traffic.enums.AreaEvaluationTypeEnum;
+import com.ruoyi.traffic.enums.EvaluationTypeEnum;
 import com.ruoyi.traffic.mapper.area.TrafficAreaEvaluationDataMapper;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationHistoryService;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationDataService;
@@ -37,7 +39,7 @@ import java.util.List;
 @Service
 
 
-public class TrafficAreaEvaluationDataDataImpl extends MPJBaseServiceImpl<TrafficAreaEvaluationDataMapper, TrafficAreaEvaluationData> implements ITrafficAreaEvaluationDataService {
+public class TrafficAreaEvaluationDataImpl extends MPJBaseServiceImpl<TrafficAreaEvaluationDataMapper, TrafficAreaEvaluationData> implements ITrafficAreaEvaluationDataService {
 
 
 
@@ -60,6 +62,8 @@ public class TrafficAreaEvaluationDataDataImpl extends MPJBaseServiceImpl<Traffi
     @Transactional
     @Override
     public void addAreaEvaluationData(TrafficAreaEvaluationData trafficAreaEvaluationData) {
+        // 校验指标类别
+        checkEvaluationType(trafficAreaEvaluationData);
         baseMapper.insert(trafficAreaEvaluationData);
         // 同时新增一条历史记录
         // 添加年、月、日信息
@@ -114,5 +118,18 @@ public class TrafficAreaEvaluationDataDataImpl extends MPJBaseServiceImpl<Traffi
         queryWrapper.last(limitStr);
         List<TrafficAreaEvaluationDataRankVO> rankVOList = baseMapper.selectJoinList(TrafficAreaEvaluationDataRankVO.class, queryWrapper);
         return rankVOList;
+    }
+
+    /**
+     * 检查传入的指标数据是否符合指标类别
+     * @param trafficAreaEvaluationData
+     */
+    private void checkEvaluationType (TrafficAreaEvaluationData trafficAreaEvaluationData) {
+        if (trafficAreaEvaluationData.getEvaluationTypeId() == null) {
+            throw new BaseException("指标类别不允许为空！");
+        }
+        if (!trafficAreaEvaluationData.getEvaluationTypeId().equals(EvaluationTypeEnum.AREA_TYPE.getEvaluationType())) {
+            throw new BaseException("指标类别不是区域类型！");
+        }
     }
 }

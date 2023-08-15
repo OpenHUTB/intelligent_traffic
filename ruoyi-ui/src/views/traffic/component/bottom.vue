@@ -35,12 +35,12 @@
           <h2>各地区交通拥堵指数</h2>
           <dv-scroll-ranking-board
             :config="jam"
-            style="width: 600px; height: 250px"
+            style="width: 900px; height: 250px"
           />
         </div>
       </dv-border-box-6>
 
-      <div class="colum_center">
+      <!-- <div class="colum_center">
         <dv-border-box-12 style="padding: 20px; margin-left: 150px">
           <div class="air">
             <h1>今日天气</h1>
@@ -48,7 +48,7 @@
             <p>今天日间预计有大雨。 最高气温35°。</p>
           </div>
         </dv-border-box-12>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -113,6 +113,10 @@ export default {
       },
       jam: {
         data: [
+          {
+            name: "湘江新区",
+            value: 131,
+          },
           {
             name: "岳麓区",
             value: 55,
