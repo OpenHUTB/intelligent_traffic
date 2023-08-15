@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.soap.SAAJResult;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,6 +55,10 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
     @Transactional
     @Override
     public void addEvaluationData(TrafficIntersectionEvaluationData trafficEvaluationData) {
+        //若调用者不提供数据采集时间，则默认系统当前时间
+        if (trafficEvaluationData.getCollectTime() == null) {
+            trafficEvaluationData.setCollectTime(new Date());
+        }
         baseMapper.insert(trafficEvaluationData);
         // 同时新增一条历史记录
         // 添加年、月、日信息

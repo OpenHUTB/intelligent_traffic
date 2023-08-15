@@ -14,6 +14,10 @@ export default {
     return {
       config: {
         data: [
+        {
+            name: "湘江新区",
+            value: 179,
+          },          
           {
             name: "岳麓区",
             value: 167,
