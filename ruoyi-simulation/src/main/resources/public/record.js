@@ -203,7 +203,7 @@
         let drawing = function() {
           let array = new Uint8Array(analyser.frequencyBinCount)
           analyser.getByteFrequencyData(array)
-          ctx.clearRect(0, 0, 600, 200)
+          ctx.clearRect(0, 0, 400, 150)
           for(let i = 0; i < array.length; i++) {
             let _height = array[i]
             if(!top[i] || (_height > top[i])) {//帽头落下

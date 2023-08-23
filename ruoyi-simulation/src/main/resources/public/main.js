@@ -7,8 +7,8 @@ const downWav = document.getElementById("downWav")
 const downPcm = document.getElementById("downPcm")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
-canvas.width = 600
-canvas.height = 200 
+canvas.width = 400
+canvas.height = 150
 let recorder = null
 
 // 录制

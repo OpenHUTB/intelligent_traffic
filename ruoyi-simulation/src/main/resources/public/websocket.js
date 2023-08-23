@@ -1,4 +1,5 @@
-var websocket = new WebSocket("ws://localhost:8080/simulation/websocket/");
+var socketURL = "ws:"+window.location.hostname+":"+window.location.port+"/simulation/websocket/";
+var websocket = new WebSocket(socketURL);
 /**
  * 连接建立成功的回调方法
  */
@@ -14,13 +15,25 @@ window.onbeforeunload = function(){
 /**
  * 接收到消息的回调方法
  */
-websocket.onmessage = function(result){
-    result = JSON.parse(data);
-    var data = result.data;
-    var sound = data.sound;
-    var graph = data.graph;
+websocket.onmessage = function(resultData){
+    var result = JSON.parse(resultData.data);
+    var streamSet = result.data;
+    var sound = streamSet.sound;
+    var graph = streamSet.graph;
+    var message = streamSet.message;
     if(sound!=null){
-        recorder.play(audio, ctx)
-        recorder.draw(ctx)
+        var blob = new Blob([sound]);
+        var url = window.URL.createObjectURL(blob);
+
+    }
+    if(graph!=null){
+        var blob = new Blob([graph]);
+        var url = window.URL.createObjectURL(blob);
+        var screen = document.getElementById("screen");
+        screen.src=url;
+    }
+    if(message!=null){
+        var tips = document.getElementById("tips");
+        tips.innerHTML=tips.innerHTML+"<br/>"+message;
     }
 }
