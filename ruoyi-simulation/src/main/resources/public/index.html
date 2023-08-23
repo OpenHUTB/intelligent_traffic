@@ -1,62 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>音频录制和展示</title>
-  <style type="text/css">
-    header{
-      width: 800px;
-      margin: 0 auto;
-      line-height: 40px;
-      text-align: center;
-      font-weight: bold;
-    }
-    #section-audio_content{
-      width: 800px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      margin: 0 auto;
-    }
-    #section-audio_left, #section-audio_right{
-      display: flex;
-      flex-direction: column;
-      padding: 30px;
-    }
-    #section-audio_right > * {
-      margin: 10px 0px;
-    }
-    button, a {
-      margin: 10px auto;
-    }
-    a{
-      display: block;
-      width: 100px;
-      text-align: center;
-    }
-    #canvas {
-			width: 600px;
-			height: 200px;
-		}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link type="text/css" rel="stylesheet" href="bootstrap-3.4.1-dist/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="statics/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <title>音频录制和展示</title>
+    <style type="text/css">
+        .container{
+            min-width: 750px;
+        }
+        header{
+          width: 100%;
+          margin: 0 auto;
+          line-height: 40px;
+          text-align: center;
+          font-weight: bold;
+        }
+        .screen{
+            border: solid 4px #666;
+            overflow: hidden;
+            padding: 5px;
+        }
+        .screen video{
+            width:100%;
+        }
+        .section_content{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .section_left, .section_middle, .section_right{
+            padding: 6px;
+            border-left: solid 4px #666;
+            border-bottom: solid 4px #666;
+            height: 165px;
+        }
+        .section_left{
+            width: 80px;
+        }
+        .section_left .btn{
+            width: 100%;
+            margin-top: 12px;
+        }
+        .section_left, .section_middle{
+            float: left;
+        }
+        .section_middle{
+            width: 100%;
+        }
+        .section_right{
+            border-right: solid 4px #666;
+            width:420px;
+        }
+        #canvas {
+            width: 400px;
+            height: 150px;
+            border: solid 1px #aaa;
+        }
+        #tips{
+            height: 150px;
+            border: solid 1px #aaa;
+        }
+        @media screen and (max-width: 767px) {
+            .screen img{
+                height: 400px;
+            }
+        }
+        @media screen and (min-width: 768px) {
+            .screen img{
+                height: 400px;
+            }
+        }
+        @media screen and (min-width: 992px) {
+            .screen img{
+                height: 500px;
+            }
+        }
+        @media screen and (min-width: 1200px) {
+            .screen img{
+                height: 600px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>大模型交通场景</header>
-  <section id="section-audio_content">
-    <section id="section-audio_left">
-      <button id="record">录制</button>
-      <button id="stop">停止</button>
-      <button id="send">发送</button>
+<div class="container">
+    <header>大模型交通场景</header>
+    <section class="screen">
+        <video id="screen" src="" controls autoplay></video>
     </section>
-    <section id="section-audio_right">
-      <audio id="audio" autoplay></audio>
-      <canvas id='canvas'></canvas>
+    <section class="section_content">
+        <section class="section_left">
+            <button id="record" class="btn btn-default">录制</button>
+            <button id="stop" class="btn btn-default">停止</button>
+            <button id="send" class="btn btn-default">发送</button>
+        </section>
+        <section class="section_middle">
+            <div id="tips"></div>
+        </section>
+        <section class="section_right">
+            <audio id="audio" autoplay></audio>
+            <canvas id='canvas'></canvas>
+        </section>
     </section>
-  </section>
-  <script src="record.js"></script>
-  <script src="main.js"></script>
-  <script src="websocket.js"></script>
+</div>
+<script src="record.js"></script>
+<script src="main.js"></script>
+<script src="websocket.js"></script>
 </body>
 </html>

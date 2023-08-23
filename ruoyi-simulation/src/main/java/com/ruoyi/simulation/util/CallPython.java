@@ -29,33 +29,36 @@ public class CallPython {
     public AjaxResult generateText(String location) {
         AjaxResult result = null;
         BufferedReader bufferedReader = null;
+        Process process = null;
+        String errorMsg = null;
+        String text = null;
         try {
             //获取python解释器在服务器中的绝对路径
-            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation");
-            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.getPaddleSpeechText");
+            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation.paddleSpeech");
+            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.paddleSpeech.generateText");
             String[] arguments = new String[]{interpreterLocation,scriptLocation, location};
             ProcessBuilder builder = new ProcessBuilder(arguments);
-            Process process = builder.start();
+            process = builder.start();
             //获取执行结果
             InputStream ins = process.getErrorStream();
             if(ins!=null&&ins.available()>0){
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
+                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
                     logger.error(str);
                 }
-                result = AjaxResult.error("调用PaddleSpeech将声音转为文字执行失败!");
+                errorMsg = "调用PaddleSpeech将声音转为文字执行失败!";
             }else{
                 ins = process.getInputStream();
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
-                StringBuffer text = new StringBuffer();
+                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
+                List<String> outputList = new ArrayList<String>();
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
-                    text.append(str);
+                    logger.info(str);
+                    outputList.add(str);
                 }
-                result = AjaxResult.success(text.toString());
+                text = outputList.get(outputList.size()-1);
             }
-            process.waitFor();
         } catch (Exception e) {
             logger.error(LoggerUtil.getLoggerStace(e));
             return AjaxResult.error("调用PaddleSpeech将声音转为文字执行失败!");
@@ -67,6 +70,17 @@ public class CallPython {
             } catch (IOException e) {
                 logger.error(LoggerUtil.getLoggerStace(e));
             }
+            try {
+                int flag = process.waitFor();
+                logger.info("执行结果是否为0："+flag);
+                if(flag==0){
+                    result = AjaxResult.success("解析成功",text);
+                }else{
+                    result = AjaxResult.error(errorMsg);
+                }
+            } catch (InterruptedException e) {
+                logger.error(LoggerUtil.getLoggerStace(e));
+            }
         }
         return result;
     }
@@ -75,9 +89,12 @@ public class CallPython {
      * @param text 文本
      * @return 像素流
      */
-    public AjaxResult generateVoice(String text) {
+    public synchronized AjaxResult generateVoice(String text) {
         AjaxResult result = null;
         BufferedReader  bufferedReader  = null;
+        Process process = null;
+        String errorMsg = null;
+        String soundName = null;
         try{
             //指定语音文件的生成位置
             String targetPath = environment.getProperty("simulation.filepath")+ File.separator+System.currentTimeMillis()+".wav";
@@ -87,28 +104,24 @@ public class CallPython {
                 targetFile.getParentFile().mkdirs();
             }
             //获取python解释器在服务器中的绝对路径
-            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation");
-            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.getPaddleSpeechVoice");
+            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation.paddleSpeech");
+            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.paddleSpeech.generateVoice");
             String[] arguments = new String[]{interpreterLocation,scriptLocation, text, targetPath};
             ProcessBuilder builder = new ProcessBuilder(arguments);
-            Process process = builder.start();
+            process = builder.start();
             //获取执行结果
             InputStream ins = process.getErrorStream();
             if(ins!=null&&ins.available()>0){
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
+                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
                     logger.error(str);
                 }
-                result = AjaxResult.error("调用PaddleSpeech将文字转为声音执行失败!");
+                errorMsg = "调用PaddleSpeech将文字转为声音执行失败!";
             }else{
                 //读取已经生成好的语音文件
-                byte[] byteArray = FileUtils.readFileToByteArray(targetFile);
-                StreamSet stream = new StreamSet();
-                stream.setVoice(byteArray);
-                result = AjaxResult.success(stream);
+                soundName = targetFile.getName();
             }
-            process.waitFor();
         } catch (Exception e) {
             logger.error(LoggerUtil.getLoggerStace(e));
             return AjaxResult.error("调用PaddleSpeech将文字转为声音执行失败!");
@@ -118,6 +131,19 @@ public class CallPython {
                     bufferedReader.close();
                 }
             } catch (IOException e) {
+                logger.error(LoggerUtil.getLoggerStace(e));
+            }
+            try {
+                if(process!=null){
+                    int flag = process.waitFor();
+                    logger.info("执行结果是否为0："+flag);
+                    if(flag==0){
+                        result = AjaxResult.success("执行成功",soundName);
+                    }else{
+                        result = AjaxResult.error(errorMsg);
+                    }
+                }
+            } catch (InterruptedException e) {
                 logger.error(LoggerUtil.getLoggerStace(e));
             }
         }
@@ -131,17 +157,19 @@ public class CallPython {
     public AjaxResult generateCode(String command)  {
         AjaxResult result = null;
         BufferedReader bufferedReader = null;
+        Process process = null;
+        String errorMsg = null;
+        List<String> codeList = null;
         try {
             //获取python解释器在服务器中的绝对路径
-            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation");
-            String scriptLocation = environment.getProperty("simulation.python.generateCode.scriptLocation");
+            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation.generateCode");
+            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.generateCode.clientScript");
             //获取python代码文件在服务器中的绝对路径
             String[] arguments = new String[]{interpreterLocation, scriptLocation, command};
             //执行服务器中的python脚本
-            ProcessBuilder builder = new ProcessBuilder(arguments);
-            //当执行脚本出现错误时，合并错误输出流到标准输出流
-            //builder.redirectErrorStream(true);
-            Process process = builder.start();
+            Runtime runtime = Runtime.getRuntime();
+            //>C:/Buffer/gpt/gpt-main/webui/python/python.exe C:/Buffer/gpt/gpt-main/webui/client.py  --prompt 创建一个驾驶场景对象scenario，并在场景中创建了一个车辆对象v1
+            process = runtime.exec("cmd /k "+interpreterLocation+" "+scriptLocation+" --prompt "+command);
             //获取执行结果
             InputStream ins = process.getErrorStream();
             if(ins!=null&&ins.available()>0){
@@ -150,18 +178,17 @@ public class CallPython {
                 while((str = bufferedReader.readLine())!=null){
                     logger.error(str);
                 }
-                result = AjaxResult.error("调用大模型生成执行脚本代码失败!");
+                errorMsg = "调用大模型生成执行脚本代码失败!";
             }else{
                 ins = process.getInputStream();
+                logger.info("代码生成数据流大小："+ins.available());
                 bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
-                List<String> codeList = new ArrayList<>();
+                codeList = new ArrayList<>();
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
                     codeList.add(str);
                 }
-                result = AjaxResult.success(codeList);
             }
-            process.waitFor();
         }catch (Exception e) {
             logger.error(LoggerUtil.getLoggerStace(e));
             result = AjaxResult.error("调用大模型生成执行脚本代码失败!");
@@ -171,6 +198,19 @@ public class CallPython {
                     bufferedReader.close();
                 }
             } catch (IOException e) {
+                logger.error(LoggerUtil.getLoggerStace(e));
+            }
+            try {
+                if(process!=null){
+                    int flag = process.waitFor();
+                    logger.info("执行结果是否为0："+flag);
+                    if(flag==0){
+                        result = AjaxResult.success(codeList);
+                    }else{
+                        result = AjaxResult.error(errorMsg);
+                    }
+                }
+            } catch (InterruptedException e) {
                 logger.error(LoggerUtil.getLoggerStace(e));
             }
         }

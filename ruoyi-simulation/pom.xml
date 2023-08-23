@@ -51,19 +51,5 @@
     </dependencies>
     <build>
         <finalName>ruoyi-simulation</finalName>
-        <resources>
-            <resource>
-                <directory>lib</directory>
-                <targetPath>BOOT-INF/lib/</targetPath>
-                <includes>
-                    <include>lib/javabuilder.jar</include>
-                    <include>lib/engine.jar</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <targetPath>BOOT-INF/classes</targetPath>
-            </resource>
-        </resources>
     </build>
 </project>

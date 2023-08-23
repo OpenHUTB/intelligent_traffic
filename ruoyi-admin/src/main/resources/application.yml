@@ -131,12 +131,17 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 simulation:
   python:
-    interpreterLocation: C:/Buffer/gpt/gpt-main/webui/python
+    interpreterLocation:
+      paddleSpeech: C:/Anaconda/envs/padpkg/python.exe    #Anaconda虚拟环境中的python服务安装位置
+      generateCode: C:/Buffer/gpt/gpt-main/webui/python/python.exe    #非虚拟环境的python服务安装位置
     scriptLocation:
-      getPaddleSpeechVoice: C:/Buffer/PaddleS/generateVoice.py
-      getPaddleSpeechText: C:/Buffer/PaddleS/generateText.py
-      generateCode: C:/Buffer/gpt/gpt-main/webui/training_wizardcoder_mydata.py
+      paddleSpeech:
+        generateVoice: C:/Buffer/PaddleS/generateVoice.py   #用于调用paddleSpeech合成语音的python脚本位置
+        generateText: C:/Buffer/PaddleS/generateText.py   #用于调用paddleSpeech语音识别的python脚本位置
+      generateCode:
+        clientScript: C:/Buffer/gpt/gpt-main/webui/client.py    #生成代码的客户端脚本位置
   matlab:
-    interpreterLocation: C:/Users/Administrator/Desktop/RoadManager/matlab/matlab_2022b/bin
-    scriptLocation: C:/Buffer/gpt/gpt-main/webui/sim/main.m
-  filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation
+    interpreterLocation: C:/Buffer/gpt/matlab/bin
+    scriptLocation: C:/Buffer/gpt/gpt-main/sim
+    autoVrtlEnvLocation: C:/Buffer/gpt/WindowsNoEditor/AutoVrtlEnv.exe
+  filepath: C:/users/Administrator/documents/accessory/intelligentTraffic/simulation
