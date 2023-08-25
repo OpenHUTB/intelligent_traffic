@@ -39,7 +39,7 @@ public class CallMatlab {
             String targetPath = environment.getProperty("simulation.matlab.scriptLocation")+ File.separator+"code.m";
             File file = new File(targetPath);
             FileOutputStream ous = new FileOutputStream(file);
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(ous,"utf-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(ous,"gbk"));
             for(String line: codeList){
                 bufferedWriter.write(line);
                 bufferedWriter.newLine();
@@ -49,13 +49,12 @@ public class CallMatlab {
             String scriptLocation = environment.getProperty("simulation.matlab.scriptLocation");//
             String autoVrtlEnvLocation = environment.getProperty("simulation.matlab.autoVrtlEnvLocation");//autoVrtlEnvLocation
             Runtime runtime = Runtime.getRuntime();
-            runtime.exec("cmd /k cd "+interpreterLocation);
             //C:Buffer/gpt/matlab/bin>matlab -nojvm -nodesktop -nodisplay -r "cd C:/Buffer/gpt/gpt-main/sim; main('C:/Buffer/gpt/WindowsNoEditor/AutoVrtlEnv.exe')"
-            process = runtime.exec("cmd /k matlab -nojvm -nodesktop -nodisplay -r \"cd "+scriptLocation+"; main('"+autoVrtlEnvLocation+"')\"");
+            process = runtime.exec("cmd /k "+interpreterLocation+" -nojvm -nodesktop -nodisplay -r \"cd "+scriptLocation+"; main('"+autoVrtlEnvLocation+"')\"");
             //获取执行结果
             InputStream ins = process.getErrorStream();
             if(ins!=null&&ins.available()>0){
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
+                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
                     logger.error(str);
@@ -87,7 +86,7 @@ public class CallMatlab {
                 int flag = process.waitFor();
                 logger.info("执行结果是否为0："+flag);
                 if(flag==0){
-                    result = AjaxResult.success("执行成功",byteArray);
+                    result = AjaxResult.success("三维场景像素流生成成功!",byteArray);
                 }else{
                     result = AjaxResult.error(errorMsg);
                 }

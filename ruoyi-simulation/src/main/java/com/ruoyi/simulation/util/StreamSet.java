@@ -18,9 +18,4 @@ public class StreamSet {
      */
     @ApiModelProperty("像素流")
     private byte[] graph;
-    /**
-     * 提示消息
-     */
-    @ApiModelProperty("提示文本")
-    private String message;
 }
