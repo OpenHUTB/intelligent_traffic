@@ -31,3 +31,39 @@ send.addEventListener("click",function(){
     var blob = recorder.getBlob();
     websocket.send(blob);
 });
+/**
+ * 绘制音乐播放的频谱
+ */
+function draw(audio){
+    let audioContext = window.AudioContext || window.webkitAudioContext
+    const context = new audioContext()
+    const source = context.createMediaElementSource(audio);
+    const analyser = context.createAnalyser();
+    analyser.fftsize = 2048;
+    source.connect(analyser);
+    analyser.connect(context.destination);
+    const bufferLength = analyser.frequencyBinCount // 返回的是 analyser的fftsize的一半
+    const top = new Uint8Array(bufferLength);
+    let gradient = ctx.createLinearGradient(0, 0, 4, 150)
+    gradient.addColorStop(1, 'pink')
+    gradient.addColorStop(0.5, 'blue')
+    gradient.addColorStop(0, 'red')
+    let drawing = function() {
+        let array = new Uint8Array(analyser.frequencyBinCount)
+        analyser.getByteFrequencyData(array)
+        ctx.clearRect(0, 0, 400, 150)
+        for(let i = 0; i < array.length; i++) {
+            let _height = array[i]
+            if(!top[i] || (_height > top[i])) {//帽头落下
+                top[i] = _height
+            } else {
+                top[i] -= 1
+            }
+            ctx.fillRect(i * 20, 150 - _height, 4, _height)
+            ctx.fillRect(i * 20, 150 - top[i] -6.6, 4, 3.3)//绘制帽头
+            ctx.fillStyle = gradient
+        }
+        requestAnimationFrame(drawing);
+    }
+    drawing();
+}

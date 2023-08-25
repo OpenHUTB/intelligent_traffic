@@ -16,24 +16,35 @@ window.onbeforeunload = function(){
  * 接收到消息的回调方法
  */
 websocket.onmessage = function(resultData){
+    console.log("----------------------------收到消息-----------------------------");
     var result = JSON.parse(resultData.data);
+    console.log(result);
+    var message = result.msg;
     var streamSet = result.data;
     var sound = streamSet.sound;
     var graph = streamSet.graph;
-    var message = streamSet.message;
     if(sound!=null){
-        var blob = new Blob([sound]);
-        var url = window.URL.createObjectURL(blob);
-
+        var audioArea = document.getElementById("audioArea");
+        var audio = document.createElement("audio");
+        audioArea.appendChild(audio);
+        audio.autoplay = "autoplay";
+        audio.src="simulation/file/stream?filename="+sound;
+        audio.play();
+        draw(audio);
     }
     if(graph!=null){
+        var traffic = document.getElementById("traffic");
         var blob = new Blob([graph]);
         var url = window.URL.createObjectURL(blob);
-        var screen = document.getElementById("screen");
-        screen.src=url;
+        traffic.src=url;
+        traffic.play();
     }
     if(message!=null){
         var tips = document.getElementById("tips");
-        tips.innerHTML=tips.innerHTML+"<br/>"+message;
+        if(tips.value==null||tips.value==""){
+            tips.value=message;
+        }else{
+            tips.value=tips.value+"\n"+message;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.simulation.util;
 
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,8 @@ public class CallPython {
         String text = null;
         try {
             //获取python解释器在服务器中的绝对路径
-            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation.paddleSpeech");
-            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.paddleSpeech.generateText");
+            String interpreterLocation = environment.getProperty("simulation.paddleSpeech.interpreterLocation");
+            String scriptLocation = environment.getProperty("simulation.paddleSpeech.scriptLocation.generateText");
             String[] arguments = new String[]{interpreterLocation,scriptLocation, location};
             ProcessBuilder builder = new ProcessBuilder(arguments);
             process = builder.start();
@@ -74,7 +75,7 @@ public class CallPython {
                 int flag = process.waitFor();
                 logger.info("执行结果是否为0："+flag);
                 if(flag==0){
-                    result = AjaxResult.success("解析成功",text);
+                    result = AjaxResult.success("语音识别成功",text);
                 }else{
                     result = AjaxResult.error(errorMsg);
                 }
@@ -104,8 +105,8 @@ public class CallPython {
                 targetFile.getParentFile().mkdirs();
             }
             //获取python解释器在服务器中的绝对路径
-            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation.paddleSpeech");
-            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.paddleSpeech.generateVoice");
+            String interpreterLocation = environment.getProperty("simulation.paddleSpeech.interpreterLocation");
+            String scriptLocation = environment.getProperty("simulation.paddleSpeech.scriptLocation.generateVoice");
             String[] arguments = new String[]{interpreterLocation,scriptLocation, text, targetPath};
             ProcessBuilder builder = new ProcessBuilder(arguments);
             process = builder.start();
@@ -162,8 +163,8 @@ public class CallPython {
         List<String> codeList = null;
         try {
             //获取python解释器在服务器中的绝对路径
-            String interpreterLocation = environment.getProperty("simulation.python.interpreterLocation.generateCode");
-            String scriptLocation = environment.getProperty("simulation.python.scriptLocation.generateCode.clientScript");
+            String interpreterLocation = environment.getProperty("simulation.generateCode.interpreterLocation");
+            String scriptLocation = environment.getProperty("simulation.generateCode.scriptLocation");
             //获取python代码文件在服务器中的绝对路径
             String[] arguments = new String[]{interpreterLocation, scriptLocation, command};
             //执行服务器中的python脚本
@@ -173,25 +174,30 @@ public class CallPython {
             //获取执行结果
             InputStream ins = process.getErrorStream();
             if(ins!=null&&ins.available()>0){
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
+                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
                     logger.error(str);
                 }
-                errorMsg = "调用大模型生成执行脚本代码失败!";
+                errorMsg = "调用大模型生成代码失败!";
             }else{
                 ins = process.getInputStream();
                 logger.info("代码生成数据流大小："+ins.available());
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"utf-8"));
+                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 codeList = new ArrayList<>();
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
+                    if(StringUtils.equals(str, "gpt_end")){
+                        process.destroyForcibly();
+                        break;
+                    }
+                    logger.info(str);
                     codeList.add(str);
                 }
             }
         }catch (Exception e) {
             logger.error(LoggerUtil.getLoggerStace(e));
-            result = AjaxResult.error("调用大模型生成执行脚本代码失败!");
+            result = AjaxResult.error("调用大模型生成代码失败!");
         } finally {
             try {
                 if(bufferedReader!=null) {
@@ -205,7 +211,7 @@ public class CallPython {
                     int flag = process.waitFor();
                     logger.info("执行结果是否为0："+flag);
                     if(flag==0){
-                        result = AjaxResult.success(codeList);
+                        result = AjaxResult.success("代码生成成功",codeList);
                     }else{
                         result = AjaxResult.error(errorMsg);
                     }

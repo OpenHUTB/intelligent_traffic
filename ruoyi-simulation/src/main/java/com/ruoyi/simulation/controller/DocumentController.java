@@ -3,6 +3,7 @@ package com.ruoyi.simulation.controller;
 import com.ruoyi.simulation.service.DocumentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ public class DocumentController {
      * @return
      */
     @GetMapping("stream")
-    public byte[] getDocumentStream(String filename){
+    public byte[] getDocumentStream(@RequestParam String filename){
         return this.documentService.getDocumentStream(filename);
     }
 }
