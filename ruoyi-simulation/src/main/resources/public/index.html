@@ -28,13 +28,14 @@
         #screen{
             width:100%;
         }
-        #introduction{
+        #introductionArea{
             position: absolute;
             z-index: 5;
-            width: 200px;
-            right: 10px;
-            top: 10px;
-            border: solid 2px #fff;
+            width: 100px;
+            min-height: 130px;
+            right: 30px;
+            top: 4px;
+            border: solid 1px #fff;
         }
         .section_content{
             width: 100%;
@@ -106,7 +107,7 @@
     <header>大模型交通场景</header>
     <section class="screen">
         <video id="screen" src="simulation/file/stream?filename=20230822172640.mp4" controls autoplay></video>
-        <video id="introduction" src="simulation/file/stream?filename=3976a970a2e0a6be5abe84e82a86cc99.mp4" controls autoplay></video>
+        <div id="introductionArea"></div>
     </section>
     <section class="section_content">
         <section class="section_left">
@@ -118,8 +119,7 @@
             <textarea id="tips" readonly></textarea>
         </section>
         <section class="section_right">
-            <div id="audioArea">
-            </div>
+            <div id="audioArea"></div>
             <canvas id='canvas'></canvas>
         </section>
     </section>
