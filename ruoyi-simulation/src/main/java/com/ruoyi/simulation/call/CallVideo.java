@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 @Component
 public class CallVideo {
-    private Logger logger = LoggerFactory.getLogger(CallVideo.class);
+    private final Logger logger = LoggerFactory.getLogger(CallVideo.class);
     @Resource
     private Environment environment;
     /**
