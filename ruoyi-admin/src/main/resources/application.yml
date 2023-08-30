@@ -146,9 +146,9 @@ simulation:
   video:
     url: 159.75.166.108:22:18980/pmwlapi/v1/txt2video
     voice: zh-CN-XiaoyiNeural
-    player: 1
+    player: 6
   minio:
-    endpoint: 172.16.128.17:30001
+    endpoint: 139.199.199.162:30001
     accessKey: minio
     secretKey: minio123!@#
     bucket: pmaigc
