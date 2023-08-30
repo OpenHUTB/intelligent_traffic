@@ -1,8 +1,11 @@
 package com.ruoyi.simulation.call;
 
+import com.google.common.io.ByteStreams;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.simulation.util.CommandUtil;
 import com.ruoyi.simulation.util.FileUtil;
+import com.ruoyi.simulation.util.LoggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -53,12 +56,13 @@ public class CallBigModel {
                 while((str = bufferedReader.readLine())!=null){
                     if(StringUtils.equals(str, "gpt_end")){
                         process.destroyForcibly();
-                        break;
+                        //检测到"gpt_end"则说明代码生成成功，否则说明发生了异常
+                        return codeList;
                     }
                     logger.info(str);
                     codeList.add(str);
                 }
-                return codeList;
+                return null;
             }
         };
         List<String> codeList = commandUtil.executionCommand();
@@ -74,8 +78,8 @@ public class CallBigModel {
      * @throws IOException
      * @throws InterruptedException
      */
-    public synchronized byte[] generatePixelStream(List<String> codeList) {
-        CommandUtil<byte[]> commandUtil = new CommandUtil<byte[]>() {
+    public synchronized void generatePixelStream(List<String> codeList) {
+        CommandUtil<Boolean> commandUtil = new CommandUtil<Boolean>() {
             private Process process = null;
             @Override
             protected Process getProcess() throws Exception {
@@ -93,17 +97,17 @@ public class CallBigModel {
             }
 
             @Override
-            protected byte[] processResult(InputStream ins) throws Exception {
-                byte[] buffer = new byte[4096];
-                int length = ins.read(buffer);
-                process.destroyForcibly();
-                return Arrays.copyOfRange(buffer,0,length);
+            protected Boolean processResult(InputStream ins) throws Exception {
+                return true;
             }
         };
-        byte[] stream = commandUtil.executionCommand();
-        if(stream==null){
-            throw new RuntimeException("根据matlab代码生成三维场景像素流失败!");
-        }
-        return stream;
+        //通过另外一个线程启动像素流生成程序，避免当前程序等待
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                commandUtil.executionCommand();
+            }
+        });
+        thread.start();
     }
 }
