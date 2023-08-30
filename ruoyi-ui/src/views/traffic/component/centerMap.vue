@@ -1,5 +1,8 @@
 <template>
   <div class="content">
+    <!-- <div id="container" class="map">
+
+    </div> -->
     <baidu-map
       class="map"
       :center="center"
@@ -26,7 +29,9 @@ export default {
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    // this.builmap();
+  },
   methods: {
     handler({ BMap, map }) {
 
@@ -36,6 +41,18 @@ export default {
 
       map.setMapStyle({style:'midnight'});    
     },
+
+    builmap() {
+      let map = new window.BMap.Map("container");
+      let point = new window.BMap.Point(112.925737, 28.225764);
+      map.centerAndZoom(point, 19);
+      map.enableScrollWheelZoom(true);
+      map.setMapStyle({style:'midnight'})
+      map.addEventListener("click", function(e) {
+        console.log(e.point.lng + "," + e.point.lat);
+      });
+      
+    }    
   },
 };
 </script>
