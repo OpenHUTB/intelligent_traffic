@@ -14,8 +14,12 @@ public class StreamSet {
     @ApiModelProperty("声音信息数据流")
     private String sound;
     /**
+     * 视频信息数据流-仅用于提供语音提示
+     */
+    private String graph;
+    /**
      * 像素流
      */
     @ApiModelProperty("像素流")
-    private byte[] graph;
+    private byte[] screen;
 }

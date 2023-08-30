@@ -138,9 +138,19 @@ simulation:
   generateCode:
     interpreterLocation: C:/Buffer/gpt/gpt-main/webui/python/python.exe    #非虚拟环境的python服务安装位置
     scriptLocation: C:/Buffer/gpt/gpt-main/webui/client.py    #生成代码的客户端脚本位置
-    websocketURL: ws://172.21.116.83:9998
   matlab:
     interpreterLocation: C:/Buffer/gpt/matlab/bin/matlab.exe   #matlab安装位置
-    scriptLocation: C:/Buffer/gpt/gpt-main/sim  #
+    scriptLocation: C:/Buffer/gpt/gpt-main/sim    #
     autoVrtlEnvLocation: C:/Buffer/gpt/WindowsNoEditor/AutoVrtlEnv.exe
-  filepath: C:/users/Administrator/documents/accessory/intelligentTraffic/simulation
+  filepath: C:/users/Administrator/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径
+  video:
+    url: 159.75.166.108:22:18980/pmwlapi/v1/txt2video
+    voice: zh-CN-XiaoyiNeural
+    player: 1
+  minio:
+    endpoint: 172.16.128.17:30001
+    accessKey: minio
+    secretKey: minio123!@#
+    bucket: pmaigc
+    secure: False
+}

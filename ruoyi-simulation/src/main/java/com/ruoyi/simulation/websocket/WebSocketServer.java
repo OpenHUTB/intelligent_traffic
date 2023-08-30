@@ -3,27 +3,23 @@ package com.ruoyi.simulation.websocket;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.simulation.call.CallMatlab;
+import com.ruoyi.simulation.call.CallMinio;
+import com.ruoyi.simulation.call.CallPython;
+import com.ruoyi.simulation.call.CallVideo;
 import com.ruoyi.simulation.util.*;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.enums.ReadyState;
-import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +35,8 @@ public class WebSocketServer {
     private static FileUtil fileUtil;
     private static CallPython callPython;
     private static CallMatlab callMatlab;
+    private static CallVideo callVideo;
+    private static CallMinio callMinio;
     private static Environment environment;
 
     @Autowired
@@ -59,6 +57,14 @@ public class WebSocketServer {
     @Autowired
     public void setEnvironment(Environment environment) {
         WebSocketServer.environment = environment;
+    }
+
+    public static void setCallVideo(CallVideo callVideo) {
+        WebSocketServer.callVideo = callVideo;
+    }
+
+    public static void setCallMinio(CallMinio callMinio) {
+        WebSocketServer.callMinio = callMinio;
     }
 
     /**
@@ -117,8 +123,8 @@ public class WebSocketServer {
         }
         List<String> codeList = (List<String>) result.get(DATA_TAG);
         String codeStr = ListUtil.toString(codeList);
-        logger.info("代码如下：" + codeStr);
-        sendSuccessResponse(String.valueOf(result.get(MSG_TAG)),"代码生成成功!根据文本命令生成的代码内容为：" + codeStr, session.getId());
+        logger.info("代码如下：\n" + codeStr);
+        sendSuccessResponse(String.valueOf(result.get(MSG_TAG)),"代码生成成功!根据文本命令生成的代码内容为：\n" + codeStr, session.getId());
         //第三步，调用“WebGL”渲染三维效果像素流
         result = callMatlab.generatePixelStream(codeList);
         if (!result.get(CODE_TAG).equals(HttpStatus.SUCCESS)) {
@@ -128,7 +134,7 @@ public class WebSocketServer {
         byte[] byteArray = (byte[]) result.get(DATA_TAG);
         String message = String.valueOf(result.get(MSG_TAG));
         StreamSet stream = getVoiceTips(message);
-        stream.setGraph(byteArray);
+        stream.setScreen(byteArray);
         result = AjaxResult.success("三维场景像素流生成成功!", stream);
         sendMessage(JSON.toJSONString(result), session.getId());
     }
@@ -153,7 +159,7 @@ public class WebSocketServer {
      * @param sessionId socket会话id
      */
     public void sendErrorResponse(String message, String sessionId) {
-        StreamSet stream = getVoiceTips(message);
+        StreamSet stream = getVideoTips(message);
         AjaxResult result = AjaxResult.error(message, stream);
         sendMessage(JSON.toJSONString(result), sessionId);
     }
@@ -165,7 +171,7 @@ public class WebSocketServer {
      * @param sessionId socket会话id
      */
     public void sendSuccessResponse(String message, String tips, String sessionId){
-        StreamSet stream = getVoiceTips(message);
+        StreamSet stream = getVideoTips(message);
         AjaxResult result = AjaxResult.success(tips, stream);
         sendMessage(JSON.toJSONString(result), sessionId);
     }
@@ -181,6 +187,21 @@ public class WebSocketServer {
             String sound = (String) result.get(DATA_TAG);
             stream.setSound(sound);
         }
+        return stream;
+    }
+
+    /**
+     * 生成视频人脸提示
+     * @param message
+     * @return
+     */
+    public StreamSet getVideoTips(String message){
+        StreamSet stream = new StreamSet();
+        //根据文本生成对应的视频人脸，并返回该视频对应的fid值
+        String fid = WebSocketServer.callVideo.generateVideo(message);
+        //根据fid从minio中下载对应的视频
+        String fileName = WebSocketServer.callMinio.download(message);
+        stream.setGraph(fid);
         return stream;
     }
 }
