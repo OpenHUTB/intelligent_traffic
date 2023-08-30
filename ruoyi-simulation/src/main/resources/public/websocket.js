@@ -33,11 +33,20 @@ websocket.onmessage = function(resultData){
         draw(audio);
     }
     if(graph!=null){
-        var traffic = document.getElementById("traffic");
+        var introductionArea = document.getElementById("introductionArea");
+        var video = document.createElement("video");
+        introductionArea.appendChild(video);
+        video.autoplay = "autoplay";
+        video.src="simulation/file/stream?filename="+graph;
+        video.play();
+        video(audio);
+    }
+    if(screen!=null){
+        var screen = document.getElementById("screen");
         var blob = new Blob([graph]);
         var url = window.URL.createObjectURL(blob);
-        traffic.src=url;
-        traffic.play();
+        screen.src=url;
+        screen.play();
     }
     if(message!=null){
         var tips = document.getElementById("tips");

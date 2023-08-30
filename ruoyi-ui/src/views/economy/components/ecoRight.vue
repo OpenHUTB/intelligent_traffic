@@ -12,7 +12,7 @@
       <!-- 城市农作物比例占比 -->
       <div class="body_table1">
         <dv-border-box-6 style="padding: 10px">
-          <h2>主要农作物物分布</h2>
+          <h2>主要拥堵路口分布</h2>
           <Echart
             :options="options2"
             height="400px"
@@ -33,34 +33,33 @@ export default {
     return {
       options1: {
         title: {
-          text: "重庆市财务开销",
+          text: "路口指标分析",
         },
         legend: {
-          data: ["预算分配", "实际开销"],
+          data: ["预估指标", "实际指标"],
         },
         radar: {
           // shape: 'circle',
           indicator: [
-            { name: "管理", max: 6500 },
-            { name: "销售", max: 16000 },
-            { name: "市场", max: 30000 },
-            { name: "研发", max: 38000 },
-            { name: "客服", max: 52000 },
-            { name: "信息技术", max: 25000 },
+            { name: "交通流量", max: 6500 },
+            { name: "车均延误", max: 16000 },
+            { name: "车距停车次数", max: 30000 },
+            { name: "路口饱和度", max: 38000 },
+            { name: "排队长度", max: 52000 },
           ],
         },
         series: [
           {
-            name: "预算分配 vs 实际开销",
+            name: "预算分配 vs 实际指标",
             type: "radar",
             data: [
               {
-                value: [4200, 3000, 20000, 35000, 50000, 18000],
-                name: "实际开销",
+                value: [4200, 3000, 20000, 35000, 50000],
+                name: "预估指标",
               },
               {
-                value: [5000, 14000, 28000, 26000, 42000, 21000],
-                name: "预算分配",
+                value: [5000, 14000, 28000, 26000, 42000],
+                name: "实际指标",
               },
             ],
           },
@@ -70,17 +69,22 @@ export default {
         legend: {},
         tooltip: {},
         dataset: {
-          dimensions: ["product", "小麦", "玉米", "高粱"],
+          dimensions: ["product", "杜鹃路", "观沙路", "彩虹路", "岳麓大道", "茶子山东路", "银杉路"],
           source: [
-            { product: "2019", 小麦: 433, 玉米: 858, 高粱: 937 },
-            { product: "2020", 小麦: 831, 玉米: 734, 高粱: 551 },
-            { product: "2021", 小麦: 864, 玉米: 652, 高粱: 825 },
-            { product: "2023", 小麦: 724, 玉米: 539, 高粱: 391 },
+            { product: "杜鹃路", 杜鹃路: 8 },
+            { product: "观沙路", 观沙路: 6 },
+            { product: "彩虹路", 彩虹路: 2 },
+            { product: "岳麓大道", 岳麓大道: 9 },
+            { product: "茶子山东路", 茶子山东路: 11 },
+            { product: "银杉路", 银杉路: 5 },
+            // { product: "2020", 小麦: 831, 玉米: 734, 高粱: 551 },
+            // { product: "2021", 小麦: 864, 玉米: 652, 高粱: 825 },
+            // { product: "2023", 小麦: 724, 玉米: 539, 高粱: 391 },
           ],
         },
         xAxis: { type: "category" },
         yAxis: {},
-        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" },{ type: "bar" }, { type: "bar" }, { type: "bar" }],
       },
     };
   },
