@@ -113,7 +113,7 @@ public class WebSocketServer {
             logger.info("调用大模型生成Matlab代码如下：\n" + codeStr);
             sendSuccessResponse("代码生成成功!","代码生成成功!根据文本命令生成的代码内容为：\n" + codeStr, session.getId());
             //第三步，调用“WebGL”渲染三维效果像素流
-            byte[] screen = callMatlab.generatePixelStream(codeList);
+            callMatlab.generatePixelStream(codeList);
             logger.info("三维场景像素流生成成功!"+screen.length);
             this.sendPixStreamResponse("三维场景像素流生成成功!", screen, session.getId());
         } catch (Exception e){
