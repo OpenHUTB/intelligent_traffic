@@ -41,7 +41,7 @@ public class CallMinio {
             GetObjectArgs args = builder.build();
             InputStream ins = minioClient.getObject(args);
             String suffix = fid.substring(fid.lastIndexOf("."));
-            fileUtil.storeFileToDisk(ins, suffix);
+            fileName = this.fileUtil.storeFileToDisk(ins,suffix);
         } catch (Exception e) {
             logger.error(LoggerUtil.getLoggerStace(e));
         }

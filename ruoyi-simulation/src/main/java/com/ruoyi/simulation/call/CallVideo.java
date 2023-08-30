@@ -1,29 +1,23 @@
 package com.ruoyi.simulation.call;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.constant.HttpStatus;
-import com.ruoyi.simulation.util.LoggerUtil;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * 调用视频生成开源工具生成数字人
  */
 @Component
 public class CallVideo {
-    private final Logger logger = LoggerFactory.getLogger(CallVideo.class);
+    private Logger logger = LoggerFactory.getLogger(CallVideo.class);
     @Resource
     private Environment environment;
     /**
@@ -31,47 +25,25 @@ public class CallVideo {
      * @param text
      */
     public String generateVideo(String text){
-        String  fid = null;
-        CloseableHttpClient httpClient = null;
-        CloseableHttpResponse response = null;
-        try {
-            httpClient = HttpClientBuilder.create().build();
-            String url = environment.getProperty("simulation.video.url");
-            String voice = environment.getProperty("simulation.video.voice");
-            String player = environment.getProperty("simulation.video.player");
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.setHeader("Content-type", "application/json;charset=utf8");
-            JSONObject paramJson = new JSONObject();
-            paramJson.put("text", text);
-            paramJson.put("voice", voice);
-            paramJson.put("player", player);
-            httpPost.setEntity(new StringEntity(paramJson.toJSONString(), "UTF-8"));
-            response = httpClient.execute(httpPost);
-            int status = response.getStatusLine().getStatusCode();
-            HttpEntity responseEntity = response.getEntity();
-            if(status== HttpStatus.SUCCESS){
-                fid = JSONObject.from(responseEntity).getString("fid");
-            }else{
-                logger.error(JSON.toJSONString(responseEntity));
-            }
-        } catch (IOException e) {
-            logger.error(LoggerUtil.getLoggerStace(e));
-        } finally {
-            try {
-                if(httpClient!=null){
-                    httpClient.close();
-                }
-            } catch (IOException e) {
-                logger.error(LoggerUtil.getLoggerStace(e));
-            }
-            try {
-                if(response!=null){
-                    response.close();
-                }
-            } catch (IOException e) {
-                logger.error(LoggerUtil.getLoggerStace(e));
-            }
-        }
+        //从配置文件中读取相关参数
+        String url = environment.getProperty("simulation.video.url");
+        String voice = environment.getProperty("simulation.video.voice");
+        String player = environment.getProperty("simulation.video.player");
+        //设置请求头部
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //设置请i去参数为JSON格式
+        JSONObject params = new JSONObject();
+        params.put("txt", text);
+        params.put("voice",voice);
+        params.put("player",player);
+        //创建请求实体
+        HttpEntity<String> request = new HttpEntity<String>(params.toJSONString(),headers);
+        //创建RestTemplate实例
+        RestTemplate template = new RestTemplate();
+        String response = template.postForObject(url, request,String.class);
+        logger.info(response);
+        String fid = JSONObject.parse(response).getString("fid");
         return fid;
     }
 }
