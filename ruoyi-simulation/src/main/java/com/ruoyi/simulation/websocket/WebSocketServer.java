@@ -1,7 +1,6 @@
 package com.ruoyi.simulation.websocket;
 
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.simulation.call.CallBigModel;
 import com.ruoyi.simulation.call.CallMinio;
@@ -19,7 +18,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
