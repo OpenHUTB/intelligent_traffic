@@ -8,15 +8,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-<<<<<<< HEAD
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-=======
 import java.io.*;
 import java.util.List;
->>>>>>> 113f55efcf71008b44724489740af2ccb3687997
 
 /**
  * 文件处理工具类
@@ -101,27 +94,5 @@ public class FileUtil {
                 bufferedWriter.close();
             }
         }
-    }
-
-    /**
-     *
-     * @param inputStream
-     * @return
-     */
-    public synchronized String storeFileToDisk(InputStream inputStream, String suffix){
-        String fileName = null;
-        try {
-            String targetPath = environment.getProperty("simulation.filepath")+ File.separator+System.currentTimeMillis()+suffix;
-            File targetFile = new File(targetPath);
-            //判断父目录是否存在，若不存在则创建父目录
-            if (!targetFile.getParentFile().exists()) {
-                targetFile.getParentFile().mkdirs();
-            }
-            FileUtils.copyInputStreamToFile(inputStream, targetFile);
-            fileName = targetFile.getName();
-        } catch (IOException e) {
-            logger.error(LoggerUtil.getLoggerStace(e));
-        }
-        return fileName;
     }
 }
