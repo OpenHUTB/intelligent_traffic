@@ -42,7 +42,7 @@ module.exports = {
         }
       }
     },   
-    // disableHostCheck: true
+    disableHostCheck: true
   },
   css: {
     loaderOptions: {
