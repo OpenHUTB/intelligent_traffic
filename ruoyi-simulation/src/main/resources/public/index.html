@@ -28,9 +28,13 @@
         }
         #screenArea{
             width:100%;
+            min-height: 400px;
             background: rgba(100, 100, 100, 0.7);
             display:block;
             border: 0px;
+        }
+        #screenArea video{
+            width: 100%;
         }
         #introductionArea{
             position: absolute;
@@ -85,23 +89,19 @@
             border: solid 1px #aaa;
             padding: 5px;
         }
-        @media screen and (max-width: 767px) {
-            iframe{
-                height: 400px;
-            }
-        }
-        @media screen and (min-width: 768px) {
-            iframe{
-                height: 400px;
-            }
-        }
         @media screen and (min-width: 992px) {
-            iframe{
+            .container{
+                width: 992px;
+            }
+            #screenArea{
                 height: 500px;
             }
         }
         @media screen and (min-width: 1200px) {
-            iframe{
+            .container{
+                width: 1200px;
+            }
+            #screenArea{
                 height: 600px;
             }
         }
@@ -111,7 +111,7 @@
 <div class="container">
     <header>大模型交通场景</header>
     <section class="screen">
-        <iframe id="screenArea" src="http://172.21.116.83/"></iframe>
+        <iframe id="screenArea"></iframe>
         <div id="introductionArea"></div>
     </section>
     <section class="section_content">
