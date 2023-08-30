@@ -3,9 +3,16 @@ package com.ruoyi.simulation.websocket;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.AjaxResult;
+<<<<<<< HEAD
 import com.ruoyi.simulation.call.CallMatlab;
 import com.ruoyi.simulation.call.CallMinio;
 import com.ruoyi.simulation.call.CallPython;
+=======
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.simulation.call.CallBigModel;
+import com.ruoyi.simulation.call.CallMinio;
+import com.ruoyi.simulation.call.CallPaddleSpeech;
+>>>>>>> 113f55efcf71008b44724489740af2ccb3687997
 import com.ruoyi.simulation.call.CallVideo;
 import com.ruoyi.simulation.util.*;
 import org.slf4j.Logger;
@@ -33,8 +40,13 @@ public class WebSocketServer {
     private static Map<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<String, WebSocketServer>();
     private Session session = null;
     private static FileUtil fileUtil;
+<<<<<<< HEAD
     private static CallPython callPython;
     private static CallMatlab callMatlab;
+=======
+    private static CallPaddleSpeech callPython;
+    private static CallBigModel callMatlab;
+>>>>>>> 113f55efcf71008b44724489740af2ccb3687997
     private static CallVideo callVideo;
     private static CallMinio callMinio;
     private static Environment environment;
@@ -45,12 +57,12 @@ public class WebSocketServer {
     }
 
     @Autowired
-    public void setCallPython(CallPython callPython) {
+    public void setCallPython(CallPaddleSpeech callPython) {
         WebSocketServer.callPython = callPython;
     }
 
     @Autowired
-    public void setCallMatlab(CallMatlab callMatlab) {
+    public void setCallMatlab(CallBigModel callMatlab) {
         WebSocketServer.callMatlab = callMatlab;
     }
 
@@ -99,6 +111,7 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(byte[] blob, Session session) {
         logger.info("----------------------------收到消息-----------------------------");
+<<<<<<< HEAD
         AjaxResult result = fileUtil.storeFileToDisk(blob);
         if (!result.get(CODE_TAG).equals(HttpStatus.SUCCESS)) {
             sendErrorResponse(String.valueOf(result.get(MSG_TAG)), session.getId());
@@ -150,6 +163,25 @@ public class WebSocketServer {
             server.session.getBasicRemote().sendText(message);
         } catch (IOException e) {
             throw new RuntimeException(e);
+=======
+        try{
+            String voicePath = fileUtil.storeFileToDisk(blob);
+            logger.info("语音文件存储路径："+voicePath);
+            //第一步，将语音转换为文字
+            String text = callPython.generateText(voicePath);
+            logger.info("语音识别后的文本为："+text);
+            sendSuccessResponse("语音识别成功!当前语音转换为如下文本：" + text,"语音识别成功!当前语音转换为如下文本：" + text, session.getId());
+            //第二步，发送文字命令，调用“大模型”获取生成交通场景模型所需的代码
+            List<String> codeList = callMatlab.generateCode(text);
+            String codeStr = ListUtil.toString(codeList);
+            logger.info("调用大模型生成Matlab代码如下：\n" + codeStr);
+            sendSuccessResponse("代码生成成功!","代码生成成功!根据文本命令生成的代码内容为：\n" + codeStr, session.getId());
+            //第三步，调用“WebGL”渲染三维效果像素流
+            byte[] byteArray = callMatlab.generatePixelStream(codeList);
+            this.sendPixStreamResponse("三维场景像素流生成成功!",byteArray,session.getId());
+        } catch (Exception e){
+            sendErrorResponse(e.getMessage(), session.getId());
+>>>>>>> 113f55efcf71008b44724489740af2ccb3687997
         }
     }
 
@@ -159,9 +191,20 @@ public class WebSocketServer {
      * @param sessionId socket会话id
      */
     public void sendErrorResponse(String message, String sessionId) {
+<<<<<<< HEAD
         StreamSet stream = getVideoTips(message);
         AjaxResult result = AjaxResult.error(message, stream);
         sendMessage(JSON.toJSONString(result), sessionId);
+=======
+        try {
+            StreamSet stream = getVideoTips(message);
+            AjaxResult result = AjaxResult.error(message, stream);
+            WebSocketServer server = webSocketMap.get(sessionId);
+            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
+        } catch (Exception e) {
+            logger.info(LoggerUtil.getLoggerStace(e));
+        }
+>>>>>>> 113f55efcf71008b44724489740af2ccb3687997
     }
 
     /**
@@ -171,9 +214,38 @@ public class WebSocketServer {
      * @param sessionId socket会话id
      */
     public void sendSuccessResponse(String message, String tips, String sessionId){
+<<<<<<< HEAD
         StreamSet stream = getVideoTips(message);
         AjaxResult result = AjaxResult.success(tips, stream);
         sendMessage(JSON.toJSONString(result), sessionId);
+=======
+        try {
+            StreamSet stream = getVideoTips(message);
+            AjaxResult result = AjaxResult.success(tips, stream);
+            WebSocketServer server = webSocketMap.get(sessionId);
+            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
+        } catch (Exception e) {
+            logger.info(LoggerUtil.getLoggerStace(e));
+        }
+    }
+
+    /**
+     * 返回像素流响应
+     * @param message
+     * @param byteArray
+     * @param sessionId
+     */
+    public void sendPixStreamResponse(String message, byte[] byteArray, String sessionId){
+        try {
+            StreamSet stream = getVideoTips(message);
+            stream.setScreen(byteArray);
+            AjaxResult result = AjaxResult.success(message, stream);
+            WebSocketServer server = webSocketMap.get(sessionId);
+            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
+        } catch (Exception e) {
+            logger.info(LoggerUtil.getLoggerStace(e));
+        }
+>>>>>>> 113f55efcf71008b44724489740af2ccb3687997
     }
     /**
      * 发送声音提示消息
@@ -182,11 +254,23 @@ public class WebSocketServer {
      */
     public StreamSet getVoiceTips(String message) {
         StreamSet stream = new StreamSet();
-        AjaxResult result = callPython.generateVoice(message);
-        if (result.get(CODE_TAG).equals(HttpStatus.SUCCESS)) {
-            String sound = (String) result.get(DATA_TAG);
-            stream.setSound(sound);
-        }
+        String fileName = callPython.generateVoice(message);
+        stream.setSound(fileName);
+        return stream;
+    }
+
+    /**
+     * 生成视频人脸提示
+     * @param message
+     * @return
+     */
+    public StreamSet getVideoTips(String message){
+        StreamSet stream = new StreamSet();
+        //根据文本生成对应的视频人脸，并返回该视频对应的fid值
+        String fid = WebSocketServer.callVideo.generateVideo(message);
+        //根据fid从minio中下载对应的视频
+        String fileName = WebSocketServer.callMinio.download(fid);
+        stream.setGraph(fid);
         return stream;
     }
 
