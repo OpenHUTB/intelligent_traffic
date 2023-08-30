@@ -16,9 +16,12 @@ public class MinioConfig {
     private Environment environment;
     @Bean
     public MinioClient minioClient(){
+        String endpoint = environment.getProperty("simulation.minio.endpoint");
+        String accessKey = environment.getProperty("simulation.minio.accessKey");
+        String secretKey= environment.getProperty("simulation.minio.secretKey");
         MinioClient.Builder builder = MinioClient.builder();
-        builder.endpoint(environment.getProperty("simulation.minio.endpoint"));
-        builder.credentials(environment.getProperty("simulation.minio.accessKey"),environment.getProperty("simulation.minio.secretKey"));
+        builder.endpoint(endpoint);
+        builder.credentials(accessKey, secretKey);
         MinioClient client = builder.build();
         return client;
     }

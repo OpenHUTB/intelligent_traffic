@@ -153,7 +153,4 @@ simulation:
     secretKey: minio123!@#
     bucket: pmaigc
     secure: False
-<<<<<<< HEAD
 }
-=======
->>>>>>> 113f55efcf71008b44724489740af2ccb3687997

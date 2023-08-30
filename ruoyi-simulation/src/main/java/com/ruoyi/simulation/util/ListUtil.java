@@ -2,6 +2,9 @@ package com.ruoyi.simulation.util;
 
 import java.util.List;
 
+/**
+ * 列表操作工具类
+ */
 public class ListUtil {
     /**
      * 将列表转换为字符串

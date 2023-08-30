@@ -1,6 +1,6 @@
 package com.ruoyi.simulation.util;
 
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,15 +8,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-<<<<<<< HEAD
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-=======
 import java.io.*;
 import java.util.List;
->>>>>>> 113f55efcf71008b44724489740af2ccb3687997
 
 /**
  * 文件处理工具类
@@ -29,13 +25,14 @@ public class FileUtil {
     /**
      * 将文件保存到磁盘中
      * @param blob
+     * @param suffix
      * @return
      * @throws IOException
      */
-    public synchronized String storeFileToDisk(byte[] blob) {
+    public synchronized String storeFileToDisk(byte[] blob, String suffix) {
         String absolutePath = null;
         try {
-            File targetFile = this.createDefaultFile(".wav");
+            File targetFile = this.createDefaultFile(suffix);
             FileUtils.writeByteArrayToFile(targetFile, blob);
             absolutePath = targetFile.getAbsolutePath();
         } catch (IOException e) {
@@ -44,29 +41,37 @@ public class FileUtil {
         }
         return absolutePath;
     }
-
     /**
-     *
-     * @param inputStream
+     * 将文件保存到磁盘中
+     * @param ins
+     * @param suffix
      * @return
+     * @throws IOException
      */
-    public synchronized String storeFileToDisk(InputStream inputStream, String suffix){
-        String fileName = null;
-        try {
+    public synchronized String storeFileToDisk(InputStream ins, String suffix) throws IOException {
+        String filename = null;
+        try{
             File targetFile = this.createDefaultFile(suffix);
-            FileUtils.copyInputStreamToFile(inputStream, targetFile);
-            fileName = targetFile.getName();
-        } catch (IOException e) {
-            logger.error(LoggerUtil.getLoggerStace(e));
+            FileUtils.copyInputStreamToFile(ins, targetFile);
+            filename = targetFile.getName();
+        } finally {
+            if(ins!=null){
+                ins.close();
+            }
         }
-        return fileName;
+        return filename;
     }
-
     /**
      * 创建默认文件
      * @return
      */
     public File createDefaultFile(String suffix){
+        if(StringUtils.isEmpty(suffix)){
+            suffix = ".wav";
+        }
+        if(!suffix.startsWith(".")){
+            suffix = "."+suffix;
+        }
         //指定语音文件的生成位置
         String targetPath = environment.getProperty("simulation.filepath")+ File.separator+System.currentTimeMillis()+suffix;
         File targetFile = new File(targetPath);
@@ -101,27 +106,5 @@ public class FileUtil {
                 bufferedWriter.close();
             }
         }
-    }
-
-    /**
-     *
-     * @param inputStream
-     * @return
-     */
-    public synchronized String storeFileToDisk(InputStream inputStream, String suffix){
-        String fileName = null;
-        try {
-            String targetPath = environment.getProperty("simulation.filepath")+ File.separator+System.currentTimeMillis()+suffix;
-            File targetFile = new File(targetPath);
-            //判断父目录是否存在，若不存在则创建父目录
-            if (!targetFile.getParentFile().exists()) {
-                targetFile.getParentFile().mkdirs();
-            }
-            FileUtils.copyInputStreamToFile(inputStream, targetFile);
-            fileName = targetFile.getName();
-        } catch (IOException e) {
-            logger.error(LoggerUtil.getLoggerStace(e));
-        }
-        return fileName;
     }
 }

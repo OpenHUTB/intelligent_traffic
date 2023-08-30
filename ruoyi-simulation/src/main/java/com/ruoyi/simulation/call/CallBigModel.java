@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,6 +79,7 @@ public class CallBigModel {
      */
     public synchronized byte[] generatePixelStream(List<String> codeList) {
         CommandUtil<byte[]> commandUtil = new CommandUtil<byte[]>() {
+            private Process process = null;
             @Override
             protected Process getProcess() throws Exception {
                 //将脚本代码存储到matlab项目下的code.m文件中，等待被matlab调用
@@ -89,20 +91,22 @@ public class CallBigModel {
                 String autoVrtlEnvLocation = environment.getProperty("simulation.matlab.autoVrtlEnvLocation");//autoVrtlEnvLocation
                 Runtime runtime = Runtime.getRuntime();
                 //C:Buffer/gpt/matlab/bin>matlab -nojvm -nodesktop -nodisplay -r "cd C:/Buffer/gpt/gpt-main/sim; main('C:/Buffer/gpt/WindowsNoEditor/AutoVrtlEnv.exe')"
-                Process process = runtime.exec("cmd /k "+interpreterLocation+" -nojvm -nodesktop -nodisplay -r \"cd "+scriptLocation+"; main('"+autoVrtlEnvLocation+"')\"");
+                process = runtime.exec("cmd /k "+interpreterLocation+" -nojvm -nodesktop -nodisplay -r \"cd "+scriptLocation+"; main('"+autoVrtlEnvLocation+"')\"");
                 return process;
             }
 
             @Override
             protected byte[] processResult(InputStream ins) throws Exception {
-                byte[] byteArray = ByteStreams.toByteArray(ins);
-                return byteArray;
+                byte[] buffer = new byte[4096];
+                int length = ins.read(buffer);
+                process.destroyForcibly();
+                return Arrays.copyOfRange(buffer,0,length);
             }
         };
-        byte[] byteArray = commandUtil.executionCommand();
-        if(codeList==null||codeList.isEmpty()){
+        byte[] stream = commandUtil.executionCommand();
+        if(stream==null){
             throw new RuntimeException("根据matlab代码生成三维场景像素流失败!");
         }
-        return byteArray;
+        return stream;
     }
 }
