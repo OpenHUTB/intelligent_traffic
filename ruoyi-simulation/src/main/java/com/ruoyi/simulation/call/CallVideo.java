@@ -1,5 +1,6 @@
 package com.ruoyi.simulation.call;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.simulation.util.LoggerUtil;
@@ -47,9 +48,11 @@ public class CallVideo {
             httpPost.setEntity(new StringEntity(paramJson.toJSONString(), "UTF-8"));
             response = httpClient.execute(httpPost);
             int status = response.getStatusLine().getStatusCode();
+            HttpEntity responseEntity = response.getEntity();
             if(status== HttpStatus.SUCCESS){
-                HttpEntity responseEntity = response.getEntity();
                 fid = JSONObject.from(responseEntity).getString("fid");
+            }else{
+                logger.error(JSON.toJSONString(responseEntity));
             }
         } catch (IOException e) {
             logger.error(LoggerUtil.getLoggerStace(e));

@@ -21,10 +21,12 @@ websocket.onmessage = function(resultData){
     console.log(result);
     var message = result.msg;
     var streamSet = result.data;
+    var screen = streamSet.screen;
     var sound = streamSet.sound;
     var graph = streamSet.graph;
     if(sound!=null){
         var audioArea = document.getElementById("audioArea");
+        audioArea.innerHTML="";
         var audio = document.createElement("audio");
         audioArea.appendChild(audio);
         audio.autoplay = "autoplay";
@@ -34,21 +36,19 @@ websocket.onmessage = function(resultData){
     }
     if(graph!=null){
         var introductionArea = document.getElementById("introductionArea");
+        introductionArea.innerHTML="";
         var video = document.createElement("video");
         introductionArea.appendChild(video);
         video.autoplay = "autoplay";
+        video.muted="muted"
         video.src="simulation/file/stream?filename="+graph;
         video.play();
-        video(audio);
     }
     if(screen!=null){
-        var screen = document.getElementById("screen");
-        var blob = new Blob([graph]);
-        var url = window.URL.createObjectURL(blob);
-        screen.src=url;
-        screen.play();
+        var screenArea = document.getElementById("screenArea");
+        screenArea.src=screen;
     }
-    if(message!=null){
+    if(message!=null&&message!=""){
         var tips = document.getElementById("tips");
         if(tips.value==null||tips.value==""){
             tips.value=message;
