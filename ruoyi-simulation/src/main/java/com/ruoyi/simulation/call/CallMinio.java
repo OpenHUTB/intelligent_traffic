@@ -5,7 +5,6 @@ import com.ruoyi.simulation.util.LoggerUtil;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectArgs.Builder;
 import io.minio.MinioClient;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

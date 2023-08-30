@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.ruoyi.common.core.domain.AjaxResult.*;
-
 @Component
 @ServerEndpoint("/simulation/websocket/")
 public class WebSocketServer {

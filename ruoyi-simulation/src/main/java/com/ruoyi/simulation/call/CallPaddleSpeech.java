@@ -1,10 +1,8 @@
 package com.ruoyi.simulation.call;
 
-import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.simulation.util.CommandUtil;
 import com.ruoyi.simulation.util.FileUtil;
-import com.ruoyi.simulation.util.LoggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
