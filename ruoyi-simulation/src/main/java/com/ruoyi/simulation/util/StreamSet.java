@@ -21,5 +21,5 @@ public class StreamSet {
      * 像素流
      */
     @ApiModelProperty("像素流")
-    private byte[] screen;
+    private String screen;
 }

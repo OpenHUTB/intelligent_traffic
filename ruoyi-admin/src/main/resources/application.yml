@@ -148,9 +148,8 @@ simulation:
     voice: zh-CN-XiaoyiNeural
     player: 6
   minio:
-    endpoint: 139.199.199.162:30001
+    endpoint: http://139.199.199.162:30001
     accessKey: minio
     secretKey: minio123!@#
     bucket: pmaigc
     secure: False
-}

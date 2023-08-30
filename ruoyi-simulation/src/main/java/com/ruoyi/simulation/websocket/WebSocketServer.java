@@ -114,8 +114,8 @@ public class WebSocketServer {
             sendSuccessResponse("代码生成成功!","代码生成成功!根据文本命令生成的代码内容为：\n" + codeStr, session.getId());
             //第三步，调用“WebGL”渲染三维效果像素流
             callMatlab.generatePixelStream(codeList);
-            logger.info("三维场景像素流生成成功!"+screen.length);
-            this.sendPixStreamResponse("三维场景像素流生成成功!", screen, session.getId());
+            logger.info("三维场景像素流生成成功!");
+            this.sendPixStreamResponse("三维场景像素流生成成功!", session.getId());
         } catch (Exception e){
             sendErrorResponse(e.getMessage(), session.getId());
         }
@@ -175,11 +175,10 @@ public class WebSocketServer {
      * @param message
      * @param sessionId
      */
-    public void sendPixStreamResponse(String message, byte[] screen, String sessionId){
+    public void sendPixStreamResponse(String message, String sessionId){
         try {
             StreamSet stream = getSoundTips(message);
-            stream.setScreen(screen);
-            //stream.setScreen("http://172.21.116.83/");
+            stream.setScreen("http://172.21.116.83/");
             AjaxResult result = AjaxResult.success(message, stream);
             WebSocketServer server = webSocketMap.get(sessionId);
             server.session.getBasicRemote().sendText(JSON.toJSONString(result));
