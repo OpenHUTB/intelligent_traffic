@@ -1,10 +1,6 @@
-const record = document.getElementById("record")
 const stop = document.getElementById("stop")
 const play = document.getElementById("play")
 const send = document.getElementById("send")
-const audio = document.getElementById("audio")
-const downWav = document.getElementById("downWav")
-const downPcm = document.getElementById("downPcm")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 canvas.width = 400

@@ -5,113 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link type="text/css" rel="stylesheet" href="bootstrap-3.4.1-dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="index.css"/>
     <script type="text/javascript" src="statics/jquery-3.7.0.min.js"></script>
     <script type="text/javascript" src="bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
-    <title>音频录制和展示</title>
-    <style type="text/css">
-        .container{
-            min-width: 768px;
-            padding:0px;
-        }
-        header{
-          width: 100%;
-          margin: 0 auto;
-          line-height: 40px;
-          text-align: center;
-          font-weight: bold;
-        }
-        .screen{
-            border: solid 4px #666;
-            overflow: hidden;
-            padding: 5px;
-            position: relative;
-        }
-        #screenArea{
-            width:100%;
-            min-height: 400px;
-            background: rgba(100, 100, 100, 0.7);
-            display:block;
-            border: 0px;
-        }
-        #screenArea video{
-            width: 100%;
-        }
-        #introductionArea{
-            position: absolute;
-            z-index: 5;
-            width: 120px;
-            left: 25px;
-            top: 15px;
-        }
-        #introductionArea video{
-            width: 100%;
-        }
-        .section_content{
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-        .section_left, .section_middle, .section_right{
-            padding: 6px;
-            border-left: solid 4px #666;
-            border-bottom: solid 4px #666;
-            height: 165px;
-        }
-        .section_left{
-            width: 80px;
-        }
-        .section_left .btn{
-            width: 100%;
-            margin-top: 12px;
-        }
-        .section_left, .section_middle{
-            float: left;
-        }
-        .section_middle{
-            width: 100%;
-        }
-        .section_right{
-            border-right: solid 4px #666;
-            width:420px;
-            position: relative;
-        }
-        #canvas {
-            width: 400px;
-            height: 150px;
-            border: solid 1px #aaa;
-            padding: 5px 10px;
-        }
-        #tips{
-            height: 150px;
-            width: 100%;
-            resize: none;
-            border: solid 1px #aaa;
-            padding: 5px;
-        }
-        @media screen and (min-width: 992px) {
-            .container{
-                width: 992px;
-            }
-            #screenArea{
-                height: 500px;
-            }
-        }
-        @media screen and (min-width: 1200px) {
-            .container{
-                width: 1200px;
-            }
-            #screenArea{
-                height: 600px;
-            }
-        }
-    </style>
+    <title>大模型智慧交通</title>
 </head>
-<body>
+<body onload="load()">
 <div class="container">
-    <header>大模型交通场景</header>
     <section class="screen">
-        <iframe id="screenArea"></iframe>
+        <header>大模型智慧交通场景</header>
+        <div id="player">
+        </div>
         <div id="introductionArea"></div>
     </section>
     <section class="section_content">
@@ -129,8 +33,10 @@
         </section>
     </section>
 </div>
-<script src="record.js"></script>
-<script src="main.js"></script>
-<script src="websocket.js"></script>
+<script type="text/javascript" src="statics/record.js"></script>
+<script type="text/javascript" src="statics/webRtcPlayer.js"></script>
+<script type="text/javascript" src="statics/loadingPixStream.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="websocket.js"></script>
 </body>
 </html>
