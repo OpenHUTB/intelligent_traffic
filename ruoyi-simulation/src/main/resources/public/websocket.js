@@ -43,10 +43,14 @@ websocket.onmessage = function(resultData){
         video.muted="muted"
         video.src="simulation/file/stream?filename="+graph;
         video.play();
+        video.addEventListener("ended",function(){
+            video.remove();
+        });
     }
     if(screen!=null){
-        var screenArea = document.getElementById("screenArea");
-        screenArea.src=screen;
+        //初始化
+        connect();
+        shouldShowPlayOverlay = false;
     }
     if(message!=null&&message!=""){
         var tips = document.getElementById("tips");

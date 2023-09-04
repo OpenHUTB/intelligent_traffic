@@ -29,8 +29,8 @@ public class WebSocketServer {
     private static Map<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<String, WebSocketServer>();
     private Session session = null;
     private static FileUtil fileUtil;
-    private static CallPaddleSpeech callPython;
-    private static CallBigModel callMatlab;
+    private static CallPaddleSpeech callPaddleSpeech;
+    private static CallBigModel callBigModel;
     private static CallVideo callVideo;
     private static CallMinio callMinio;
     private static Environment environment;
@@ -41,13 +41,13 @@ public class WebSocketServer {
     }
 
     @Autowired
-    public void setCallPython(CallPaddleSpeech callPython) {
-        WebSocketServer.callPython = callPython;
+    public void setCallPaddleSpeech(CallPaddleSpeech callPaddleSpeech) {
+        WebSocketServer.callPaddleSpeech = callPaddleSpeech;
     }
 
     @Autowired
-    public void setCallMatlab(CallBigModel callMatlab) {
-        WebSocketServer.callMatlab = callMatlab;
+    public void setCallBigModel(CallBigModel callBigModel) {
+        WebSocketServer.callBigModel = callBigModel;
     }
 
     @Autowired
@@ -97,25 +97,26 @@ public class WebSocketServer {
         logger.info("----------------------------收到消息-----------------------------");
         try{
             String voicePath = fileUtil.storeFileToDisk(blob,"wav");
-            sendSuccessResponse("正在处理您的请求，请耐心等待...","正在处理您的请求，请耐心等待", session.getId());
             logger.info("语音文件存储路径："+voicePath);
+            this.sendSuccessResponse("1693640214093.mp4","1693640214141.wav","正在处理您的请求，请耐心等待...",session.getId());
             //第一步，将语音转换为文字
-            String text = callPython.generateText(voicePath);
+            String text = WebSocketServer.callPaddleSpeech.generateText(voicePath);
             logger.info("语音识别后的文本为："+text);
             if(text.contains("做什么")&&text.contains("大模型")){
-                sendWelcome(session.getId());
+                String str = "我是智慧交通大模型，能生成交通的三维数字孪生场景，譬如生成汽车、人，安装摄像头、交通信号灯，也能生成导航路线以进行直观浏览、开展自动路线调度。还能根据突发事件和应急预案，进行可视化调度等。要不请您来试用一下我的功能吧！";
+                this.sendSuccessResponse("1693365009981.mp4","1693362920112.wav", str, session.getId());
                 return;
             }
-            sendSuccessResponse("语音识别成功!","语音识别成功!当前语音转换为如下文本：" + text, session.getId());
+            this.sendSuccessResponse("1693640306073.mp4","1693640306124.wav", "语音识别成功!当前语音转换为如下文本：" + text, session.getId());
             //第二步，发送文字命令，调用“大模型”获取生成交通场景模型所需的代码
-            List<String> codeList = callMatlab.generateCode(text);
+            List<String> codeList = WebSocketServer.callBigModel.generateCode(text);
             String codeStr = ListUtil.toString(codeList);
             logger.info("调用大模型生成Matlab代码如下：\n" + codeStr);
-            sendSuccessResponse("代码生成成功!","代码生成成功!根据文本命令生成的代码内容为：\n" + codeStr, session.getId());
+            this.sendSuccessResponse("1693640388885.mp4","1693640388927.wav","代码生成成功，调用大模型生成Matlab代码如下：\n" + codeStr, session.getId());
             //第三步，调用“WebGL”渲染三维效果像素流
-            callMatlab.generatePixelStream(codeList);
-            logger.info("三维场景像素流生成成功!");
-            this.sendPixStreamResponse("三维场景像素流生成成功!", session.getId());
+            WebSocketServer.callBigModel.generatePixelStream(codeList);
+            logger.info("三维场景像素流生成中...");
+            this.sendSuccessResponse("1693728667826.mp4","1693728667868.wav","三维场景像素流生成中...", session.getId());
         } catch (Exception e){
             sendErrorResponse(e.getMessage(), session.getId());
         }
@@ -144,7 +145,7 @@ public class WebSocketServer {
      */
     public void sendErrorResponse(String message, String sessionId) {
         try {
-            StreamSet stream = getSoundTips(message);
+            StreamSet stream = getGraphTips(message);
             AjaxResult result = AjaxResult.error(message, stream);
             WebSocketServer server = webSocketMap.get(sessionId);
             server.session.getBasicRemote().sendText(JSON.toJSONString(result));
@@ -161,7 +162,7 @@ public class WebSocketServer {
      */
     public void sendSuccessResponse(String message, String tips, String sessionId){
         try {
-            StreamSet stream = getSoundTips(message);
+            StreamSet stream = getGraphTips(message);
             AjaxResult result = AjaxResult.success(tips, stream);
             WebSocketServer server = webSocketMap.get(sessionId);
             server.session.getBasicRemote().sendText(JSON.toJSONString(result));
@@ -169,7 +170,6 @@ public class WebSocketServer {
             logger.info(LoggerUtil.getLoggerStace(e));
         }
     }
-
     /**
      * 返回像素流响应
      * @param message
@@ -177,9 +177,34 @@ public class WebSocketServer {
      */
     public void sendPixStreamResponse(String message, String sessionId){
         try {
-            StreamSet stream = getSoundTips(message);
-            stream.setScreen("http://172.21.116.83/");
+            StreamSet stream = getGraphTips(message);
+            //设置任意不为空的消息，告诉前端像素流生成成功!
+            stream.setScreen("SUCCESS");
             AjaxResult result = AjaxResult.success(message, stream);
+            WebSocketServer server = webSocketMap.get(sessionId);
+            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
+        } catch (Exception e) {
+            logger.info(LoggerUtil.getLoggerStace(e));
+        }
+    }
+    public void sendSuccessResponse(String graphLocation, String soundLocation, String tips, String sessionId){
+        try {
+            StreamSet stream = new StreamSet();
+            stream.setGraph(graphLocation);
+            stream.setSound(soundLocation);
+            AjaxResult result = AjaxResult.success(tips, stream);
+            WebSocketServer server = webSocketMap.get(sessionId);
+            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
+        } catch (Exception e) {
+            logger.info(LoggerUtil.getLoggerStace(e));
+        }
+    }
+    public void sendErrorResponse(String graphLocation, String soundLocation, String message, String sessionId){
+        try {
+            StreamSet stream = new StreamSet();
+            stream.setGraph(graphLocation);
+            stream.setSound(soundLocation);
+            AjaxResult result = AjaxResult.error(message, stream);
             WebSocketServer server = webSocketMap.get(sessionId);
             server.session.getBasicRemote().sendText(JSON.toJSONString(result));
         } catch (Exception e) {
@@ -193,7 +218,7 @@ public class WebSocketServer {
      */
     public StreamSet getSoundTips(String message) {
         StreamSet stream = new StreamSet();
-        String fileName = callPython.generateVoice(message);
+        String fileName = WebSocketServer.callPaddleSpeech.generateVoice(message);
         stream.setSound(fileName);
         return stream;
     }
@@ -212,7 +237,7 @@ public class WebSocketServer {
         String fileName = WebSocketServer.callMinio.download(fid);
         stream.setGraph(fileName);
         //调用paddleSpeech根据文本生成语音信息
-        fileName = callPython.generateVoice(message);
+        fileName = WebSocketServer.callPaddleSpeech.generateVoice(message);
         stream.setSound(fileName);
         return stream;
     }
