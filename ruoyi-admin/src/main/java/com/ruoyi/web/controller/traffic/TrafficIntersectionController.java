@@ -39,7 +39,7 @@ public class TrafficIntersectionController extends BaseController {
     @PostMapping("/page")
     public TableDataInfo list(@ApiParam(value = "查询的参数")@RequestBody TrafficIntersection trafficIntersection) {
         startPage();
-        List<TrafficIntersection> list = trafficIntersectionService.quertList(trafficIntersection);
+        List<TrafficIntersection> list = trafficIntersectionService.queryList(trafficIntersection);
         return getDataTable(list);
     }
 
