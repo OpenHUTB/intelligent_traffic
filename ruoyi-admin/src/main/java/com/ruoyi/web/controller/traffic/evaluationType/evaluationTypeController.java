@@ -34,7 +34,7 @@ public class evaluationTypeController extends BaseController {
     public TableDataInfo list(@ApiParam(value = "条件查询参数")@RequestBody TrafficEvaluationType trafficEvaluationType)
     {
         startPage();
-        List<TrafficEvaluationType> list =iTrafficEvaluationTypeService .queryList(trafficEvaluationType);
+        List<TrafficEvaluationType> list =iTrafficEvaluationTypeService.queryList(trafficEvaluationType);
         return getDataTable(list);
     }
 

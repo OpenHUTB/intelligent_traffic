@@ -23,7 +23,7 @@ import java.util.List;
 public class TrafficIntersectionServiceImpl extends ServiceImpl<TrafficIntersectionMapper, TrafficIntersection>
         implements ITrafficIntersectionService {
     @Override
-    public List<TrafficIntersection> quertList(TrafficIntersection trafficIntersection) {
+    public List<TrafficIntersection> queryList(TrafficIntersection trafficIntersection) {
         LambdaQueryWrapper<TrafficIntersection> queryWrapper = new LambdaQueryWrapper<>();
         //name
         if (StringUtils.isNotBlank(trafficIntersection.getName())) {
