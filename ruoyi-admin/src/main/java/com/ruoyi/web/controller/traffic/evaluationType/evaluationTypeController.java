@@ -53,7 +53,7 @@ public class evaluationTypeController extends BaseController {
     }
 
     @ApiOperation("删除评价指标")
-    @PostMapping("/delete")
+    @PostMapping("delete")
     public AjaxResult delete(@ApiParam(value = "数据集ID集合", required = true) @RequestBody List<Long> ids) {
         iTrafficEvaluationTypeService.deleteEvaluationType(ids);
         return AjaxResult.success();
@@ -67,7 +67,7 @@ public class evaluationTypeController extends BaseController {
     }
 
     @ApiOperation("评价指标的详情")
-    @GetMapping("/findById/{id}")
+    @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
                                @NotNull(message = "不能为空") Long id) {
         TrafficEvaluationType trafficArea = iTrafficEvaluationTypeService.queryById(id);
