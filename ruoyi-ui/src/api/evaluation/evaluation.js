@@ -45,6 +45,14 @@ export function delEvaluationType(data) {
   })
 }
 
+//删除单个指标类型
+export function delEvaluationTypeById(evaluationTypeId) {
+  return request({
+    url: '/traffic/evaluationType/deleteById/' + parseStrEmpty(evaluationTypeId),
+    method: 'post'
+  })
+}
+
 
 
 

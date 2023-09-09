@@ -11,20 +11,21 @@
           />
         </el-form-item>
         <el-form-item label="类型" prop="type">
-          <el-input
-            v-model="form.type"
-            placeholder="请输入类型"
-            clearable
-            style="width: 240px"
-            @keyup.enter.native="handleQuery"
-          />
+          <el-select v-model="form.type" clearable placeholder="请选择类型">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
-  
+
       <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
           <el-button
@@ -60,7 +61,7 @@
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
-  
+
       <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="编号" prop="id" width="120" />
@@ -88,13 +89,13 @@
               size="mini"
               type="text"
               icon="el-icon-delete"
-              @click="handleDelete(scope.row)"
+              @click="handleDeleteById(scope.row)"
               v-hasPermi="['system:role:remove']"
             >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-  
+
       <pagination
         v-show="total>0"
         :total="total"
@@ -102,7 +103,7 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-  
+
       <!-- 添加或修改角色配置对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="100px">
@@ -127,13 +128,21 @@
           <el-button @click="cancel">取 消</el-button>
         </div>
       </el-dialog>
-  
+
     </div>
   </template>
-  
+
   <script>
-  import { listEvaluationType, getEvaluationType, delEvaluationType, addEvaluationType, updateEvaluationType, dataScope } from "@/api/evaluation/evaluation";
-  
+    import {
+      listEvaluationType,
+      getEvaluationType,
+      delEvaluationType,
+      addEvaluationType,
+      updateEvaluationType,
+      delEvaluationTypeById,
+      dataScope
+    } from "@/api/evaluation/evaluation";
+
   export default {
     name: "Role",
     dicts: ['evaluation_type'],
@@ -188,6 +197,13 @@
             label: "仅本人数据权限"
           }
         ],
+        options: [{
+          value: '1',
+          label: '路口'
+        }, {
+          value: '2',
+          label: '区域'
+        }],
         // 查询参数
         queryParams: {
           pageNum: 1,
@@ -332,6 +348,18 @@
         const roleIds = row.roleId || this.ids;
         this.$modal.confirm('是否确认删除角色编号为"' + roleIds + '"的数据项？').then(function() {
           return delEvaluationType(roleIds);
+
+        }).then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {});
+      },
+
+      /** 删除单个按钮 */
+      handleDeleteById(row) {
+        const  rowId = row.id;
+        this.$modal.confirm('是否确认删除角色编号为"' + rowId + '"的数据项？').then(function() {
+          return delEvaluationTypeById(rowId);
         }).then(() => {
           this.getList();
           this.$modal.msgSuccess("删除成功");
