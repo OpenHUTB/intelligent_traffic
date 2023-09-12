@@ -26,6 +26,9 @@ public interface ITrafficEvaluationTypeService extends IService<TrafficEvaluatio
     //删除评价指标
     void deleteEvaluationType(List<Long> idList);
 
+    //根据id删除指标
+    void deleteTypeById(Long id);
+
     //查询指标详情
     TrafficEvaluationType queryById(Long id);
 }

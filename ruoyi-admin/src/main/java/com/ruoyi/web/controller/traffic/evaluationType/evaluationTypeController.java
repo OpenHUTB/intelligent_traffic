@@ -59,6 +59,13 @@ public class evaluationTypeController extends BaseController {
         return AjaxResult.success();
     }
 
+    @ApiOperation("根据id删除指标")
+    @PostMapping("/deleteById/{id}")
+    public AjaxResult deleteById(@PathVariable Long id) {
+        iTrafficEvaluationTypeService.deleteTypeById(id);
+        return AjaxResult.success();
+    }
+
     @ApiOperation("评价指标的详情")
     @GetMapping("findById/{id}")
     public AjaxResult findById(@PathVariable @ApiParam(name = "id")
