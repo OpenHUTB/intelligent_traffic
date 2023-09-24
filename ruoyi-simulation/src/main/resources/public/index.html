@@ -10,32 +10,41 @@
     <script type="text/javascript" src="bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
     <title>大模型智慧交通</title>
 </head>
-<body onload="load()">
+<body>
 <div class="container">
-    <section class="screen">
-        <header>大模型智慧交通场景</header>
-        <div id="player">
+    <section class="wrap">
+        <div class="screen">
+            <header>大模型智慧交通场景</header>
+            <div id="player">
+            </div>
+            <div id="introductionArea"></div>
+            <div id="progressArea">
+                <div class="progress progress-striped">
+                    <div class="progress-bar progress-bar-success" role="progressbar"
+                         style="width: 0%;">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="introductionArea"></div>
     </section>
     <section class="section_content">
         <section class="section_left">
-            <button id="record" class="btn btn-default">录制</button>
-            <button id="stop" class="btn btn-default">停止</button>
-            <button id="send" class="btn btn-default">发送</button>
+            <button id="record" class="btn btn-default" style="margin-top:1px;">录制</button>
+            <button id="stop" class="btn btn-default" style="margin-top:9px;">停止</button>
+            <button id="send" class="btn btn-default" style="margin-top:9px;">发送</button>
         </section>
         <section class="section_middle">
             <textarea id="tips" readonly></textarea>
         </section>
         <section class="section_right">
             <div id="audioArea"></div>
-            <canvas id='canvas'></canvas>
+            <div id="canvasArea"></div><canvas id='canvas'></canvas></div>
         </section>
     </section>
 </div>
 <script type="text/javascript" src="statics/record.js"></script>
 <script type="text/javascript" src="statics/webRtcPlayer.js"></script>
-<script type="text/javascript" src="statics/loadingPixStream.js"></script>
+<script type="text/javascript" src="statics/loadPixStream.js"></script>
 <script type="text/javascript" src="main.js"></script>
 <script type="text/javascript" src="websocket.js"></script>
 </body>

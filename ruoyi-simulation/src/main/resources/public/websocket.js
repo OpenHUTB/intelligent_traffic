@@ -24,6 +24,7 @@ websocket.onmessage = function(resultData){
     var screen = streamSet.screen;
     var sound = streamSet.sound;
     var graph = streamSet.graph;
+    var progress = streamSet.progress;
     if(sound!=null){
         var audioArea = document.getElementById("audioArea");
         audioArea.innerHTML="";
@@ -33,6 +34,10 @@ websocket.onmessage = function(resultData){
         audio.src="simulation/file/stream?filename="+sound;
         audio.play();
         draw(audio);
+        audio.addEventListener("ended",function(){
+             var introductionArea = document.getElementById("introductionArea");
+             introductionArea.innerHTML="";
+        });
     }
     if(graph!=null){
         var introductionArea = document.getElementById("introductionArea");
@@ -42,15 +47,22 @@ websocket.onmessage = function(resultData){
         video.autoplay = "autoplay";
         video.muted="muted"
         video.src="simulation/file/stream?filename="+graph;
-        video.play();
-        video.addEventListener("ended",function(){
+        video.addEventListener("canplay",function(e){
+            //隐藏进度条
+            $("#progressArea .progress-bar").css({"width": "100%"});
+            $("#progressArea .progress").css({"display": "none"});
+            video.play();
+        });
+        video.addEventListener("ended",function(e){
             video.remove();
         });
     }
+    if(progress!=null){
+        //设置进度条值
+        $("#progressArea .progress-bar").css({"width": progress+"%"});
+    }
     if(screen!=null){
-        //初始化
         connect();
-        shouldShowPlayOverlay = false;
     }
     if(message!=null&&message!=""){
         var tips = document.getElementById("tips");
@@ -59,5 +71,6 @@ websocket.onmessage = function(resultData){
         }else{
             tips.value=tips.value+"\n"+message;
         }
+        tips.scrollTop = tips.scrollHeight;
     }
 }
