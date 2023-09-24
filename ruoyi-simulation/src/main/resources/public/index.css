@@ -16,17 +16,21 @@ header{
     position: absolute;
     z-index: 5;
 }
-.screen{
+.wrap{
     border: solid 5px #666;
     overflow: hidden;
     padding: 5px;
+    margin-top:8px;
+}
+.screen{
     position: relative;
-    margin-top:10px;
+    background: url("statics/1.jpeg") no-repeat center;
+    background-size:100% 100%;
 }
 #player{
     width:100%;
     min-height: 415px;
-    background: rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.25);
     display:block;
     border: 0px;
 }
@@ -44,6 +48,17 @@ header{
 #introductionArea video{
     width: 100%;
 }
+#progressArea{
+    position: absolute;
+    z-index: 5;
+    width:100%;
+    bottom: 15px;
+    padding: 0px 100px;
+}
+.progress{
+    margin-bottom: 0px;
+    display: none;
+}
 .section_content{
     width: 100%;
     display: flex;
@@ -54,14 +69,13 @@ header{
     padding: 5px;
     border-left: solid 5px #666;
     border-bottom: solid 5px #666;
-    height: 165px;
+    height: 135px;
 }
 .section_left{
     width: 80px;
 }
 .section_left .btn{
     width: 100%;
-    margin-top: 12px;
 }
 .section_left, .section_middle{
     float: left;
@@ -76,12 +90,12 @@ header{
 }
 #canvas {
     width: 400px;
-    height: 150px;
+    height: 120px;
     border: solid 1px #aaa;
     padding: 5px 10px;
 }
 #tips{
-    height: 150px;
+    height: 120px;
     width: 100%;
     resize: none;
     border: solid 1px #aaa;
@@ -94,6 +108,9 @@ header{
     #player{
         height: 545px;
     }
+    #progressArea{
+        bottom: 25px;
+    }
 }
 @media screen and (min-width: 1200px) {
     .container{
@@ -101,5 +118,11 @@ header{
     }
     #player{
         height: 663px;
+    }
+    #progressArea{
+        position: absolute;
+        z-index: 5;
+        width:100%;
+        bottom: 40px;
     }
 }
