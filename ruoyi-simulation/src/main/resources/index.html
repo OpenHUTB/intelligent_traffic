@@ -9,8 +9,8 @@
         const screenWidth=document.documentElement.clientWidth,screenHeight=document.documentElement.clientHeight,screenRatio=screenWidth/screenHeight;console.log(screenRatio);const pageWidth=screenWidth/screenHeight>1.78?1.78*screenHeight:screenWidth,pageHeight=pageWidth/1.78,string=`<style> html{\n            font-size: ${pageWidth/100}px;\n        }</style>`;document.write(string)
     </script>
     <title>智慧交通大模型</title>
-    <script defer="defer" src="statics/main.0032347d.js"></script>
-    <link href="statics/main.5d3038e9.css" rel="stylesheet">
+    <script defer="defer" src="/static/js/main.0032347d.js"></script>
+    <link href="/static/css/main.5d3038e9.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -37,8 +37,6 @@
     </div>
     <div class="centre">
         <section id="player" class="mainStream"></section>
-        <section id="introductionArea"></section>
-        <section id="audioArea"></section>
         <div class="funcArea">
             <nav class="funcBtn">
                 <button id="record" class="btn">录制</button>
@@ -46,10 +44,8 @@
                 <button id="send" class="btn">发送</button>
             </nav>
             <div class="displayArea">
-                <section class="voiceDetect">
-                    <h3>语音识别</h3>
-                    <textarea name="" id="tips" cols="30" rows="10"></textarea>
-                </section>
+                <section class="voiceDetect"><h3>语音识别</h3><textarea name="" id="tips" cols="30"
+                                                                        rows="10"></textarea></section>
                 <section class="voiceStream"><h3>声波展示</h3>
                     <canvas id="canvas"></canvas>
                 </section>
@@ -63,10 +59,9 @@
         <section class="rightBottom"></section>
     </div>
 </main>
-<script type="text/javascript" src="statics/record.js"></script>
-<script type="text/javascript" src="statics/webRtcPlayer.js"></script>
-<script type="text/javascript" src="statics/loadPixStream.js"></script>
-<script type="text/javascript" src="websocket.js"></script>
-<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="../statics/record.js"></script>
+<script type="text/javascript" src="../statics/webRtcPlayer.js"></script>
+<script type="text/javascript" src="../statics/loadingPixStream.js"></script>
+<script type="text/javascript" src="../src/main.js"></script>
 </body>
 </html>
