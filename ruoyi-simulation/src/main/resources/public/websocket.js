@@ -48,9 +48,6 @@ websocket.onmessage = function(resultData){
         video.muted="muted"
         video.src="simulation/file/stream?filename="+graph;
         video.addEventListener("canplay",function(e){
-            //隐藏进度条
-            $("#progressArea .progress-bar").css({"width": "100%"});
-            $("#progressArea .progress").css({"display": "none"});
             video.play();
         });
         video.addEventListener("ended",function(e){
