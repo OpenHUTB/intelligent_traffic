@@ -100,6 +100,11 @@ export const constantRoutes = [
         path: "economy",
         name: "economy",
         component: () => import("../views/economy/index.vue"),
+      }, 
+      {
+        path: "digitalTwin",
+        name: "digitalTwin",
+        component: () => import("../views/digitalTwin/index.vue"),
       },
     ],
     redirect: '/map/traffic',
