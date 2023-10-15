@@ -133,6 +133,7 @@ simulation:
   paddleSpeech:
     interpreterLocation: C:/Users/Administrator/.conda/envs/paddleEnv/python.exe    #Anaconda虚拟环境中的python服务安装位置
     scriptLocation:
+      awaken: C:/Users/Administrator/Desktop/audiotest.py
       generateVoice: C:/Users/Administrator/Desktop/generateVoice.py   #用于调用paddleSpeech合成语音的python脚本位置
       generateText: C:/Users/Administrator/Desktop/generateText.py   #用于调用paddleSpeech语音识别的python脚本位置
   generateCode:

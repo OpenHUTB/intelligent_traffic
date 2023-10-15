@@ -1,35 +1,55 @@
-const stop = document.getElementById("stop")
-const play = document.getElementById("play")
-const send = document.getElementById("send")
+const record = document.getElementById("record")
 const canvas = document.getElementById("canvas")
+const download = document.getElementById("download")
 const ctx = canvas.getContext("2d")
 canvas.width = 400
 canvas.height = 120
-let recorder = null
-
-// 录制
-record.addEventListener("click", () => {
-  if(recorder !== null) recorder.close()
-  Recorder.get((rec) => {
-    recorder = rec
-    recorder.start()
-  })
-})
-
-// 停止
-stop.addEventListener("click", () => {
-  if(recorder === null) return alert("请先录音")
-  recorder.stop()
-})
-
-send.addEventListener("click",function(){
-    if(recorder === null) return alert("请先录音");
-    var blob = recorder.getBlob();
-    websocket.send(blob);
-    //初始化进度条
-    $("#progressArea .progress").css({"display": "block"});
-    $("#progressArea .progress-bar").css({"width": "0%"});
+let recorder = null;
+var interval = null;
+/**
+ * 开始录音
+ */
+function start(){
+    //开始录音操作
+    if(recorder !== null) {
+        recorder.close();
+    }
+    Recorder.get((rec) => {
+        recorder = rec;
+        recorder.start();
+    });
+}
+/**
+ * 停止录音
+ */
+function end(){
+    if(recorder != null){
+        //停止录音，并将录音生成的文件，
+        recorder.stop();
+    }
+}
+/**
+ * 发送录音
+ */
+function send(){
+    if(recorder != null){
+        //停止录音，并将录音生成的文件，
+        var blob = recorder.getBlob();
+        websocket.send(blob);
+        const src = recorder.wavSrc();
+        download.setAttribute("href", src)
+        $(download).click();
+    }
+}
+record.addEventListener("click",function(){
+    start();
+    interval = setInterval(function(){
+        end();
+        send();
+        start();
+    },5000);
 });
+
 /**
  * 绘制音乐播放的频谱
  */
