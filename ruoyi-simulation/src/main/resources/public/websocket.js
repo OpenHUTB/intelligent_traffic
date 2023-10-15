@@ -57,6 +57,22 @@ websocket.onmessage = function(resultData){
     if(progress!=null){
         //设置进度条值
         $("#progressArea .progress-bar").css({"width": progress+"%"});
+        //初始化进度条
+        $("#progressArea").css({"display": "block"});
+        //当有进度时，说明有任务正在处理，此时暂停监听客户语音
+        if(progress>0){
+            end();
+            clearInterval(interval);
+        }
+        //若进度条为100%，则说明任务处理已结束，可以再次开启监听客户语音
+        if(progress==100){
+            start();
+            interval = setInterval(function(){
+                end();
+                send();
+                start();
+            },5000);
+        }
     }
     if(screen!=null){
         connect();

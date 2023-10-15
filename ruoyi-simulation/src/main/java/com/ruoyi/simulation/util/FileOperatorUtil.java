@@ -18,8 +18,8 @@ import java.util.List;
  * 文件处理工具类
  */
 @Component
-public class FileUtil {
-    private Logger logger = LoggerFactory.getLogger(FileUtil.class);
+public class FileOperatorUtil {
+    private Logger logger = LoggerFactory.getLogger(FileOperatorUtil.class);
     @Resource
     private Environment environment;
     /**
@@ -40,6 +40,15 @@ public class FileUtil {
             throw new RuntimeException("保存话筒语音失败!");
         }
         return absolutePath;
+    }
+
+    /**
+     * 删除文件
+     * @param absolutePath
+     */
+    public void deleteFile(String absolutePath){
+        File file = new File(absolutePath);
+        FileUtils.deleteQuietly(file);
     }
     /**
      * 将文件保存到磁盘中
