@@ -145,23 +145,6 @@
             <version>1.4.5</version>
         </dependency>
 
-        <!--加载matlab提供的javabuilder.jar包-->
-        <dependency>
-            <groupId>matlab</groupId>
-            <artifactId>matlab.javabuilder</artifactId>
-            <version>2022R</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/javabuilder.jar</systemPath>
-        </dependency>
-
-        <!--加载matlab打包的jar包-->
-        <dependency>
-            <groupId>matlab</groupId>
-            <artifactId>matlab.signalprocessor</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/simulateAndPlotRoadRunner.jar</systemPath>
-        </dependency>
 
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

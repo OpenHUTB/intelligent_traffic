@@ -31,8 +31,8 @@ public class TrafficIntersectionServiceImpl extends ServiceImpl<TrafficIntersect
         }
         //longitude&latitude
         if (StringUtils.isNotBlank(trafficIntersection.getLongitude()) && StringUtils.isNotBlank(trafficIntersection.getLatitude())) {
-            queryWrapper.like(TrafficIntersection::getLongitude, trafficIntersection.getLongitude());
-            queryWrapper.like(TrafficIntersection::getLatitude, trafficIntersection.getLatitude());
+            queryWrapper.eq(TrafficIntersection::getLongitude, trafficIntersection.getLongitude());
+            queryWrapper.eq(TrafficIntersection::getLatitude, trafficIntersection.getLatitude());
         }
         List<TrafficIntersection> trafficIntersectionList = baseMapper.selectList(queryWrapper);
         return trafficIntersectionList;
@@ -65,6 +65,15 @@ public class TrafficIntersectionServiceImpl extends ServiceImpl<TrafficIntersect
     public TrafficIntersection queryById(Long id) {
         TrafficIntersection intersection = baseMapper.selectById(id);
         return intersection;
+    }
+
+    @Override
+    public TrafficIntersection queryByName(String name) {
+        LambdaQueryWrapper<TrafficIntersection> queryWrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotNull(name)) {
+            queryWrapper.like(TrafficIntersection::getName, name);
+        }
+        return baseMapper.selectOne(queryWrapper);
     }
 
     /**
