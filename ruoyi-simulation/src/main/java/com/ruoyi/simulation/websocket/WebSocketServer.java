@@ -142,14 +142,14 @@ public class WebSocketServer {
     private boolean awaken(String voicePath, String sessionId){
         AjaxResult result = WebSocketServer.callPaddleSpeech.awakenCheck(voicePath);
         if(result.get(CODE_TAG).equals(HttpStatus.SUCCESS)){
-            redisTemplate.opsForValue().set(sessionId, true, 60, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(sessionId, true, 30, TimeUnit.SECONDS);
             this.sendSuccessResponse("唉，我在!","",null, sessionId);
             return false;
         }else if(redisTemplate.opsForValue().get(sessionId)==null||redisTemplate.opsForValue().get(sessionId)==false){
             //FileUtils.deleteFile(voicePath);
             return false;
         }
-        redisTemplate.opsForValue().set(sessionId, true, 60, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(sessionId, true, 30, TimeUnit.SECONDS);
         return true;
     }
 
