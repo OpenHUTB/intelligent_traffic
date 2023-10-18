@@ -29,4 +29,7 @@ public interface ITrafficIntersectionService extends IService<TrafficIntersectio
     //查询交通路口的详情
     TrafficIntersection queryById(Long id);
 
+    //根据路口名称查询
+    TrafficIntersection queryByName(String name);
+
 }

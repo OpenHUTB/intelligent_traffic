@@ -1,12 +1,19 @@
 package com.ruoyi.traffic.matlab;
 
 import com.mathworks.toolbox.javabuilder.external.org.json.JSONArray;
-import simulateAndPlotRoadRunner.simulateAndPlotRoadRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import trafficData2.TrafficData2;
+
 
 /**
  * 从matlab获取交通相关数据的工具类
  */
+@Component
 public class MatlabForTrafficDataUtil {
+
+    @Autowired
+    private RoadRunnerProperties properties;
     /**
      * 获取交通数据并转为Json数组
      * @return
@@ -14,15 +21,15 @@ public class MatlabForTrafficDataUtil {
      */
     // TODO 先暂时将各路径在这以用来测试数据的连通
     public JSONArray dataFromMatlab() throws Exception {
-        simulateAndPlotRoadRunner process = new simulateAndPlotRoadRunner();
+        TrafficData2 process = new TrafficData2();
         // roadrunner的project路径
-        String rrProjectPath = "E:/trafficProject/Roadrunner";
+        String rrProjectPath = properties.getRrProjectPath();
         // roadrunner中动态场景文件名
-        String rrScenarioPath = "E:/trafficProject/Roadrunner/Scenarios/baigezui.rrscenario";
+        String rrScenarioPath = properties.getRrScenarioPath();
         // roadrunner软件启动路径
-        String workPath = "D:/software/Roadrunner/RoadRunner_2022b/bin/win64";
+        String workPath = properties.getWorkPath();
         //运行matlab中获取交通数据的函数
-        Object[] objects = process.simulateAndPlotRoadRunnerScenario(1, rrProjectPath, rrScenarioPath, workPath);
+        Object[] objects = process.trafficData2(2, rrProjectPath, rrScenarioPath, workPath);
         // 先将matlab传来的数据转换成string类型
         String s = objects[0].toString();
 
