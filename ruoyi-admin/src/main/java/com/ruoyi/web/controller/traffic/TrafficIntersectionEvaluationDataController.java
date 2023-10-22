@@ -75,7 +75,9 @@ public class TrafficIntersectionEvaluationDataController extends BaseController 
     @ApiOperation("获取仿真数据")
     @PostMapping("/data")
     public AjaxResult addData() throws Exception {
-        JSONArray jsonArray = matlab.dataFromMatlab();
+        Object[] objects = matlab.dataFromMatlab();
+        String s = objects[0].toString();
+        JSONArray jsonArray = new JSONArray(s);
         trafficIntersectionEvaluationDataService.addData(jsonArray);
         return AjaxResult.success();
 
