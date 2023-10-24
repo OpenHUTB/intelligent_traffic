@@ -1,56 +1,65 @@
 <template>
-  <div>
-    <dv-border-box-1 style="padding: 5px"
-      >
-      <h2 style="margin: 20px">各区县车流量</h2>
-      <dv-capsule-chart :config="config" style="width: 400px; height: 500px"
-    /></dv-border-box-1>
-  </div>
+    <div>
+        <dv-border-box-1 style="padding: 5px">
+            <h2 style="margin: 20px">路口饱和度详细信息展示</h2>
+            <!-- <h2 v-text="config.roleList"></h2> -->
+            <dv-capsule-chart :config="config" style="width: 400px; height: 500px" />
+        </dv-border-box-1>
+    </div>
 </template>
 
 <script>
+import { pageIntersectionData } from "@/api/intersectionData/intersectionData";
+
 export default {
-  data() {
-    return {
-      config: {
-        data: [
-        {
-            name: "湘江新区",
-            value: 179,
-          },          
-          {
-            name: "岳麓区",
-            value: 167,
-          },
-          {
-            name: "芙蓉区",
-            value: 67,
-          },
-          {
-            name: "开福区",
-            value: 123,
-          },
-          {
-            name: "天心区",
-            value: 55,
-          },
-          {
-            name: "望城区",
-            value: 98,
-          },
-          {
-            name: "长沙县",
-            value: 55,
-          },
-          {
-            name: "浏阳市",
-            value: 85,
-          },
-        ],
-      },
-    };
-  },
+    data() {
+        return {
+            config: {
+                // roleList: [
+                //     {
+                //       name:'',
+                //       value:''
+                //     }
+                // ], // 角色表格数据
+            }
+        };
+    },
+
+    created() {
+        this.getList();
+    },
+
+    methods: {
+        getList() {
+            const params = { evaluationTypeId: 3 };
+            pageIntersectionData(params)
+                .then((response) => {
+                    // console.log("2")
+                    if (response.code === 200) {
+                        console.log(response)
+                        const { rows } = response;
+                        // console.log(rows)
+                        let roleList = {}
+                        roleList.data = rows.map((item) => ({
+                            name: item.intersectionName,
+                            value: item.value,
+                        }));
+                        this.config = roleList
+                        // console.log(this.config.roleList)
+                        // this.config = { ...this.config }
+                        //  console.log(this.config)
+                        // console.log(this)
+                    } else {
+                        console.error("获取路口饱和度数据失败");
+                    }
+                })
+                .catch((error) => {
+                    console.error("获取路口饱和度数据失败:", error);
+                });
+        },
+    },
 };
 </script>
 
-<style></style>
+<style>
+</style>
