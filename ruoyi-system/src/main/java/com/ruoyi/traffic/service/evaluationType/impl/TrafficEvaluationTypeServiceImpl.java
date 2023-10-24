@@ -71,6 +71,15 @@ public class TrafficEvaluationTypeServiceImpl extends ServiceImpl<TrafficEvaluat
         return trafficEvaluationType;
     }
 
+    @Override
+    public TrafficEvaluationType queryByName(String name) {
+        LambdaQueryWrapper<TrafficEvaluationType> queryWrapper =  new LambdaQueryWrapper<>();
+        if (StringUtils.isNotNull(name)) {
+            queryWrapper.like(TrafficEvaluationType::getName, name);
+        }
+        return baseMapper.selectOne(queryWrapper);
+    }
+
     /**
      * 检验评价指标名称是否重复
      * @param trafficEvaluationType

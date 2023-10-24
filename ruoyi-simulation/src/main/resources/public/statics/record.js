@@ -196,14 +196,14 @@
         audioBufferSouceNode.start(0)
 
         let top = new Uint8Array(analyser.frequencyBinCount)
-        let gradient = ctx.createLinearGradient(0, 0, 4, 200)
+        let gradient = ctx.createLinearGradient(0, 0, 4, 120)
         gradient.addColorStop(1, 'pink')
         gradient.addColorStop(0.5, 'blue')
         gradient.addColorStop(0, 'red')
         let drawing = function() {
           let array = new Uint8Array(analyser.frequencyBinCount)
           analyser.getByteFrequencyData(array)
-          ctx.clearRect(0, 0, 400, 150)
+          ctx.clearRect(0, 0, 400, 120)
           for(let i = 0; i < array.length; i++) {
             let _height = array[i]
             if(!top[i] || (_height > top[i])) {//帽头落下
@@ -211,8 +211,8 @@
             } else {
               top[i] -= 1
             }
-            ctx.fillRect(i * 20, 200 - _height, 4, _height)
-            ctx.fillRect(i * 20, 200 - top[i] -6.6, 4, 3.3)//绘制帽头
+            ctx.fillRect(i * 20, 120 - _height, 4, _height)
+            ctx.fillRect(i * 20, 120 - top[i] -6.6, 4, 3.3)//绘制帽头
             ctx.fillStyle = gradient
           }
           requestAnimationFrame(drawing)
