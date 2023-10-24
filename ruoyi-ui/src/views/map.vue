@@ -43,6 +43,28 @@
                     ></router-link
                   >
                 </div>
+
+
+  <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+                 <a href="http://172.21.116.79/" target="_blank"><span class="text" @click="changeTabbarIndex(1)"
+                      >像素流</span
+                    >   </a >
+                </div>
+      <!-- <el-row> -->
+      <!-- <a href=" " target="_blank">
+      <el-button >像素流</el-button>
+  </a > -->
+    <!-- </el-row> -->
+
+    <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+                  <router-link to="/map/population"
+                    ><span class="text" @click="changeTabbarIndex(1)"
+                      >路网信息</span
+                    ></router-link
+                  >
+                </div> -->
+
+
                 <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
                   <router-link to="/map/population"
                     ><span class="text" @click="changeTabbarIndex(1)"
