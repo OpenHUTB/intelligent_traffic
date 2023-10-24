@@ -1,6 +1,6 @@
 package com.ruoyi.simulation.call;
 
-import com.ruoyi.simulation.util.FileUtil;
+import com.ruoyi.simulation.util.FileOperatorUtil;
 import com.ruoyi.simulation.util.LoggerUtil;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectArgs.Builder;
@@ -24,7 +24,7 @@ public class CallMinio {
     @Resource
     private MinioClient minioClient;
     @Resource
-    private FileUtil fileUtil;
+    private FileOperatorUtil fileUtil;
 
     /**
      * 从minio中下载文件
