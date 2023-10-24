@@ -38,6 +38,7 @@ export default {
  
     },
 
+    
     methods: {
         getList() {
             const params = { evaluationTypeId: 13 }; pageIntersectionData(params).then((response) => {

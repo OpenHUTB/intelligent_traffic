@@ -98,6 +98,7 @@ export default {
             },
           },
         ],
+        
         series: [
           {
             name: "车辆",
