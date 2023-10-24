@@ -43,20 +43,20 @@
                     ></router-link
                   >
                 </div>
-                <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+                <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
                   <router-link to="/map/population"
                     ><span class="text" @click="changeTabbarIndex(1)"
                       >路网信息</span
                     ></router-link
                   >
-                </div>
-                <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
+                </div> -->
+                <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
                   <router-link to="/map/environment"
                     ><span class="text" @click="changeTabbarIndex(2)"
                       >态势感知</span
                     ></router-link
                   >
-                </div>
+                </div> -->
               </div>
               <div class="d-flex aside-width">
                 <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 3 }">
