@@ -4,8 +4,6 @@
 
 
 
-
-
        <dv-border-box-8 :reverse="true" style="padding: 10px;width: 33%">
             <div>
               <Echart :options="options1" height="350px" width="600px" />

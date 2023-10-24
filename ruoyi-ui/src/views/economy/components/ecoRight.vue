@@ -8,6 +8,7 @@
       </dv-border-box-8>
     </div>
 
+    
     <div class="body">
       <!-- 城市农作物比例占比 -->
       <div class="body_table1">
@@ -98,7 +99,7 @@ export default {
             },
           },
         ],
-        
+
         series: [
           {
             name: "车辆",
