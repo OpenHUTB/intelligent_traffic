@@ -29,6 +29,7 @@ export default {
         this.getList();
     },
 
+    
     methods: {
         getList() {
             const params = { evaluationTypeId: 3 };
