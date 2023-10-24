@@ -66,6 +66,13 @@
                     ></router-link
                   >
                 </div>
+                   <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 4 }">
+                    <router-link to="/map/digitalTwin"
+                      ><span class="text" @click="changeTabbarIndex(4)"
+                        >数字孪生</span
+                      ></router-link
+                    >
+                  </div>
                 <div class="react-right mr-4 react-l-s">
                   <span class="react-after"></span>
                   <span class="text"
