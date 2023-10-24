@@ -24,6 +24,7 @@ websocket.onmessage = function(resultData){
     var screen = streamSet.screen;
     var sound = streamSet.sound;
     var graph = streamSet.graph;
+    var progress = streamSet.progress;
     if(sound!=null){
         var audioArea = document.getElementById("audioArea");
         audioArea.innerHTML="";
@@ -33,6 +34,10 @@ websocket.onmessage = function(resultData){
         audio.src="simulation/file/stream?filename="+sound;
         audio.play();
         draw(audio);
+        audio.addEventListener("ended",function(){
+             var introductionArea = document.getElementById("introductionArea");
+             introductionArea.innerHTML="";
+        });
     }
     if(graph!=null){
         var introductionArea = document.getElementById("introductionArea");
@@ -42,15 +47,35 @@ websocket.onmessage = function(resultData){
         video.autoplay = "autoplay";
         video.muted="muted"
         video.src="simulation/file/stream?filename="+graph;
-        video.play();
-        video.addEventListener("ended",function(){
+        video.addEventListener("canplay",function(e){
+            video.play();
+        });
+        video.addEventListener("ended",function(e){
             video.remove();
         });
     }
+    if(progress!=null){
+        //设置进度条值
+        $("#progressArea .progress-bar").css({"width": progress+"%"});
+        //初始化进度条
+        $("#progressArea").css({"display": "block"});
+        //当有进度时，说明有任务正在处理，此时暂停监听客户语音
+        if(progress>0){
+            end();
+            clearInterval(interval);
+        }
+        //若进度条为100%，则说明任务处理已结束，可以再次开启监听客户语音
+        if(progress==100){
+            start();
+            interval = setInterval(function(){
+                end();
+                send();
+                start();
+            },5000);
+        }
+    }
     if(screen!=null){
-        //初始化
         connect();
-        shouldShowPlayOverlay = false;
     }
     if(message!=null&&message!=""){
         var tips = document.getElementById("tips");
@@ -59,5 +84,6 @@ websocket.onmessage = function(resultData){
         }else{
             tips.value=tips.value+"\n"+message;
         }
+        tips.scrollTop = tips.scrollHeight;
     }
 }

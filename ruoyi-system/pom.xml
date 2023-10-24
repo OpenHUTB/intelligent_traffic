@@ -25,6 +25,31 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!--加载matlab提供的javabuilder.jar包-->
+        <dependency>
+            <groupId>javabuilder</groupId>
+            <artifactId>javabuilder</artifactId>
+            <version>2022</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/javabuilder.jar</systemPath>
+        </dependency>
+
+        <!--加载matlab打包的jar包-->
+        <dependency>
+            <groupId>trafficData2</groupId>
+            <artifactId>trafficData2</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/trafficData2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mathworks</groupId>
+            <artifactId>cfbutils</artifactId>
+            <version>2022</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/cfbutils.jar</systemPath>
+        </dependency>
 
     </dependencies>
 

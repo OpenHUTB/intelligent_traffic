@@ -2,7 +2,7 @@ package com.ruoyi.simulation.call;
 
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.simulation.util.CommandUtil;
-import com.ruoyi.simulation.util.FileUtil;
+import com.ruoyi.simulation.util.FileOperatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -22,7 +22,7 @@ public class CallBigModel {
     @Resource
     private Environment environment;
     @Resource
-    private FileUtil fileUtil;
+    private FileOperatorUtil fileUtil;
     /**
      * 调用大模型生成执行脚本代码
      * @param command 文本命令

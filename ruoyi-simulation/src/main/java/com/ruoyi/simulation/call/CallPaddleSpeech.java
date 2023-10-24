@@ -3,8 +3,8 @@ package com.ruoyi.simulation.call;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.simulation.util.CommandUtil;
-import com.ruoyi.simulation.util.FileUtil;
-import com.ruoyi.simulation.util.LoggerUtil;
+import com.ruoyi.simulation.util.Constant.Status;
+import com.ruoyi.simulation.util.FileOperatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -24,7 +24,40 @@ public class CallPaddleSpeech {
     @Resource
     private Environment environment;
     @Resource
-    private FileUtil fileUtil;
+    private FileOperatorUtil fileUtil;
+    public AjaxResult awakenCheck(String location){
+        CommandUtil<AjaxResult> commandUtil = new CommandUtil<AjaxResult>(){
+            @Override
+            protected Process getProcess() throws Exception {
+                //获取python解释器在服务器中的绝对路径
+                String interpreterLocation = environment.getProperty("simulation.paddleSpeech.interpreterLocation");
+                String scriptLocation = environment.getProperty("simulation.paddleSpeech.scriptLocation.awaken");
+                String[] arguments = new String[]{interpreterLocation,scriptLocation, location};
+                ProcessBuilder builder = new ProcessBuilder(arguments);
+                Process process = builder.start();
+                return process;
+            }
+
+            @Override
+            protected AjaxResult processResult(InputStream ins) throws Exception {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
+                List<String> outputList = new ArrayList<String>();
+                String str = null;
+                while((str = bufferedReader.readLine())!=null){
+                    logger.info(str);
+                    outputList.add(str);
+                }
+                String text = outputList.get(outputList.size()-1);
+                String[] arr = text.split(",");
+                if(StringUtils.equals(arr[0], Status.SUCCESS)){
+                    return AjaxResult.success("唤醒成功!",arr[1]);
+                }else{
+                    return AjaxResult.error("唤醒失败!",arr[1]);
+                }
+            }
+        };
+        return commandUtil.executionCommand();
+    }
     /**
      * 调用PaddleSpeech将声音转为文字
      * @param location 语音文件地址

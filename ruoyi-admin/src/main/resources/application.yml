@@ -131,18 +131,19 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 simulation:
   paddleSpeech:
-    interpreterLocation: C:/Anaconda/envs/padpkg/python.exe    #Anaconda虚拟环境中的python服务安装位置
+    interpreterLocation: C:/Users/Administrator/.conda/envs/paddleEnv/python.exe    #Anaconda虚拟环境中的python服务安装位置
     scriptLocation:
-      generateVoice: C:/Buffer/PaddleS/generateVoice.py   #用于调用paddleSpeech合成语音的python脚本位置
-      generateText: C:/Buffer/PaddleS/generateText.py   #用于调用paddleSpeech语音识别的python脚本位置
+      awaken: C:/Users/Administrator/Desktop/audiotest.py
+      generateVoice: C:/Users/Administrator/Desktop/generateVoice.py   #用于调用paddleSpeech合成语音的python脚本位置
+      generateText: C:/Users/Administrator/Desktop/generateText.py   #用于调用paddleSpeech语音识别的python脚本位置
   generateCode:
-    interpreterLocation: C:/Buffer/gpt/gpt-main/webui/python/python.exe    #非虚拟环境的python服务安装位置
-    scriptLocation: C:/Buffer/gpt/gpt-main/webui/client.py    #生成代码的客户端脚本位置
+    interpreterLocation: C:/ProgramData/anaconda3/python.exe    #非虚拟环境的python服务安装位置
+    scriptLocation: D:/project/gpt/webui/client.py    #生成代码的客户端脚本位置
   matlab:
-    interpreterLocation: C:/Buffer/gpt/matlab/bin/matlab.exe   #matlab安装位置
-    scriptLocation: C:/Buffer/gpt/gpt-main/sim    #
-    autoVrtlEnvLocation: C:/Buffer/gpt/WindowsNoEditor/AutoVrtlEnv.exe
-  filepath: C:/users/Administrator/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径
+    interpreterLocation: D:/project/matlab/bin/matlab.exe   #matlab安装位置
+    scriptLocation: D:/project/gpt/sim    #
+    autoVrtlEnvLocation: D:/project/gpt/sim/WindowsNoEditor/AutoVrtlEnv.exe
+  filepath: D:/users/Administrator/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径
   video:
     url: 159.75.166.108:22:18980/pmwlapi/v1/txt2video
     voice: zh-CN-XiaoyiNeural
@@ -153,3 +154,11 @@ simulation:
     secretKey: minio123!@#
     bucket: pmaigc
     secure: False
+
+roadrunner:
+  # roadrunner的project路径
+  rrProjectPath: E:/trafficProject/Roadrunner
+  # roadrunner中动态场景文件名
+  rrScenarioPath: E:/trafficProject/Roadrunner/Scenarios/桐梓坡-谷丰-岳麓大道-望岳路.rrscenario
+  # roadrunner软件启动路径
+  workPath: D:/software/Roadrunner/RoadRunner_2022b/bin/win64

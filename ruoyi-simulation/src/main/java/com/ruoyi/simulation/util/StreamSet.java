@@ -22,4 +22,9 @@ public class StreamSet {
      */
     @ApiModelProperty("像素流")
     private String screen;
+    /**
+     * 进度条
+     */
+    @ApiModelProperty("进度条")
+    private Double progress;
 }

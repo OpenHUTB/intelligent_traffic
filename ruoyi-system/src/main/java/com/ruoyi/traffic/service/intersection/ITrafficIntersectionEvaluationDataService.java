@@ -1,6 +1,8 @@
 package com.ruoyi.traffic.service.intersection;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONArray;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONException;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
 
@@ -39,5 +41,7 @@ public interface ITrafficIntersectionEvaluationDataService extends IService<Traf
     //联表查询
     List<TrafficIntersectionEvaluationDataVo> relatedQueryList(TrafficIntersectionEvaluationData trafficIntersectionEvaluationData);
 
+    //新增路网仿真数据
+    void addData(JSONArray jsonArray) throws JSONException;
 
 }

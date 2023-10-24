@@ -31,4 +31,7 @@ public interface ITrafficEvaluationTypeService extends IService<TrafficEvaluatio
 
     //查询指标详情
     TrafficEvaluationType queryById(Long id);
+
+    // 根据名称查询
+    TrafficEvaluationType queryByName(String name);
 }
