@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div style="display: flex; justify-content: space-between; width: 100vw">
+    <div style="display: flex; justify-content: space-between; width: 100%">
 
 
-         <dv-border-box-6 style="padding-top: 20px">
+         <dv-border-box-6 style="padding-top: 20px ;width: 33%">
        
             <h2 class="title">周边路段全日段拥堵指数</h2>
             <Echart :options="options2" height="300px" width="600px" />
@@ -12,7 +12,7 @@
 
 
 
-       <dv-border-box-8 :reverse="true" style="padding: 10px">
+       <dv-border-box-8 :reverse="true" style="padding: 10px;width: 33%">
             <div>
               <Echart :options="options1" height="350px" width="600px" />
             </div>
@@ -22,7 +22,7 @@
 
 
 
-      <dv-border-box-6 style="padding: 20px">
+      <dv-border-box-6 style="padding: 20px;width: 33%">
         <div class="colum_center">
           <h2>各地区平均速度展示</h2>
           <dv-scroll-ranking-board :config="jam" style="width: 600px; height: 300px" />
