@@ -120,7 +120,7 @@ export default {
               valueFormatter: function (value) {
                 return value + " 万辆";
               },
-            },
+            }, 
             data: [
               40.21, 59.81, 30.45, 36.15, 32.45, 26.54, 39.94, 33.55, 19.63,
               24.7, 21.09, 3.5, 4.21,
