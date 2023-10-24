@@ -1,11 +1,23 @@
 <template>
     <div>
         <dv-border-box-1 style="padding: 5px">
-            <h2 style="margin: 20px">路口饱和度详细信息展示</h2>
-            <!-- <h2 v-text="config.roleList"></h2> -->
-            <dv-capsule-chart :config="config" style="width: 400px; height: 500px" />
+            <div class="colum_center">
+                <h2 style="margin: 20px">路口车流量详细信息展示</h2>
+                <!-- <h2 v-text="config.roleList"></h2> -->
+                <dv-capsule-chart :config="config" style="width: 400px; height: 500px" />
+            </div>
         </dv-border-box-1>
+
+
+
+        
     </div>
+
+
+
+
+
+
 </template>
 
 <script>
@@ -21,7 +33,8 @@ export default {
                 //       value:''
                 //     }
                 // ], // 角色表格数据
-            }
+            },
+
         };
     },
 
@@ -29,10 +42,10 @@ export default {
         this.getList();
     },
 
-    
+
     methods: {
         getList() {
-            const params = { evaluationTypeId: 3 };
+            const params = { evaluationTypeId: 13 };
             pageIntersectionData(params)
                 .then((response) => {
                     // console.log("2")
@@ -51,16 +64,23 @@ export default {
                         //  console.log(this.config)
                         // console.log(this)
                     } else {
-                        console.error("获取路口饱和度数据失败");
+                        console.error("获取交通流量数据失败");
                     }
                 })
                 .catch((error) => {
-                    console.error("获取路口饱和度数据失败:", error);
+                    console.error("获取交通流量数据失败:", error);
                 });
         },
     },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.colum_center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 </style>
