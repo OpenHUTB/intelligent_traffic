@@ -3,12 +3,6 @@
     <div style="display: flex; justify-content: space-between; width: 100%">
 
 
-         <dv-border-box-6 style="padding-top: 20px ;width: 33%">
-       
-            <h2 class="title">周边路段全日段拥堵指数</h2>
-            <Echart :options="options2" height="300px" width="600px" />
-          </dv-border-box-6>
-
 
 
 
@@ -18,6 +12,12 @@
             </div>
           </dv-border-box-8>
 
+
+         <dv-border-box-6 style="padding-top: 20px ;width: 33%">
+       
+            <h2 class="title">周边路段全日段拥堵指数</h2>
+            <Echart :options="options2" height="300px" width="600px" />
+          </dv-border-box-6>
 
 
 
@@ -56,8 +56,7 @@ export default {
   data() {
     return {
 
-
-      options1: {
+options1: {
         title: {
           text: "路口指标分析",
         },
@@ -94,102 +93,6 @@ export default {
 
 
 
-      options1: {
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            crossStyle: {
-              color: "#999",
-            },
-          },
-        },
-        toolbox: {
-          feature: {
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ["line", "bar"] },
-            restore: { show: true },
-            saveAsImage: { show: true },
-          },
-        },
-        legend: {
-          data: ["车辆", "车辆增长率"],
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: [
-              "6:00",
-              "7:00",
-              "8:00",
-              "9:00",
-              "10:00",
-              "11:00",
-              "12:00",
-              "13:00",
-              "14:00",
-              "15:00",
-              "16:00",
-              "17:00",
-              "18:00",
-            ],
-            axisPointer: {
-              type: "shadow",
-            },
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-            name: "万辆",
-            min: 2700,
-            max: 3300,
-            interval: 100,
-            axisLabel: {
-              formatter: "{value}",
-            },
-          },
-          {
-            type: "value",
-            name: "%",
-            min: 0,
-            max: 70,
-            interval: 10,
-            axisLabel: {
-              formatter: "{value}",
-            },
-          },
-        ],
-        series: [
-          {
-            name: "车辆",
-            type: "bar",
-            tooltip: {
-              valueFormatter: function (value) {
-                return value + " 万";
-              },
-            },
-            data: [
-              2920, 2950, 2970, 3010, 3040, 3070, 3110, 3150, 3160, 3190, 3210,
-              3220, 3250,
-            ],
-          },
-          {
-            name: "车辆增长率",
-            type: "line",
-            yAxisIndex: 1,
-            tooltip: {
-              valueFormatter: function (value) {
-                return value + " 万辆";
-              },
-            },
-            data: [
-              40.21, 59.81, 30.45, 36.15, 32.45, 26.54, 39.94, 33.55, 19.63,
-              24.7, 21.09, 3.5, 4.21,
-            ],
-          },
-        ],
-      },
       options2: {
         tooltip: {
           trigger: "axis",
