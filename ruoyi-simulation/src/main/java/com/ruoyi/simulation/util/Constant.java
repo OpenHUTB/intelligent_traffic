@@ -1,7 +1,10 @@
 package com.ruoyi.simulation.util;
 
 public class Constant {
-    public class Status{
+    /**
+     * 唤醒结果状态
+     */
+    public class AwakenStatus{
         public static final String SUCCESS = "1";
         public static final String FAILED = "0";
     }
