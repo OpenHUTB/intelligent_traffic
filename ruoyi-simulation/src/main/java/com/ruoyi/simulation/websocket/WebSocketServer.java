@@ -1,14 +1,15 @@
 package com.ruoyi.simulation.websocket;
 
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.simulation.call.CallBigModel;
 import com.ruoyi.simulation.call.CallMinio;
 import com.ruoyi.simulation.call.CallPaddleSpeech;
 import com.ruoyi.simulation.call.CallVideo;
-import com.ruoyi.simulation.util.*;
+import com.ruoyi.simulation.util.FileOperatorUtil;
+import com.ruoyi.simulation.util.ListUtil;
+import com.ruoyi.simulation.util.LoggerUtil;
+import com.ruoyi.simulation.util.StreamSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,10 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-
-import static com.ruoyi.common.core.domain.AjaxResult.CODE_TAG;
 
 @Component
 @ServerEndpoint("/simulation/websocket/")
@@ -36,6 +35,7 @@ public class WebSocketServer {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     private static Map<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<String, WebSocketServer>();
     private static Map<String, List<String>> codeMap = new ConcurrentHashMap<String, List<String>>();
+    private static Map<String, String> commandMap = new HashMap<String, String>();
     private Session session = null;
     private static FileOperatorUtil fileUtil;
     private static CallPaddleSpeech callPaddleSpeech;
@@ -76,6 +76,7 @@ public class WebSocketServer {
     public void openConnection(Session session) {
         this.session = session;
         webSocketMap.put(session.getId(), this);
+        commandMap.put(session.getId(),"");
         logger.info("----------------------------连接已建立-----------------------------");
     }
 
@@ -104,15 +105,11 @@ public class WebSocketServer {
             //存储话筒接收到的语音文件，并返回语音文件存储位置的绝对路径
             String voicePath = fileUtil.storeFileToDisk(blob,"wav");
             logger.info("语音文件存储路径："+voicePath);
-            //语音唤醒功能，如果用户发送“你好小轩“，那么将会唤醒大模型功能
-            if(!this.awaken(voicePath,session.getId())){
-                return;
-            }
-            this.sendSuccessResponse("1693640214093.mp4","processing.wav","正在处理您的请求，请耐心等待...",15d, session.getId());
+            this.sendSuccessResponse("processing.wav","正在处理您的请求，请耐心等待...",15d, session.getId());
             //第一步，将语音转换为文字
             String text = WebSocketServer.callPaddleSpeech.generateText(voicePath);
             logger.info("语音识别后的文本为："+text);
-            this.sendSuccessResponse("1693640306073.mp4","identifiedSuccessfully.wav", "语音识别成功!当前语音转换为如下文本：" + text,45d, session.getId());
+            this.sendSuccessResponse("identifiedSuccessfully.wav", "语音识别成功!当前语音转换为如下文本：" + text,35d, session.getId());
             //判断是否只是提问
             if(!this.answer(text,session.getId())){
                 return;
@@ -122,37 +119,16 @@ public class WebSocketServer {
             codeList = this.accumulationCode(codeList,text,session.getId());
             String codeStr = ListUtil.toString(codeList);
             logger.info("调用大模型生成Matlab代码如下：\n" + codeStr);
-            this.sendSuccessResponse("1693640388885.mp4","codeGenerationSuccessful.wav","代码生成成功，调用大模型生成Matlab代码如下：\n" + codeStr,70d, session.getId());
+            this.sendSuccessResponse("codeGenerationSuccessful.wav","代码生成成功，调用大模型生成Matlab代码如下：\n" + codeStr,70d, session.getId());
             //第三步，调用“WebGL”渲染三维效果像素流
             WebSocketServer.callBigModel.generatePixelStream(codeList);
             logger.info("三维场景像素流生成中...");
-            this.sendPixStreamResponse("1693728667826.mp4","pixelStreamGenerating.wav","三维场景像素流生成中...", 100d, session.getId());
+            this.sendPixStreamResponse("pixelStreamGenerating.wav","三维场景像素流生成中...", 95d, session.getId());
         } catch (Exception e){
             sendErrorResponse(e.getMessage(), session.getId());
             logger.info(LoggerUtil.getLoggerStace(e));
         }
     }
-
-    /**
-     * 唤醒功能
-     * @param voicePath
-     * @param sessionId
-     * @return
-     */
-    private boolean awaken(String voicePath, String sessionId){
-        AjaxResult result = WebSocketServer.callPaddleSpeech.awakenCheck(voicePath);
-        if(result.get(CODE_TAG).equals(HttpStatus.SUCCESS)){
-            redisTemplate.opsForValue().set(sessionId, true, 30, TimeUnit.SECONDS);
-            this.sendSuccessResponse("唉，我在!","",null, sessionId);
-            return false;
-        }else if(redisTemplate.opsForValue().get(sessionId)==null||redisTemplate.opsForValue().get(sessionId)==false){
-            //FileUtils.deleteFile(voicePath);
-            return false;
-        }
-        redisTemplate.opsForValue().set(sessionId, true, 30, TimeUnit.SECONDS);
-        return true;
-    }
-
     /**
      * 判断是否为问答
      * @param text
@@ -163,7 +139,7 @@ public class WebSocketServer {
         if(text.contains("做什么")&&text.contains("大模型")){
             Thread.sleep(8000);
             String str = "我是智慧交通大模型，能生成交通的三维数字孪生场景，譬如生成汽车、人，安装摄像头、交通信号灯，也能生成导航路线以进行直观浏览、开展自动路线调度。还能根据突发事件和应急预案，进行可视化调度等。要不请您来试用一下我的功能吧！";
-            this.sendSuccessResponse("1693365009981.mp4","1693362920112.wav", str, 100d, sessionId);
+            this.sendSuccessResponse("1693362920112.wav", str, 100d, sessionId);
             return false;
         }
         return true;
@@ -171,12 +147,12 @@ public class WebSocketServer {
     /**
      * 代码叠加功能
      * @param codeList
-     * @param text
+     * @param command
      * @param sessionId
      */
-    public List<String> accumulationCode(List<String> codeList, String text, String sessionId){
+    public List<String> accumulationCode(List<String> codeList, String command, String sessionId){
         List<String> preCodes = codeMap.get(sessionId);
-        if(text.contains("基础上")&&preCodes!=null){
+        if(command.contains("基础上")&&preCodes!=null){
             preCodes.addAll(codeList);
             codeList = preCodes;
         }
@@ -198,46 +174,9 @@ public class WebSocketServer {
             logger.info(LoggerUtil.getLoggerStace(e));
         }
     }
-
-    /**
-     * 返回执行成功响应
-     * @param message 语音消息文本
-     * @param tips 文本提示消息
-     * @param sessionId socket会话id
-     */
-    public void sendSuccessResponse(String message, String tips, Double progress, String sessionId){
-        try {
-            StreamSet stream = getSoundTips(message);
-            stream.setProgress(progress);
-            AjaxResult result = AjaxResult.success(tips, stream);
-            WebSocketServer server = webSocketMap.get(sessionId);
-            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
-        } catch (Exception e) {
-            logger.info(LoggerUtil.getLoggerStace(e));
-        }
-    }
-    /**
-     * 返回像素流响应
-     * @param message
-     * @param sessionId
-     */
-    public void sendPixStreamResponse(String message, Double progress, String sessionId){
-        try {
-            StreamSet stream = getGraphTips(message);
-            stream.setProgress(progress);
-            //设置任意不为空的消息，告诉前端像素流生成成功!
-            stream.setScreen("SUCCESS");
-            AjaxResult result = AjaxResult.success(message, stream);
-            WebSocketServer server = webSocketMap.get(sessionId);
-            server.session.getBasicRemote().sendText(JSON.toJSONString(result));
-        } catch (Exception e) {
-            logger.info(LoggerUtil.getLoggerStace(e));
-        }
-    }
-    public void sendSuccessResponse(String graphLocation, String soundLocation, String tips, Double progress, String sessionId){
+    public void sendSuccessResponse(String soundLocation, String tips, Double progress, String sessionId){
         try {
             StreamSet stream = new StreamSet();
-            stream.setGraph(graphLocation);
             stream.setSound(soundLocation);
             stream.setProgress(progress);
             AjaxResult result = AjaxResult.success(tips, stream);
@@ -247,10 +186,9 @@ public class WebSocketServer {
             logger.info(LoggerUtil.getLoggerStace(e));
         }
     }
-    public void sendPixStreamResponse(String graphLocation, String soundLocation, String message, Double progress, String sessionId){
+    public void sendPixStreamResponse(String soundLocation, String message, Double progress, String sessionId){
         try {
             StreamSet stream = new StreamSet();
-            stream.setGraph(graphLocation);
             stream.setSound(soundLocation);
             stream.setProgress(progress);
             stream.setScreen("SUCCESS");

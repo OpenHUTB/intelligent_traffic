@@ -141,7 +141,7 @@ simulation:
     scriptLocation: D:/project/gpt/webui/client.py    #生成代码的客户端脚本位置
   matlab:
     interpreterLocation: D:/project/matlab/bin/matlab.exe   #matlab安装位置
-    scriptLocation: D:/project/gpt/sim    #
+    scriptLocation: D:/project/gpt/sim/main.m    #mian.m文件位置
     autoVrtlEnvLocation: D:/project/gpt/sim/WindowsNoEditor/AutoVrtlEnv.exe
   filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径
   video:

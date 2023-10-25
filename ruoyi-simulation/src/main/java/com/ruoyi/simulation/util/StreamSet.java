@@ -2,7 +2,6 @@ package com.ruoyi.simulation.util;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 /**
  * 图像和声音数据
  */
