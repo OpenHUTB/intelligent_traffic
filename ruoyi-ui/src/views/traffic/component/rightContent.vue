@@ -30,17 +30,19 @@ export default {
       config: {
         header: ["区县", "路段", "情况"],
         data: [
-          ["岳麓区", "旺龙路", "严重"],
-          ["望城区", "普瑞大道", "严重"],
-          ["湘江新区", "湘江北路", "中等"],
-          ["岳麓区", "桐梓坡路", "正常"],
-          ["天心区", "五一路", "中等"],
-          ["雨花区", "韶山北路", "正常"],
-          ["雨花区", "友谊路", "正常"],
-          ["开福区", "湘雅路", "严重"],
-          ["开福区", "中山路", "正常"],
-          ["岳麓区", "银杉路", "严重"],
+          ["岳麓区", "旺龙路", '<span style="color:#ff4949;">严重</span>'],
+          ["望城区", "普瑞大道", '<span style="color:#ff4949;">严重</span>'],
+          ["湘江新区", "湘江北路", '<span style="color:yellow;">中等</span>'],
+          ["岳麓区", "桐梓坡路", '<span style="color:#19be6b;">正常</span>'],
+          ["天心区", "五一路", '<span style="color:yellow;">中等</span>'],
+          ["雨花区", "韶山北路", '<span style="color:#19be6b;">正常</span>'],
+          ["雨花区", "友谊路", '<span style="color:#19be6b;">正常</span>'],
+          ["开福区", "湘雅路", '<span style="color:#ff4949;">严重</span>'],
+          ["开福区", "中山路", '<span style="color:#19be6b;">正常</span>'],
+          ["岳麓区", "银杉路", '<span style="color:#ff4949;">严重</span>'],
         ],
+      
+
       },
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
