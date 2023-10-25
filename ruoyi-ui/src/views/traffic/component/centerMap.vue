@@ -19,6 +19,7 @@
 
 <script>
 import mapStyle from "@/assets/mapStyle.json";
+import { debounce } from 'lodash';
 export default {
   components: {},
   data() {
