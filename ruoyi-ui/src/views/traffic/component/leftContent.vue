@@ -1,10 +1,14 @@
 <template>
-  <div class="content">
-    <dv-border-box-10>
-      <div style="padding: 5px">
-        <dv-scroll-board :config="road" style="height: 600px" />
+  <div>
+    <dv-border-box-1 style="padding: 5px">
+      <div class="colum_center">
+        <h2 style="margin: 20px">路口车流量详细信息展示</h2>
+        <dv-capsule-chart
+          :config="config"
+          style="width: 400px; height: 500px"
+        />
       </div>
-    </dv-border-box-10>
+    </dv-border-box-1>
   </div>
 </template>
 
@@ -12,23 +16,17 @@
 import { pageIntersectionData } from "@/api/intersectionData/intersectionData";
 
 export default {
+  props: {
+    message: {
+      type: String,
+      default: "0", // 默认值为0
+    },
+  },
+
   data() {
     return {
-      road: {
-        header: ["路口", "车流量"],
-        data: [
-          ["渝北区", "——"],
-          ["万州区", "——"],
-          ["巴南区", "O3"],
-          ["江北区", "PM2.5"],
-          ["渝北区", "——"],
-          ["万州区", "——"],
-          ["巴南区", "O3"],
-          ["江北区", "PM2.5"],
-        ],
-        align: ["left"],
-        columnWidth: ["300"],
-      },
+      config: {},
+      processedMessage: this.message,
     };
   },
 
@@ -37,12 +35,8 @@ export default {
   },
 
   watch: {
-    road: {
-      immediate: true,
-      deep: true,
-      handler() {
-        console.log("isHot被修改了");
-      },
+    message() {
+      this.callbackFunction();
     },
   },
 
@@ -54,41 +48,35 @@ export default {
           if (response.code === 200) {
             // console.log(response);
             const { rows } = response;
-            let roleList = [];
-            // roleList.data = rows.map((item) => ({
-            //   name: item.intersectionName,
-            //   value: item.value,
-            // }));
-            rows.forEach((item) => {
-                let list = [item.intersectionName, item.value]
-                roleList.push(list)
-            })
-            // console.log(roleList);
-            console.log(roleList.data);
-            this.road.data = roleList;
-
-            this.road = { ...this.road };
+            let roleList = {};
+            let startIndex = Math.floor(Math.random() * rows.length); // 生成随机的起始索引值
+            let randomRows = rows.slice(startIndex, startIndex + 6); // 随机截取6条记录
+            roleList.data = randomRows.map((item) => ({
+              name: item.intersectionName,
+              value: item.value,
+            }));
+            this.config = roleList;
           } else {
-            console.error("获取路口车流量数据失败");
+            console.error("获取交通流量数据失败");
           }
         })
         .catch((error) => {
-          console.error("获取路口车流量数据失败:", error);
+          console.error("获取交通流量数据失败:", error);
         });
+    },
+
+    callbackFunction() {
+      this.getList();
     },
   },
 };
 </script>
 
-<style>
-.content {
-  width: 30vw;
+<style lang="scss" scoped>
+.colum_center {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-}
-h2 {
-  margin: 10px;
+  align-items: center;
 }
 </style>

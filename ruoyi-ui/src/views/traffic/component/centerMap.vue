@@ -4,6 +4,8 @@
 
     </div> -->
     <baidu-map
+    @dragging="handleClick"
+    @click="handleClick"
       class="map"
       :center="center"
       :zoom="zoom"
@@ -28,7 +30,9 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    this.handleClick = debounce(this.handleClick, 300); // 设置防抖时间间隔为300ms
+  },
   mounted() {
     // this.builmap();
   },
@@ -52,7 +56,12 @@ export default {
         console.log(e.point.lng + "," + e.point.lat);
       });
       
-    }    
+    },
+
+    handleClick() {
+      let newMessage = Math.random().toString() ;
+      this.$emit('update-message', newMessage)
+    }
   },
 };
 </script>
