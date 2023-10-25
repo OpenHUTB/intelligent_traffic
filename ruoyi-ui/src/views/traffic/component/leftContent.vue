@@ -10,14 +10,8 @@
 
 
 
-        
+
     </div>
-
-
-
-
-
-
 </template>
 
 <script>
@@ -40,36 +34,28 @@ export default {
 
     created() {
         this.getList();
+         setInterval(this.getList, 3000); // 每5秒刷新一次数据
+ 
     },
 
 
     methods: {
         getList() {
-            const params = { evaluationTypeId: 13 };
-            pageIntersectionData(params)
-                .then((response) => {
-                    // console.log("2")
-                    if (response.code === 200) {
-                        console.log(response)
-                        const { rows } = response;
-                        // console.log(rows)
-                        let roleList = {}
-                        roleList.data = rows.map((item) => ({
-                            name: item.intersectionName,
-                            value: item.value,
-                        }));
-                        this.config = roleList
-                        // console.log(this.config.roleList)
-                        // this.config = { ...this.config }
-                        //  console.log(this.config)
-                        // console.log(this)
-                    } else {
-                        console.error("获取交通流量数据失败");
-                    }
-                })
-                .catch((error) => {
-                    console.error("获取交通流量数据失败:", error);
-                });
+            const params = { evaluationTypeId: 13 }; pageIntersectionData(params).then((response) => {
+                if (response.code === 200) {
+                    console.log(response)
+                    const { rows } = response;
+                    let roleList = {};
+                    let startIndex = Math.floor(Math.random() * rows.length); // 生成随机的起始索引值
+                    let randomRows = rows.slice(startIndex, startIndex + 6); // 随机截取6条记录     
+                    roleList.data = randomRows.map((item) => ({ name: item.intersectionName, value: item.value, }));
+                    this.config = roleList;
+                } else {
+                    console.error("获取交通流量数据失败");
+                }
+            }).catch((error) => {
+                console.error("获取交通流量数据失败:", error);
+            });
         },
     },
 };
@@ -77,10 +63,9 @@ export default {
 
 <style lang="scss" scoped>
 .colum_center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
 </style>

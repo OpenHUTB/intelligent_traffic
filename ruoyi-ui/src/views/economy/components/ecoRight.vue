@@ -8,6 +8,7 @@
       </dv-border-box-8>
     </div>
 
+    
     <div class="body">
       <!-- 城市农作物比例占比 -->
       <div class="body_table1">
@@ -31,36 +32,100 @@ export default {
   components: { Echart },
   data() {
     return {
+    
       options1: {
-        title: {
-          text: "路口指标分析",
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            crossStyle: {
+              color: "#999",
+            },
+          },
+        },
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true },
+          },
         },
         legend: {
-          data: ["预估指标", "实际指标"],
+          data: ["车辆", "车辆增长率"],
         },
-        radar: {
-          // shape: 'circle',
-          indicator: [
-            { name: "交通流量", max: 6500 },
-            { name: "车均延误", max: 16000 },
-            { name: "车距停车次数", max: 30000 },
-            { name: "路口饱和度", max: 38000 },
-            { name: "排队长度", max: 52000 },
-          ],
-        },
+        xAxis: [
+          {
+            type: "category",
+            data: [
+              "6:00",
+              "7:00",
+              "8:00",
+              "9:00",
+              "10:00",
+              "11:00",
+              "12:00",
+              "13:00",
+              "14:00",
+              "15:00",
+              "16:00",
+              "17:00",
+              "18:00",
+            ],
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+            name: "万辆",
+            min: 2700,
+            max: 3300,
+            interval: 100,
+            axisLabel: {
+              formatter: "{value}",
+            },
+          },
+          {
+            type: "value",
+            name: "%",
+            min: 0,
+            max: 70,
+            interval: 10,
+            axisLabel: {
+              formatter: "{value}",
+            },
+          },
+        ],
+
         series: [
           {
-            name: "预算分配 vs 实际指标",
-            type: "radar",
+            name: "车辆",
+            type: "bar",
+            tooltip: {
+              valueFormatter: function (value) {
+                return value + " 万";
+              },
+            },
             data: [
-              {
-                value: [4200, 3000, 20000, 35000, 50000],
-                name: "预估指标",
+              2920, 2950, 2970, 3010, 3040, 3070, 3110, 3150, 3160, 3190, 3210,
+              3220, 3250,
+            ],
+          },
+          {
+            name: "车辆增长率",
+            type: "line",
+            yAxisIndex: 1,
+            tooltip: {
+              valueFormatter: function (value) {
+                return value + " 万辆";
               },
-              {
-                value: [5000, 14000, 28000, 26000, 42000],
-                name: "实际指标",
-              },
+            }, 
+            data: [
+              40.21, 59.81, 30.45, 36.15, 32.45, 26.54, 39.94, 33.55, 19.63,
+              24.7, 21.09, 3.5, 4.21,
             ],
           },
         ],
@@ -77,7 +142,7 @@ export default {
             { product: "岳麓大道", 岳麓大道: 9 },
             { product: "茶子山东路", 茶子山东路: 11 },
             { product: "银杉路", 银杉路: 5 },
-            
+
             // { product: "2020", 小麦: 831, 玉米: 734, 高粱: 551 },
             // { product: "2021", 小麦: 864, 玉米: 652, 高粱: 825 },
             // { product: "2023", 小麦: 724, 玉米: 539, 高粱: 391 },
