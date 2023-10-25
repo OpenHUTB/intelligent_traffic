@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="center">
-      <left-content />
-      <center-map />
-      <right-content />
+      <left-content :message="message" />
+      <center-map :message="message" @update-message="updateMessage" />
+      <right-content :message="message"/>
     </div>
     <div class="bottom">
-      <bottom />
+      <bottom :message="message"/>
     </div>
   </div>
 </template>
@@ -18,6 +18,18 @@ import leftContent from "./component/leftContent.vue";
 import rightContent from "./component/rightContent.vue";
 export default {
   components: { centerMap, leftContent, rightContent,bottom },
+  data() {
+    return {
+      message: ''
+    };
+  },
+  methods: {
+    updateMessage(newMessage) {
+      // console.log(newMessage);
+      this.message = newMessage;
+      // console.log(this.message);
+    }
+  }
 };
 </script>
 
