@@ -1,25 +1,21 @@
 package com.ruoyi.web.controller.traffic;
 
 
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONArray;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
-import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
+import com.ruoyi.traffic.matlab.MatlabForTrafficDataUtil;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
-import com.ruoyi.traffic.service.evaluationType.ITrafficEvaluationTypeService;
-import com.ruoyi.traffic.service.intersection.ITrafficIntersectionService;
 import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +32,8 @@ public class TrafficIntersectionEvaluationDataController extends BaseController 
 
     @Resource
     private ITrafficIntersectionEvaluationDataService trafficIntersectionEvaluationDataService;
+    @Resource
+    private MatlabForTrafficDataUtil matlab;
 
     @ApiOperation("分页获取路口数据")
     @PostMapping("/page")
@@ -72,6 +70,17 @@ public class TrafficIntersectionEvaluationDataController extends BaseController 
                                @NotNull(message = "不能为空") Long id) {
         TrafficIntersectionEvaluationDataVo trafficIntersectionEvaluationDataVo = trafficIntersectionEvaluationDataService.queryById(id);
         return AjaxResult.success(trafficIntersectionEvaluationDataVo);
+    }
+
+    @ApiOperation("获取仿真数据")
+    @PostMapping("/data")
+    public AjaxResult addData() throws Exception {
+        Object[] objects = matlab.dataFromMatlab();
+        String s = objects[0].toString();
+        JSONArray jsonArray = new JSONArray(s);
+        trafficIntersectionEvaluationDataService.addData(jsonArray);
+        return AjaxResult.success();
+
     }
 
 
