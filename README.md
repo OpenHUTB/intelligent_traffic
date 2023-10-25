@@ -41,6 +41,11 @@ f --> b
 
 ![image](https://github.com/OpenHUTB/intelligent_traffic/blob/master/img/%E5%9C%B0%E9%93%81/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.png)
 
+# application.yml文件中roadrunner路径配置
+1.roadrunner的project路径: rrProjectPath: E:/trafficProject/Roadrunner
+2.roadrunner中动态场景文件名: rrScenarioPath: E:/trafficProject/Roadrunner/Scenarios/桐梓坡-谷丰-岳麓大道-望岳路.rrscenario
+3.roadrunner软件启动路径: workPath: D:/software/Roadrunner/RoadRunner_2022b/bin/win64
+使用时请根据本地的文件位置进行更改
 
 
 # 数据库设计

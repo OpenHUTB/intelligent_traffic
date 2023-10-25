@@ -2,26 +2,31 @@ package com.ruoyi.traffic.service.intersection.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.yulichang.query.MPJLambdaQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONArray;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.traffic.domain.evaluationType.TrafficEvaluationType;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationData;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersectionEvaluationHistory;
+import com.ruoyi.traffic.enums.EvaluationTypeEnum;
 import com.ruoyi.traffic.mapper.intersection.TrafficIntersectionEvaluationDataMapper;
 import com.ruoyi.traffic.service.evaluationType.ITrafficEvaluationTypeService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationHistoryService;
+import com.ruoyi.traffic.service.intersection.ITrafficIntersectionService;
 import com.ruoyi.traffic.vo.TrafficIntersectionEvaluationDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.soap.SAAJResult;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @classname: TrafficIntersectionEvaluationDataServiceImpl
@@ -38,6 +43,10 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
     private ITrafficIntersectionEvaluationHistoryService trafficIntersectionEvaluationHistoryService;
     @Autowired
     private ITrafficEvaluationTypeService trafficEvaluationTypeService;
+    @Autowired
+    private ITrafficIntersectionEvaluationDataService dataService;
+    @Autowired
+    private ITrafficIntersectionService intersectionService;
     @Override
     public List<TrafficIntersectionEvaluationData> queryList(TrafficIntersectionEvaluationData trafficEvaluationData) {
         LambdaQueryWrapper<TrafficIntersectionEvaluationData> queryWrapper = new LambdaQueryWrapper<>();
@@ -153,5 +162,64 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
     public List<TrafficIntersectionEvaluationData> queryByIntersectionId(Long id) {
         List<TrafficIntersectionEvaluationData> list = baseMapper.queryByIntersectionId(id);
         return list;
+    }
+
+    /**
+     * 新增路网仿真数据
+     * @param jsonArray
+     */
+    @Transactional
+    @Override
+    public void addData(JSONArray jsonArray) throws JSONException {
+        List<TrafficIntersectionEvaluationData> dataList = new ArrayList<>();
+        // 指标类型
+        String typeId = jsonArray.getJSONObject(0).getString("id");
+        for (int i = 1; i < jsonArray.length(); i++) {
+            TrafficIntersectionEvaluationData data = new TrafficIntersectionEvaluationData();
+            // 路口名称
+            String name = jsonArray.getJSONObject(i).getString("name");
+
+            // 路口指标
+            String evaluation = jsonArray.getJSONObject(i).getString("datatype");
+
+            // 数据
+            Object value = jsonArray.getJSONObject(i).get("volume");
+
+            // 路口相对坐标x, y
+            String x = jsonArray.getJSONObject(i).getJSONObject("Coordinate").getString("lat");
+            String y = jsonArray.getJSONObject(i).getJSONObject("Coordinate").getString("lon");
+
+            // 判断该路口是否已存在
+            TrafficIntersection trafficIntersection = intersectionService.queryByName(name);
+            if (trafficIntersection== null) {
+                // 不存在该路口，则添加路口到数据库中
+                TrafficIntersection intersection = new TrafficIntersection();
+                intersection.setName(name);
+                intersection.setLatitude(x);
+                intersection.setLongitude(y);
+                intersectionService.addIntersection(intersection);
+                data.setIntersectionId(intersection.getId());
+            } else {
+                data.setIntersectionId(trafficIntersection.getId());
+            }
+
+            // 判断该指标是否存在
+            TrafficEvaluationType type = trafficEvaluationTypeService.queryByName(evaluation);
+            if (type == null) {
+                // 不存在该指标，添加到数据库中
+                TrafficEvaluationType evaluationType = new TrafficEvaluationType();
+                evaluationType.setName(evaluation);
+                evaluationType.setType(typeId);
+                evaluationType.setRemark(Objects.requireNonNull(EvaluationTypeEnum.getEnumByType(typeId)).getDesc());
+                trafficEvaluationTypeService.addEvaluationType(evaluationType);
+                data.setEvaluationTypeId(evaluationType.getId());
+            } else {
+                data.setEvaluationTypeId(type.getId());
+            }
+            data.setValue(new BigDecimal(value.toString()));
+            data.setCollectTime(new Date());
+            dataList.add(data);
+        }
+        dataService.saveBatch(dataList);
     }
 }
