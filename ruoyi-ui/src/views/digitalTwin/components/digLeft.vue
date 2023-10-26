@@ -1,30 +1,29 @@
 <template>
     <div class="content">
-        <div>
-    
+        <!--<div>
+
             <dv-border-box-8 :reverse="true" style="padding: 10px"> <div>
                     <h2>数字孪生结果</h2>
-                 
+
                 </div>
                 <video-player  class="video-player vjs-custom-skin" ref="videoPlayer"
-              :playsinline="true" 
-              :options="playerOptions" 
+              :playsinline="true"
+              :options="playerOptions"
               @play="onPlayerPlay($event)"
               @pause="onPlayerPause($event)"
               :events="events"
               @fullscreenchange="handlefullscreenchange"
               >
-          </video-player> 
+          </video-player>
             </dv-border-box-8>
-        </div>
-
-
+        </div>-->
+        <iframe src="http://localhost:8080/pixSteam.html"></iframe>
     </div>
 </template>
 
 <script>
 import Echart from "@/common/echart/index.vue";
- 
+
 
 export default {
     components: { Echart },
