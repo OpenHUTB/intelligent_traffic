@@ -1,6 +1,8 @@
 <template>
   <div>
     <div style="display: flex; justify-content: space-between; width: 100%">
+
+
       <dv-border-box-8 :reverse="true" style="padding: 10px; width: 33%">
         <div>
           <Echart :options="options1" height="350px" width="600px" />
@@ -12,7 +14,8 @@
         <Echart :options="options2" height="300px" width="600px" />
       </dv-border-box-6>
 
-      <dv-border-box-6 style="padding: 20px; width: 33%">
+
+      <dv-border-box-6 style="padding: 20px;width: 33%">
         <div class="colum_center">
           <h2>各地区平均速度展示</h2>
           <dv-scroll-ranking-board
@@ -42,7 +45,7 @@ import Echart from "@/common/echart/index.vue";
 export default {
   data() {
     return {
-      options1: {
+options1: {
         title: {
           text: "路口指标分析",
         },

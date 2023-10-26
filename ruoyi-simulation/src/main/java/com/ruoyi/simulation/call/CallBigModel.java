@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Component
 public class CallBigModel {
-    private Logger logger = LoggerFactory.getLogger(CallPaddleSpeech.class);
+    private Logger logger = LoggerFactory.getLogger(CallBigModel.class);
     @Resource
     private Environment environment;
     @Resource
@@ -84,7 +84,7 @@ public class CallBigModel {
                 fileUtil.writeText(targetPath,codeList);
                 //调用matlab命令执行code.m文件
                 String interpreterLocation = environment.getProperty("simulation.matlab.interpreterLocation");
-                String scriptLocation = environment.getProperty("simulation.matlab.scriptLocation");//
+                String scriptLocation = environment.getProperty("simulation.matlab.scriptLocation");
                 String autoVrtlEnvLocation = environment.getProperty("simulation.matlab.autoVrtlEnvLocation");//autoVrtlEnvLocation
                 Runtime runtime = Runtime.getRuntime();
                 //C:Buffer/gpt/matlab/bin>matlab -nojvm -nodesktop -nodisplay -r "cd C:/Buffer/gpt/gpt-main/sim; main('C:/Buffer/gpt/WindowsNoEditor/AutoVrtlEnv.exe')"

@@ -40,6 +40,11 @@ export default {
     },
   },
 
+  created() {
+    this.getList();
+    // setInterval(this.getList, 3000); // 每5秒刷新一次数据
+  },
+
   methods: {
     getList() {
       const params = { evaluationTypeId: 13 };
