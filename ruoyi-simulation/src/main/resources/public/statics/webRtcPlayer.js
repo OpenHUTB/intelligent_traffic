@@ -47,7 +47,8 @@
         //Create Video element and expose that as a parameter
         createWebRtcVideo = function() {
             var video = document.createElement('video');
-
+            video.style.width="100%";
+            video.style.height="100%";
             video.id = "streamingVideo";
             video.playsInline = true;
             video.addEventListener('loadedmetadata', function(e){
