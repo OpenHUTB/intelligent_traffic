@@ -1,14 +1,20 @@
 <template>
     <div class="content">
         <div>
-            <dv-border-box-8 :reverse="true" style="padding: 10px">
-                <div>
-                    <h2>原始视频数据</h2>
-                    <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true"
-                        :options="playerOptions1" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)"
-                        :events="events" @fullscreenchange="handlefullscreenchange">
-                    </video-player>
-                </div>
+            <dv-border-box-8 :reverse="true" style="padding: 10px;height: 450px;width: 590px">
+<!--                <div>-->
+<!--                    <h2>原始视频数据</h2>-->
+
+<!--                      <video ref="videoElement" controls style="padding:  10px;width: 430px;height: 450px"></video>-->
+
+<!--                </div>-->
+               <div>
+                                  <h2>原始视频数据</h2>
+                                  <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true"
+                                                                        :options="playerOptions1" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)"
+                                                                        :events="events" @fullscreenchange="handlefullscreenchange">
+                                  </video-player>
+                              </div>
             </dv-border-box-8>
         </div>
 
@@ -26,11 +32,31 @@
         </div>
     </div>
 </template>
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
 import Echart from "@/common/echart/index.vue";
+
 export default {
     components: { Echart },
+    mounted(){
+      console
+      const video = this.$refs.videoElement;
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        console.log("supported")
+        hls.loadSource('http://127.0.0.1:8081/stream.m3u8');
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = 'http://127.0.0.1:8081/stream.m3u8';
+        video.addEventListener('loadedmetadata', function () {
+          video.play();
+          console.log("no hls supported")
+        });
+      }
+    },
     data() {
         return {
             playerOptions1: {
@@ -44,7 +70,7 @@ export default {
                 fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                 sources: [{
                     type: "video/mp4", // 类型
-                    src: '/video/input.webm' // url地址
+                    src: '/video/chuf.webm' // url地址
                     //src: '/video/CAMERAV.webm' // url地址
                 }],
                 poster: '', // 封面地址
