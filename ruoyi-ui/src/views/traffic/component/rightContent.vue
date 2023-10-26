@@ -56,7 +56,7 @@ export default {
         sources: [{
           type: "video/mp4", // 类型
           // src: '/video/identify.mp4' // url地址
-        src: '/video/CAMERAV.webm' // url地址
+        src: '/video/chuf.webm' // url地址
         }],
         poster: '', // 封面地址
         notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
