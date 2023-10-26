@@ -2,11 +2,14 @@ package com.ruoyi.traffic.domain.intersection;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @classname: TrafficIntersection
@@ -19,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TrafficIntersection {
+public class TrafficIntersection extends BaseEntity implements Serializable {
 
     @TableId(type = IdType.AUTO)
     @ApiModelProperty("主键ID")
