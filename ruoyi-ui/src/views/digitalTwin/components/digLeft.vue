@@ -17,13 +17,12 @@
           </video-player>
             </dv-border-box-8>
         </div>-->
-        <iframe src="http://localhost:8080/pixSteam.html"></iframe>
+        <iframe src="http://localhost:18080/pixStream.html" style="width:100%;height:100%;overflow:hidden;border-width:0px;"></iframe>
     </div>
 </template>
 
 <script>
 import Echart from "@/common/echart/index.vue";
-
 
 export default {
     components: { Echart },
