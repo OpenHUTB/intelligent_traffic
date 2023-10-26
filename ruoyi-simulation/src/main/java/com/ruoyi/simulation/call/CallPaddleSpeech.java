@@ -3,7 +3,7 @@ package com.ruoyi.simulation.call;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.simulation.util.CommandUtil;
-import com.ruoyi.simulation.util.Constant.Status;
+import com.ruoyi.simulation.util.Constant.AwakenStatus;
 import com.ruoyi.simulation.util.FileOperatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class CallPaddleSpeech {
                 }
                 String text = outputList.get(outputList.size()-1);
                 String[] arr = text.split(",");
-                if(StringUtils.equals(arr[0], Status.SUCCESS)){
+                if(StringUtils.equals(arr[0], AwakenStatus.SUCCESS)){
                     return AjaxResult.success("唤醒成功!",arr[1]);
                 }else{
                     return AjaxResult.error("唤醒失败!",arr[1]);
@@ -90,7 +90,7 @@ public class CallPaddleSpeech {
         };
         String text = commandUtil.executionCommand();
         if(StringUtils.isEmpty(text)){
-            throw new RuntimeException("调用PaddleSpeech将语音转为文字执行失败!");
+            logger.error("获得空白文本，调用PaddleSpeech将语音转为文字执行失败!");
         }
         return text;
     }

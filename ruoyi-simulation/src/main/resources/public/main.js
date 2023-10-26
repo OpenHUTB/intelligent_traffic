@@ -41,15 +41,19 @@ function send(){
         $(download).click();
     }
 }
-record.addEventListener("click",function(){
+/**
+ * 按钮按下事件
+ */
+record.addEventListener("mousedown",function(){
     start();
-    interval = setInterval(function(){
-        end();
-        send();
-        start();
-    },5000);
 });
-
+/**
+ * 按钮松开事件
+ */
+record.addEventListener("mouseup",function(){
+    end();
+    send();
+});
 /**
  * 绘制音乐播放的频谱
  */
