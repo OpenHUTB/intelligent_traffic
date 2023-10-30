@@ -1,0 +1,247 @@
+@import "reset";
+// whole body style and layout
+@mixin mainLayout {
+    display: grid;
+    grid-template-rows: 4fr 3fr;
+}
+@mixin imgLayout {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+@mixin borderLayout {
+    border: 1px solid #ffffff;
+}
+@mixin breathAnimation {
+    border: 1px solid #244a80;
+    animation: breathe 1s infinite alternate;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    @keyframes breathe {
+        0% {
+            border: 1px solid #244a80;
+        }
+        100% {
+            border: 1px solid #dddddd;
+        }
+    }
+}
+// border animation style
+@mixin border-animation {
+    position: relative;
+    cursor: pointer;
+
+    &::after,
+    &::before {
+        content: "";
+        position: absolute;
+        border: 2px dashed;
+        border-image: linear-gradient(to right, #8f41e9, #578aef) 1;
+        /* 简写为 */
+        inset: -5px;
+        /* 添加动画 */
+        animation: pathRotate 3s infinite linear;
+    }
+
+    @keyframes pathRotate {
+        0%,
+        100% {
+            clip-path: inset(0 0 98% 0);
+        }
+
+        25% {
+            clip-path: inset(0 98% 0 0);
+        }
+
+        50% {
+            clip-path: inset(98% 0 0 0);
+        }
+
+        75% {
+            clip-path: inset(0 0 0 98%);
+        }
+    }
+
+    &::after {
+        animation-delay: -1.5s;
+    }
+}
+
+@mixin textStyle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+    width: 100%;
+    background-color: #33497e;
+    text-align: center;
+    opacity: 1;
+}
+@mixin contentBackground {
+    background-color: rgba(5, 17, 78, 0.4);
+}
+html,
+body,
+#root{
+    height: 100%;
+    overflow: hidden;
+}
+#layout {
+    font-family: 微软雅黑, MicrosoftYahei, sans-serif;
+    color: #fff;
+    background-position: 0 0;
+    height: 100%;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-rows: 1fr 12fr;
+    overflow: hidden;
+    background-image: url(../assets//img/bg.jpg);
+    background-size: cover;
+    padding: 1rem;
+}
+header {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+    }
+    nav {
+        font-size: 1.3rem;
+        margin: 0rem 3rem;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            li {
+                margin: 2rem 1rem;
+                padding: 0.5rem 1rem;
+                background-image: url(../assets/img/bnt.png);
+                @include imgLayout;
+            }
+        }
+    }
+}
+main {
+    position: relative;
+    background: url(../assets/img/roadImg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    .centre {
+        width: 100%;
+        height: 100%;
+    }
+    // left side style
+    .leftSide {
+        z-index: 2;
+        @include mainLayout;
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        height: 100%;
+
+        // leftTop style and display charts
+        .leftTop {
+            @include border-animation;
+            @include contentBackground;
+        }
+        .leftBottom {
+            @include contentBackground;
+            @include breathAnimation;
+        }
+    }
+    // right side style
+    .rightSide {
+        z-index: 2;
+        @include mainLayout;
+        position: absolute;
+        right: 0;
+        top: 0.5rem;
+
+        .rightTop {
+            @include breathAnimation;
+            @include contentBackground;
+        }
+        .rightBottom {
+            @include contentBackground;
+            @include border-animation;
+        }
+    }
+    // centre part include mainstream, functionArea and progress bar
+    .centre {
+        z-index: 1;
+        position: relative;
+        // mainstream style
+        .mainStream {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            video {
+                width: 100%;
+                height: 100%;
+                object-fit: fill;
+            }
+
+            #introductionArea {
+                position: absolute;
+                opacity: 0;
+                left: 50%;
+                top: 50%;
+                // width: 50%;
+                // height: 50%;
+                // transform: translate(-50%, -50%);
+            }
+            #audioArea {
+                position: absolute;
+                opacity: 0;
+            }
+            #progressArea {
+                display: none;
+                border: 1px solid #ffffff;
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                width: 66.67%;
+                transform: translateX(-50%);
+            }
+        }
+        .funcArea {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translate(-50%);
+            width: 50%;
+            @include mainLayout;
+            .funcBtn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                button {
+                    padding: 0.3rem 3rem;
+                    background-color: #33497e;
+                    color: white;
+                    cursor: pointer;
+                    border-radius: 0.5rem;
+                    margin: 0 1rem;
+                    transition: background-color 0.3s;
+                }
+            }
+            .displayArea {
+                textarea {
+                    width: 100%;
+                    height: 100%;
+                    resize: none;
+                    color: white;
+                    background-color: rgba(51, 73, 126, 0.4);
+                    border: none;
+                    font-size: 1.2rem;
+                    margin-top: 0.3rem;
+                }
+            }
+        }
+    }
+}
