@@ -1,12 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
     return (
         <header>
             <nav>
                 <ul>
-                    <li>路况概览</li>
-                    <li>路口场景</li>
+                    <li><Link to='/'>路况概览</Link></li>
+                    <li><Link to='/Junction'>路口场景</Link></li>
                     <li></li>
                 </ul>
             </nav>
