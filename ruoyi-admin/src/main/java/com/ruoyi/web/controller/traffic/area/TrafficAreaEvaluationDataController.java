@@ -1,10 +1,13 @@
 package com.ruoyi.web.controller.traffic.area;
 
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONArray;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONObject;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
 import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
+import com.ruoyi.traffic.matlab.MatlabForTrafficDataUtil;
 import com.ruoyi.traffic.service.area.ITrafficAreaEvaluationDataService;
 import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
 import io.swagger.annotations.Api;
@@ -31,6 +34,9 @@ import java.util.List;
 public class TrafficAreaEvaluationDataController extends BaseController {
     @Resource
     private ITrafficAreaEvaluationDataService iTrafficAreaEvaluationDataService;
+
+    @Resource
+    private MatlabForTrafficDataUtil matlab;
 
     @ApiOperation("分页获取区域评价数据")
     @PostMapping("/page")
@@ -68,5 +74,14 @@ public class TrafficAreaEvaluationDataController extends BaseController {
         List<TrafficAreaEvaluationDataRankVO> rankVOList = iTrafficAreaEvaluationDataService.queryEvaluationDataRankList(dto);
         return AjaxResult.success(rankVOList);
     }
+    @ApiOperation("获取仿真数据")
+    @PostMapping("/data")
+    public AjaxResult addData() throws Exception {
+        Object[] objects = matlab.dataFromMatlab();
+        String s = objects[1].toString();
+        JSONObject jsonObject=new JSONObject(s);
+       iTrafficAreaEvaluationDataService.addData(jsonObject);
+        return AjaxResult.success();
 
+    }
 }
