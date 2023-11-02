@@ -1,0 +1,36 @@
+@import "reset.scss";
+@import "common.scss";
+
+header.header {
+    height: 70px;
+    background: url(../assets/img/Bg-header.png) no-repeat center;
+    background-size: cover;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    ul {
+        width: 500px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin: 35px 0 0 10px;
+        li {
+            width: 6rem;
+            height: 30px;
+            line-height: 30px;
+            vertical-align: baseline;
+            font-size: 1.2rem;
+            padding-left: 1.2rem;
+            background: url(../assets/img/bnt.png) no-repeat center;
+            background-size: cover;
+            @include imgLayout;
+        }
+    }
+}

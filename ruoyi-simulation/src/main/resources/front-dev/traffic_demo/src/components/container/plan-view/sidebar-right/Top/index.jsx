@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import './style.scss';
 import * as echarts from 'echarts';
 import 'echarts-gl';
@@ -29,28 +29,28 @@ export default function Index(props) {
     const randomToday = generateRandomArray(12, 0, 250);
     useEffect(() => {
 
-        // Initialize the line chart
-        const lineChart = echarts.init(document.getElementById('lineChart'));
-        const lineGraphOption = {
-            xAxis: {
-                type: 'category',
-                data: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',],
-                axisLine: { color: '#FFF' }
-            },
-            yAxis: { type: 'value', axisLine: { color: 'red' } },
-            series: [{
-                data: randomCurrent,
-                type: 'line',
-                smooth: true,
-                color: '#FF0000'
-            }, {
-                data: randomToday,
-                type: 'line',
-                smooth: true,
-                color: '#00FF00'
-            }]
-        };
-        lineChart.setOption(lineGraphOption);
+        // // Initialize the line chart
+        // const lineChart = echarts.init(document.getElementById('lineChart'));
+        // const lineGraphOption = {
+        //     xAxis: {
+        //         type: 'category',
+        //         data: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',],
+        //         axisLine: { color: '#FFF' }
+        //     },
+        //     yAxis: { type: 'value', axisLine: { color: 'red' } },
+        //     series: [{
+        //         data: randomCurrent,
+        //         type: 'line',
+        //         smooth: true,
+        //         color: '#FF0000'
+        //     }, {
+        //         data: randomToday,
+        //         type: 'line',
+        //         smooth: true,
+        //         color: '#00FF00'
+        //     }]
+        // };
+        // lineChart.setOption(lineGraphOption);
 
 
         // Initialize the pie chart
@@ -104,7 +104,7 @@ export default function Index(props) {
                         <div className='stat-item-number'>{current}</div>
                         <div className="stat-item decrease">
                             <span className="text">同比</span>
-                            <span className={"number " + (currentCompare >= 0 ? "red" : "green") }>{currentCompare >= 0 ? ("+" + currentCompare) : currentCompare}</span>
+                            <span className={"number " + (currentCompare >= 0 ? "red" : "green")}>{currentCompare >= 0 ? ("+" + currentCompare) : currentCompare}</span>
 
                         </div>
                     </div>
@@ -113,7 +113,7 @@ export default function Index(props) {
                         <div className='stat-item-number'>{amount}</div>
                         <div className="stat-item decrease">
                             <span className="text">同比</span>
-                            <span className={"number " + (amountCompare >= 0 ? "red" : "green") }>{amountCompare >= 0 ? ("+" + amountCompare) : amountCompare}</span>
+                            <span className={"number " + (amountCompare >= 0 ? "red" : "green")}>{amountCompare >= 0 ? ("+" + amountCompare) : amountCompare}</span>
                         </div>
                     </div>
                 </div>

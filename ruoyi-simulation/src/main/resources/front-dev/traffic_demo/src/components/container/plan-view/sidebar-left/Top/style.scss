@@ -1,45 +1,41 @@
-.leftTop{
+@import "../.../../../../../../css/common.scss";
+
+.leftTop {
     width: 450px;
-    height: 150px;
+    height: 200px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+    @include border-animation;
+    @include contentBackground;
 
-    .title{
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        background-color: rgba(28, 42, 71, 0.7);
-        width: 100%;
-        height: 3rem;
-        line-height: 3rem;
-        vertical-align: center;
+    .title {
+        @include subTitleStyle;
     }
-    .statistic{
+    .statistic {
         margin: 2rem auto;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 0.5rem;
     }
-    .stat-item{
+    .stat-item {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        .label{
+        .label {
             text-align: center;
             text-wrap: nowrap;
             color: #ddd;
         }
-        .value{
+        .value {
             margin: 0 0.3rem;
             font-weight: bold;
             color: #74d86d;
         }
     }
-    .icon{
+    .icon {
         width: 1.5rem;
         height: 1.5rem;
     }
-
 }

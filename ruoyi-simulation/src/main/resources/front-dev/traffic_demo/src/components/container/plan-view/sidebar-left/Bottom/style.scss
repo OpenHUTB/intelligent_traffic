@@ -1,9 +1,11 @@
+@import "../.../../../../../../css/common.scss";
 .leftBottom {
     font-family: sans-serif; // Use appropriate font
-    background-color: #1e2e4f;
     width: 450px; // Adjust width as required
     height: 350px;
     padding-bottom: 20px;
+    @include border-animation;
+    background-color: rgba(5, 17, 78, 0.4) !important;
     .header {
         background-color: rgba(28, 42, 71, 0.7);
         font-size: 1.5rem;
@@ -80,10 +82,10 @@
             padding: 2px 5px;
             text-align: right;
         }
-        span.red{
+        span.red {
             color: red;
         }
-        span.green{
+        span.green {
             color: green;
         }
         .grade {
