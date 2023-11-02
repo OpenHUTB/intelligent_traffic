@@ -4,6 +4,7 @@ import LeftTop from './container/plan-view/sidebar-left/Top';
 import LeftBottom from './container/plan-view/sidebar-left/Bottom';
 import RightTop from './container/plan-view/sidebar-right/Top';
 import RightBottom from './container/plan-view/sidebar-right/Bottom';
+import '../css/plan.scss';
 import data from '../scenario.json';
 
 function getRandomItem(array) {

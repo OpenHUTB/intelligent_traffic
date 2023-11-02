@@ -1,0 +1,20 @@
+html,
+body,
+#root {
+    height: 100%;
+    overflow: hidden;
+}
+#layout {
+    font-family: 微软雅黑, MicrosoftYahei, sans-serif;
+    color: #fff;
+    background-position: 0 0;
+    height: 100%;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-rows: 1fr 12fr;
+    overflow: hidden;
+    // background-image: url(../assets//img/bg.jpg);
+    // background-size: cover;
+    background-color: #0b0f34;
+    padding: 1rem;
+}

@@ -1,45 +1,195 @@
-.leftTop{
-    width: 450px;
-    height: 150px;
+@import "../.../../../../../../css/common.scss";
+
+@mixin emphasisBorder {
+    border: 1px solid #0f60d1;
+    border-left: 5px solid #349ec9;
+}
+@mixin sectionTitle {
+    @include emphasisBorder;
+    width: 98%;
+    position: absolute;
+    background-color: rgba(5, 17, 78, 0.6);
+    SVG {
+        width: 1rem;
+        height: 1rem;
+    }
+    span {
+        margin-left: 15px;
+        background-color: rgba(8, 47, 114, 0.3);
+    }
+}
+@mixin rangeDescribe {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
+    position: relative;
+    top: -0.9rem;
+    color: white;
+    font-size: 0.8rem;
+}
+@mixin sliderSubTileStyle {
+    color: white;
+    font-size: 1rem;
+    font-style: bold;
+    margin-bottom: 1.5rem;
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.3rem;
+    }
+    SVG {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+.junction-leftTop {
+    height: 855px;
+    width: 400px;
+    @include contentBackground;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 
-    .title{
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        background-color: rgba(28, 42, 71, 0.7);
+    // traffic flow container style
+    div.traffic-flow-container {
         width: 100%;
-        height: 3rem;
-        line-height: 3rem;
-        vertical-align: center;
-    }
-    .statistic{
-        margin: 2rem auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 0.5rem;
-    }
-    .stat-item{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        .label{
-            text-align: center;
-            text-wrap: nowrap;
-            color: #ddd;
+        position: relative;
+        div.title {
+            @include sectionTitle;
         }
-        .value{
-            margin: 0 0.3rem;
-            font-weight: bold;
-            color: #74d86d;
-        }
-    }
-    .icon{
-        width: 1.5rem;
-        height: 1.5rem;
-    }
+        //range bar style
+        .slider-container {
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            .slider-label {
+                @include sliderSubTileStyle;
+            }
 
+            .custom-range {
+                width: 100%;
+                height: 8px;
+                outline: none;
+                transition: opacity 0.2s;
+                appearance: none;
+                border-radius: 4px;
+                background: linear-gradient(
+                    to right,
+                    green 0%,
+                    #5cac5f 25%,
+                    rgb(231, 209, 9) 50%,
+                    #da6e0a 80%,
+                    #cc0c0c 100%
+                );
+
+                &::-webkit-slider-thumb {
+                    appearance: none;
+                    width: 1rem;
+                    height: 1rem;
+                    background: url(../../../../../assets/icon/icon-pointer.svg) no-repeat center;
+                    background-size: contain;
+                    margin-bottom: 1.3rem;
+                }
+            }
+
+            .slider-values {
+                @include rangeDescribe;
+                span {
+                    position: relative;
+                    bottom: 1rem;
+                }
+            }
+            .slider-describe {
+                @include rangeDescribe;
+                span {
+                    position: relative;
+                    bottom: -0.5rem;
+                }
+            }
+
+            .slider-number {
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                position: relative;
+                top: -20px;
+                left: 210px;
+            }
+        }
+        .slider-trafficFlow {
+            padding: 20px;
+            .slider-label {
+                @include sliderSubTileStyle;
+            }
+
+            .content-container {
+                height: 3rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                @include emphasisBorder;
+                padding: 1rem;
+                background-color: rgba(5, 17, 78, 0.3);
+                span {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+                SVG {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    margin-right: 0.7rem;
+                }
+                span.number {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                }
+                span.unit {
+                    font-size: 1rem;
+                    margin-left: 0.2rem;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+    div.pie-container {
+        div.title {
+            @include sectionTitle;
+        }
+        #chart-section {
+            padding: 20px;
+            border-radius: 10px;
+        }
+    }
+    div.line-container {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        .control-buttons {
+            margin-top: 50px;
+            width: 100%;
+            .btn-group {
+                display: flex;
+                justify-content: space-between;
+            }
+            .btn-primary {
+                flex-grow: 1;
+                color: #ccc;
+                background-color: rgba(5, 17, 78, 0.6);
+            }
+            .active-btn {
+                background-color: #349ec9;
+                border-color: #349ec9;
+                color: #ffffff;
+            }
+        }
+        div.title {
+            @include sectionTitle;
+        }
+        #traffic-flow-linechart {
+            width: 400px;
+            height: 200px;
+        }
+    }
 }
