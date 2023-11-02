@@ -1,5 +1,5 @@
 import React from 'react'
-
+import "../css/centre.scss"
 export default function Centre() {
     return (
         <div className="centre">
