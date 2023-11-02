@@ -1,0 +1,44 @@
+@import "reset";
+@import "common";
+// whole body style and layout
+@mixin mainLayout {
+    display: grid;
+    grid-template-rows: 4fr 3fr;
+}
+
+main {
+    position: relative;
+    background: url(../assets/img/roadImg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    .centre {
+        width: 100%;
+        height: 100%;
+    }
+    // left side style
+    .leftSide {
+        z-index: 2;
+        @include mainLayout;
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        height: 100%;
+    }
+    // right side style
+    .rightSide {
+        z-index: 2;
+        @include mainLayout;
+        position: absolute;
+        right: 0;
+        top: 0.5rem;
+
+        .rightTop {
+            @include breathAnimation;
+            @include contentBackground;
+        }
+        .rightBottom {
+            @include contentBackground;
+            @include border-animation;
+        }
+    }
+}

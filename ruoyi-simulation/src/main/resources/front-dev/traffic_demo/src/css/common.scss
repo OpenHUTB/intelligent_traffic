@@ -1,0 +1,84 @@
+@mixin imgLayout {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+@mixin borderLayout {
+    border: 1px solid #ffffff;
+}
+
+@mixin contentBackground {
+    background-color: rgba(5, 17, 78, 0.4);
+}
+@mixin subTitleStyle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(28, 42, 71, 0.7);
+    width: 100%;
+    height: 3rem;
+    line-height: 3rem;
+    vertical-align: center;
+}
+// breathAnimation;
+@mixin breathAnimation {
+    border: 1px solid #244a80;
+    animation: breathe 1s infinite alternate;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    @keyframes breathe {
+        0% {
+            border: 1px solid #244a80;
+        }
+        100% {
+            border: 1px solid #dddddd;
+        }
+    }
+}
+@mixin textStyle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+    width: 100%;
+    background-color: #33497e;
+    text-align: center;
+    opacity: 1;
+}
+// border filp animation style
+@mixin border-animation {
+    position: relative;
+    cursor: pointer;
+
+    &::after,
+    &::before {
+        content: "";
+        position: absolute;
+        border: 2px dashed;
+        border-image: linear-gradient(to right, #8f41e9, #578aef) 1;
+        /* 简写为 */
+        inset: -5px;
+        /* 添加动画 */
+        animation: pathRotate 3s infinite linear;
+    }
+
+    @keyframes pathRotate {
+        0%,
+        100% {
+            clip-path: inset(0 0 98% 0);
+        }
+
+        25% {
+            clip-path: inset(0 98% 0 0);
+        }
+
+        50% {
+            clip-path: inset(98% 0 0 0);
+        }
+
+        75% {
+            clip-path: inset(0 0 0 98%);
+        }
+    }
+
+    &::after {
+        animation-delay: -1.5s;
+    }
+}
