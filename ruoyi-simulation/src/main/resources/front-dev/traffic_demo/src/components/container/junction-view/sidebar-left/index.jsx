@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as CarIcon } from '../../../../../assets/icon/icon-car.svg';
-import { ReactComponent as TriangleIcon } from '../../../../../assets/icon/icon-triangle.svg';
-import { ReactComponent as NavIcon } from '../../../../../assets/icon/icon-nav.svg';
+import { ReactComponent as CarIcon } from '../../../../assets/icon/icon-car.svg';
+import { ReactComponent as TriangleIcon } from '../../../../assets/icon/icon-triangle.svg';
+import { ReactComponent as NavIcon } from '../../../../assets/icon/icon-nav.svg';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import * as echarts from 'echarts';
@@ -14,8 +14,8 @@ export default function Index(props) {
         return Array.from({ length }, () => Math.floor(Math.random() * (max - min + 1)) + min);
     };
 
-    const [randomCurrent, setRandomCurrent] = useState(generateRandomArray(12, 0, 300));
-    const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 250));
+    const [randomCurrent, setRandomCurrent] = useState(generateRandomArray(12, 0, 100));
+    const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 70));
     useEffect(() => {
         const chartData = [
             { name: '溢流指数', value: 3.1, center: ['12.5%', '50%'] },
@@ -89,8 +89,15 @@ export default function Index(props) {
         console.log('rendering');
         const lineGraphOption = {
             title: {
-                text: '交通流量（辆）',
+                text: '车道流量（辆）',
                 textStyle: { color: '#FFF', fontSize: 13, fontWeight: 'normal' }
+            },
+            legend: {
+                show: true,
+                data: ['直行', '左转'],
+                textStyle: { color: '#FFF' },
+                top: '0',
+                right: '0'
             },
             xAxis: {
                 type: 'category',
@@ -120,13 +127,15 @@ export default function Index(props) {
             grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
             series: [
                 {
+                    name: '直行',
                     data: randomCurrent,
                     type: 'line',
-                    showSymbol: false,
                     smooth: true,
+                    showSymbol: false,
                     color: '#3ae7e6'
                 },
                 {
+                    name: '左转',
                     data: randomToday,
                     type: 'line',
                     smooth: true,

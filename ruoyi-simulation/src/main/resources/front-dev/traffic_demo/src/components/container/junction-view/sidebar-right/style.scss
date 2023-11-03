@@ -1,0 +1,17 @@
+@use "../../../../css/common";
+
+section.slider-right {
+    width: 400px;
+    @include common.contentBackground;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    SVG {
+        height: 30px;
+        width: 30px;
+        padding: 5px;
+        border: 1px solid blue;
+        border-radius: 50%;
+        background-color: red;
+    }
+}

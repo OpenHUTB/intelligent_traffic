@@ -1,3 +1,5 @@
+@use "../../../../../css/common";
+
 @mixin stat-detail-layout {
     display: flex;
     flex-flow: row wrap;
@@ -27,9 +29,9 @@ $green: #00ff3d;
 $red: #ff0000;
 
 .rightTop {
+    @include common.contentBackground;
     display: grid;
     grid-template-rows: 1fr 4fr 4fr;
-    background-color: #1a1a2d;
     color: #fff;
     width: 450px;
     height: 400px;
@@ -54,7 +56,7 @@ $red: #ff0000;
             .stat-current {
                 @include stat-detail-layout;
             }
-            .stat-today{
+            .stat-today {
                 @include stat-detail-layout;
             }
         }
@@ -64,12 +66,12 @@ $red: #ff0000;
         }
     }
     #lineChart {
-        height: 100%
+        height: 100%;
     }
     .green {
         color: $green;
     }
-    .red{
+    .red {
         color: $red;
     }
 }
