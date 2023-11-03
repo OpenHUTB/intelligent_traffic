@@ -1,4 +1,4 @@
-@import "../.../../../../../../css/common.scss";
+@use "../.../../../../../css/common";
 
 @mixin emphasisBorder {
     border: 1px solid #0f60d1;
@@ -42,9 +42,9 @@
     }
 }
 .junction-leftTop {
-    height: 855px;
     width: 400px;
-    @include contentBackground;
+    @include common.contentBackground;
+    @include common.border-animation;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -86,7 +86,7 @@
                     appearance: none;
                     width: 1rem;
                     height: 1rem;
-                    background: url(../../../../../assets/icon/icon-pointer.svg) no-repeat center;
+                    background: url(../../../../assets/icon/icon-pointer.svg) no-repeat center;
                     background-size: contain;
                     margin-bottom: 1.3rem;
                 }

@@ -8,9 +8,10 @@
 
 main {
     position: relative;
-    background: url(../assets/img/roadImg.png);
+    background: url(../assets/img/bggggggg.png);
+    // background-color: rgba(28, 42, 71, 0.7);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
     .centre {
         width: 100%;
         height: 100%;
@@ -31,14 +32,5 @@ main {
         position: absolute;
         right: 0;
         top: 0.5rem;
-
-        .rightTop {
-            @include breathAnimation;
-            @include contentBackground;
-        }
-        .rightBottom {
-            @include contentBackground;
-            @include border-animation;
-        }
     }
 }
