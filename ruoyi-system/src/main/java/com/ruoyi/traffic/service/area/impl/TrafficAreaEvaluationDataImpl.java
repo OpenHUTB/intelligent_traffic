@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import com.github.yulichang.base.MPJBaseServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONException;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONObject;
 import com.ruoyi.common.exception.base.BaseException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.traffic.domain.area.TrafficArea;
@@ -27,6 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,7 +67,7 @@ public class TrafficAreaEvaluationDataImpl extends MPJBaseServiceImpl<TrafficAre
     @Override
     public void addAreaEvaluationData(TrafficAreaEvaluationData trafficAreaEvaluationData) {
         // 校验指标类别
-        checkEvaluationType(trafficAreaEvaluationData);
+       // checkEvaluationType(trafficAreaEvaluationData);
         baseMapper.insert(trafficAreaEvaluationData);
         // 同时新增一条历史记录
         // 添加年、月、日信息
@@ -118,6 +122,28 @@ public class TrafficAreaEvaluationDataImpl extends MPJBaseServiceImpl<TrafficAre
         queryWrapper.last(limitStr);
         List<TrafficAreaEvaluationDataRankVO> rankVOList = baseMapper.selectJoinList(TrafficAreaEvaluationDataRankVO.class, queryWrapper);
         return rankVOList;
+    }
+
+    @Override
+    public void addData(JSONObject jsonObject) throws JSONException {
+            TrafficAreaEvaluationData trafffic=new TrafficAreaEvaluationData();
+
+        int areaid = jsonObject.getInt("id");
+        int vehicleNumber = jsonObject.getInt("vehiclenumber");
+        double aveSpeed = jsonObject.getDouble("avespeed");
+        double congestion = jsonObject.getDouble("Congestion");
+        //用数组分别对应
+        String type[] = {"vehiclenumber", "aveSpeed", "congestion"};
+        Long typeid[] = {1L, 6L, 7L};
+        Double value[] = {(double) vehicleNumber, aveSpeed, congestion};
+        for (int i = 0; i < type.length; i++) {
+            TrafficAreaEvaluationData data = new TrafficAreaEvaluationData();
+            data.setAreaId((long) areaid);
+            data.setEvaluationTypeId(typeid[i]);
+            data.setValue(BigDecimal.valueOf(value[i]));
+            data.setCollectTime(new Date());
+            addAreaEvaluationData(data);
+        }
     }
 
     /**

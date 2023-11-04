@@ -3,6 +3,9 @@ package com.ruoyi.traffic.service.area;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.github.yulichang.base.MPJBaseService;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONArray;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONException;
+import com.mathworks.toolbox.javabuilder.external.org.json.JSONObject;
 import com.ruoyi.traffic.domain.area.TrafficAreaEvaluationData;
 import com.ruoyi.traffic.dto.AreaEvaluationRankDTO;
 import com.ruoyi.traffic.vo.TrafficAreaEvaluationDataRankVO;
@@ -36,4 +39,7 @@ public interface ITrafficAreaEvaluationDataService extends MPJBaseService<Traffi
 
     // 查询前10名的指标排名
     List<TrafficAreaEvaluationDataRankVO> queryEvaluationDataRankList(AreaEvaluationRankDTO dto);
+
+    //从matlab获取数据
+    void addData(JSONObject jsonObject) throws JSONException;
 }
