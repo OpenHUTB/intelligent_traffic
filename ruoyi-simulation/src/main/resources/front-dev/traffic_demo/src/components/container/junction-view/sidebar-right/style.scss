@@ -1,4 +1,5 @@
 @use "../../../../css/common";
+@use "../sidebar-left/style" as left;
 
 section.slider-right {
     width: 400px;
@@ -6,12 +7,89 @@ section.slider-right {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    SVG {
-        height: 30px;
-        width: 30px;
-        padding: 5px;
-        border: 1px solid blue;
-        border-radius: 50%;
-        background-color: red;
+
+    .lights-container {
+        width: 100%;
+        .title {
+            @include left.sectionTitle;
+        }
+
+        .arrows {
+            margin-top: 1.2rem;
+            width: 100%;
+            height: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("../../../../assets/img/junction2.png") no-repeat center center;
+            background-size: contain;
+            .arrow-centre {
+                width: 50px;
+                height: 40px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .north {
+                position: absolute;
+                top: 5%;
+                transform: rotate(180deg);
+                .time {
+                    transform: rotate(180deg);
+                }
+            }
+            .west {
+                position: absolute;
+                left: 5%;
+                transform: rotate(90deg);
+            }
+            .south {
+                position: absolute;
+                bottom: 5%;
+            }
+            .east {
+                position: absolute;
+                right: 5%;
+                transform: rotate(-90deg);
+            }
+            .arrow-container {
+                width: 100px;
+                height: 90px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .time {
+                    margin-top: 0.5rem;
+                    font-size: 1.5rem;
+                }
+                .green {
+                    color: green;
+                }
+                .red {
+                    color: red;
+                }
+                SVG {
+                    height: 1.5 rem;
+                    width: 1.5 rem;
+                    padding: 5px;
+                    border-radius: 50%;
+                    margin: 5px;
+                }
+                SVG.green {
+                    background-color: green;
+                }
+                SVG.red {
+                    background-color: red;
+                }
+            }
+        }
     }
 }
