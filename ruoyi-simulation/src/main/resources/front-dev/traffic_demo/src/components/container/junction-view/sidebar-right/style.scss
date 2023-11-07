@@ -5,19 +5,22 @@ section.slider-right {
     width: 400px;
     @include common.contentBackground;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
 
     .lights-container {
         width: 100%;
+        position: relative;
+        width: 100%;
         .title {
             @include left.sectionTitle;
+            height: 20px;
         }
-
         .arrows {
-            margin-top: 1.2rem;
+            margin-top: 2rem;
             width: 100%;
-            height: 300px;
+            height: 200px;
             position: relative;
             display: flex;
             justify-content: center;
@@ -34,7 +37,7 @@ section.slider-right {
             }
             .north {
                 position: absolute;
-                top: 5%;
+                top: 2%;
                 transform: rotate(180deg);
                 .time {
                     transform: rotate(180deg);
@@ -42,21 +45,20 @@ section.slider-right {
             }
             .west {
                 position: absolute;
-                left: 5%;
+                left: 15%;
                 transform: rotate(90deg);
             }
             .south {
                 position: absolute;
-                bottom: 5%;
+                bottom: 2%;
             }
             .east {
                 position: absolute;
-                right: 5%;
+                right: 15%;
                 transform: rotate(-90deg);
             }
             .arrow-container {
-                width: 100px;
-                height: 90px;
+                width: 80px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -68,7 +70,7 @@ section.slider-right {
                 }
                 .time {
                     margin-top: 0.5rem;
-                    font-size: 1.5rem;
+                    font-size: 1.2rem;
                 }
                 .green {
                     color: green;
@@ -77,17 +79,120 @@ section.slider-right {
                     color: red;
                 }
                 SVG {
-                    height: 1.5 rem;
-                    width: 1.5 rem;
-                    padding: 5px;
                     border-radius: 50%;
-                    margin: 5px;
+                    margin: 3px;
                 }
                 SVG.green {
-                    background-color: green;
+                    background-color: #34d43a;
                 }
                 SVG.red {
-                    background-color: red;
+                    background-color: rgb(224, 38, 38);
+                }
+            }
+        }
+    }
+
+    // lights-optimize-container
+    .lights-optimize-container {
+        margin-top: 1rem;
+        position: relative;
+        width: 100%;
+        &::before {
+            content: "";
+            display: block;
+            height: 20px;
+        }
+        div.title {
+            @include left.sectionTitle;
+            top: 0;
+        }
+        .optimize-methods {
+            width: 100%;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            label {
+                text-wrap: nowrap;
+                vertical-align: middle;
+                text-align: center;
+            }
+            .select-custom {
+                margin: 0 1rem;
+                width: 30%;
+            }
+        }
+        .seconds-control-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            .rangeBars-container {
+                width: 100%;
+                height: 10rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                .singleBar {
+                    width: 85%;
+                    position: relative;
+                    .custom-range {
+                        margin-left: 15px;
+                        width: 100%;
+                        height: 10px;
+                        outline: none;
+                        transition: opacity 0.5s;
+                        appearance: none;
+                        border-radius: 4px;
+
+                        &::-webkit-slider-thumb {
+                            appearance: none;
+                            width: 1rem;
+                            height: 1rem;
+                            background: url(../../../../assets/icon/icon-pointer.svg) no-repeat center center;
+                            background-size: contain;
+                            cursor: pointer;
+                            margin-bottom: 1.3rem; /* Adjust this value as needed */
+                        }
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+
+                    .select-value {
+                        position: absolute;
+                        left: -1.5rem; /* Adjust this value as needed */
+                        top: 0;
+                        padding: 2px 10px;
+                        border-radius: 10px;
+                        text-align: center;
+                        font-weight: bold;
+                        user-select: none;
+                        color: #5cac5f;
+                    }
+                }
+            }
+
+            .control-buttons {
+                height: 10rem;
+                width: 30%;
+                .custom-button-group {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    .btn-primary {
+                        margin: 0.2rem;
+                        color: #ccc;
+                        background-color: rgba(5, 17, 78, 0.6);
+                    }
+                    .active-btn {
+                        background-color: #349ec9;
+                        border-color: #349ec9;
+                        color: #ffffff;
+                    }
                 }
             }
         }

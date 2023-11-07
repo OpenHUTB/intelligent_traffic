@@ -200,7 +200,7 @@ export default function Index(props) {
             <div className="line-container">
                 <div className="title"><span className='svg'><NavIcon /></span><span>实时态势监控</span></div>
                 <div className="control-buttons">
-                    <ButtonGroup size="lg" className="mb-2">
+                    <ButtonGroup size="sm" className="mb-2">
                         {buttons.map((label, index) => (
                             <Button
                                 key={index}
