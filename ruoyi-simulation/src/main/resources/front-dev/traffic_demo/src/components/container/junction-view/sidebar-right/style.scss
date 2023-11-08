@@ -1,6 +1,13 @@
 @use "../../../../css/common";
 @use "../sidebar-left/style" as left;
 
+@mixin title-sideeffect {
+    &::before {
+        content: "";
+        display: block;
+        height: 20px;
+    }
+}
 section.slider-right {
     width: 400px;
     @include common.contentBackground;
@@ -13,28 +20,21 @@ section.slider-right {
         width: 100%;
         position: relative;
         width: 100%;
+        @include title-sideeffect;
         .title {
             @include left.sectionTitle;
             height: 20px;
         }
         .arrows {
-            margin-top: 2rem;
             width: 100%;
-            height: 200px;
+            height: 12rem;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             background: url("../../../../assets/img/junction2.png") no-repeat center center;
             background-size: contain;
-            .arrow-centre {
-                width: 50px;
-                height: 40px;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
+
             .north {
                 position: absolute;
                 top: 2%;
@@ -58,20 +58,18 @@ section.slider-right {
                 transform: rotate(-90deg);
             }
             .arrow-container {
-                width: 80px;
+                width: 4rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                div {
+
+                .arrow {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
                 }
-                .time {
-                    margin-top: 0.5rem;
-                    font-size: 1.2rem;
-                }
+
                 .green {
                     color: green;
                 }
@@ -94,18 +92,16 @@ section.slider-right {
 
     // lights-optimize-container
     .lights-optimize-container {
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         position: relative;
         width: 100%;
-        &::before {
-            content: "";
-            display: block;
-            height: 20px;
-        }
+        @include title-sideeffect;
         div.title {
             @include left.sectionTitle;
             top: 0;
         }
+
+        // optimize methods style include in this section
         .optimize-methods {
             width: 100%;
             margin-top: 1rem;
@@ -118,19 +114,27 @@ section.slider-right {
                 text-align: center;
             }
             .select-custom {
+                $optionalBackground: #33497e;
+                color: #fff;
                 margin: 0 1rem;
                 width: 30%;
+                background-color: $optionalBackground;
+                border: none;
+                option {
+                    background-color: $optionalBackground;
+                }
             }
         }
+        // seconds control container include in this section
         .seconds-control-container {
+            margin-top: 1rem;
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1rem;
             .rangeBars-container {
                 width: 100%;
-                height: 10rem;
+                height: 9rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
@@ -138,10 +142,11 @@ section.slider-right {
                 .singleBar {
                     width: 85%;
                     position: relative;
+                    margin: 0.5rem;
                     .custom-range {
                         margin-left: 15px;
                         width: 100%;
-                        height: 10px;
+                        height: 5px;
                         outline: none;
                         transition: opacity 0.5s;
                         appearance: none;
@@ -175,9 +180,8 @@ section.slider-right {
                     }
                 }
             }
-
             .control-buttons {
-                height: 10rem;
+                height: 100%;
                 width: 30%;
                 .custom-button-group {
                     height: 100%;
@@ -194,6 +198,114 @@ section.slider-right {
                         color: #ffffff;
                     }
                 }
+            }
+        }
+    }
+
+    // pedestrain optimize container include in this section
+    .pedestrain-optimization-container {
+        margin-top: 0.5rem;
+        $layoutWidth: 5rem;
+        width: 100%;
+        position: relative;
+        @include title-sideeffect;
+        .title {
+            @include left.sectionTitle;
+            top: 0;
+        }
+        main.pedestrian-main {
+            $mainHeight: 8rem;
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            .pedestrain-scroll-container {
+                @include common.contentBackground;
+                .nav-container {
+                    margin-bottom: 1rem;
+                    font-weight: bold;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    span {
+                        width: $layoutWidth;
+                        text-align: center;
+                        text-wrap: nowrap;
+                    }
+                }
+
+                .list-container {
+                    color: #ddd;
+                    height: $mainHeight;
+                    overflow: auto;
+                    &::-webkit-scrollbar {
+                        width: 0;
+                    }
+                    > div:nth-child(odd) {
+                        background-color: rgba(16, 37, 80, 0.9);
+                    }
+                    .list-item {
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        border-left: 3px solid #349ec9;
+                        margin: 0.6rem 0;
+                        span {
+                            width: $layoutWidth;
+                            text-align: center;
+                        }
+                        .name {
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
+            .pedestrian-index {
+                @include common.contentBackground;
+                position: relative;
+                .number {
+                    $centerWidth: 5rem;
+
+                    text-align: center;
+                    line-height: $centerWidth;
+                    border: 1px solid rgb(16, 37, 80);
+                    border-radius: 50%;
+                    font-size: 2rem;
+                    position: absolute;
+                    width: $centerWidth;
+                    height: $centerWidth;
+                    top: 40%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(to right, #349ec9 0%, green 100%);
+                }
+                .description {
+                    position: absolute;
+                    top: 75%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    text-wrap: nowrap;
+                }
+            }
+        }
+    }
+
+    //option comparison style
+    .options-comparison {
+        margin-top: 1rem;
+        width: 100%;
+        @include title-sideeffect;
+        position: relative;
+        .title {
+            @include left.sectionTitle;
+            top: 0;
+        }
+        .video-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            img {
+                width: 100%;
+                height: 100%;
             }
         }
     }
