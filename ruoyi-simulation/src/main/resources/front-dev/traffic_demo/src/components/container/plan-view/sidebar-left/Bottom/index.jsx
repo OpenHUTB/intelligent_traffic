@@ -24,36 +24,38 @@ export default function Index(props) {
     startAutoScroll();
   }, []);
   console.log(props.randomJunction);
-  const renderList = props.randomJunction.map((item, index=0) => {
+  const renderList = props.randomJunction.map((item, index = 0) => {
     return (
       <div className="list-item" key={index}>
         <span className="rank">{index + 1}</span>
         <span className="name">{item.name}</span>
         <span className="index">{item.index}</span>
-        <span className={"status " + ((item.status === "拥堵") ? "red" : (item.status === "畅通") ? "green" : "") }>{item.status}</span>
+        <span className={"status " + ((item.status === "拥堵") ? "red" : (item.status === "畅通") ? "green" : "")}>{item.status}</span>
       </div>
     )
   })
-      return (
-      <section className="leftBottom">
-        <div className="header">
-          <span className="left-text"><span>各路口概况</span></span>
-          <span className="right-text">(即时更新)</span>
-        </div>
-        <nav className="head">
-          <ul>
-            <li>序号</li>
-            <li>路口名称</li>
-            <li>拥堵指数</li>
-            <li>路口状态</li>
-          </ul>
-        </nav>
-        <div className="list-container" ref={scrollContainer}>
-          {renderList}
-          {renderList}
-        </div>
 
-      </section>
 
-      )
+  return (
+    <section className="leftBottom">
+      <div className="header">
+        <span className="left-text"><span>各路口概况</span></span>
+        <span className="right-text">(即时更新)</span>
+      </div>
+      <nav className="head">
+        <ul>
+          <li>序号</li>
+          <li>路口名称</li>
+          <li>拥堵指数</li>
+          <li>路口状态</li>
+        </ul>
+      </nav>
+      <div className="list-container" ref={scrollContainer}>
+        {renderList}
+        {renderList}
+      </div>
+
+    </section>
+
+  )
 }
