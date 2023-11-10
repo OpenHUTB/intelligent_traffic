@@ -22,7 +22,7 @@ main {
         @include mainLayout;
         position: absolute;
         left: 0;
-        top: 0.5rem;
+        top: 0;
         height: 100%;
     }
     // right side style
@@ -31,6 +31,6 @@ main {
         @include mainLayout;
         position: absolute;
         right: 0;
-        top: 0.5rem;
+        top: 0;
     }
 }
