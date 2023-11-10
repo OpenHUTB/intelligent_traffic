@@ -145,7 +145,7 @@ export default function Index() {
         <section className="slider-right">
 
             <div className="lights-container">
-                <div className="title"><span className='svg'><NavIcon /></span><span>实时态势监控</span></div>
+                <div className="title"><span className='svg'><NavIcon /></span><span>信号灯组运行状态</span></div>
                 <div className="arrows">
                     <div className="arrow-container north">
                         <ArrowDisplay isGreen={leftNorth.isGreen} time={leftNorth.time} IconComponent={LeftIcon} />
@@ -236,7 +236,7 @@ export default function Index() {
                 </main>
             </div>
             <section className="options-comparison">
-                <div className="title"><span className='svg'><NavIcon /></span><span>最佳方案</span></div>
+                <div className="title"><span className='svg'><NavIcon /></span><span>优化方案展示</span></div>
 
                 <div className='video-container'>
                     <img src={option1} alt="" />

@@ -9,6 +9,8 @@
     }
 }
 section.slider-right {
+    @include common.border-animation;
+    margin-top: 0.2rem;
     width: 400px;
     @include common.contentBackground;
     display: flex;
@@ -214,7 +216,7 @@ section.slider-right {
             top: 0;
         }
         main.pedestrian-main {
-            $mainHeight: 8rem;
+            $mainHeight: 6.3rem;
             margin-top: 1rem;
             display: grid;
             grid-template-columns: 1.5fr 1fr;
@@ -301,6 +303,7 @@ section.slider-right {
             top: 0;
         }
         .video-container {
+            margin-top: 0.5 rem;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             img {

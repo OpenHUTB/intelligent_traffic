@@ -223,7 +223,7 @@ export default function Index(props) {
                 </div>
             </div>
             <div className="pie-container">
-                <div className="title"><span className='svg'><NavIcon /></span><span>实时态势监控</span></div>
+                <div className="title"><span className='svg'><NavIcon /></span><span>路口运行信息</span></div>
                 <div id="traffic-monitor-piechart" >
                     <div className='SVG-container'>
                         <Car /><LineUp /><Parking /><Total />
@@ -244,7 +244,7 @@ export default function Index(props) {
                 </div>
             </div>
             <div className="line-container">
-                <div className="title"><span className='svg'><NavIcon /></span><span>实时态势监控</span></div>
+                <div className="title"><span className='svg'><NavIcon /></span><span>各车道流量状态</span></div>
                 <div className="control-buttons">
                     <ButtonGroup size="sm" className="mb-2">
                         {buttons.map((label, index) => (
