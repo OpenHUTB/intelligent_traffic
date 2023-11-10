@@ -5,32 +5,50 @@ header.header {
     height: 70px;
     background: url(../assets/img/Bg-header.png) no-repeat center;
     background-size: cover;
-    font-size: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
     .title {
-        font-size: 30px;
+        width: 15rem;
         font-weight: bold;
+        position: absolute;
+        left: 50%;
+        top: 30%;
+        transform: translate(-50%, -50%);
+        .title-1 {
+            font-size: 1.5rem;
+            width: 100%;
+            color: #ffffff;
+            text-align: center;
+        }
+        .title-2 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            text-align: center;
+        }
     }
 
     ul {
-        width: 500px;
+        width: 25rem;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
         align-items: center;
         margin: 35px 0 0 10px;
         li {
+            $lineHeight: 2rem;
             width: 6rem;
-            height: 30px;
-            line-height: 30px;
-            vertical-align: baseline;
-            font-size: 1.2rem;
-            padding-left: 1.2rem;
+            height: $lineHeight;
+            line-height: $lineHeight;
+            padding-left: 0.5rem;
+            text-align: center;
             background: url(../assets/img/bnt.png) no-repeat center;
             background-size: cover;
             @include imgLayout;
+            a {
+                text-decoration: none;
+                color: #ffffff;
+            }
+            a :active {
+                color: red;
+            }
         }
     }
 }
