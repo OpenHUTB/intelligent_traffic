@@ -19,11 +19,9 @@ main {
     // left side style
     .leftSide {
         z-index: 2;
-        @include mainLayout;
         position: absolute;
         left: 0;
         top: 0;
-        height: 100%;
     }
     // right side style
     .rightSide {
@@ -32,5 +30,12 @@ main {
         position: absolute;
         right: 0;
         top: 0;
+    }
+    .bottomSide {
+        position: absolute;
+        bottom: 5%;
+        width: 100%;
+        border: 1px solid green;
+        z-index: 2;
     }
 }
