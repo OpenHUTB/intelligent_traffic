@@ -13,11 +13,6 @@ export default function Centre() {
                 </div>
             </section>
             <div className="funcArea">
-                <nav className="funcBtn">
-                    <button id="record" className="btn">录制</button>
-                    {/* <button id="stop" className="btn">停止</button>
-            <button id="send" className="btn">发送</button> */}
-                </nav>
                 <div className="displayArea">
                     <section className="voiceDetect">
                         <textarea id="tips"></textarea>
