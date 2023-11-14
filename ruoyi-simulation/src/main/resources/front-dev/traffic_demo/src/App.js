@@ -10,7 +10,7 @@ export default function App() {
       <div id="layout">
         <Header />
         <Routes>
-          <Route path="/" element={<PlanMain />} />
+          <Route path="/" element={<PlanMain videoUrl="default-video-url.mp4" />} />
           <Route path="/junction" element={<JunctionMain />} />
         </Routes>
       </div>
