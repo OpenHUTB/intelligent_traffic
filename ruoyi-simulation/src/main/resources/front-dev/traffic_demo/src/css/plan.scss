@@ -8,10 +8,7 @@
 
 main {
     position: relative;
-    background: url(../assets/img/bggggggg.png);
-    // background-color: rgba(28, 42, 71, 0.7);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+
     .centre {
         width: 100%;
         height: 100%;
@@ -33,9 +30,12 @@ main {
     }
     .bottomSide {
         position: absolute;
-        bottom: 5%;
+        bottom: 0;
         width: 100%;
         border: 1px solid green;
         z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }

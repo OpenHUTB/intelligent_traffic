@@ -33,9 +33,9 @@ export default function TrafficJam() {
                         width: 8
                     },
                     pointer: {
-                        width: 5,
-                        length: '70%',
-                        offsetCenter: [0, '-5%'],
+                        width: 3,
+                        length: '60%',
+                        offsetCenter: [0, '-10%'],
                         itemStyle: {
                             color: '#ccc'
                         }
@@ -68,17 +68,33 @@ export default function TrafficJam() {
                         lineHeight: 40,
                         height: 40,
                         borderRadius: 8,
-                        offsetCenter: [0, '25%'],
+                        offsetCenter: [0, '15%'],
                         valueAnimation: true,
                         formatter: function (value) {
-                            if (value < 2) return "拥堵";
-                            if (value >= 2 && value <= 4) return "正常";
-                            return "畅通";
+                            if (value < 2) return "{red|严重拥堵}";
+                            if (value >= 2 && value <= 3.5) return "{yellow|轻微拥堵}";
+                            return "{green|畅通}";
                         },
+                        rich: {
+                            red: {
+                                color: 'red',
+                                fontSize: 18,
+                                fontWeight: 'bold'
+                            },
+                            yellow: {
+                                color: 'rgb(231, 209, 9)',
+                                fontSize: 18,
+                            },
+                            green: {
+                                color: 'green',
+                                fontSize: 18,
+                                fontWeight: 'bold'
+                            }
+                        }
                     },
                     data: [
                         {
-                            value: 4.3
+                            value: 4
                         }
                     ]
                 }
@@ -94,8 +110,14 @@ export default function TrafficJam() {
 
     return (
         <div className="traffic-jam-container" >
+            <div className="title">
+                <span>交通运行指数</span>
+            </div>
             <div id="jam-guage"></div>
-            <div className="text"></div>
+            <div className="text">
+                <h3>交通拥堵指数</h3>
+                <span className="number">{4.3}</span><span className="unit">分</span>
+            </div>
         </div>
     )
 }

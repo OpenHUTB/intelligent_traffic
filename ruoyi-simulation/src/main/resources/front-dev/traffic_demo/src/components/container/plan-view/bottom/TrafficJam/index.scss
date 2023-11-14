@@ -1,9 +1,50 @@
+@use "../../../../../css/common.scss" as common;
 .traffic-jam-container {
-    border: 1px solid red;
-    height: 15rem;
-    width: 25rem;
+    @include common.bottomElementSize;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    .title {
+        background: url("../../../../../assets/img/Jamratio.png") no-repeat center center;
+        background-size: cover;
+        width: 100%;
+        font-size: 1.2rem;
+        text-align: center;
+    }
     #jam-guage {
-        height: 70%;
-        width: 200px;
+        height: 90%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .text {
+        $borderStyle: 1px solid
+            rgba(
+                $color: #ffff,
+                $alpha: 0.4
+            );
+        border-left: $borderStyle;
+        border-right: $borderStyle;
+        border-radius: 10%;
+        padding: 0.5rem 2rem;
+        position: absolute;
+        text-align: center;
+        top: 65%;
+        h3 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+        .number {
+            font-size: 2rem;
+            color: #fff;
+            margin: 0 0.5rem;
+        }
+        .unit {
+            color: #88ff8c;
+        }
     }
 }
