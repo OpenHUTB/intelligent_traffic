@@ -5,18 +5,18 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 export default function ViolationOverview() {
 
     const violationList = [
-        { name: "未礼让行人", value: 95 },
-        { name: "违法停车", value: 80 },
-        { name: "违法占道", value: 40 },
+        { name: "已处理", value: 200 },
+        { name: "处理中", value: 80 },
+        { name: "未处理", value: 40 },
     ]
-
+    const totalValue = violationList.reduce((sum, item) => sum + item.value, 0);
     const renderList = violationList.map((item, index) => {
         return (
             <div className="list-item">
                 <span className='index'></span>
                 <span>{item.name}</span>
                 <span className="number">{item.value}<span className="unit">件</span></span>
-                <ProgressBar min={0} max={100} now={item.value} />
+                <ProgressBar min={0} max={totalValue} now={item.value} />
             </div>
         )
 
