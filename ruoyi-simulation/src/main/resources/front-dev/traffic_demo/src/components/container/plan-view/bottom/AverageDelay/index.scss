@@ -1,14 +1,13 @@
 @use "../../../../../css/common.scss" as common;
 .average-delay {
     @include common.bottomElementSize;
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
     .title {
         @include common.bottomElementTitle;
-        border: 1px solid red;
     }
     #delay-content {
         width: 100%;
