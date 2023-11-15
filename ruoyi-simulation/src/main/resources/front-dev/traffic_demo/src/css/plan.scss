@@ -22,8 +22,8 @@ main {
     }
     // right side style
     .rightSide {
+        @include contentBackground;
         z-index: 2;
-        @include mainLayout;
         position: absolute;
         right: 0;
         top: 0;
