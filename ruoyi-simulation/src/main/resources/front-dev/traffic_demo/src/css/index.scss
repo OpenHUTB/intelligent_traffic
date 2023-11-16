@@ -3,9 +3,6 @@ body,
 #root {
     height: 100%;
     overflow: hidden;
-    background: url(../assets/img/planview.png.jpg);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
 }
 #layout {
     font-family: 微软雅黑, MicrosoftYahei, sans-serif;
@@ -15,14 +12,12 @@ body,
     background-repeat: no-repeat;
     display: grid;
     grid-template-rows: 1fr 12fr;
+    position: relative;
     overflow: hidden;
-    // background-image: url(../assets//img/bg.jpg);
-    // background-size: cover;
     background-image: linear-gradient(
         to bottom,
-        rgba(5, 17, 78, 0.4) 5%,
-        rgba(25, 69, 147, 0.1) 10%,
-        rgba(25, 69, 147, 0) 80%
+        rgba(5, 17, 78, 0.8) 5%,
+        rgba(5, 17, 78, 0.8) 10%,
+        rgba(5, 17, 78, 0.8) 80%
     );
-    padding: 1rem;
 }

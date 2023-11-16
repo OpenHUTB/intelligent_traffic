@@ -19,7 +19,7 @@
 }
 
 .violation-overview {
-    width: 400px;
+    width: 380px;
 
     section.violation-data {
         width: 100%;
@@ -28,10 +28,10 @@
         grid-template-columns: 2fr 8fr;
 
         div.title {
-            background: url("../../../../assets/img/loadPicture.png") no-repeat left center;
+            background: url("../../../../../assets/img/loadPicture.png") no-repeat left center;
             background-size: contain;
             writing-mode: vertical-lr;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             text-align: center;
 
             &::before {
@@ -55,7 +55,7 @@
                     height: 2rem;
                     position: absolute;
                     bottom: -2rem;
-                    background: url("../../../../assets/img/violence-oveview.png") no-repeat bottom center;
+                    background: url("../../../../../assets/img/violence-oveview.png") no-repeat bottom center;
                     background-size: cover;
                 }
                 position: relative;

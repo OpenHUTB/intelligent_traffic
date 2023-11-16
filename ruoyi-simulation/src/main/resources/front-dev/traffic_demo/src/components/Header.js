@@ -8,7 +8,7 @@ export default function Header() {
             <ul className='nav-left'>
                 <li><Link to='/'>路况概览</Link></li>
                 <li><Link to='/Junction'>路口场景</Link></li>
-                <li></li>
+                <li>车辆跟踪</li>
             </ul>
             <div className="title">
                 <h2 className="title-1">智慧交通大模型</h2>
