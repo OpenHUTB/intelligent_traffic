@@ -12,13 +12,14 @@ section.slider-right {
     @include common.border-animation;
     margin-top: 0.2rem;
     width: 400px;
-    @include common.contentBackground;
+    // @include common.contentBackground;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 
     .lights-container {
+        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
         width: 100%;
         position: relative;
         width: 100%;
@@ -94,6 +95,7 @@ section.slider-right {
 
     // lights-optimize-container
     .lights-optimize-container {
+        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
         margin-top: 0.5rem;
         position: relative;
         width: 100%;
@@ -206,6 +208,7 @@ section.slider-right {
 
     // pedestrain optimize container include in this section
     .pedestrain-optimization-container {
+        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
         margin-top: 0.5rem;
         $layoutWidth: 5rem;
         width: 100%;
@@ -294,6 +297,7 @@ section.slider-right {
 
     //option comparison style
     .options-comparison {
+        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
         margin-top: 1rem;
         width: 100%;
         @include title-sideeffect;

@@ -5,11 +5,13 @@ import AverageDelay from 'components/container/plan-view/bottom/AverageDelay/Ave
 import TrafficRank from 'components/container/plan-view/bottom/TrafficRank/TrafficRank';
 import TopViolation from 'components/container/plan-view/bottom/TopViolation/TopViolation';
 import Overview from 'components/container/plan-view/bottom/Overview/Overview';
-import ViolationOverview from 'components/container/plan-view/sidebar-right/ViolationOverview';
+import ViolationOverview from 'components/container/plan-view/sidebar-right/ViolationOverview/ViolationOverview';
+import FunctionIcons from 'components/container/plan-view/sidebar-right/FunctionIcons/FunctionIcons';
+import React from 'react';
 import '../css/plan.scss';
 
 
-export default function Main() {
+export default function PlanMain() {
 
   return (
     <main>
@@ -19,6 +21,7 @@ export default function Main() {
       <Centre />
       <div className="rightSide">
         <ViolationOverview />
+        <FunctionIcons />
       </div>
       <div className='bottomSide'>
         <TrafficJam />
@@ -26,6 +29,7 @@ export default function Main() {
         <TrafficRank />
         <TopViolation />
         <Overview />
+
       </div>
     </main>
   );
