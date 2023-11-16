@@ -6,6 +6,7 @@
 }
 @mixin progressBarColor($indexChild, $childColor) {
     &:nth-of-type(#{$indexChild}) {
+        color: $childColor;
         .index {
             background-color: $childColor;
         }
@@ -27,8 +28,8 @@
         grid-template-columns: 2fr 8fr;
 
         div.title {
-            background: url("../../../../assets/img/loadPicture.png") no-repeat center center;
-            background-size: cover;
+            background: url("../../../../assets/img/loadPicture.png") no-repeat left center;
+            background-size: contain;
             writing-mode: vertical-lr;
             font-size: 1.5rem;
             text-align: center;
@@ -109,11 +110,10 @@
             }
         }
         div.violation-chart-container {
-            border: 1px solid #eee;
             width: 100%;
-            height: 50%;
+            height: 60%;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.1fr 1fr;
 
             .chart-data-display {
                 display: flex;
@@ -161,8 +161,13 @@
 
                     @include progressBarColor(1, #54ff86);
                     @include progressBarColor(2, #f2524e);
-                    @include progressBarColor(3, #999999);
+                    @include progressBarColor(3, #cec9c9);
                 }
+            }
+            // violation chart display
+            #violation-chart {
+                width: 100%;
+                height: 100%;
             }
         }
     }
