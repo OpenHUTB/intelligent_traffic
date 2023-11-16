@@ -16,7 +16,7 @@ export default function TopViolation() {
 
     const renderList = violationList.map((item, index) => {
         return (
-            <div className="list-item">
+            <div className="list-item" key={index}>
                 <span className='index'>{'0' + (index + 1)}</span>
                 <span>{item.name}</span>
                 <span className="number">{item.value}<span className="unit">件</span></span>

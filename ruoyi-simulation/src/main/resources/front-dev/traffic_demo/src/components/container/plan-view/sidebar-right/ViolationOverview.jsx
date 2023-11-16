@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import * as echarts from 'echarts';
+
 export default function ViolationOverview() {
 
     const violationList = [
@@ -12,7 +14,7 @@ export default function ViolationOverview() {
     const totalValue = violationList.reduce((sum, item) => sum + item.value, 0);
     const renderList = violationList.map((item, index) => {
         return (
-            <div className="list-item">
+            <div className="list-item" key={index}>
                 <span className='index'></span>
                 <span>{item.name}</span>
                 <span className="number">{item.value}<span className="unit">件</span></span>
@@ -21,6 +23,104 @@ export default function ViolationOverview() {
         )
 
     })
+
+
+    // set the chart for violation overview
+    const chartRef = useRef(null);
+    const currentIndexRef = useRef(0);
+
+    useEffect(() => {
+
+        const myChart = echarts.init(chartRef.current);
+
+        const option = {
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                show: false,
+                top: '5%',
+                left: 'center'
+            },
+            color: ['#54ff86', '#f2524e', '#999999'],
+            series: [
+                {
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: ['75%', '65%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center',
+                        formatter: params => {
+                            return `{labelName|${params.name}}\n{labelValue|${params.value}}`;
+                        },
+                        rich: {
+                            labelName: {
+                                fontSize: '1rem', // Font size for the label
+                                color: '#fff', // Customize the color as well
+                                height: 40,
+                            },
+                            labelValue: {
+                                fontSize: '1.8rem', // Font size for the value
+                                color: '#fff',
+                                fontWeight: 'bold',
+
+                            }
+                        }
+                    },
+                    selectedMode: 'single',
+                    selectedOffset: 13,
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '1rem',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: violationList
+                }
+            ]
+        };
+        myChart.setOption(option);
+        const updateChart = () => {
+            const dataLen = violationList.length;
+            const dataIndex = currentIndexRef.current % dataLen;
+
+            myChart.dispatchAction({
+                type: 'pieToggleSelect',
+                seriesIndex: 0,
+                dataIndex: dataIndex
+            });
+
+            const newData = violationList.map((item, index) => ({
+                ...item,
+                label: index === dataIndex ? { show: true } : { show: false }
+            }));
+
+            myChart.setOption({
+                series: [{
+                    data: newData
+                }]
+            });
+
+            currentIndexRef.current += 1;
+        };
+
+        const intervalId = setInterval(updateChart, 2000);
+
+        return () => {
+            clearInterval(intervalId);
+            myChart.dispose();
+        };
+
+    });
+
+
+
 
     return (
         <div className="violation-overview">
@@ -44,7 +144,7 @@ export default function ViolationOverview() {
                         </div>
                     </div>
                     <div className="violation-chart-container">
-                        <div className="violation-chart"></div>
+                        <div id="violation-chart" ref={chartRef}></div>
                         <div className="chart-data-display">
                             {
                                 renderList
