@@ -21,7 +21,7 @@ export default function Centre({ video }) {
         <div className="centre">
             <section id="player" className="mainStream">
                 {/* Conditional rendering of video based on the currentVideo state */}
-                <video src={currentVideo} autoPlay loop></video>
+                <video src={currentVideo} autoPlay loop muted></video>
                 {/* Rest of your Centre component */}
             </section>
         </div>

@@ -5,7 +5,6 @@ body,
     overflow: hidden;
 }
 #layout {
-    font-family: 微软雅黑, MicrosoftYahei, sans-serif;
     color: #fff;
     background-position: 0 0;
     height: 100%;
@@ -14,10 +13,11 @@ body,
     grid-template-rows: 1fr 12fr;
     position: relative;
     overflow: hidden;
+    padding: 5px;
     background-image: linear-gradient(
         to bottom,
-        rgba(5, 17, 78, 0.8) 5%,
-        rgba(5, 17, 78, 0.8) 10%,
-        rgba(5, 17, 78, 0.8) 80%
+        rgba(31, 33, 44, 1) 5%,
+        rgba(31, 33, 44, 1) 10%,
+        rgba(31, 33, 44, 0.9) 100%
     );
 }
