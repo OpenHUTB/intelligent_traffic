@@ -11,15 +11,16 @@ header.header {
         font-weight: bold;
         position: absolute;
         left: 50%;
-        top: 30%;
+        top: 45%;
         transform: translate(-50%, -50%);
         .title-1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             width: 100%;
             color: #ffffff;
             text-align: center;
         }
         .title-2 {
+            margin-top: 0.5rem;
             font-size: 1.2rem;
             color: #ffffff;
             text-align: center;
@@ -27,21 +28,24 @@ header.header {
     }
 
     ul {
-        width: 25rem;
+        width: 50rem;
         display: flex;
         justify-content: space-around;
         align-items: center;
-        margin: 35px 0 0 10px;
+        font-size: 1.5rem;
+        position: absolute;
+        left: 50%;
+        bottom: -5rem;
+        transform: translate(-50%, -50%);
+        z-index: 3;
         li {
-            $lineHeight: 2rem;
-            width: 6rem;
+            $lineHeight: 3rem;
+            width: 10rem;
             height: $lineHeight;
             line-height: $lineHeight;
-            padding-left: 0.5rem;
             text-align: center;
-            background: url(../assets/img/bnt.png) no-repeat center;
+            background: url(../assets/img/dashboard.png) no-repeat center;
             background-size: cover;
-            @include imgLayout;
             a {
                 text-decoration: none;
                 color: #ffffff;

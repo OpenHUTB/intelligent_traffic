@@ -33,6 +33,20 @@
         }
     }
 }
+// bottom element style
+@mixin bottomElementTitle {
+    background: url("../assets/img/Jamratio.png") no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+}
+@mixin bottomElementSize {
+    height: 250px;
+    width: 300px;
+    background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+}
+
 @mixin textStyle {
     font-size: 1.3rem;
     font-weight: bold;
