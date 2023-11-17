@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { ReactComponent as ListArrowIcon } from 'assets/icon/icon-list-arrow.svg'
 import './index.scss';
 
 export default function TrafficFlow() {
@@ -7,7 +7,7 @@ export default function TrafficFlow() {
         {
             title: '路口运行信息',
             number: 23.5,
-            unit: '辆'
+            unit: '万辆'
         },
         {
             title: '今日公交客流量',
@@ -28,8 +28,12 @@ export default function TrafficFlow() {
     const trafficFlow = flowInfo.map((item, index) => {
         return (
             <div className="container" key={index}>
-                <div className="title">{item.title}</div>
-                <span className="number">{item.number}<span className="unit">{item.unit}</span></span>
+                <div className="title">
+                    <span className="icon"><ListArrowIcon /></span><span className="text">{item.title}</span>
+                </div>
+                <div className="numbers-container">
+                    <span className="number">{item.number}</span><span className="unit">{item.unit}</span>
+                </div>
             </div>
         )
     })
