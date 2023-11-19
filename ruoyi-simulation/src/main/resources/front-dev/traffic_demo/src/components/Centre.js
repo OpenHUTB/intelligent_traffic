@@ -1,29 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import "../css/centre.scss"
-export default function Centre() {
+
+import videoForPlan from '../assets/videos/plan-view.mp4';
+import videoForJunction from '../assets/videos/junction-view.mp4';
+
+export default function Centre({ video }) {
+    const location = useLocation();
+    const [currentVideo, setCurrentVideo] = useState(video);
+
+    useEffect(() => {
+        if (location.pathname === '/') {
+            setCurrentVideo(videoForPlan); // Change this to your actual video source for the Junction
+        } else {
+            setCurrentVideo(videoForJunction); // Change this to your actual video source for the Plan
+        }
+    }, [location]);
+
     return (
         <div className="centre">
             <section id="player" className="mainStream">
-                <section id="introductionArea" className="intro"></section>
-                <section id="audioArea" className="audioPlay"></section>
-                <div id="progressArea">
-                    <div className="progress">
-                        <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
+                {/* Conditional rendering of video based on the currentVideo state */}
+                <video src={currentVideo} autoPlay loop muted></video>
+                {/* Rest of your Centre component */}
             </section>
-            <div className="funcArea">
-                <nav className="funcBtn">
-                    <button id="record" className="btn">录制</button>
-                    {/* <button id="stop" className="btn">停止</button>
-            <button id="send" className="btn">发送</button> */}
-                </nav>
-                <div className="displayArea">
-                    <section className="voiceDetect">
-                        <textarea id="tips"></textarea>
-                    </section>
-                </div>
-            </div>
         </div>
     )
 }
