@@ -32,7 +32,7 @@ public class test {
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 while ((lineTxt = bufferedReader.readLine()) != null) {
-//注意文件里面的格式，我的里面是一行一行的，所以不需要再次切割了，直接添加就行
+//文本内容是一行一行的，所以不需要再次切割了，直接添加就行
                     res.add(lineTxt);
                 }
                 read.close();
