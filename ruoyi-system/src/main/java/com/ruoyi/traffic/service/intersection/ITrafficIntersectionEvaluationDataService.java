@@ -44,4 +44,7 @@ public interface ITrafficIntersectionEvaluationDataService extends IService<Traf
     //新增路网仿真数据
     void addData(JSONArray jsonArray) throws JSONException;
 
+    //读取文本每行内容
+    List readTxtFile(String filePath, String encoding);
+
 }
