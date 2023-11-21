@@ -94,7 +94,7 @@ export default function Index(props) {
 
         // Initialize the line chart
         const trafficFlowLineChart = echarts.init(document.getElementById('traffic-flow-linechart'));
-        console.log('rendering');
+        // console.log('rendering');
         const lineGraphOption = {
             title: {
                 text: '车道流量（辆）',
