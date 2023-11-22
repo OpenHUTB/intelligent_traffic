@@ -11,11 +11,11 @@ export default function AverageDelay() {
 
     const randomCurrent = generateRandomArray(6, 0, 30);
     const randomToday = generateRandomArray(6, 10, 25);
-    console.log(randomCurrent, randomToday);
+    // console.log(randomCurrent, randomToday);
     useEffect(() => {
 
         const trafficFlowLineChart = echarts.init(document.getElementById('delay-content'));
-        console.log('rendering');
+        // console.log('rendering');
         const lineGraphOption = {
             title: {
                 text: '单位：分钟',
