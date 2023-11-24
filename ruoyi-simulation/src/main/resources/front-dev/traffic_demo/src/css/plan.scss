@@ -7,8 +7,10 @@
 }
 
 main {
+    z-index: 1;
     position: relative;
-
+    height: 100%;
+    width: 100%;
     .centre {
         width: 100%;
         height: 100%;
@@ -18,7 +20,7 @@ main {
         z-index: 2;
         position: absolute;
         left: 0;
-        top: 0;
+        top: 8.5rem;
     }
     // right side style
     .rightSide {
@@ -26,7 +28,7 @@ main {
         z-index: 2;
         position: absolute;
         right: 0;
-        top: 0;
+        top: 8.5rem;
     }
     .bottomSide {
         position: absolute;

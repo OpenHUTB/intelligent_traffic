@@ -19,7 +19,7 @@ section.slider-right {
     justify-content: space-between;
 
     .lights-container {
-        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        @include common.contentBackground;
         width: 100%;
         position: relative;
         width: 100%;
@@ -95,7 +95,7 @@ section.slider-right {
 
     // lights-optimize-container
     .lights-optimize-container {
-        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        @include common.contentBackground;
         margin-top: 0.5rem;
         position: relative;
         width: 100%;
@@ -208,7 +208,7 @@ section.slider-right {
 
     // pedestrain optimize container include in this section
     .pedestrain-optimization-container {
-        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        @include common.contentBackground;
         margin-top: 0.5rem;
         $layoutWidth: 5rem;
         width: 100%;
