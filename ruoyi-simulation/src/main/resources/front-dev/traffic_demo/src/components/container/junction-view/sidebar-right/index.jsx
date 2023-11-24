@@ -140,7 +140,6 @@ export default function Index() {
             </div>
         )
     });
-    console.log(renderList);
     return (
         <section className="slider-right">
 
