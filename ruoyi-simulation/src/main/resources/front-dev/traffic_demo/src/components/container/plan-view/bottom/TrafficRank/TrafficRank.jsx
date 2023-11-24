@@ -61,7 +61,7 @@ export default function TrafficRank() {
         )
     })
 
-    console.log(renderList);
+    // console.log(renderList);
 
     return (
         <div className="traffic-rank">
