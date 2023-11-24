@@ -1,0 +1,36 @@
+section.voiceDetect {
+    z-index: 3;
+    position: absolute;
+    // left: 20%;
+    // top: 25%;
+    bottom: 5%;
+    right: 20%;
+    .text-container {
+        text-align: center;
+        position: absolute;
+        top: 0rem;
+        // right: -11rem;
+        $heghts: 4rem;
+        display: block;
+        color: white;
+        height: $heghts;
+        line-height: $heghts;
+        width: 65%;
+        border: 1px solid white;
+        background-color: rgba(51, 73, 126, 0.4);
+        font-size: 1.2rem;
+        border-radius: 2rem;
+        // border-bottom-left-radius: 0;
+        left: -9rem;
+        border-bottom-right-radius: 0;
+        #tips {
+            text-align: center;
+            height: $heghts;
+            line-height: $heghts;
+        }
+    }
+    #AnimationIP {
+        width: 20rem;
+        height: 15rem;
+    }
+}
