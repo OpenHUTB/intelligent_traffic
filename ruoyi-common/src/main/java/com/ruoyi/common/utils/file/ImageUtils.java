@@ -20,7 +20,7 @@ import com.ruoyi.common.utils.StringUtils;
  */
 public class ImageUtils
 {
-    public static final Logger log = LoggerFactory.getLogger(ImageUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ImageUtils.class);
 
     public static byte[] getImage(String imagePath)
     {

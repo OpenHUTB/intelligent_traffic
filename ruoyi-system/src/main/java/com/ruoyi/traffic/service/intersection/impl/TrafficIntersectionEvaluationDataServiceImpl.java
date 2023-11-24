@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.ruoyi.common.utils.file.ImageUtils.log;
+
 
 /**
  * @classname: TrafficIntersectionEvaluationDataServiceImpl
@@ -229,31 +229,6 @@ public class TrafficIntersectionEvaluationDataServiceImpl extends ServiceImpl<Tr
         dataService.saveBatch(dataList);
     }
 
-    @Override
-    public List readTxtFile(String filePath, String encoding) {
-        ArrayList res = new ArrayList();
-        try {
-            File file = new File(filePath);
 
-            // 判断文件是否存在
-            if (file.isFile() && file.exists()) {
-
-                // 编码格式必须和文件的一致
-                InputStreamReader read = new InputStreamReader(new FileInputStream(file), encoding);
-                BufferedReader bufferedReader = new BufferedReader(read);
-                String lineTxt = null;
-                while ((lineTxt = bufferedReader.readLine()) != null) {
-//文本里面是一行一行的，所以不需要再次切割了，直接添加就行
-                    res.add(lineTxt);
-                }
-                read.close();
-            } else {
-                System.out.println("指定的文件不存在");
-            }
-        } catch (Exception e) {
-            log.error("readTxtFile",e);
-        }
-        return res;
-    }
     }
 
