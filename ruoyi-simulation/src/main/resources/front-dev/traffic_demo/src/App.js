@@ -4,16 +4,51 @@ import PlanMain from 'components/PlanMain';
 import JunctionMain from 'components/JunctionMain';
 import CruiserMain from 'components/CruiserMain';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
-
+import FirstMinute from 'components/FirstMinute';
+import FirstHeader from 'components/FirstHeader';
 export default function App() {
+  const Home = () => {
+    return (
+      <>
+        <FirstHeader />
+        <FirstMinute />
+      </>
+    );
+  };
+  const Junction = () => {
+    return (
+      <>
+        <Header />
+        <JunctionMain />
+      </>
+    );
+  };
+  const Plan = () => {
+    return (
+      <>
+        <Header />
+        <PlanMain />
+      </>
+    );
+  };
+  const Cruiser = () => {
+    return (
+      <>
+        <Header />
+        <CruiserMain />
+      </>
+    );
+  };
   return (
     <Router>
       <div id="layout">
-        <Header />
+
         <Routes>
-          <Route path="/" element={<PlanMain />} />
-          <Route path="/junction" element={<JunctionMain />} />
-          <Route path="/cruiser" element={<CruiserMain />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/plan" element={<Plan />} />
+          <Route path="/junction" element={<Junction />} />
+          <Route path="/cruiser" element={<Cruiser />} />
+
         </Routes>
       </div>
     </Router>

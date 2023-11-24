@@ -9,15 +9,14 @@ body,
     background-position: 0 0;
     height: 100%;
     background-repeat: no-repeat;
-    display: grid;
-    grid-template-rows: 1fr 12fr;
     position: relative;
     overflow: hidden;
-    padding: 5px;
+    padding: 0 5px 5px 5px;
     background-image: linear-gradient(
         to bottom,
         rgba(31, 33, 44, 1) 5%,
         rgba(31, 33, 44, 1) 10%,
         rgba(31, 33, 44, 0.9) 100%
     );
+    z-index: 3;
 }

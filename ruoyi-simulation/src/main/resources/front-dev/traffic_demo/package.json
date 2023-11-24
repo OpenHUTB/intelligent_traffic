@@ -13,6 +13,7 @@
     "echarts-gl": "^2.0.9",
     "npm": "^10.2.1",
     "react": "^18.2.0",
+    "react-bmapgl": "^0.2.26",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",

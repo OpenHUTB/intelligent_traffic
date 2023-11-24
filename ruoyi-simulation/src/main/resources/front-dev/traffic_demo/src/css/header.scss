@@ -2,45 +2,29 @@
 @import "common.scss";
 
 header.header {
-    height: 70px;
-    background: url(../assets/img/Bg-header.png) no-repeat center;
-    background-size: cover;
+    @include titleImage;
     position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
     .title {
-        width: 15rem;
-        font-weight: bold;
-        position: absolute;
-        left: 50%;
-        top: 45%;
-        transform: translate(-50%, -50%);
-        .title-1 {
-            font-size: 1.8rem;
-            width: 100%;
-            color: #ffffff;
-            text-align: center;
-        }
-        .title-2 {
-            margin-top: 0.5rem;
-            font-size: 1.2rem;
-            color: #ffffff;
-            text-align: center;
-        }
+        @include titleFont;
     }
 
     ul {
-        width: 50rem;
+        width: 32rem;
         display: flex;
         justify-content: space-around;
         align-items: center;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         position: absolute;
-        left: 50%;
-        bottom: -5rem;
-        transform: translate(-50%, -50%);
+        right: 0;
+        top: 3rem;
         z-index: 3;
         li {
-            $lineHeight: 3rem;
-            width: 10rem;
+            $lineHeight: 4rem;
+            width: 8rem;
             height: $lineHeight;
             line-height: $lineHeight;
             text-align: center;
@@ -54,5 +38,8 @@ header.header {
                 color: red;
             }
         }
+    }
+    .logo {
+        @include logoStyle;
     }
 }
