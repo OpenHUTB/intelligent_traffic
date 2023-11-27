@@ -57,6 +57,10 @@ public class TrafficAreaEvaluationDataImpl extends MPJBaseServiceImpl<TrafficAre
             if (trafficAreaEvaluationData.getAreaId() != null) {
                 queryWrapper.like(TrafficAreaEvaluationData::getAreaId, trafficAreaEvaluationData.getAreaId());
             }
+            //指标id
+            if(trafficAreaEvaluationData.getEvaluationTypeId()!=null)
+                queryWrapper.like(TrafficAreaEvaluationData::getEvaluationTypeId, trafficAreaEvaluationData.getEvaluationTypeId());
+
 
             List<TrafficAreaEvaluationData> trafficAreaevaluationListData = baseMapper.selectList(queryWrapper);
             return trafficAreaevaluationListData;
@@ -112,7 +116,7 @@ public class TrafficAreaEvaluationDataImpl extends MPJBaseServiceImpl<TrafficAre
                 .leftJoin(TrafficArea.class, TrafficArea::getId, TrafficAreaEvaluationData::getAreaId)
                 .leftJoin(TrafficEvaluationType.class, TrafficEvaluationType::getId, TrafficAreaEvaluationData::getEvaluationTypeId)
                 .eq(TrafficAreaEvaluationData::getEvaluationTypeId, evaluationTypeId);
-
+            //区域平均速度按升序排列，其他按降序排列
         if(!evaluationTypeId.equals(AreaEvaluationTypeEnum.AVERAGE_SPEED.getEvaluationTypeId()))   {
             queryWrapper.orderByDesc(TrafficAreaEvaluationData::getValue);
         }
@@ -127,6 +131,7 @@ public class TrafficAreaEvaluationDataImpl extends MPJBaseServiceImpl<TrafficAre
     @Override
     public void addData(JSONObject jsonObject) throws JSONException {
             TrafficAreaEvaluationData trafffic=new TrafficAreaEvaluationData();
+
 
         int areaid = jsonObject.getInt("id");
         int vehicleNumber = jsonObject.getInt("vehiclenumber");
