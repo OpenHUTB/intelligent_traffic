@@ -1,36 +1,50 @@
 section.voiceDetect {
+    transition: transform 1s ease-in-out;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
     z-index: 3;
     position: absolute;
-    // left: 20%;
-    // top: 25%;
-    bottom: 5%;
-    right: 20%;
+    .text-container.play {
+        opacity: 1;
+    }
     .text-container {
+        opacity: 0;
         text-align: center;
         position: absolute;
-        top: 0rem;
-        // right: -11rem;
-        $heghts: 4rem;
-        display: block;
+        top: 0;
+        left: -50%;
         color: white;
-        height: $heghts;
-        line-height: $heghts;
-        width: 65%;
+        width: 15rem;
+        height: 3rem;
         border: 1px solid white;
         background-color: rgba(51, 73, 126, 0.4);
         font-size: 1.2rem;
         border-radius: 2rem;
-        // border-bottom-left-radius: 0;
-        left: -9rem;
+        vertical-align: middle;
         border-bottom-right-radius: 0;
+        overflow: hidden;
+        line-height: 3rem;
         #tips {
+            vertical-align: middle;
+            color: #ccc;
+            border: none;
+            background-color: rgba(51, 73, 126, 0);
             text-align: center;
-            height: $heghts;
-            line-height: $heghts;
+            height: 100%;
+            line-height: 100%;
+            width: 100%;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            resize: none;
         }
     }
+
     #AnimationIP {
-        width: 20rem;
-        height: 15rem;
+        width: 100%;
+        height: 100%;
     }
 }

@@ -9,7 +9,7 @@ import "../css/centre.scss";
 export default function Centre({ video }) {
     const location = useLocation();
     const [currentVideo, setCurrentVideo] = useState(video);
-
+    const pathName = location.pathname;
     useEffect(() => {
         console.log(location.pathname);
         if (location.pathname === '/junction') {
@@ -33,7 +33,7 @@ export default function Centre({ video }) {
                     {/* Rest of your Centre component */}
                 </section>
             </div>
-            <TextArea />
+            <TextArea pathName={pathName} />
         </>
 
 
