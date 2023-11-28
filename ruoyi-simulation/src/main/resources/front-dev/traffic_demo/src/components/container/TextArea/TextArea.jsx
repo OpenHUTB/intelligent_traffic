@@ -7,7 +7,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import './index.scss';
 
 export default function TextArea(props) {
-    console.log(props);
     const animationRef = useRef(null);
     // handle the animation play and hide.
     const [isPlay, setIsPlay] = useState(true);
@@ -15,7 +14,8 @@ export default function TextArea(props) {
         return `text-container ${isPlay ? 'play' : ''}`
     }
     const inactivePosition = { right: "20%", bottom: "0", width: "10rem", height: "10rem" };
-    const activePosition = { left: "50%", top: "65%", transform: "translate(-50%, -50%)", width: "30rem", height: "30rem" };
+    const activePosition = { left: "50%", top: "60%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" };
+    const homeInactivePosition = { right: "0", top: "20%", width: "10rem", height: "10rem" };
     const [position, setPosition] = useState(activePosition);
 
     const handleClick = (event) => {
@@ -35,6 +35,7 @@ export default function TextArea(props) {
                 if (prevState.width === inactivePosition.width) {
                     return activePosition;
                 } else {
+                    if (props.pathName === "/") return homeInactivePosition;
                     return inactivePosition;
                 }
             });
@@ -47,35 +48,49 @@ export default function TextArea(props) {
         const clock = new THREE.Clock();
         let mixer;
         window.addEventListener('click', handleClick);
+
+
         function init() {
-            camera = new THREE.PerspectiveCamera(45, animationRef.current.clientWidth / animationRef.current.clientHeight, 1, 2000);
-            camera.position.set(0, 0, 0);
-
-
+            //creat the scene
             scene = new THREE.Scene();
             scene.background = null;
-            // scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
 
-            const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1, 2);
-            hemiLight.position.set(0, 300, 0);
-            scene.add(hemiLight);
+            //creat the camera
+            camera = new THREE.PerspectiveCamera(75, animationRef.current.clientWidth / animationRef.current.clientHeight, 1, 1000);
+            camera.position.set(0, 0.5, 6);
 
-            const dirLight = new THREE.DirectionalLight(0xffffff);
+            //creat the renderer
+            renderer = new THREE.WebGLRenderer({ alpantialias: true, alpha: true });
+            renderer.setSize(animationRef.current.clientWidth, animationRef.current.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            animationRef.current.appendChild(renderer.domElement);
+
+            // Add a light source & shadow
+            // const hemiLight = new THREE.HemisphereLight(0xcccccc, 0xffffff, 1, 2);
+            // hemiLight.position.set(0, 300, 0);
+            // scene.add(hemiLight);
+
+            const dirLight = new THREE.DirectionalLight(0xcccccc);
             dirLight.position.set(0, 300, 100);
-            dirLight.castShadow = false;
+            dirLight.castShadow = true;
             scene.add(dirLight);
+            // dirLight.shadow.camera.top = 180;
+            // dirLight.shadow.camera.bottom = - 100;
+            // dirLight.shadow.camera.left = - 120;
+            // dirLight.shadow.camera.right = 120;
             // Add an ambient light
             const ambientLight = new THREE.AmbientLight(0xffffff, 2); // soft white light
             scene.add(ambientLight);
 
             // Model loading fbx
-            // const manager = new THREE.LoadingManager();
-            // manager.addHandler(/\.tga$/i, new TGALoader());
-            // const loader = new FBXLoader(manager);
+            const manager = new THREE.LoadingManager();
+            manager.addHandler(/\.tga$/i, new TGALoader());
             // Model loading glb
-            const loader = new GLTFLoader();
+            const loader = new GLTFLoader(manager);
             loader.load('IP_test/IP_Anim_test01.glb', function (gltf) {
                 const model = gltf.scene;
+                model.position.set(0, -3.5, 0);
                 console.log(model);
                 mixer = new THREE.AnimationMixer(model);
                 gltf.animations.forEach((clip) => {
@@ -83,30 +98,34 @@ export default function TextArea(props) {
                 });
 
                 model.traverse(function (child) {
+                    console.log(child);
                     if (child.isMesh) {
                         child.castShadow = true;
                         child.receiveShadow = true;
                     }
-                });
+                    if (child.isSkinnedMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                        let material = child.material;
+                        if (Array.isArray(material)) {
+                            // Sometimes the material is an array of materials
+                            material.forEach((mat) => {
+                                mat.depthWrite = true;
+                            });
+                        } else {
+                            // Single material
+                            material.depthWrite = true;
+                        }
+                    }
 
-                if (isPlay) {
-                    model.scale.set(3, 3, 3);
-                } else {
-                    model.scale.set(2, 2, 2);
-                    console.log(model.scale);
-                }
+                });
+                model.scale.set(10, 10, 10);
                 scene.add(model);
 
             });
 
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(animationRef.current.clientWidth, animationRef.current.clientHeight);
-            renderer.shadowMap.enabled = true;
-            animationRef.current.appendChild(renderer.domElement);
-
             const controls = new OrbitControls(camera, renderer.domElement);
-            controls.target.set(0, 100, 0);
+            controls.target.set(0, 0, 0);
             controls.update();
 
             // Stats
