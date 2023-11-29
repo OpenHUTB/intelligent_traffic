@@ -9,14 +9,17 @@ import './index.scss';
 export default function TextArea(props) {
     const animationRef = useRef(null);
     // handle the animation play and hide.
-    const [isPlay, setIsPlay] = useState(true);
+    const [isPlay, setIsPlay] = useState(false);
     const getAnimationClassName = () => {
         return `text-container ${isPlay ? 'play' : ''}`
     }
-    const inactivePosition = { right: "20%", bottom: "0", width: "10rem", height: "10rem" };
-    const activePosition = { left: "50%", top: "60%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" };
-    const homeInactivePosition = { right: "0", top: "20%", width: "10rem", height: "10rem" };
-    const [position, setPosition] = useState(activePosition);
+    const inactiveJunctionPosition = { right: "20%", bottom: "0", width: "10rem", height: "10rem" };
+    const activeJunctionPosition = { right: "21%", bottom: "1rem", width: "35rem", height: "35rem", transform: "translate(0 0)", };
+    const homeActivePosition = { right: "-15%", top: "55%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" };
+    const homeInactivePosition = { right: "0", top: "50%", width: "10rem", height: "10rem" };
+
+    const [position, setPosition] = useState(homeInactivePosition);
+
 
     const handleClick = (event) => {
         const { clientX, clientY } = event;
@@ -32,12 +35,25 @@ export default function TextArea(props) {
         if (isCornerClick) {
             setIsPlay(prevState => !prevState); // Toggle animation visibility
             setPosition(prevState => {
-                if (prevState.width === inactivePosition.width) {
-                    return activePosition;
-                } else {
-                    if (props.pathName === "/") return homeInactivePosition;
-                    return inactivePosition;
-                }
+                switch (props.pathName) {
+                    case "/":
+                        if (prevState.width === homeActivePosition.width) {
+                            setPosition(homeInactivePosition);
+                        } else {
+                            console.log(prevState);
+                            setPosition(homeActivePosition);
+                        }
+                        break;
+                    case "/Junction":
+                        if (prevState.width === activeJunctionPosition.width) {
+                            setPosition(inactiveJunctionPosition);
+                        } else {
+                            setPosition(activeJunctionPosition);
+                        }
+                        break;
+                    default:
+                        return prevState;
+                };
             });
         }
     }
@@ -67,18 +83,15 @@ export default function TextArea(props) {
             animationRef.current.appendChild(renderer.domElement);
 
             // Add a light source & shadow
-            // const hemiLight = new THREE.HemisphereLight(0xcccccc, 0xffffff, 1, 2);
-            // hemiLight.position.set(0, 300, 0);
-            // scene.add(hemiLight);
+            const hemiLight = new THREE.HemisphereLight(0xcccccc, 0xffffff, 1, 2);
+            hemiLight.position.set(0, 300, 0);
+            scene.add(hemiLight);
 
             const dirLight = new THREE.DirectionalLight(0xcccccc);
             dirLight.position.set(0, 300, 100);
             dirLight.castShadow = true;
             scene.add(dirLight);
-            // dirLight.shadow.camera.top = 180;
-            // dirLight.shadow.camera.bottom = - 100;
-            // dirLight.shadow.camera.left = - 120;
-            // dirLight.shadow.camera.right = 120;
+
             // Add an ambient light
             const ambientLight = new THREE.AmbientLight(0xffffff, 2); // soft white light
             scene.add(ambientLight);
@@ -94,11 +107,19 @@ export default function TextArea(props) {
                 console.log(model);
                 mixer = new THREE.AnimationMixer(model);
                 gltf.animations.forEach((clip) => {
-                    mixer.clipAction(clip).play();
+                    const action = mixer.clipAction(clip);
+                    if (isPlay) {
+                        action.setLoop(THREE.LoopOnce);
+                        action.clampWhenFinished = true;
+
+                    } else {
+                        action.setLoop(THREE.LoopRepeat)
+                    }
+
+                    action.play();
                 });
 
                 model.traverse(function (child) {
-                    console.log(child);
                     if (child.isMesh) {
                         child.castShadow = true;
                         child.receiveShadow = true;

@@ -5,18 +5,18 @@ import TextArea from './container/TextArea/TextArea';
 import videoForJunction from '../assets/videos/junction-view.mp4';
 import videoForStart from '../assets/videos/start-view.mp4';
 import "../css/centre.scss";
-export default function Centre({ video }) {
+export default function Centre({ }) {
     const location = useLocation();
-    const [currentVideo, setCurrentVideo] = useState(video);
+    const [currentVideo, setCurrentVideo] = useState();
     const pathName = location.pathname;
     useEffect(() => {
         console.log(location.pathname);
-        if (location.pathname === '/junction') {
+        if (location.pathname === '/Junction') {
             setCurrentVideo(videoForJunction);
-        } else if (location.pathname === '/plan') {
+        } else if (location.pathname === '/Plan') {
 
             setCurrentVideo(videoForStart);
-        } else if (location.pathname === '/cruiser') {
+        } else if (location.pathname === '/Cruiser') {
             setCurrentVideo(videoForStart);
         } else {
             setCurrentVideo(videoForStart);
