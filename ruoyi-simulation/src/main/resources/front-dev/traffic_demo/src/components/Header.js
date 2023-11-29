@@ -11,7 +11,7 @@ export default function Header() {
                 <li><Link to='/cruiser'>车辆跟踪</Link></li>
             </ul>
             <div className="title">
-                <h2 className="title-1"></h2>
+                <h2 className="title-1"> </h2>
 
             </div>
             <Weather />
