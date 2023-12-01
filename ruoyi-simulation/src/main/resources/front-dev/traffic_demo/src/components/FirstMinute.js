@@ -17,7 +17,7 @@ export default function PlanMain() {
         <main>
             <div className="leftSide">
             </div>
-            <Centre />
+            {/* <Centre /> */}
             <div className="rightSide">
             </div>
             <div className='bottomSide'>

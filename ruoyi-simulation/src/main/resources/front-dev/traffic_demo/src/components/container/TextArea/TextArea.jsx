@@ -5,8 +5,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import './index.scss';
+import { init } from 'echarts';
 
 export default function TextArea(props) {
+    console.log(props.href)
     const animationRef = useRef(null);
     // handle the animation play and hide.
     const [isPlay, setIsPlay] = useState(false);
@@ -17,8 +19,13 @@ export default function TextArea(props) {
     const activeJunctionPosition = { right: "21%", bottom: "1rem", width: "35rem", height: "35rem", transform: "translate(0 0)", };
     const homeActivePosition = { right: "-15%", top: "55%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" };
     const homeInactivePosition = { right: "0", top: "50%", width: "10rem", height: "10rem" };
-
-    const [position, setPosition] = useState(homeInactivePosition);
+    let initalPosition = homeInactivePosition;
+    if (props.href.includes("junction")) {
+        initalPosition = inactiveJunctionPosition;
+    } else {
+        initalPosition = homeInactivePosition;
+    }
+    const [position, setPosition] = useState(initalPosition);
 
 
     const handleClick = (event) => {
@@ -33,27 +40,28 @@ export default function TextArea(props) {
         );
 
         if (isCornerClick) {
+            // console.log(props.href);
             setIsPlay(prevState => !prevState); // Toggle animation visibility
             setPosition(prevState => {
-                switch (props.pathName) {
-                    case "/":
-                        if (prevState.width === homeActivePosition.width) {
-                            setPosition(homeInactivePosition);
-                        } else {
-                            console.log(prevState);
-                            setPosition(homeActivePosition);
-                        }
-                        break;
-                    case "/Junction":
-                        if (prevState.width === activeJunctionPosition.width) {
-                            setPosition(inactiveJunctionPosition);
-                        } else {
-                            setPosition(activeJunctionPosition);
-                        }
-                        break;
-                    default:
-                        return prevState;
-                };
+                console.log(prevState.width);
+                if (props.href.includes("junction")) {
+                    console.log("Junction");
+                    if (prevState.width === inactiveJunctionPosition.width) {
+                        return activeJunctionPosition;
+                    } else {
+
+                        return inactiveJunctionPosition;
+                    }
+                } else {
+                    console.log("Home");
+                    if (prevState.width === homeInactivePosition.width) {
+                        return homeActivePosition;
+                    } else {
+                        return homeInactivePosition;
+                    }
+                }
+
+
             });
         }
     }
@@ -104,7 +112,6 @@ export default function TextArea(props) {
             loader.load('IP_test/IP_Anim_test01.glb', function (gltf) {
                 const model = gltf.scene;
                 model.position.set(0, -3.5, 0);
-                console.log(model);
                 mixer = new THREE.AnimationMixer(model);
                 gltf.animations.forEach((clip) => {
                     const action = mixer.clipAction(clip);
@@ -152,15 +159,9 @@ export default function TextArea(props) {
             // Stats
             // stats = new Stats();
             // animationRef.current.appendChild(stats.dom);
-
-            window.addEventListener('resize', onWindowResize);
         }
 
-        function onWindowResize() {
-            camera.aspect = animationRef.current.clientWidth / animationRef.current.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(animationRef.current.clientWidth, animationRef.current.clientHeight);
-        }
+
 
         function animate() {
             requestAnimationFrame(animate);
@@ -176,13 +177,12 @@ export default function TextArea(props) {
         animate();
 
         return () => {
-            window.removeEventListener('resize', onWindowResize);
             if (animationRef.current) {
                 animationRef.current.removeChild(renderer.domElement);
             }
             window.removeEventListener('click', handleClick)
         };
-    }, [isPlay]);
+    }, [isPlay, props.href]);
 
     return (
         <section className="voiceDetect" style={position}>

@@ -18,7 +18,7 @@ export default function PlanMain() {
       <div className="leftSide">
         <TrafficFlow />
       </div>
-      <Centre />
+      {/* <Centre /> */}
       <div className="rightSide">
         <ViolationOverview />
         <FunctionIcons />
