@@ -1,3 +1,54 @@
+// header part styles
+@mixin titleFont {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    height: 3.5rem;
+    width: 40rem;
+    background: url("../assets/img/title-text.png") no-repeat center;
+    background-size: contain;
+}
+@mixin titleImage {
+    &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            to bottom,
+            rgba(18, 37, 81, 0.8) 5%,
+            rgba(18, 37, 81, 0.7) 50%,
+            rgba(18, 37, 81, 0.5) 70%,
+            rgba(18, 37, 81, 0.1) 100%
+        );
+    }
+    background: url("../assets/img/Bg-header1.png") no-repeat center;
+    background-size: cover;
+    width: 100%;
+    height: 9rem;
+    z-index: 3;
+}
+
+@mixin logoStyle {
+    &::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 10%;
+    }
+    background: url("../assets/img/logo-row-1.png") no-repeat center;
+    background-size: contain;
+    position: absolute;
+    left: 50%;
+    top: 4rem;
+    transform: translate(-50%, 0);
+    width: 15rem;
+    height: 5rem;
+}
+
+// common use styles
 @mixin imgLayout {
     background-size: cover;
     background-repeat: no-repeat;
@@ -7,7 +58,7 @@
 }
 
 @mixin contentBackground {
-    background-color: rgba(5, 17, 78, 0.4);
+    background-image: linear-gradient(to bottom, rgba(13, 37, 73, 0.4), rgba(13, 37, 73, 0.8));
 }
 @mixin subTitleStyle {
     font-size: 1.5rem;
