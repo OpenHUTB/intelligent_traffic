@@ -19,3 +19,13 @@ body,
         rgba(31, 33, 44, 0.9) 100%
     );
 }
+#videoParentElement {
+    z-index: 0;
+    background-color: #fff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
