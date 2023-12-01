@@ -6,6 +6,8 @@ import CruiserMain from 'components/CruiserMain';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import FirstMinute from 'components/FirstMinute';
 import FirstHeader from 'components/FirstHeader';
+import './websoketManager';
+
 export default function App() {
   const Home = () => {
     return (
@@ -42,7 +44,6 @@ export default function App() {
   return (
     <Router>
       <div id="layout">
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
