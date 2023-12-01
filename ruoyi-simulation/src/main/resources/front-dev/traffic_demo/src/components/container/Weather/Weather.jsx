@@ -41,6 +41,7 @@ export default function Weather() {
                 if (!err) {
                     const { temperature, weather } = data;
                     setTemperatureNumber(temperature);
+                    console.log(weatherStr)
                     setWeatherStr(weather);
                 }
             });
@@ -61,6 +62,7 @@ export default function Weather() {
                 <div className="weather">
                     {weatherStr.includes("晴") ? <span className="weatherIcon"><SunIcon /></span> : null}
                     {weatherStr.includes("云") ? <span className="weatherIcon"><CloudIcon /></span> : null}
+                    {weatherStr.includes("阴") ? <span className="weatherIcon"><CloudIcon /></span> : null}
                     {weatherStr.includes("雨") ? <span className="weatherIcon"><RainIcon /></span> : null}
                     {weatherStr.includes("雪") ? <span className="weatherIcon"><SnowIcon /></span> : null}
                 </div>

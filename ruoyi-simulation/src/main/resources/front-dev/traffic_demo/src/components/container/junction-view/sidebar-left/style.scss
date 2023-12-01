@@ -67,7 +67,7 @@
 
     // traffic flow container style
     div.traffic-flow-container {
-        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        @include common.contentBackground;
         width: 100%;
         position: relative;
         div.title {
@@ -154,7 +154,7 @@
         }
     }
     div.pie-container {
-        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        @include common.contentBackground;
         @mixin text-symbol-layout {
             display: flex;
             justify-content: space-between;
@@ -201,7 +201,7 @@
 
     // line chart style
     div.line-container {
-        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        @include common.contentBackground;
         position: relative;
         margin-top: 2rem;
         width: 100%;

@@ -1,12 +1,8 @@
-@mixin mainLayout {
-    display: grid;
-    grid-template-rows: 4fr 3fr;
-}
-
 // centre part include mainstream, functionArea and progress bar
 .centre {
+    width: 100%;
+    height: 100%;
     .mainStream {
-        position: absolute;
         width: 100%;
         height: 100%;
         video {

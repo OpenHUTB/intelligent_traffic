@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import "../css/centre.scss"
 
-import videoForPlan from '../assets/videos/plan-view.mp4';
+import TextArea from './container/TextArea/TextArea';
 import videoForJunction from '../assets/videos/junction-view.mp4';
-
-export default function Centre({ video }) {
+import videoForStart from '../assets/videos/start-view.mp4';
+import "../css/centre.scss";
+export default function Centre({ }) {
     const location = useLocation();
-    const [currentVideo, setCurrentVideo] = useState(video);
-
+    const [currentVideo, setCurrentVideo] = useState();
+    const pathName = location.pathname;
     useEffect(() => {
-        if (location.pathname === '/') {
-            setCurrentVideo(videoForPlan); // Change this to your actual video source for the Junction
+        console.log(location.pathname);
+        if (location.pathname === '/Junction') {
+            setCurrentVideo(videoForJunction);
+        } else if (location.pathname === '/Plan') {
+
+            setCurrentVideo(videoForStart);
+        } else if (location.pathname === '/Cruiser') {
+            setCurrentVideo(videoForStart);
         } else {
-            setCurrentVideo(videoForJunction); // Change this to your actual video source for the Plan
+            setCurrentVideo(videoForStart);
         }
     }, [location]);
 
     return (
-        <div className="centre">
-            <section id="player" className="mainStream">
-                {/* Conditional rendering of video based on the currentVideo state */}
-                <video src={currentVideo} autoPlay loop muted></video>
-                {/* Rest of your Centre component */}
-            </section>
-        </div>
+        <>
+            <div className="centre">
+                <section id="player" className="mainStream">
+                    {/* Conditional rendering of video based on the currentVideo state */}
+                    <video src={currentVideo} autoPlay loop muted ></video>
+                    {/* Rest of your Centre component */}
+                </section>
+            </div>
+            <TextArea pathName={pathName} />
+        </>
+
+
     )
 }
