@@ -6,8 +6,8 @@ import CruiserMain from 'components/CruiserMain';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import FirstMinute from 'components/FirstMinute';
 import FirstHeader from 'components/FirstHeader';
-import './websoketManager';
 import TextArea from 'components/container/TextArea/TextArea';
+
 export default function App() {
   const href = window.location.href;
   const Home = () => {
