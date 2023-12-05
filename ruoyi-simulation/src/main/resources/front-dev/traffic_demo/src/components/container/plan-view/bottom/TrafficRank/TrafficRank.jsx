@@ -4,25 +4,25 @@ export default function TrafficRank() {
 
     // pedestrain optimization list
     const scrollContainer = useRef(null);
-    useEffect(() => {
-        const startAutoScroll = () => {
-            const container = scrollContainer.current;
-            const scrollAmount = 2.5; // Adjust for faster/slower scrolling
+    // useEffect(() => {
+    //     const startAutoScroll = () => {
+    //         const container = scrollContainer.current;
+    //         const scrollAmount = 2.5; // Adjust for faster/slower scrolling
 
-            const interval = setInterval(() => {
-                // When you've scrolled to the end of the original content, reset to the top
-                if (container.scrollTop >= (container.scrollHeight / 2)) {
-                    container.scrollTop = 0; // Set to start without user noticing
-                } else {
-                    container.scrollTop += scrollAmount;
-                }
-            }, 50); // Adjust the interval for faster/slower scrolling
+    //         const interval = setInterval(() => {
+    //             // When you've scrolled to the end of the original content, reset to the top
+    //             if (container.scrollTop >= (container.scrollHeight / 2)) {
+    //                 container.scrollTop = 0; // Set to start without user noticing
+    //             } else {
+    //                 container.scrollTop += scrollAmount;
+    //             }
+    //         }, 50); // Adjust the interval for faster/slower scrolling
 
-            return () => clearInterval(interval); // Cleanup on component unmount
-        }
+    //         return () => clearInterval(interval); // Cleanup on component unmount
+    //     }
 
-        startAutoScroll();
-    }, []);
+    //     startAutoScroll();
+    // }, []);
 
 
     const staticListItems = [{
@@ -37,18 +37,14 @@ export default function TrafficRank() {
         name: "桐梓坡路",
         status: "轻度拥堵",
     },
-    {
-        name: "玉兰路",
-        status: "正常",
-    },
-    {
-        name: "枫林二路",
-        status: "畅通",
-    },
-    {
-        name: "岳麓大道",
-        status: "畅通",
-    },
+        // {
+        //     name: "玉兰路",
+        //     status: "正常",
+        // },
+        // {
+        //     name: "枫林二路",
+        //     status: "畅通",
+        // }
     ];
 
     const renderList = staticListItems.map((item, index = 0) => {
@@ -75,7 +71,7 @@ export default function TrafficRank() {
             </div>
             <div className="list-container" ref={scrollContainer}>
                 {renderList}
-                {renderList}
+                {/* {renderList} */}
             </div>
         </div>
     )

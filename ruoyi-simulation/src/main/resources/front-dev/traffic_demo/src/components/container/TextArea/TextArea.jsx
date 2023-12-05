@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import './index.scss';
-import { init } from 'echarts';
 
 export default function TextArea(props) {
-    console.log(props.href)
     const animationRef = useRef(null);
     // handle the animation play and hide.
     const [isPlay, setIsPlay] = useState(false);
@@ -16,18 +14,21 @@ export default function TextArea(props) {
         return `text-container ${isPlay ? 'play' : ''}`
     }
     const inactiveJunctionPosition = { right: "20%", bottom: "0", width: "10rem", height: "10rem" };
-    const activeJunctionPosition = { right: "21%", bottom: "1rem", width: "35rem", height: "35rem", transform: "translate(0 0)", };
+    const activeJunctionPosition = { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" };
     const homeActivePosition = { right: "-15%", top: "55%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" };
     const homeInactivePosition = { right: "0", top: "50%", width: "10rem", height: "10rem" };
-    let initalPosition = homeInactivePosition;
-    if (props.href.includes("junction")) {
+    const planActivePosition = { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" };
+    const planInactivePosition = { right: "5rem", bottom: "0", width: "10rem", height: "10rem" };
+    let initalPosition = {};
+    console.log(props.href.toLowerCase());
+    if (props.href.toLowerCase().includes("junction")) {
         initalPosition = inactiveJunctionPosition;
+    } else if (props.href.toLowerCase().includes("plan")) {
+        initalPosition = planInactivePosition;
     } else {
         initalPosition = homeInactivePosition;
     }
     const [position, setPosition] = useState(initalPosition);
-
-
     const handleClick = (event) => {
         const { clientX, clientY } = event;
         const { innerWidth, innerHeight } = window;
@@ -44,7 +45,7 @@ export default function TextArea(props) {
             setIsPlay(prevState => !prevState); // Toggle animation visibility
             setPosition(prevState => {
                 console.log(prevState.width);
-                if (props.href.includes("junction")) {
+                if (props.href.toLowerCase().includes("junction")) {
                     console.log("Junction");
                     if (prevState.width === inactiveJunctionPosition.width) {
                         return activeJunctionPosition;
@@ -52,8 +53,14 @@ export default function TextArea(props) {
 
                         return inactiveJunctionPosition;
                     }
-                } else {
-                    console.log("Home");
+                } else if (props.href.toLowerCase().includes("plan")) {
+                    if (prevState.width === planInactivePosition.width) {
+                        return planActivePosition;
+                    } else {
+                        return planInactivePosition;
+                    }
+                }
+                else {
                     if (prevState.width === homeInactivePosition.width) {
                         return homeActivePosition;
                     } else {
@@ -66,8 +73,8 @@ export default function TextArea(props) {
         }
     }
 
-
     useEffect(() => {
+
         let camera, scene, renderer;
         const clock = new THREE.Clock();
         let mixer;
