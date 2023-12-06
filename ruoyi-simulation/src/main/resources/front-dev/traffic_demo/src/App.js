@@ -9,12 +9,12 @@ import FirstHeader from 'components/FirstHeader';
 import TextArea from 'components/container/TextArea/TextArea';
 
 export default function App() {
-  const href = window.location.href;
   const Home = () => {
     return (
       <>
         <FirstHeader />
         <FirstMinute />
+        <TextArea />
       </>
     );
   };
@@ -23,6 +23,7 @@ export default function App() {
       <>
         <Header />
         <JunctionMain />
+        <TextArea />
       </>
     );
   };
@@ -31,6 +32,7 @@ export default function App() {
       <>
         <Header />
         <PlanMain />
+        <TextArea />
       </>
     );
   };
@@ -39,6 +41,7 @@ export default function App() {
       <>
         <Header />
         <CruiserMain />
+        <TextArea />
       </>
     );
   };
@@ -51,7 +54,7 @@ export default function App() {
           <Route path="/junction" element={<Junction />} />
           <Route path="/cruiser" element={<Cruiser />} />
         </Routes>
-        <TextArea href={href} />
+
       </div>
     </Router>
   )

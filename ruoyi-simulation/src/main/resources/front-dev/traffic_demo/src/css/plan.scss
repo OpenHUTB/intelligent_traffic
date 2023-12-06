@@ -28,7 +28,7 @@ main {
 
         z-index: 2;
         position: absolute;
-        left: 0;
+        left: 5px;
         top: 9rem;
     }
     // right side style
@@ -36,7 +36,7 @@ main {
         @include contentBackground;
         z-index: 2;
         position: absolute;
-        right: 0;
+        right: 5px;
         top: 8.5rem;
     }
 }
