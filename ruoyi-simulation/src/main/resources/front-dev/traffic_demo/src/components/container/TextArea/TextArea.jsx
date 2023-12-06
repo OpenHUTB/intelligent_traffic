@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-
+import { useLocation } from 'react-router-dom';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import './index.scss';
 
-export default function TextArea(props) {
+export default function TextArea() {
+    const location = useLocation().pathname;
     const animationRef = useRef(null);
     // handle the animation play and hide.
     const [isPlay, setIsPlay] = useState(false);
@@ -20,10 +21,10 @@ export default function TextArea(props) {
     const planActivePosition = { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" };
     const planInactivePosition = { right: "5rem", bottom: "0", width: "10rem", height: "10rem" };
     let initalPosition = {};
-    console.log(props.href.toLowerCase());
-    if (props.href.toLowerCase().includes("junction")) {
+    console.log(location.toLowerCase());
+    if (location.toLowerCase().includes("junction")) {
         initalPosition = inactiveJunctionPosition;
-    } else if (props.href.toLowerCase().includes("plan")) {
+    } else if (location.toLowerCase().includes("plan")) {
         initalPosition = planInactivePosition;
     } else {
         initalPosition = homeInactivePosition;
@@ -45,7 +46,7 @@ export default function TextArea(props) {
             setIsPlay(prevState => !prevState); // Toggle animation visibility
             setPosition(prevState => {
                 console.log(prevState.width);
-                if (props.href.toLowerCase().includes("junction")) {
+                if (location.toLowerCase().includes("junction")) {
                     console.log("Junction");
                     if (prevState.width === inactiveJunctionPosition.width) {
                         return activeJunctionPosition;
@@ -53,7 +54,7 @@ export default function TextArea(props) {
 
                         return inactiveJunctionPosition;
                     }
-                } else if (props.href.toLowerCase().includes("plan")) {
+                } else if (location.toLowerCase().includes("plan")) {
                     if (prevState.width === planInactivePosition.width) {
                         return planActivePosition;
                     } else {
@@ -189,7 +190,7 @@ export default function TextArea(props) {
             }
             window.removeEventListener('click', handleClick)
         };
-    }, [isPlay, props.href]);
+    }, [isPlay, location]);
 
     return (
         <section className="voiceDetect" style={position}>
