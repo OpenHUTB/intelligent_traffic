@@ -2,85 +2,123 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useLocation } from 'react-router-dom';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAnimationIndex } from 'stores/animationSlice';
 import './index.scss';
 
 export default function TextArea() {
-    const location = useLocation().pathname;
+    const dispatch = useDispatch();
+    const animationIndex = useSelector(state => state.animation.animationIndex);
+    console.log(animationIndex);
     const animationRef = useRef(null);
     // handle the animation play and hide.
     const [isPlay, setIsPlay] = useState(false);
     const getAnimationClassName = () => {
         return `text-container ${isPlay ? 'play' : ''}`
     }
-    const inactiveJunctionPosition = { right: "20%", bottom: "0", width: "10rem", height: "10rem" };
-    const activeJunctionPosition = { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" };
-    const homeActivePosition = { right: "-15%", top: "55%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" };
-    const homeInactivePosition = { right: "0", top: "50%", width: "10rem", height: "10rem" };
-    const planActivePosition = { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" };
-    const planInactivePosition = { right: "5rem", bottom: "0", width: "10rem", height: "10rem" };
+    const positions = {
+        home0: { right: "0", top: "40%", width: "10rem", height: "15rem" },
+        home1: { right: "-15%", top: "55%", transform: "translate(-50%, -50%)", width: "35rem", height: "35rem" },
+        junction0: { right: "20%", bottom: "0", width: "10rem", height: "15rem" },
+        junction1: { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" },
+        plan0: { right: "5rem", bottom: "0", width: "10rem", height: "15rem" },
+        plan1: { right: "21%", bottom: "1rem", transform: "translate(0 0)", width: "35rem", height: "35rem" },
+    }
+
+    const glbPaths = {
+        idle: "GLB/IP_Anim_Idle_All.glb",
+        welcome: "GLB/IP_Anim_DaZhaoHu.glb",
+        conversation: "GLB/IP_Anim_DuiHua.glb",
+        startTask: "GLB/IP_Anim_JieShouRenWu.glb",
+        endTask: "GLB/IP_Anim_WanChengRenWu.glb",
+    }
+    // Get the current location and set the initial position.
+    const location = useLocation().pathname.toLowerCase();
     let initalPosition = {};
-    console.log(location.toLowerCase());
-    if (location.toLowerCase().includes("junction")) {
-        initalPosition = inactiveJunctionPosition;
-    } else if (location.toLowerCase().includes("plan")) {
-        initalPosition = planInactivePosition;
+    console.log(location);
+    if (location.includes("junction")) {
+        initalPosition = positions.junction0;
+    } else if (location.includes("plan")) {
+        initalPosition = positions.plan0;
     } else {
-        initalPosition = homeInactivePosition;
+        initalPosition = positions.home0;
     }
     const [position, setPosition] = useState(initalPosition);
-    const handleClick = (event) => {
-        const { clientX, clientY } = event;
-        const { innerWidth, innerHeight } = window;
-        const margin = 50; // Define corner area
-        const isCornerClick = (
-            (clientX < margin && clientY < margin) ||
-            (clientX > innerWidth - margin && clientY < margin) ||
-            (clientX < margin && clientY > innerHeight - margin) ||
-            (clientX > innerWidth - margin && clientY > innerHeight - margin)
-        );
 
-        if (isCornerClick) {
-            // console.log(props.href);
-            setIsPlay(prevState => !prevState); // Toggle animation visibility
-            setPosition(prevState => {
-                console.log(prevState.width);
-                if (location.toLowerCase().includes("junction")) {
-                    console.log("Junction");
-                    if (prevState.width === inactiveJunctionPosition.width) {
-                        return activeJunctionPosition;
-                    } else {
-
-                        return inactiveJunctionPosition;
-                    }
-                } else if (location.toLowerCase().includes("plan")) {
-                    if (prevState.width === planInactivePosition.width) {
-                        return planActivePosition;
-                    } else {
-                        return planInactivePosition;
-                    }
-                }
-                else {
-                    if (prevState.width === homeInactivePosition.width) {
-                        return homeActivePosition;
-                    } else {
-                        return homeInactivePosition;
-                    }
-                }
-
-
-            });
-        }
-    }
 
     useEffect(() => {
 
+        // // socket connection
+        // const handleWebSocket = (event) => {
+        //     const data = JSON.parse(event.data);
+        //     console.log(data.animationIndex);
+        //     dispatch(setAnimationIndex(data.animationIndex));
+
+        // };   
+        const handleAnimationIndexChange = (event) => {
+            const newAnimationIndex = event.detail.animationIndex;
+            if (newAnimationIndex !== animationIndex) {
+                dispatch(setAnimationIndex(newAnimationIndex));
+            }
+        };
+
+        window.addEventListener('animationIndexChanged', handleAnimationIndexChange);
+
+        console.log(animationIndex);
+        console.log("handleEnter", animationIndex);
+        if (animationIndex === 0) {
+            // Toggle animation visibility
+            setIsPlay(prevState => setIsPlay(false));
+            setPosition(prevState => {
+                if (location.includes("junction")) {
+                    return positions.junction0;
+                } else if (location.includes("plan")) {
+                    return positions.plan0;
+                }
+                else {
+                    return positions.home0;
+                }
+            });
+        } else if (animationIndex >= 1) {
+            setIsPlay(prevState => setIsPlay(true));
+            setPosition(prevState => {
+                if (location.includes("junction")) {
+                    return positions.junction1;
+                } else if (location.includes("plan")) {
+                    return positions.plan1;
+                }
+                else {
+                    return positions.home1;
+                }
+            });
+        }
+
+
         let camera, scene, renderer;
         const clock = new THREE.Clock();
-        let mixer;
-        window.addEventListener('click', handleClick);
-
+        let mixer, glbPath;
+        switch (animationIndex) {
+            case 0:
+                glbPath = glbPaths.idle;
+                break;
+            case 1:
+                glbPath = glbPaths.welcome;
+                break;
+            case 2:
+                glbPath = glbPaths.conversation;
+                break;
+            case 3:
+                glbPath = glbPaths.startTask;
+                break;
+            case 4:
+                glbPath = glbPaths.endTask;
+                break;
+            default:
+                glbPath = glbPaths.idle;
+                break;
+        }
+        const animationContianer = animationRef.current;
 
         function init() {
             //creat the scene
@@ -88,15 +126,15 @@ export default function TextArea() {
             scene.background = null;
 
             //creat the camera
-            camera = new THREE.PerspectiveCamera(75, animationRef.current.clientWidth / animationRef.current.clientHeight, 1, 1000);
-            camera.position.set(0, 0.5, 6);
+            camera = new THREE.PerspectiveCamera(75, animationContianer.clientWidth / animationContianer.clientHeight, 1, 1000);
+            camera.position.set(0, 0, 10);
 
             //creat the renderer
             renderer = new THREE.WebGLRenderer({ alpantialias: true, alpha: true });
-            renderer.setSize(animationRef.current.clientWidth, animationRef.current.clientHeight);
+            renderer.setSize(animationContianer.clientWidth, animationContianer.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.shadowMap.enabled = true;
-            animationRef.current.appendChild(renderer.domElement);
+            animationContianer.appendChild(renderer.domElement);
 
             // Add a light source & shadow
             const hemiLight = new THREE.HemisphereLight(0xcccccc, 0xffffff, 1, 2);
@@ -113,13 +151,14 @@ export default function TextArea() {
             scene.add(ambientLight);
 
             // Model loading fbx
-            const manager = new THREE.LoadingManager();
-            manager.addHandler(/\.tga$/i, new TGALoader());
+            // const manager = new THREE.LoadingManager();
+            // manager.addHandler(/\.tga$/i, new TGALoader());
             // Model loading glb
-            const loader = new GLTFLoader(manager);
-            loader.load('IP_test/IP_Anim_test01.glb', function (gltf) {
+
+            const loader = new GLTFLoader();
+            loader.load(glbPath, function (gltf) {
                 const model = gltf.scene;
-                model.position.set(0, -3.5, 0);
+                model.position.set(0, -6, 0);
                 mixer = new THREE.AnimationMixer(model);
                 gltf.animations.forEach((clip) => {
                     const action = mixer.clipAction(clip);
@@ -153,9 +192,8 @@ export default function TextArea() {
                             material.depthWrite = true;
                         }
                     }
-
                 });
-                model.scale.set(10, 10, 10);
+                model.scale.set(12, 12, 12);
                 scene.add(model);
 
             });
@@ -163,22 +201,13 @@ export default function TextArea() {
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.target.set(0, 0, 0);
             controls.update();
-
-            // Stats
-            // stats = new Stats();
-            // animationRef.current.appendChild(stats.dom);
         }
-
-
 
         function animate() {
             requestAnimationFrame(animate);
-
             const delta = clock.getDelta();
             if (mixer) mixer.update(delta);
-
             renderer.render(scene, camera);
-            // stats.update();
         }
 
         init();
@@ -186,11 +215,13 @@ export default function TextArea() {
 
         return () => {
             if (animationRef.current) {
+                console.log(animationRef.current)
                 animationRef.current.removeChild(renderer.domElement);
+
             }
-            window.removeEventListener('click', handleClick)
+            window.removeEventListener('animationIndexChanged', handleAnimationIndexChange);
         };
-    }, [isPlay, location]);
+    }, [isPlay, location, animationIndex, dispatch]);
 
     return (
         <section className="voiceDetect" style={position}>

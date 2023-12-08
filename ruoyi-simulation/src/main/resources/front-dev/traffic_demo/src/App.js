@@ -1,9 +1,9 @@
 import React from 'react';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from 'components/Header';
 import PlanMain from 'components/PlanMain';
 import JunctionMain from 'components/JunctionMain';
 import CruiserMain from 'components/CruiserMain';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import FirstMinute from 'components/FirstMinute';
 import FirstHeader from 'components/FirstHeader';
 import TextArea from 'components/container/TextArea/TextArea';
