@@ -23,6 +23,22 @@
       // Dispatch a custom event for changes made in the same window/tab
       window.dispatchEvent(new CustomEvent('animationIndexChanged', { detail: { "animationIndex": value } }));
     }
+    function updateLight(lightNumber, value) {
+      const key = `light${lightNumber}`; // Dynamically create the key based on lightNumber
+      localStorage.setItem(key, value);
+
+      // Dispatch a custom event for changes made in the same window/tab
+      const lightName = `light${lightNumber}`; // Ensure the lightName is correctly formatted
+      window.dispatchEvent(new CustomEvent('lightTimerChanged', { detail: { [lightName]: value } }));
+    }
+    function updateTrafficInfo(TrafficInfoName, value) {
+      const key = `${TrafficInfoName}`;
+      localStorage.setItem(key, value);
+
+      // Dispatch a custom event for changes made in the same window/tab
+      const TrafficInfo = `${TrafficInfoName}`;
+      window.dispatchEvent(new CustomEvent('TrafficInfoChanged', { detail: { [TrafficInfo]: value } }));
+    }
 
   </script>
   <title>智慧交通大模型</title>
