@@ -3,12 +3,15 @@
     width: 100%;
     height: 100%;
     .mainStream {
+        z-index: 0;
+        position: relative;
         width: 100%;
         height: 100%;
         video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            z-index: 0;
         }
     }
 }

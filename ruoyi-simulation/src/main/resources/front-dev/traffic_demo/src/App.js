@@ -1,12 +1,12 @@
 import React from 'react';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from 'components/Header';
 import PlanMain from 'components/PlanMain';
 import JunctionMain from 'components/JunctionMain';
 import CruiserMain from 'components/CruiserMain';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import FirstMinute from 'components/FirstMinute';
 import FirstHeader from 'components/FirstHeader';
-import './websoketManager';
+import TextArea from 'components/container/TextArea/TextArea';
 
 export default function App() {
   const Home = () => {
@@ -14,6 +14,7 @@ export default function App() {
       <>
         <FirstHeader />
         <FirstMinute />
+        <TextArea />
       </>
     );
   };
@@ -22,6 +23,7 @@ export default function App() {
       <>
         <Header />
         <JunctionMain />
+        <TextArea />
       </>
     );
   };
@@ -30,6 +32,7 @@ export default function App() {
       <>
         <Header />
         <PlanMain />
+        <TextArea />
       </>
     );
   };
@@ -38,6 +41,7 @@ export default function App() {
       <>
         <Header />
         <CruiserMain />
+        <TextArea />
       </>
     );
   };
@@ -49,8 +53,8 @@ export default function App() {
           <Route path="/plan" element={<Plan />} />
           <Route path="/junction" element={<Junction />} />
           <Route path="/cruiser" element={<Cruiser />} />
-
         </Routes>
+
       </div>
     </Router>
   )
