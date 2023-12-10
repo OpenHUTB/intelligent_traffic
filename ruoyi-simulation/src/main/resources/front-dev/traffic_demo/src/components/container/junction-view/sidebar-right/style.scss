@@ -96,7 +96,6 @@ section.slider-right {
     // lights-optimize-container
     .lights-optimize-container {
         @include common.contentBackground;
-        margin-top: 0.5rem;
         position: relative;
         width: 100%;
         @include title-sideeffect;
@@ -131,7 +130,7 @@ section.slider-right {
         }
         // seconds control container include in this section
         .seconds-control-container {
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -209,7 +208,6 @@ section.slider-right {
     // pedestrain optimize container include in this section
     .pedestrain-optimization-container {
         @include common.contentBackground;
-        margin-top: 0.5rem;
         $layoutWidth: 5rem;
         width: 100%;
         position: relative;
@@ -298,7 +296,6 @@ section.slider-right {
     //option comparison style
     .options-comparison {
         background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
-        margin-top: 1rem;
         width: 100%;
         @include title-sideeffect;
         position: relative;

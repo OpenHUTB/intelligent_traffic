@@ -1,10 +1,11 @@
 @use "../../../../../css/common.scss" as common;
 .traffic-rank {
+    margin-top: 0.5rem;
     @include common.bottomElementSize;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    height: 190px;
     .title {
         @include common.bottomElementTitle;
     }

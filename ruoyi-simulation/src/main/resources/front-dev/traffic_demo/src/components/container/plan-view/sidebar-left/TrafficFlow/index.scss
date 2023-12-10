@@ -1,24 +1,25 @@
 @use "css/common.scss";
 
 .trafficFlow {
-    margin-top: 5rem;
+    margin-bottom: 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 20rem;
+    width: 100%;
     .container {
         background: url("../../../../../assets/img/ratio-bg.png") center center;
         background-size: cover;
         display: grid;
         grid-template-rows: 1fr 2fr;
         height: 70px;
-        width: 210px;
+        width: 100%;
         .title {
             width: 100%;
-            color: #ccc;
+            color: #fff;
             margin-bottom: 1rem;
-            height: 1rem;
+            position: relative;
+            height: 1.2rem;
             vertical-align: middle;
             // background-color: rgba(23, 47, 73, 0.5);
             .icon {
@@ -35,6 +36,11 @@
                 }
             }
             .text {
+                position: absolute;
+                bottom: -0.2rem;
+                left: 50%;
+                transform: translate(-50%, 0);
+                font-size: 1.2rem;
                 text-wrap: nowrap;
             }
         }

@@ -10,7 +10,7 @@ export default function CruiserMain() {
             <div className="leftSide">
                 <CustomMap />
             </div>
-            <Centre />
+            {/* <Centre /> */}
             <div className="rightSide">
 
             </div>
