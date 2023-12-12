@@ -10,7 +10,6 @@ import './index.scss';
 export default function TextArea() {
     const dispatch = useDispatch();
     const animationIndex = useSelector(state => state.animation.animationIndex);
-    console.log(animationIndex);
     const animationRef = useRef(null);
     // handle the animation play and hide.
     const [isPlay, setIsPlay] = useState(false);
@@ -36,7 +35,6 @@ export default function TextArea() {
     // Get the current location and set the initial position.
     const location = useLocation().pathname.toLowerCase();
     let initalPosition = {};
-    console.log(location);
     if (location.includes("junction")) {
         initalPosition = positions.junction0;
     } else if (location.includes("plan")) {
@@ -65,8 +63,6 @@ export default function TextArea() {
 
         window.addEventListener('animationIndexChanged', handleAnimationIndexChange);
 
-        console.log(animationIndex);
-        console.log("handleEnter", animationIndex);
         if (animationIndex === 0) {
             // Toggle animation visibility
             setIsPlay(prevState => setIsPlay(false));
@@ -215,7 +211,6 @@ export default function TextArea() {
 
         return () => {
             if (animationRef.current) {
-                console.log(animationRef.current)
                 animationRef.current.removeChild(renderer.domElement);
 
             }

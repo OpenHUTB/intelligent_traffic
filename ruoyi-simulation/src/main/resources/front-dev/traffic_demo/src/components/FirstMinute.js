@@ -8,14 +8,15 @@ import Centre from 'components/Centre';
 // import ViolationOverview from 'components/container/plan-view/sidebar-right/ViolationOverview/ViolationOverview';
 // import FunctionIcons from 'components/container/plan-view/sidebar-right/FunctionIcons/FunctionIcons';
 import React from 'react';
+import twinVideo from '../assets/videos/twin-video.mp4';
 import '../css/plan.scss';
-
 
 export default function PlanMain() {
 
     return (
         <main>
-            <div className="leftSide">
+            <div id="twinContainer">
+                <video id="twin" muted src={twinVideo}></video>
             </div>
             {/* <Centre /> */}
             <div className="rightSide">
