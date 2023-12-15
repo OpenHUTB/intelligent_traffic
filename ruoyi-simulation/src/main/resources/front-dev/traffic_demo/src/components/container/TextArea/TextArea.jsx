@@ -159,8 +159,8 @@ export default function TextArea() {
                 gltf.animations.forEach((clip) => {
                     const action = mixer.clipAction(clip);
                     if (isPlay) {
-                        action.setLoop(THREE.LoopOnce);
-                        action.clampWhenFinished = true;
+                        action.setLoop(THREE.LoopRepeat, 5);
+                        // action.clampWhenFinished = true;
 
                     } else {
                         action.setLoop(THREE.LoopRepeat)
