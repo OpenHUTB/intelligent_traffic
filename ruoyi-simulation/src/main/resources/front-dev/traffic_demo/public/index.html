@@ -46,11 +46,21 @@
       window.dispatchEvent(new CustomEvent('TrafficInfoChanged', { detail: { [TrafficInfo]: value } }));
     }
 
+    function updateJunctionInfo(junctionInfoName, value) {
+      const key = `${junctionInfoName}`;
+      localStorage.setItem(key, value);
+
+      // Dispatch a custom event for changes made in the same window/tab
+      const junctionInfo = `${junctionInfoName}`;
+      window.dispatchEvent(new CustomEvent('junctionInfoChanged', { detail: { [junctionInfo]: value } }));
+    }
+
     function twinPlay(play) {
       const videoContainer = document.getElementById('twinContainer');
       const twin = document.getElementById('twin');
       if (play) {
         videoContainer.style.display = 'block';
+        twin.playbackRate = 0.95;
         twin.play();
       } else {
         videoContainer.style.display = 'none';
