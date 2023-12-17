@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { ReactComponent as NavIcon } from 'assets/icon/icon-nav.svg';
+import './index.scss';
 export default function Index() {
     const staticListItems = [{
         name: "二次过街",
@@ -68,7 +69,7 @@ export default function Index() {
                     </div>
                     <div className="list-container" ref={scrollContainer}>
                         {renderList}
-                        {renderList}
+                        {/* {renderList} */}
                     </div>
                 </section>
                 <section className="pedestrian-index">
