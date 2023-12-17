@@ -23,14 +23,20 @@
       // Dispatch a custom event for changes made in the same window/tab
       window.dispatchEvent(new CustomEvent('animationIndexChanged', { detail: { "animationIndex": value } }));
     }
-    function updateLight(lightNumber, value) {
+
+
+    function updateLight(lightNumber, value, isGreen) {
       const key = `light${lightNumber}`; // Dynamically create the key based on lightNumber
-      localStorage.setItem(key, value);
+      // Serialize and store the object in localStorage
+      const lightData = JSON.stringify({ 'seconds': value, 'isGreen': isGreen });
+      localStorage.setItem(key, lightData);
 
       // Dispatch a custom event for changes made in the same window/tab
       const lightName = `light${lightNumber}`; // Ensure the lightName is correctly formatted
-      window.dispatchEvent(new CustomEvent('lightTimerChanged', { detail: { [lightName]: value } }));
+      window.dispatchEvent(new CustomEvent('lightTimerChanged', { detail: { [lightName]: { 'seconds': value, 'isGreen': isGreen } } }));
     }
+
+
     function updateTrafficInfo(TrafficInfoName, value) {
       const key = `${TrafficInfoName}`;
       localStorage.setItem(key, value);
@@ -40,6 +46,28 @@
       window.dispatchEvent(new CustomEvent('TrafficInfoChanged', { detail: { [TrafficInfo]: value } }));
     }
 
+    function updateJunctionInfo(junctionInfoName, value) {
+      const key = `${junctionInfoName}`;
+      localStorage.setItem(key, value);
+
+      // Dispatch a custom event for changes made in the same window/tab
+      const junctionInfo = `${junctionInfoName}`;
+      window.dispatchEvent(new CustomEvent('junctionInfoChanged', { detail: { [junctionInfo]: value } }));
+    }
+
+    function twinPlay(play) {
+      const videoContainer = document.getElementById('twinContainer');
+      const twin = document.getElementById('twin');
+      if (play) {
+        videoContainer.style.display = 'block';
+        twin.playbackRate = 0.95;
+        twin.play();
+      } else {
+        videoContainer.style.display = 'none';
+        twin.pause();
+      }
+
+    }
   </script>
   <title>智慧交通大模型</title>
 </head>
@@ -50,7 +78,7 @@
   </div>
   <div id="root">
   </div>
-  <video id="videoElement" autoplay muted src="./start-view.mp4"></video>
+  <video id="videoElement" muted src="./start-view.mp4"></video>
   <script type="text/javascript" src="../statics/record.js"></script>
   <script type="text/javascript" src="../statics/webRtcPlayer.js"></script>
   <script type="text/javascript" src="../statics/loadingPixStream.js"></script>
