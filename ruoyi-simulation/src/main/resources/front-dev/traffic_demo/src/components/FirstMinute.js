@@ -16,7 +16,7 @@ export default function PlanMain() {
     return (
         <main>
             <div id="twinContainer">
-                <video id="twin" muted src={twinVideo}></video>
+                <video id="twin" muted src={twinVideo} ></video>
             </div>
             {/* <Centre /> */}
             <div className="rightSide">
