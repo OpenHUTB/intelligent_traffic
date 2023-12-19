@@ -10,7 +10,23 @@ export default function Index() {
     };
 
     const [randomCurrent, setRandomCurrent] = useState(generateRandomArray(12, 0, 100));
-    const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 70));
+    const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 80));
+    useEffect(() => {
+        window.addEventListener('lightTimerChanged', (event) => {
+            const key = Object.keys(event.detail)[0];
+            const isGreen = event.detail[key].isGreen;
+            const index = parseInt(key.match(/\d+/)[0]) - 1;
+            setActiveIndex(index);
+
+            if (isGreen) {
+                setRandomCurrent(generateRandomArray(12, 0, 70));
+                setRandomToday(generateRandomArray(12, 0, 50));
+            } else {
+                setRandomCurrent(generateRandomArray(12, 0, 120));
+                setRandomToday(generateRandomArray(12, 0, 90));
+            }
+        })
+    }, [randomCurrent, randomToday]);
     useEffect(() => {
 
         // Initialize the line chart
@@ -80,7 +96,6 @@ export default function Index() {
     const buttons = ['东进口', '西进口', '南进口', '北进口'];
     const handleButtonClick = (index) => {
         setActiveIndex(index);
-
         // Generate and set the random arrays
         setRandomCurrent(generateRandomArray(12, 0, 300));
         setRandomToday(generateRandomArray(12, 0, 250));
