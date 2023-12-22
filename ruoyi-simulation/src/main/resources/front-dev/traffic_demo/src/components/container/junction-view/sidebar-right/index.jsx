@@ -148,6 +148,7 @@ export default function Index() {
             const lightNumber = key.replace('light', '');
             dispatch(setLightTimer({ light: `light${lightNumber}`, value: { 'seconds': seconds, 'isGreen': isGreen } }));
             if (isGreen) {
+
                 setValues(prevValues => ({
                     ...prevValues,
                     [`bar${lightNumber}`]: seconds

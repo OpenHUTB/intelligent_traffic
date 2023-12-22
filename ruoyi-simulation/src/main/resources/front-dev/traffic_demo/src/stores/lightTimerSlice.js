@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const lightTimerSlice = createSlice({
     name: "lightTimer",
     initialState: {
-        light1: { seconds: 1, isGreen: true },
-        light2: { seconds: 1, isGreen: false },
-        light3: { seconds: 1, isGreen: true },
-        light4: { seconds: 1, isGreen: false },
+        light1: { seconds: 10, isGreen: true },
+        light2: { seconds: 10, isGreen: false },
+        light3: { seconds: 10, isGreen: true },
+        light4: { seconds: 10, isGreen: false },
     },
     reducers: {
         setLightTimer: (state, action) => {

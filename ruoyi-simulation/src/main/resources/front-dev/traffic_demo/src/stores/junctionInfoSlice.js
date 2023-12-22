@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const junctionInfoSlice = createSlice({
     name: "junctionInfoSlice",
     initialState: {
-        grade: "A",
-        queueLength: 20.7,
-        parkingTimes: 15,
-        averageDelay: 23,
+        grade: "B",
+        queueLength: 5.1,
+        parkingTimes: 3,
+        averageDelay: 40,
     },
     reducers: {
         setJunctioninfo: (state, action) => {
