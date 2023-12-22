@@ -20,7 +20,7 @@
     }
     main.pedestrian-main {
         $mainHeight: 6.3rem;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         display: grid;
         grid-template-columns: 1.5fr 1fr;
         .pedestrain-scroll-container {
@@ -79,7 +79,7 @@
                 position: absolute;
                 width: $centerWidth;
                 height: $centerWidth;
-                top: 40%;
+                top: 30%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 background: linear-gradient(to right, #349ec9 0%, green 100%);
