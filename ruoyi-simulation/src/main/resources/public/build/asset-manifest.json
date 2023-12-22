@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "./static/css/main.13e69239.css",
+    "main.js": "./static/js/main.d7602caa.js",
+    "static/media/bg.png": "./static/media/bg.3e281e6793951dd77d92.png",
+    "static/media/bg.jpg": "./static/media/bg.1335282c6cf87746bca2.jpg",
+    "static/media/icon-junction.svg": "./static/media/icon-junction.bf979faee5a7583bccb524d31ec4d0ab.svg",
+    "static/media/icon-road.svg": "./static/media/icon-road.ae47346ad4d1e62bd017ea9bb18b0290.svg",
+    "index.html": "./index.html",
+    "static/media/traffic-light-icon.svg": "./static/media/traffic-light-icon.124b9f555bb4951785267da4ed4f02b5.svg",
+    "main.13e69239.css.map": "./static/css/main.13e69239.css.map",
+    "main.d7602caa.js.map": "./static/js/main.d7602caa.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.13e69239.css",
+    "static/js/main.d7602caa.js"
+  ]
+}
