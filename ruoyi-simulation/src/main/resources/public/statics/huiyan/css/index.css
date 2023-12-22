@@ -1,0 +1,12 @@
+/*底部操作栏*/
+.footer{
+    width: 100%;
+    height: 80px;
+    position:fixed;
+    bottom:-20px;
+    z-index:2;
+    text-align:center;
+}
+.footer img{
+    width:80px;
+}
