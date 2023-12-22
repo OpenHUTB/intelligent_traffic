@@ -1,62 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>音频录制和展示</title>
-  <style type="text/css">
-    header{
-      width: 800px;
-      margin: 0 auto;
-      line-height: 40px;
-      text-align: center;
-      font-weight: bold;
-    }
-    #section-audio_content{
-      width: 800px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      margin: 0 auto;
-    }
-    #section-audio_left, #section-audio_right{
-      display: flex;
-      flex-direction: column;
-      padding: 30px;
-    }
-    #section-audio_right > * {
-      margin: 10px 0px;
-    }
-    button, a {
-      margin: 10px auto;
-    }
-    a{
-      display: block;
-      width: 100px;
-      text-align: center;
-    }
-    #canvas {
-			width: 600px;
-			height: 200px;
-		}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" type="image/x-icon" href="statics/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="statics/huiyan/css/index.css" media="all">
+    <link href="statics/main.5dca9c34.css" rel="stylesheet">
+    <script type="text/javascript" src="statics/huiyan/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="statics/huiyan/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="statics/huiyan/js/jquery.base64.js"></script>
+    <script type="text/javascript" src="statics/huiyan/js/recorder/recorder-core.js"></script>
+    <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3.js"></script>
+    <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3-engine.js"></script>
+    <script type="text/javascript" src="statics/huiyan/js/recorder/engine/wav.js"></script>
+    <script defer="defer" src="statics/main.a970c0ae.js"></script>
+    <title>智慧交通大模型</title>
+    <script type="text/javascript">window._AMapSecurityConfig={securityJsCode:"abeb1094acf058e343c316faf2ce00cd"}</script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script>
+        //1-表示打招呼,2表示对话,3表示开始任务,4表示任务完成。
+        function updateAnimation(n,t="animationIndex"){localStorage.setItem(t,n),window.dispatchEvent(new CustomEvent("animationIndexChanged",{detail:{animationIndex:n}}))}function updateLight(n,t,e){const i=`light${n}`,o=JSON.stringify({seconds:t,isGreen:e});localStorage.setItem(i,o);const a=`light${n}`;window.dispatchEvent(new CustomEvent("lightTimerChanged",{detail:{[a]:{seconds:t,isGreen:e}}}))}function updateTrafficInfo(n,t){const e=`${n}`;localStorage.setItem(e,t);const i=`${n}`;window.dispatchEvent(new CustomEvent("TrafficInfoChanged",{detail:{[i]:t}}))}function twinPlay(n){const t=document.getElementById("twinContainer"),e=document.getElementById("twin");n?(t.style.display="block",e.play(), e.playbackRate=1.2):(t.style.display="none",e.pause())}
+    </script>
 </head>
-<body>
-  <header>大模型交通场景</header>
-  <section id="section-audio_content">
-    <section id="section-audio_left">
-      <button id="record">录制</button>
-      <button id="stop">停止</button>
-      <button id="send">发送</button>
-    </section>
-    <section id="section-audio_right">
-      <audio id="audio" autoplay></audio>
-      <canvas id='canvas'></canvas>
-    </section>
-  </section>
-  <script src="record.js"></script>
-  <script src="main.js"></script>
-  <script src="websocket.js"></script>
+<body onload="load()">
+    <div id="videoParentElement"></div>
+    <div id="audioArea" hidden="hidden"></div>
+    <div id="root"></div>
+    <div class="footer">
+        <img id="intercomBegin" src="statics/huiyan/imgs/noplay.png" alt="">
+    </div>
+    <script type="text/javascript" src="statics/app.js"></script>
+    <script type="text/javascript" src="statics/webRtcPlayer.js"></script>
+    <script type="text/javascript" src="huiyan-generateCommand.js"></script>
+    <script type="text/javascript" src="huiyan-generateVoice.js"></script>
+    <script type="text/javascript" src="simulation-websocket.js"></script>
 </body>
 </html>

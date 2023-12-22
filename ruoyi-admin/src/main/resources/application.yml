@@ -130,13 +130,13 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 simulation:
-  python:
-    interpreterLocation: C:/Buffer/gpt/gpt-main/webui/python
-    scriptLocation:
-      getPaddleSpeechVoice: C:/Buffer/PaddleS/generateVoice.py
-      getPaddleSpeechText: C:/Buffer/PaddleS/generateText.py
-      generateCode: C:/Buffer/gpt/gpt-main/webui/training_wizardcoder_mydata.py
-  matlab:
-    interpreterLocation: C:/Users/Administrator/Desktop/RoadManager/matlab/matlab_2022b/bin
-    scriptLocation: C:/Buffer/gpt/gpt-main/webui/sim/main.m
-  filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation
+  paddleSpeech:
+    requestURI: http://192.168.1.114:5000/api/endpoint
+  wizardCoder:
+    interpreterLocation: C:/ProgramData/anaconda3/python.exe    #非虚拟环境的python服务安装位置
+    scriptLocation: D:/project/gpt/webui/client.py    #生成代码的客户端脚本位置
+  ue4Engine:
+    interpreterLocation: C:/ProgramData/Python37/python.exe
+    scriptDirectory: D:/project/gpt/webui/examples/
+    port: 10001
+  filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径
