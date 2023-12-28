@@ -10,7 +10,6 @@ export default function Index() {
     const dispatch = useDispatch();
     const junctionInfo = useSelector((state) => state.junctionInfo);
     console.log(junctionInfo);
-
     useEffect(() => {
         const handleJunctionInfo = (event) => {
             console.log(event.detail);
@@ -19,6 +18,15 @@ export default function Index() {
             console.log(key, value);
             dispatch(setJunctioninfo({ [key]: value }));
         };
+        window.addEventListener('lightTimerChanged', (event) => {
+            const key = Object.keys(event.detail)[0];
+            const isGreen = event.detail[key].isGreen;
+            if (isGreen) {
+                dispatch(setJunctioninfo({ grade: 'A', queueLength: 5, parkingTimes: 3, averageDelay: 28 }));
+            } else {
+                dispatch(setJunctioninfo({ grade: 'c', queueLength: 8.5, parkingTimes: 5, averageDelay: 52 }));
+            }
+        })
         window.addEventListener('junctionInfoChanged', handleJunctionInfo);
         return () => {
             window.removeEventListener('junctionInfoChanged', handleJunctionInfo);
