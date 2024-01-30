@@ -16,20 +16,26 @@ export default function PlanMain() {
   return (
     <main>
       <div className="leftSide-main">
-        <TrafficFlow />
+        {/* <TrafficFlow /> */}
+        <Overview />
+        {/* <TrafficRank /> */}
+        <TopViolation />
+        {/* <AverageDelay /> */}
+        <TrafficJam />
       </div>
       {/* <Centre /> */}
       <div className="rightSide">
         <ViolationOverview />
         <FunctionIcons />
-
+        {/* <TrafficRank /> */}
+        <AverageDelay />
       </div>
       <div className='bottomSide'>
-        <Overview />
+        {/* <Overview />
         <TrafficRank />
         <TopViolation />
         <AverageDelay />
-        <TrafficJam />
+        <TrafficJam /> */}
       </div>
     </main>
   );
