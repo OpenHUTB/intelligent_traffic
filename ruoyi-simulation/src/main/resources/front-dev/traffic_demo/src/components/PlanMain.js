@@ -25,12 +25,11 @@ export default function PlanMain() {
 
       </div>
       <div className='bottomSide'>
-
-        <TrafficJam />
+        <Overview />
         <TrafficRank />
         <TopViolation />
         <AverageDelay />
-        <Overview />
+        <TrafficJam />
       </div>
     </main>
   );
