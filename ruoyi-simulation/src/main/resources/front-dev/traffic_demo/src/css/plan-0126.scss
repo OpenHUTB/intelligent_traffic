@@ -17,28 +17,33 @@ main {
         width: 100%;
         height: 100%;
     }
-    // left side style
-    #twinContainer {
-        @include border-animation;
-        width: 600px;
-        height: 400px;
-        display: none;
-        position: absolute;
-        left: 5px;
-        top: 9rem;
+    // // left side style
+    // #twinContainer {
+    //     @include border-animation;
+    //     width: 600px;
+    //     height: 400px;
+    //     display: none;
+    //     position: absolute;
+    //     left: 5px;
+    //     top: 9rem;
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    }
+    //     video {
+    //         width: 100%;
+    //         height: 100%;
+    //         object-fit: cover;
+    //         background-color: rgba(0, 0, 0, 0.5);
+    //     }
+    // }
     .leftSide-main {
-        width: 400px;
+        @include breathAnimation;
+        @include contentBackground;
         position: absolute;
         left: 5px;
-        top: 9rem;
+        top: 8.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 800px;
     }
     // right side style
     .rightSide {
@@ -47,5 +52,15 @@ main {
         position: absolute;
         right: 5px;
         top: 8.5rem;
+    }
+    .bottomSide {
+        @include contentBackground;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
