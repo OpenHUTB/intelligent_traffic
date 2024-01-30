@@ -12,7 +12,7 @@ export default function App() {
   const Home = () => {
     return (
       <>
-        <FirstHeader />
+        <Header />
         <FirstMinute />
         <TextArea />
       </>
