@@ -51,6 +51,14 @@
             <systemPath>${basedir}/lib/cfbutils.jar</systemPath>
         </dependency>
 
+        <!--解析csv格式文件依赖-->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.5</version>
+        </dependency>
+
+
     </dependencies>
 
 

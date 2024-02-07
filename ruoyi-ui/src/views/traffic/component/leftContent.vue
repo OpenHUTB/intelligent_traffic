@@ -30,10 +30,6 @@ export default {
     };
   },
 
-  created() {
-    this.getList();
-  },
-
   watch: {
     message() {
       this.callbackFunction();
