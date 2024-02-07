@@ -36,4 +36,7 @@ public class TrafficIntersection extends BaseEntity implements Serializable {
 
     @ApiModelProperty("纬度")
     private String latitude;
+
+    @ApiModelProperty("方向")
+    private String direction;
 }
