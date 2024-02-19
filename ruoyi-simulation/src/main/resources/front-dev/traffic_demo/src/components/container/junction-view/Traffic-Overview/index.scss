@@ -1,0 +1,95 @@
+@use "../../../../css/common.scss" as common;
+.overview {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        @include common.bottomElementTitle;
+        width: 100%;
+    }
+
+    .data-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0.3rem;
+        position: relative;
+
+        .row-container {
+            $borderStyle: 1px solid
+                rgba(
+                    $color: #ffff,
+                    $alpha: 0.4
+                );
+
+            border-radius: 20%;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            height: 6rem;
+
+            &:nth-of-type(1) {
+                border-top: $borderStyle;
+            }
+
+            &:nth-of-type(2) {
+                border-bottom: $borderStyle;
+            }
+
+            .data-item {
+                $itemSize: 6rem;
+                width: $itemSize;
+                height: $itemSize;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+
+                &:nth-of-type(1) {
+                    text-align: left;
+                }
+
+                &:nth-of-type(2) {
+                    text-align: right;
+                    // margin-left: 1rem;
+                }
+                .description {
+                    text-wrap: nowrap;
+                    color: #fff;
+                }
+                .number {
+                    $numberSize: 3rem;
+                    height: $numberSize;
+                    line-height: $numberSize;
+                    font-size: 2rem;
+                    color: #fff;
+                    text-wrap: nowrap;
+                }
+                .unit {
+                    font-size: 0.8rem;
+                    color: #0b9bff;
+                }
+            }
+        }
+
+        &::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-55%, -50%);
+            content: "";
+            height: 8rem;
+            width: 8rem;
+            background: url("../../../../assets/img/overview-icon.png") no-repeat center center;
+            background-size: 100% 100%;
+            border-radius: 50%;
+        }
+    }
+}

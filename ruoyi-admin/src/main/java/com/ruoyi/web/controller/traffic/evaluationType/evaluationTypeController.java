@@ -34,7 +34,7 @@ public class evaluationTypeController extends BaseController {
     public TableDataInfo list(@ApiParam(value = "条件查询参数")@RequestBody TrafficEvaluationType trafficEvaluationType)
     {
         startPage();
-        List<TrafficEvaluationType> list =iTrafficEvaluationTypeService .queryList(trafficEvaluationType);
+        List<TrafficEvaluationType> list =iTrafficEvaluationTypeService.queryList(trafficEvaluationType);
         return getDataTable(list);
     }
 
@@ -56,6 +56,13 @@ public class evaluationTypeController extends BaseController {
     @PostMapping("delete")
     public AjaxResult delete(@ApiParam(value = "数据集ID集合", required = true) @RequestBody List<Long> ids) {
         iTrafficEvaluationTypeService.deleteEvaluationType(ids);
+        return AjaxResult.success();
+    }
+
+    @ApiOperation("根据id删除指标")
+    @PostMapping("/deleteById/{id}")
+    public AjaxResult deleteById(@PathVariable Long id) {
+        iTrafficEvaluationTypeService.deleteTypeById(id);
         return AjaxResult.success();
     }
 

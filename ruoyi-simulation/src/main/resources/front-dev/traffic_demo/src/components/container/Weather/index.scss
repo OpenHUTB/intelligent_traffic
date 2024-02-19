@@ -1,0 +1,48 @@
+.weather-time-container {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 25%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 80%;
+    .time-contianer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .date {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+            span {
+                vertical-align: middle;
+                margin-right: 0.4rem;
+            }
+        }
+        .time {
+            color: rgb(58, 231, 230);
+            font-family: "DsDigital";
+        }
+    }
+
+    .weather-container {
+        width: 50%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .weather {
+            .weatherIcon SVG {
+                $IConSize: 2rem;
+                width: $IConSize;
+                height: $IConSize;
+            }
+        }
+    }
+}

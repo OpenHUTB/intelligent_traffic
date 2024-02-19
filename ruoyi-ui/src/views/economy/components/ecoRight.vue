@@ -8,11 +8,12 @@
       </dv-border-box-8>
     </div>
 
+    
     <div class="body">
       <!-- 城市农作物比例占比 -->
       <div class="body_table1">
         <dv-border-box-6 style="padding: 10px">
-          <h2>主要农作物物分布</h2>
+          <h2>主要拥堵路口分布</h2>
           <Echart
             :options="options2"
             height="400px"
@@ -31,37 +32,100 @@ export default {
   components: { Echart },
   data() {
     return {
+    
       options1: {
-        title: {
-          text: "重庆市财务开销",
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            crossStyle: {
+              color: "#999",
+            },
+          },
+        },
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true },
+          },
         },
         legend: {
-          data: ["预算分配", "实际开销"],
+          data: ["车辆", "车辆增长率"],
         },
-        radar: {
-          // shape: 'circle',
-          indicator: [
-            { name: "管理", max: 6500 },
-            { name: "销售", max: 16000 },
-            { name: "市场", max: 30000 },
-            { name: "研发", max: 38000 },
-            { name: "客服", max: 52000 },
-            { name: "信息技术", max: 25000 },
-          ],
-        },
+        xAxis: [
+          {
+            type: "category",
+            data: [
+              "6:00",
+              "7:00",
+              "8:00",
+              "9:00",
+              "10:00",
+              "11:00",
+              "12:00",
+              "13:00",
+              "14:00",
+              "15:00",
+              "16:00",
+              "17:00",
+              "18:00",
+            ],
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+            name: "万辆",
+            min: 2700,
+            max: 3300,
+            interval: 100,
+            axisLabel: {
+              formatter: "{value}",
+            },
+          },
+          {
+            type: "value",
+            name: "%",
+            min: 0,
+            max: 70,
+            interval: 10,
+            axisLabel: {
+              formatter: "{value}",
+            },
+          },
+        ],
+
         series: [
           {
-            name: "预算分配 vs 实际开销",
-            type: "radar",
+            name: "车辆",
+            type: "bar",
+            tooltip: {
+              valueFormatter: function (value) {
+                return value + " 万";
+              },
+            },
             data: [
-              {
-                value: [4200, 3000, 20000, 35000, 50000, 18000],
-                name: "实际开销",
+              2920, 2950, 2970, 3010, 3040, 3070, 3110, 3150, 3160, 3190, 3210,
+              3220, 3250,
+            ],
+          },
+          {
+            name: "车辆增长率",
+            type: "line",
+            yAxisIndex: 1,
+            tooltip: {
+              valueFormatter: function (value) {
+                return value + " 万辆";
               },
-              {
-                value: [5000, 14000, 28000, 26000, 42000, 21000],
-                name: "预算分配",
-              },
+            }, 
+            data: [
+              40.21, 59.81, 30.45, 36.15, 32.45, 26.54, 39.94, 33.55, 19.63,
+              24.7, 21.09, 3.5, 4.21,
             ],
           },
         ],
@@ -70,17 +134,23 @@ export default {
         legend: {},
         tooltip: {},
         dataset: {
-          dimensions: ["product", "小麦", "玉米", "高粱"],
+          dimensions: ["product", "杜鹃路", "观沙路", "彩虹路", "岳麓大道", "茶子山东路", "银杉路"],
           source: [
-            { product: "2019", 小麦: 433, 玉米: 858, 高粱: 937 },
-            { product: "2020", 小麦: 831, 玉米: 734, 高粱: 551 },
-            { product: "2021", 小麦: 864, 玉米: 652, 高粱: 825 },
-            { product: "2023", 小麦: 724, 玉米: 539, 高粱: 391 },
+            { product: "杜鹃路", 杜鹃路: 8 },
+            { product: "观沙路", 观沙路: 6 },
+            { product: "彩虹路", 彩虹路: 2 },
+            { product: "岳麓大道", 岳麓大道: 9 },
+            { product: "茶子山东路", 茶子山东路: 11 },
+            { product: "银杉路", 银杉路: 5 },
+
+            // { product: "2020", 小麦: 831, 玉米: 734, 高粱: 551 },
+            // { product: "2021", 小麦: 864, 玉米: 652, 高粱: 825 },
+            // { product: "2023", 小麦: 724, 玉米: 539, 高粱: 391 },
           ],
         },
         xAxis: { type: "category" },
         yAxis: {},
-        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" },{ type: "bar" }, { type: "bar" }, { type: "bar" }],
       },
     };
   },

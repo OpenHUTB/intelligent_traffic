@@ -61,9 +61,23 @@ public class TrafficEvaluationTypeServiceImpl extends ServiceImpl<TrafficEvaluat
     }
 
     @Override
+    public void deleteTypeById(Long id) {
+        baseMapper.deleteById(id);
+    }
+
+    @Override
     public TrafficEvaluationType queryById(Long id) {
         TrafficEvaluationType trafficEvaluationType = baseMapper.selectById(id);
         return trafficEvaluationType;
+    }
+
+    @Override
+    public TrafficEvaluationType queryByName(String name) {
+        LambdaQueryWrapper<TrafficEvaluationType> queryWrapper =  new LambdaQueryWrapper<>();
+        if (StringUtils.isNotNull(name)) {
+            queryWrapper.like(TrafficEvaluationType::getName, name);
+        }
+        return baseMapper.selectOne(queryWrapper);
     }
 
     /**

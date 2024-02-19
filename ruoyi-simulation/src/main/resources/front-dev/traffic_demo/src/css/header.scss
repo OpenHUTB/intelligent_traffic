@@ -1,0 +1,45 @@
+@import "reset.scss";
+@import "common.scss";
+
+header.header {
+    @include titleImage;
+    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    .title {
+        @include titleFont;
+    }
+
+    ul {
+        width: 32rem;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 1.3rem;
+        position: absolute;
+        right: 0;
+        top: 3rem;
+        z-index: 3;
+        li {
+            $lineHeight: 4rem;
+            width: 8rem;
+            height: $lineHeight;
+            line-height: $lineHeight;
+            text-align: center;
+            background: url(../assets/img/dashboard.png) no-repeat center;
+            background-size: cover;
+            a {
+                text-decoration: none;
+                color: #ffffff;
+            }
+            a :active {
+                color: red;
+            }
+        }
+    }
+    .logo {
+        @include logoStyle;
+    }
+}

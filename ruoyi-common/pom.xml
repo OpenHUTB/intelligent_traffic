@@ -145,6 +145,7 @@
             <version>1.4.5</version>
         </dependency>
 
+
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>

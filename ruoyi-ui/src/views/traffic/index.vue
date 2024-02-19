@@ -1,12 +1,13 @@
 <template>
   <div>
     <div class="center">
-      <left-content />
-      <center-map />
-      <right-content />
+      <left-content :message="message" />
+<!--      <center-map :message="message" @update-message="updateMessage" />-->
+      <my-map :message="message" @update-message="updateMessage" ></my-map>
+      <right-content :message="message" />
     </div>
     <div class="bottom">
-      <bottom />
+      <bottom :message="message"/>
     </div>
   </div>
 </template>
@@ -16,8 +17,21 @@ import bottom from './component/bottom.vue';
 import centerMap from "./component/centerMap.vue";
 import leftContent from "./component/leftContent.vue";
 import rightContent from "./component/rightContent.vue";
+import myMap from "./component/myMap.vue";
 export default {
-  components: { centerMap, leftContent, rightContent,bottom },
+  components: { centerMap, leftContent, rightContent, bottom, myMap },
+  data() {
+    return {
+      message: ''
+    };
+  },
+  methods: {
+    updateMessage(newMessage) {
+      // console.log(newMessage);
+      this.message = newMessage;
+      // console.log(this.message);
+    }
+  }
 };
 </script>
 
@@ -30,6 +44,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 </style>
