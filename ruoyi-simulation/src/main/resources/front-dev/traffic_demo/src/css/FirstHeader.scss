@@ -1,0 +1,22 @@
+@import "reset.scss";
+@import "common.scss";
+
+header.header-first {
+    @include titleImage;
+    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    // senario 1
+    .title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        @include titleFont;
+    }
+    .logo {
+        @include logoStyle;
+    }
+}

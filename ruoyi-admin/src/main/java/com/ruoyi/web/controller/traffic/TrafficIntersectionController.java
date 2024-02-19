@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.traffic.domain.area.TrafficArea;
 import com.ruoyi.traffic.domain.intersection.TrafficIntersection;
+import com.ruoyi.traffic.service.area.impl.TrafficLightControlImpl;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionEvaluationDataService;
 import com.ruoyi.traffic.service.intersection.ITrafficIntersectionService;
 import io.swagger.annotations.Api;
@@ -35,11 +36,14 @@ public class TrafficIntersectionController extends BaseController {
     @Resource
     ITrafficIntersectionEvaluationDataService trafficIntersectionEvaluationDataService;
 
+    @Resource
+    TrafficLightControlImpl trafficLightControl;
+
     @ApiOperation("分页查询路口")
     @PostMapping("/page")
     public TableDataInfo list(@ApiParam(value = "查询的参数")@RequestBody TrafficIntersection trafficIntersection) {
         startPage();
-        List<TrafficIntersection> list = trafficIntersectionService.quertList(trafficIntersection);
+        List<TrafficIntersection> list = trafficIntersectionService.queryList(trafficIntersection);
         return getDataTable(list);
     }
 
@@ -72,5 +76,12 @@ public class TrafficIntersectionController extends BaseController {
                                @NotNull(message = "不能为空") Long id) {
         TrafficIntersection trafficIntersection = trafficIntersectionService.queryById(id);
         return AjaxResult.success(trafficIntersection);
+    }
+
+    @ApiOperation("路口红绿灯的调控")
+    @GetMapping("/TrafficLight")
+    public AjaxResult TrafficLightInfo(@ApiParam(value = "四个相位车流量的集合", required = true) @RequestBody List<Integer> numList){
+        TrafficLightControlImpl control = new TrafficLightControlImpl();
+        return  AjaxResult.success( control.getTrafficLightInfo(numList));
     }
 }

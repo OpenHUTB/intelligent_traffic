@@ -1,6 +1,11 @@
 <template>
   <div class="content">
+    <!-- <div id="container" class="map">
+
+    </div> -->
     <baidu-map
+    @dragging="handleClick"
+    @click="handleClick"
       class="map"
       :center="center"
       :zoom="zoom"
@@ -14,6 +19,7 @@
 
 <script>
 import mapStyle from "@/assets/mapStyle.json";
+import { debounce } from 'lodash';
 export default {
   components: {},
   data() {
@@ -25,8 +31,12 @@ export default {
       },
     };
   },
-  created() {},
-  mounted() {},
+  created() {
+    this.handleClick = debounce(this.handleClick, 300); // 设置防抖时间间隔为300ms
+  },
+  mounted() {
+    // this.builmap();
+  },
   methods: {
     handler({ BMap, map }) {
 
@@ -34,8 +44,25 @@ export default {
       this.center.lat = 28.225764;
       this.zoom = 19;
 
-      map.setMapStyle({style:'midnight'});    
+      map.setMapStyle({style:'midnight'});
     },
+
+    builmap() {
+      let map = new window.BMap.Map("container");
+      let point = new window.BMap.Point(112.925737, 28.225764);
+      map.centerAndZoom(point, 19);
+      map.enableScrollWheelZoom(true);
+      map.setMapStyle({style:'midnight'})
+      map.addEventListener("click", function(e) {
+        console.log(e.point.lng + "," + e.point.lat);
+      });
+
+    },
+
+    handleClick() {
+      let newMessage = Math.random().toString() ;
+      this.$emit('update-message', newMessage)
+    }
   },
 };
 </script>
@@ -52,7 +79,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-/deep/.anchorBL {
+.anchorBL {
                 display: none!important;
             }
 </style>

@@ -43,20 +43,42 @@
                     ></router-link
                   >
                 </div>
-                <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+
+
+  <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+                 <a href="http://172.21.116.79/" target="_blank"><span class="text" @click="changeTabbarIndex(1)"
+                      >像素流</span
+                    >   </a >
+                </div> -->
+      <!-- <el-row> -->
+      <!-- <a href=" " target="_blank">
+      <el-button >像素流</el-button>
+  </a > -->
+    <!-- </el-row> -->
+
+    <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
                   <router-link to="/map/population"
                     ><span class="text" @click="changeTabbarIndex(1)"
                       >路网信息</span
                     ></router-link
                   >
-                </div>
-                <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
+                </div> -->
+
+
+                <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 1 }">
+                  <router-link to="/map/population"
+                    ><span class="text" @click="changeTabbarIndex(1)"
+                      >路网信息</span
+                    ></router-link
+                  >
+                </div> -->
+                <!-- <div class="react-left ml-3" :class="{ bgc: tabbarIndex == 2 }">
                   <router-link to="/map/environment"
                     ><span class="text" @click="changeTabbarIndex(2)"
                       >态势感知</span
                     ></router-link
                   >
-                </div>
+                </div> -->
               </div>
               <div class="d-flex aside-width">
                 <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 3 }">
@@ -66,6 +88,13 @@
                     ></router-link
                   >
                 </div>
+                   <div class="react-right mr-3" :class="{ bgc: tabbarIndex == 4 }">
+                    <router-link to="/map/digitalTwin"
+                      ><span class="text" @click="changeTabbarIndex(4)"
+                        >数字孪生</span
+                      ></router-link
+                    >
+                  </div>
                 <div class="react-right mr-4 react-l-s">
                   <span class="react-after"></span>
                   <span class="text"

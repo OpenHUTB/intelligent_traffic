@@ -18,18 +18,22 @@
     <div class="body">
       <!-- 温度监测表 -->
       <dv-border-box-6 style="padding:10px">
+
         <div class="map-content">
-          <!-- <baidu-map
-            class="map"
-            :center="center"
-            :zoom="zoom"
-            @ready="handler"
-            :mapStyle="mapStyle"
-            :scroll-wheel-zoom="true"
-          /> -->
-          <img :src="crossroad" class="cross">
+<!--          &lt;!&ndash; <baidu-map-->
+<!--            class="map"-->
+<!--            :center="center"-->
+<!--            :zoom="zoom"-->
+<!--            @ready="handler"-->
+<!--            :mapStyle="mapStyle"-->
+<!--            :scroll-wheel-zoom="true"-->
+<!--          /> &ndash;&gt;-->
+<!--           &lt;!&ndash;   <img :src="crossroad" class="cross">   &ndash;&gt;-->
+           <iframe src="http://localhost:18080/roadPixStream.html" style="width:100%;height:100%;overflow:hidden;border-width:0px;"></iframe>
         </div>
+
       </dv-border-box-6>
+
     </div>
   </div>
 </template>
@@ -50,7 +54,7 @@ export default {
       },
       crossroad: crossroad + '?' + +new Date()
     };
-    
+
   },
   methods: {
     handler({ BMap, map }) {

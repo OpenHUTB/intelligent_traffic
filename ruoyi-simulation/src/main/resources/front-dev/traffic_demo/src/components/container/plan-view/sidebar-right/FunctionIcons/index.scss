@@ -1,0 +1,31 @@
+div.function-icons {
+    border-top: rgb(40, 102, 216) 5px solid;
+    margin-top: 1rem;
+    width: 380px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icons-columns {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 40%;
+
+        span.icon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .form-check-input {
+                background-color: rgba(0, 0, 0, 0);
+            }
+            .form-check-input:checked {
+                background-color: rgba(79, 242, 127, 0.5);
+                border-color: #1f56b9;
+            }
+        }
+    }
+}

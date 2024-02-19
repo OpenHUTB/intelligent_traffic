@@ -292,6 +292,7 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      console.log(row)
       this.reset();
       getDept(row.deptId).then(response => {
         this.form = response.data;

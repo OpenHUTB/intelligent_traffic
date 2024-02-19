@@ -15,7 +15,7 @@ import java.util.List;
 public interface ITrafficIntersectionService extends IService<TrafficIntersection> {
 
     //查询集合
-    List<TrafficIntersection> quertList(TrafficIntersection trafficIntersection);
+    List<TrafficIntersection> queryList(TrafficIntersection trafficIntersection);
 
     //新增交通路口
     void addIntersection(TrafficIntersection trafficIntersection);
@@ -28,5 +28,8 @@ public interface ITrafficIntersectionService extends IService<TrafficIntersectio
 
     //查询交通路口的详情
     TrafficIntersection queryById(Long id);
+
+    //根据路口名称查询
+    TrafficIntersection queryByName(String name);
 
 }
