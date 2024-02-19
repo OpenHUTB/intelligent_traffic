@@ -15,7 +15,5 @@ public class SocketServerListener implements ApplicationListener<ApplicationStar
     @Override
     public void onApplicationEvent(ApplicationStartedEvent e) {
         ApplicationContext applicationContext = e.getApplicationContext();
-        CallUE4Engine callUE4Engine = applicationContext.getBean(CallUE4Engine.class);
-        callUE4Engine.initial();
     }
 }

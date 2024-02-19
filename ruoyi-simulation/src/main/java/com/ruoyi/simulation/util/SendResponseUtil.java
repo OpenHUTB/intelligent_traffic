@@ -6,6 +6,8 @@ import com.ruoyi.simulation.websocket.WebSocketServer;
 
 import javax.websocket.Session;
 import com.ruoyi.simulation.util.StreamSet.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,8 +97,23 @@ public class SendResponseUtil {
                 Map<String,Object> lightInfo = new HashMap<String,Object>();
                 lightInfo.put("serial",serial);
                 lightInfo.put("second",second);
+                lightInfo.put("roadLength",80);
+                lightInfo.put("carCount", 0);
+                lightInfo.put("congestion", 0);
+                lightInfo.put("waitTime",0);
+                if(WebSocketServer.carCountMap.get(sessionId)!=null&&WebSocketServer.carCountMap.get(sessionId)!=0){
+                    int carCount = WebSocketServer.carCountMap.get(sessionId);
+                    lightInfo.put("carCount", carCount);
+                    int congestion = (int)(Math.random()*(carCount+39)/40);
+                    lightInfo.put("congestion", congestion);
+                    int waitTime = 20+(int)(Math.random()*(carCount+39)/40*20);
+                    lightInfo.put("waitTime",waitTime);
+                }
                 stream.setLightInfo(lightInfo);
-            }else{
+            }else if(instruction.endsWith("Carla_control_G29.py")){
+                Thread.sleep(35000);
+                stream.setMessage("自动驾驶即将结束，请手动接管方向盘!");
+            }else if(!instruction.contains("change_weather.py")&&!instruction.contains("generate_traffic.py")){
                 stream.setSignal(StreamSet.Signal.ORDINARY.toString());
             }
             //通过websocket向前端发送数据
