@@ -25,11 +25,10 @@ public abstract class CommandLineUtil<T> {
     public T executionCommand(){
         T data = null;
         InputStream ins = null;
-        OutputStream ous = null;
         Process process = null;
         try {
+            long start = System.currentTimeMillis();
             process = this.getProcess();
-            ous = process.getOutputStream();
             //获取执行结果
             ins = process.getErrorStream();
             if(ins!=null&&ins.available()>0){
@@ -40,18 +39,13 @@ public abstract class CommandLineUtil<T> {
                 }
             }else{
                 ins = process.getInputStream();
+                long end = System.currentTimeMillis();
+                logger.info("执行UE4指令耗费时间：" + (end-start));
                 data = this.processResult(ins);
             }
         } catch (Exception e) {
             LoggerUtil.printLoggerStace(e);
         } finally {
-            try {
-                if(ous!=null) {
-                    ous.close();
-                }
-            } catch (IOException e) {
-                LoggerUtil.printLoggerStace(e);
-            }
             try {
                 if(ins!=null) {
                     ins.close();

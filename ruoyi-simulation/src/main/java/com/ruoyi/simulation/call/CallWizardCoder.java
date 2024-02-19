@@ -57,12 +57,12 @@ public class CallWizardCoder {
                     if(StringUtils.equals(str, "gpt_end")){
                         process.destroyForcibly();
                         //检测到"gpt_end"则说明代码生成成功，否则说明发生了异常
-                        return codeList;
+                        break;
                     }
                     logger.info(str);
                     codeList.add(str);
                 }
-                return null;
+                return codeList;
             }
         };
         List<String> codeList = commandLine.executionCommand();
@@ -71,14 +71,48 @@ public class CallWizardCoder {
         }
         return codeList;
     }
+    public String getMapName(String params){
+        CommandLineUtil<String> commandLine = new CommandLineUtil<String>() {
+            private Process process;
+            @Override
+            protected Process getProcess() throws Exception {
+                //获取python解释器在服务器中的绝对路径
+                String interpreterLocation = environment.getProperty("simulation.ue4Engine.interpreterLocation");
+                //获取python代码文件在服务器中的绝对路径
+                String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
+                String scriptLocation = scriptDirectory + params;
+                //执行服务器中的python脚本
+                Runtime runtime = Runtime.getRuntime();
+                logger.info("cmd /k "+interpreterLocation+" "+scriptLocation);
+                return process = runtime.exec("cmd /k "+interpreterLocation+" "+scriptLocation);
+            }
 
+            @Override
+            protected String processResult(InputStream ins) throws Exception {
+                String mapName = null;
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
+                String str = null;
+                while((str = bufferedReader.readLine())!=null){
+                    if(StringUtils.equals(str, "gpt_end")){
+                        process.destroyForcibly();
+                        //检测到"gpt_end"则说明场景名称获取成功，否则说明发生了异常
+                        break;
+                    }
+                    mapName = str;
+                    logger.info(str);
+                }
+                return mapName;
+            }
+        };
+        return commandLine.executionCommand();
+    }
     /**
      * 执行指令
      * @param params
      * @return
      */
-    public void executeExample(String params) {
-        CommandLineUtil<Integer> commandLine = new CommandLineUtil<Integer>() {
+    public void executeExample(String params) {//get_buildings.py
+        CommandLineUtil<Process> commandLine = new CommandLineUtil<Process>() {
             @Override
             protected Process getProcess() throws Exception {
                 //获取python解释器在服务器中的绝对路径
@@ -94,11 +128,11 @@ public class CallWizardCoder {
             }
 
             @Override
-            protected Integer processResult(InputStream ins) throws Exception {
+            protected Process processResult(InputStream ins) throws Exception {
                 BufferedReader bufferedReader = null;
                 bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
-                while((str = bufferedReader.readLine())!=null){
+                while(!StringUtils.isEmpty(str = bufferedReader.readLine())){
                     logger.info(str);
                 }
                 return null;

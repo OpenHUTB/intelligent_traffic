@@ -136,7 +136,7 @@ simulation:
     interpreterLocation: C:/ProgramData/anaconda3/python.exe    #非虚拟环境的python服务安装位置
     scriptLocation: D:/project/gpt/webui/client.py    #生成代码的客户端脚本位置
   ue4Engine:
-    interpreterLocation: C:/ProgramData/Python37/python.exe
-    scriptDirectory: D:/project/gpt/webui/examples/
+    interpreterLocation: C:\ProgramData\Python37\python.exe
+    scriptDirectory: D:\project\gpt\webui\examples\
     port: 10001
   filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径

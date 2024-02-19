@@ -118,8 +118,8 @@ $(function () {
                     "enable_inverse_text_normalization": true,
                     "max_sentence_silence": 800,
                     "enable_words": false,
-                    "hotwords_id": "HW9ED55DF8",
-		            "hotwords_weight": 0.8
+                    "hotwords_id": "HWA4BB98A8",
+		            "hotwords_weight": 1
                 }
             };
             if (huiyan.readyState == 1) {
@@ -151,7 +151,7 @@ $(function () {
             index = data.payload.index;
             //获取语音识别的结果
             text = data.payload.result;
-            console.log(text);
+            //console.log(text);
             operatorMessage(text,index,name);
         };
         huiyan.onerror = function(err) {
@@ -205,11 +205,7 @@ function operatorMessage(text,index,name){
         var flag = checkAwaken(text);
         //判断你好小轩是否相邻
         if(index!=awakeInfo.index&&flag==true){
-            playAudio("reply.wav",function(){
-                setTimeout(function(){
-                    sessionStorage['listenerStatus']="WAITING";
-                },300000);
-            });
+            playAudio("reply.wav");
             sessionStorage['listenerStatus'] = "AWAKENED";
             var tips = document.getElementById("tips");
             tips.value="唉，我在";
@@ -218,26 +214,29 @@ function operatorMessage(text,index,name){
         }
         //再已经被唤醒的情况下，获取语音命令文本
         var location = checkName(text);
-        console.log("index:"+index+",awakeInfo.index:"+awakeInfo.index+",listenerStatus:"+sessionStorage['listenerStatus']+",location:"+location+",name:"+name);
         if(index!=awakeInfo.index&&location!=-1&&sessionStorage['listenerStatus']=="AWAKENED"){
-            console.log("-----------------------进入if-----------------------");
-            var command = text.substring(nameLocation+4);
+            //console.log("-----------------------进入if-----------------------");
+            var command = text;
+            do{
+                command = command.substring(location+4);
+                location = checkName(command);
+            }while(location!=-1);
             command = trimPunctuation(command);
+            var t = sessionStorage['time'];
             if(name=="TranscriptionResultChanged"){
-                console.log("-----------------------TranscriptionResultChanged-----------------------");
+                //console.log("-----------------------TranscriptionResultChanged-----------------------");
                 if(command.length>=20||(command==awakeInfo.tempContent&&command.length>=4)){
                     awakeInfo.index = index;
-                    var params = {"commandType":"TEXT","command":command};
-                    simulation.send(JSON.stringify(params));
-                    console.log("------------------------------"+command+"-------------------------------");
+                    simulation.send(command);
+                    //console.log("------------------------------"+command+"-------------------------------");
                     awakeInfo.tempContent = null;
                     return;
                 }
                 awakeInfo.tempContent = command;
             }else if(name=="SentenceEnd"&&command.length>=4){
-                console.log("-----------------------SentenceEnd-----------------------");
+                //console.log("-----------------------SentenceEnd-----------------------");
                 simulation.send(command);
-                console.log("------------------------------"+command+"-------------------------------");
+                //console.log("------------------------------"+command+"-------------------------------");
                 awakeInfo.tempContent = null;
             }
         }
@@ -274,27 +273,27 @@ function trimPunctuation(command){
  * 检测语音中是否包含关键字
  */
 function checkAwaken(text){
-    if(text.indexOf("小轩你好")=-1||text.indexOf("你好小轩")!=-1||text.indexOf("你好,小轩")!=-1||text.indexOf("小轩,你好")!=-1||text.indexOf("你好，小轩")!=-1||text.indexOf("小轩，你好")!=-1){
+    if(text.indexOf("小轩你好")!=-1||text.indexOf("你好小轩")!=-1||text.indexOf("你好,小轩")!=-1||text.indexOf("小轩,你好")!=-1||text.indexOf("你好，小轩")!=-1||text.indexOf("小轩，你好")!=-1){
         return true;
     }
     index = text.indexOf("晓轩");
-    if(text.indexOf("晓轩你好")=-1||text.indexOf("你好晓轩")!=-1||text.indexOf("你好,晓轩")!=-1||text.indexOf("晓轩,你好")!=-1||text.indexOf("你好，晓轩")!=-1||text.indexOf("晓轩，你好")!=-1){
+    if(text.indexOf("晓轩你好")!=-1||text.indexOf("你好晓轩")!=-1||text.indexOf("你好,晓轩")!=-1||text.indexOf("晓轩,你好")!=-1||text.indexOf("你好，晓轩")!=-1||text.indexOf("晓轩，你好")!=-1){
         return true;
     }
     index = text.indexOf("小萱");
-    if(text.indexOf("小萱你好")=-1||text.indexOf("你好小萱")!=-1||text.indexOf("你好,小萱")!=-1||text.indexOf("小萱,你好")!=-1||text.indexOf("你好，小萱")!=-1||text.indexOf("小萱，你好")!=-1){
+    if(text.indexOf("小萱你好")!=-1||text.indexOf("你好小萱")!=-1||text.indexOf("你好,小萱")!=-1||text.indexOf("小萱,你好")!=-1||text.indexOf("你好，小萱")!=-1||text.indexOf("小萱，你好")!=-1){
         return true;
     }
     index = text.indexOf("小宣");
-    if(text.indexOf("小宣你好")=-1||text.indexOf("你好小宣")!=-1||text.indexOf("你好,小宣")!=-1||text.indexOf("小宣,你好")!=-1||text.indexOf("你好，小宣")!=-1||text.indexOf("小宣，你好")!=-1){
+    if(text.indexOf("小宣你好")!=-1||text.indexOf("你好小宣")!=-1||text.indexOf("你好,小宣")!=-1||text.indexOf("小宣,你好")!=-1||text.indexOf("你好，小宣")!=-1||text.indexOf("小宣，你好")!=-1){
         return true;
     }
     index = text.indexOf("晓萱");
-    if(text.indexOf("晓萱你好")=-1||text.indexOf("你好晓萱")!=-1||text.indexOf("你好,晓萱")!=-1||text.indexOf("晓萱,你好")!=-1||text.indexOf("你好，晓萱")!=-1||text.indexOf("晓萱，你好")!=-1){
+    if(text.indexOf("晓萱你好")!=-1||text.indexOf("你好晓萱")!=-1||text.indexOf("你好,晓萱")!=-1||text.indexOf("晓萱,你好")!=-1||text.indexOf("你好，晓萱")!=-1||text.indexOf("晓萱，你好")!=-1){
         return true;
     }
     index = text.indexOf("");
-    if(text.indexOf("小瑄你好")=-1||text.indexOf("你好小瑄")!=-1||text.indexOf("你好,小瑄")!=-1||text.indexOf("小瑄,你好")!=-1||text.indexOf("你好，小瑄")!=-1||text.indexOf("小瑄，你好")!=-1){
+    if(text.indexOf("小瑄你好")!=-1||text.indexOf("你好小瑄")!=-1||text.indexOf("你好,小瑄")!=-1||text.indexOf("小瑄,你好")!=-1||text.indexOf("你好，小瑄")!=-1||text.indexOf("小瑄，你好")!=-1){
         return true;
     }
     return false;
@@ -325,6 +324,11 @@ function checkName(text){
     }
     index = text.indexOf("小瑄同学");
     if(index!=-1){
+        return index;
+    }
+    index = text.indexOf("小");
+    var location = text.indexOf("同学");
+    if(index!=-1&&location!=-1&&index+2==location&&text.indexOf("小爱同学")==-1){
         return index;
     }
     return -1;

@@ -5,6 +5,7 @@ import com.ruoyi.simulation.util.ElementUtil;
 import com.ruoyi.simulation.util.FileOperatorUtil;
 import com.ruoyi.simulation.util.LoggerUtil;
 import com.ruoyi.simulation.util.VoiceUtil;
+import io.swagger.v3.oas.models.links.Link;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -35,9 +33,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class WebSocketServer {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     public static final Map<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<String, WebSocketServer>();
+    public static final Map<String, Set<String>> webSocketCommandMap = new ConcurrentHashMap<String, Set<String>>();
     public static final LinkedBlockingQueue<VoiceUtil> voiceCommandQueue = new LinkedBlockingQueue<VoiceUtil>(50);
     public static final LinkedBlockingQueue<ElementUtil> commandQueue = new LinkedBlockingQueue<ElementUtil>(50);
-    public static final Map <String, LinkedList<VoiceUtil>> voiceSuperpositionMap = new HashMap<String,LinkedList<VoiceUtil>>();
+    public static final Map <String, LinkedList<VoiceUtil>> voiceSuperpositionMap = new ConcurrentHashMap<String,LinkedList<VoiceUtil>>();
+    public static final Map<String, Integer> carCountMap = new HashMap<String, Integer>();
     private static FileOperatorUtil fileUtil;
     private Session session = null;
     /**
@@ -49,6 +49,8 @@ public class WebSocketServer {
     public void openConnection(Session session) {
         this.session = session;
         webSocketMap.put(session.getId(), this);
+        webSocketCommandMap.put(session.getId(),new HashSet<String>());
+        carCountMap.put(session.getId(),0);
         logger.info("----------------------------连接已建立-----------------------------");
     }
 
@@ -60,6 +62,7 @@ public class WebSocketServer {
     @OnClose
     public void closeConnection(Session session) {
         webSocketMap.remove(session.getId());
+        webSocketCommandMap.remove(session.getId());
         logger.info("----------------------------连接已关闭-----------------------------");
     }
 

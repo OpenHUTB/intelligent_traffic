@@ -1,8 +1,10 @@
 package com.ruoyi.simulation.util;
 
+import com.ruoyi.common.utils.StringUtils;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -22,8 +24,19 @@ import java.util.*;
 @Component
 public class ProcessOperationUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommandLineUtil.class);
+    public static final List<String> exclusionProcessList = new ArrayList<String>();
     @Resource
     private Environment environment;
+
+    //定义互斥进程
+    static {
+        exclusionProcessList.add("run_red_light_test.py");//车辆闯红灯后，新的进程除了天气变化之外，一律杀死前面的车辆闯红灯进程
+        exclusionProcessList.add("automatic_control_revised.py");//导航之后，新的进程除了天气变化之外，一律杀死前面的导航进程
+        exclusionProcessList.add("vehicle_monitoring.py");//重点车辆跟踪之后，新的进程除了天气变化之外，一律杀死前面的重点车辆跟踪进程
+        exclusionProcessList.add("walker_cross_road_test.py");//行人闯红灯之后，新的进程除了天气变化之外，一律杀死前面的进程行人闯红灯
+        exclusionProcessList.add("control_traffic_light_test.py");////进入路口设置红绿灯之后，新的进程除了天气变化之外，一律杀死前面的进入路口设置红绿灯进程
+        exclusionProcessList.add("display_a_frame.py");////进入交通数字仿真之后，新的进程除了天气变化之外，一律杀死前面的交通数字仿真进程
+    }
     private String getProcessName(String instruction){
         if(instruction.contains(".py")){
             return instruction.substring(0,instruction.indexOf(".py")+3);
@@ -36,55 +49,30 @@ public class ProcessOperationUtil {
      * @param instruction
      */
     public void killProcess(String instruction) {
-        //根据指令获取待执行的python文件名
-        String processName = getProcessName(instruction);
-
-        //数字孪生、车辆闯红灯、导航、重点车辆跟踪、行人横穿马路、进入路口设置红绿灯互斥
-        List<String> exclusionProcessList = new ArrayList<>();
-        exclusionProcessList.add("run_red_light_test.py");//车辆闯红灯后，新的进程除了天气变化之外，一律杀死前面的车辆闯红灯进程
-        exclusionProcessList.add("automatic_control_revised.py");//导航之后，新的进程除了天气变化之外，一律杀死前面的导航进程
-        exclusionProcessList.add("vehicle_monitoring.py");//重点车辆跟踪之后，新的进程除了天气变化之外，一律杀死前面的重点车辆跟踪进程
-        exclusionProcessList.add("walker_cross_road_test.py");//行人闯红灯之后，新的进程除了天气变化之外，一律杀死前面的进程行人闯红灯
-        exclusionProcessList.add("control_traffic_light_test.py");////进入路口设置红绿灯之后，新的进程除了天气变化之外，一律杀死前面的进入路口设置红绿灯进程
-        exclusionProcessList.add("display_a_frame.py");////进入交通数字仿真之后，新的进程除了天气变化之外，一律杀死前面的交通数字仿真进程
-
         //获取python.exe安装路径
         String interpreterLocation = environment.getProperty("simulation.ue4Engine.interpreterLocation");
         //获取python代码文件在服务器中的绝对路径
         String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
         //获取进程id信息
         Map<String, List<Integer>> processIdMap = this.getProcessIdMap(interpreterLocation, scriptDirectory);
-
-        //如果是交通数字仿真（即数字孪生），除了天气变化之外，一律杀死前面的进程
-        if (instruction.contains("display_a_frame.py")) {
-            for (String command : processIdMap.keySet()) {
-                if (!command.contains("change_weather.py")) {//generate_traffic.py --number-of-vehicles
-                    this.killProcess(processIdMap.get(command));
-                }
-            }
-        }
-        //判断当前要执行的进程是否为互斥进程
-        else if(exclusionProcessList.contains(processName)){
-            for (String command : processIdMap.keySet()) {
-                //判断之前已执行的进程是否存在互斥进程
-                processName = getProcessName(command);
-                if(exclusionProcessList.contains(processName)){
-                    this.killProcess(processIdMap.get(command));
-                }
-            }
-        }
         //如果切换地图，则杀死前一地图中的所有进程
-        else if (instruction.contains("--mapname")) {
+        if (instruction.contains("get_maps.py --mapname")) {
             for (String command : processIdMap.keySet()) {
                 this.killProcess(processIdMap.get(command));
             }
-        }
-        //执行了数字孪生、车辆闯红灯、导航、重点车辆跟踪、行人横穿马路、进入路口设置红绿灯之后，再执行其他命令的时候，除非该命令为变更天气，否则一律杀死前一进程
-        else if (!instruction.contains("change_weather.py")) {//改变天气
-            for (String command : processIdMap.keySet()) {
-                //判断之前已执行的进程是否存在互斥进程
-                processName = getProcessName(command);
-                if(exclusionProcessList.contains(processName)){
+        } else if(StringUtils.equals(instruction,"Carla_control_G29.py")||StringUtils.equals(instruction,"control_steeringwheel.py")
+                ||StringUtils.equals(instruction, "automatic_control_steeringwheel.py")||StringUtils.equals(instruction,"automatic_control_revised.py")){
+            //执行自动驾驶进程后，一律杀死之前的自动驾驶进程
+            for(String command: processIdMap.keySet()){
+                if(StringUtils.equals(command,"Carla_control_G29.py")){
+                    this.killProcess(processIdMap.get(command));
+                }
+            }
+        } else {
+            //执行其他进程后，一律杀死手动驾驶进程和自动驾驶进程
+            for(String command: processIdMap.keySet()){
+                if(StringUtils.equals(command,"manual_control_steeringwheel.py")||StringUtils.equals(command,"Carla_control_G29.py")
+                        ||StringUtils.equals(instruction,"automatic_control_revised.py")){
                     this.killProcess(processIdMap.get(command));
                 }
             }
@@ -105,7 +93,8 @@ public class ProcessOperationUtil {
                 @Override
                 protected Process getProcess() throws Exception {
                     ProcessBuilder builder = new ProcessBuilder();
-                    builder.command("cmd", "/c", "taskkill /f /pid " + processId);
+                    //builder.command("cmd", "/c", "taskkill /f /pid " + processId);//
+                    builder.command("cmd", "/c", "wmic process where processId="+processId+" call terminate");
                     builder.redirectErrorStream(true);
                     return builder.start();
                 }
@@ -134,7 +123,7 @@ public class ProcessOperationUtil {
             @Override
             protected Process getProcess() throws Exception {
                 ProcessBuilder builder = new ProcessBuilder("cmd", "/c", "wmic process where name='python.exe' get processid,commandline");
-                builder.redirectErrorStream(true);
+                builder.redirectErrorStream(true);//
                 return builder.start();
             }
 
@@ -157,12 +146,5 @@ public class ProcessOperationUtil {
             }
         };
         return commandLineUtil.executionCommand();
-    }
-
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("Hi");
-        list.add("hello");
-        System.out.println(list.contains(""));
     }
 }

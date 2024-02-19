@@ -31,13 +31,9 @@ simulation.onmessage = function(resultData){
         getVoice(message);
     }
     if(signal=="DIGITAL_SIMULATION"){
-        if(digital_simulation==false){
-            twinPlay(true);
-            digital_simulation = true;
-        }
-    }else if(digital_simulation==true){
-        twinPlay(false);
-        digital_simulation = false;
+        twinPlay(true);
+        console.log("video display call");
+        digital_simulation = true;
     }
     console.log(signal);
     if(signal=="TRAFFIC_LIGHT_INSTRUCTION"){
@@ -47,8 +43,29 @@ simulation.onmessage = function(resultData){
         var lightInfo = result.lightInfo;
         var serial = parseInt(lightInfo.serial);
         var second = parseInt(lightInfo.second);
+        var carCount = parseInt(lightInfo.carCount);
+        var roadLength = parseInt(lightInfo.roadLength);
+        var congestion = parseInt(lightInfo.congestion);
+        var waitTime = parseInt(lightInfo.waitTime);
         setTimeout(function(){
             updateLight(serial, second, true);
+            console.log(carCount, roadLength, congestion, waitTime);
+
+           const newNumbers = [carCount, roadLength, congestion, waitTime];
+
+           const elements = document.querySelectorAll('.number');
+           elements.forEach((el, index) => {
+               if (index < newNumbers.length) {
+                   el.childNodes.forEach(node => {
+                       if (node.nodeType === 3) {
+                           const text = node.textContent.replace(/\s/g, '');
+                           if (text === '0') {
+                               node.textContent = node.textContent.replace('0', newNumbers[index].toString());
+                           }
+                       }
+                   });
+               }
+           });
         },1500);
     }else if(signal!=null&&window.location.href.indexOf("#/junction")!=-1){
         window.location.hash="";
@@ -62,15 +79,7 @@ function playAudio(sound,callback){
     if(sound==null){
         return;
     }
-    if(sound=="reply.wav"){
-        updateAnimation(1);
-    }else if(sound=="briefIntroduction.wav"){
-        updateAnimation(2);
-    }else if(sound=="identifiedSuccessfully.wav"){
-        updateAnimation(3);
-    }else if(sound=="pixelStreamGenerating.wav"){
-        updateAnimation(4);
-    }
+    updateAnimation(1);
     var audioArea = document.getElementById("audioArea");
     audioArea.innerHTML="";
     var audio = document.createElement("audio");
@@ -85,6 +94,6 @@ function playAudio(sound,callback){
         }
         setTimeout(function(){
             updateAnimation(0);
-        },1500);
+        },1000);
     });
 }
