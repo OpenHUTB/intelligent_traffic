@@ -4,8 +4,7 @@ import Header from 'components/Header';
 import PlanMain from 'components/PlanMain';
 import JunctionMain from 'components/JunctionMain';
 import CruiserMain from 'components/CruiserMain';
-import FirstMinute from 'components/FirstMinute';
-import FirstHeader from 'components/FirstHeader';
+import HomePage from 'components/home';
 import TextArea from 'components/container/TextArea/TextArea';
 
 export default function App() {
@@ -13,7 +12,7 @@ export default function App() {
     return (
       <>
         <Header />
-        <FirstMinute />
+        <HomePage />
         <TextArea />
       </>
     );
