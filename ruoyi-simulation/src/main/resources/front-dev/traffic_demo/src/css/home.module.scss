@@ -20,8 +20,6 @@ main {
     .leftSide {
         @include breathAnimation;
         @include contentBackground;
-        width: 100px;
-        height: 100px;
         position: absolute;
         left: 5px;
         top: 8.5rem;
@@ -41,13 +39,12 @@ main {
     .bottomSide {
         @include contentBackground;
         position: absolute;
-        top: 0;
+        bottom: 0;
         width: 100%;
         z-index: 2;
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 300px;
-        border: 10px solid red;
     }
 }
