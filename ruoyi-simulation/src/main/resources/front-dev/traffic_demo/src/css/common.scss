@@ -86,16 +86,19 @@
 }
 // bottom element style
 @mixin bottomElementTitle {
-    background: url("../assets/img/Jamratio.png") no-repeat center center;
+    background: url("../assets/img/title.png") no-repeat center center;
     background-size: cover;
     width: 100%;
     font-size: 1.2rem;
     text-align: center;
+    height: 1.5rem;
+    line-height: 1.5rem;
 }
 @mixin bottomElementSize {
     height: 250px;
     width: 300px;
-    background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+    // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(5, 17, 78, 0.8));
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 @mixin textStyle {
