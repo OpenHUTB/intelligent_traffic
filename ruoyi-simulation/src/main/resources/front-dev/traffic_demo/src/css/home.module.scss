@@ -19,7 +19,7 @@ main {
     // }
     .leftSide {
         @include breathAnimation;
-        @include contentBackground;
+        // @include contentBackground;
         position: absolute;
         left: 5px;
         top: 8.5rem;
