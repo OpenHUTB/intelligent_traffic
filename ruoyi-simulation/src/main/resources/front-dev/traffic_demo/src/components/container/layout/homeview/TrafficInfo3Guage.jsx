@@ -250,23 +250,17 @@ export default function TrafficInfo3Guage() {
                     },
                     detail: {
                         offsetCenter: [0, '50%'],
-                        formatter: '{a|{value}}{b|km/h}',
+                        formatter: '{a|{value}}',
                         rich: {
                             a: {
-                                fontSize: 10,
+                                fontSize: 20,
                                 fontWeight: 800,
                                 fontFamily: 'Arial',
                                 color: '#fff',
                                 align: 'center',
                                 padding: [0, 10, 0, 0]
                             },
-                            b: {
-                                fontSize: 14,
-                                fontWeight: 800,
-                                fontFamily: 'Arial',
-                                color: '#fff',
-                                padding: [0, 0, 20, 0]
-                            }
+
                         }
                     },
                     // value is speed
@@ -311,11 +305,7 @@ export default function TrafficInfo3Guage() {
                         offsetCenter: [0, 0],
                         formatter: [
                             '{a|                  00:00}',
-                            '{a|行驶时间       0:00}{b| h}',
-                            '{a|行驶距离        0.0}{b| km}',
-                            '{a|平均耗能        ---}{b| 1/100km}',
-                            '{a|平均速度        ---}{b| km/h}'
-                        ].join('\n'),
+                        ],
                         rich: {
                             a: {
                                 fontSize: 14,
@@ -325,13 +315,7 @@ export default function TrafficInfo3Guage() {
                                 color: '#fff',
                                 align: 'left'
                             },
-                            b: {
-                                fontWeight: 600,
-                                fontFamily: 'Arial',
-                                lineHeight: 22,
-                                color: '#fff',
-                                align: 'left'
-                            }
+
                         }
                     },
                     progress: {
