@@ -2,7 +2,6 @@
 @import "common.scss";
 
 header.header {
-    border: 1px solid #000000;
     @include titleImage;
     position: absolute;
     top: 0;
@@ -49,7 +48,7 @@ header.header {
             }
         }
         li:hover {
-            background-color: black;
+            background: url(../assets/img/dashboard-hover.png) no-repeat center;
         }
         li:nth-child(1) {
             position: absolute;
