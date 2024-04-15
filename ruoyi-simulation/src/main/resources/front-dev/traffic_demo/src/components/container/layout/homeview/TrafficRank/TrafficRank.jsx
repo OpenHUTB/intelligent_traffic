@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import './index.scss'
+import styles from './TrafficRank.module.css'
 export default function TrafficRank() {
 
     // pedestrain optimization list
@@ -49,10 +49,10 @@ export default function TrafficRank() {
 
     const renderList = staticListItems.map((item, index = 0) => {
         return (
-            <div className="list-item" key={index}>
-                <span className="rank">{index + 1}</span>
-                <span className="name">{item.name}</span>
-                <span className={"status " + ((item.status.includes("拥堵")) ? "red" : (item.status.includes("畅通")) ? "green" : "")}>{item.status}</span>
+            <div className={styles.listItem} key={index}>
+                <span className={styles.rank}>{index + 1}</span>
+                <span className={styles.name}>{item.name}</span>
+                <span className={styles.status + ((item.status.includes("拥堵")) ? styles.red : (item.status.includes("畅通")) ? styles.green : "")}>{item.status}</span>
             </div >
         )
     })
@@ -60,16 +60,16 @@ export default function TrafficRank() {
     // console.log(renderList);
 
     return (
-        <div className="traffic-rank">
-            <div className="title">
+        <div className={styles.trafficRank}>
+            <div className={styles.title}>
                 <span>辖区拥堵排名</span>
             </div>
-            <div className="rank-container">
+            <div className={styles.rankContainer}>
                 <span>排名</span>
-                <span className='street'>街道名称</span>
+                <span className={styles.street}>街道名称</span>
                 <span>拥堵情况</span>
             </div>
-            <div className="list-container" ref={scrollContainer}>
+            <div className={styles.listContainer} ref={scrollContainer}>
                 {renderList}
                 {/* {renderList} */}
             </div>
