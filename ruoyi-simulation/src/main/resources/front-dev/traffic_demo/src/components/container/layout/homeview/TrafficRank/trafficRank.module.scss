@@ -1,5 +1,5 @@
 @use "../../../../../css/common.scss" as common;
-.traffic-rank {
+.trafficRank {
     margin-top: 0.5rem;
     @include common.bottomElementSize;
     display: flex;
@@ -8,7 +8,7 @@
     .title {
         @include common.bottomElementTitle;
     }
-    .rank-container {
+    .rankContainer {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -20,7 +20,7 @@
             margin-right: 1.1rem;
         }
     }
-    .list-container {
+    .listContainer {
         height: 100%;
         overflow: auto;
         &::-webkit-scrollbar {
