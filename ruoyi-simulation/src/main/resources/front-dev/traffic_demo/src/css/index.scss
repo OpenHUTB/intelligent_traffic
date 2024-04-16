@@ -9,20 +9,16 @@ body,
 }
 #layout {
     color: #fff;
-    background-position: 0 0;
     height: 100%;
     width: 100%;
-    background-repeat: no-repeat;
     position: relative;
     overflow: hidden;
     padding: 0;
-    // background-image: linear-gradient(
-    //     to bottom,
-    //     rgba(31, 33, 44, 1) 5%,
-    //     rgba(31, 33, 44, 1) 10%,
-    //     rgba(31, 33, 44, 0.9) 100%
-    // );
-    background-color: rgba(0, 0, 0, 0);
+    // background: url(../assets/img/cruiser.jpg) no-repeat center center cover;
+    background-image: url(../assets/img/cruiser.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 #videoParentElement {
     z-index: 1;

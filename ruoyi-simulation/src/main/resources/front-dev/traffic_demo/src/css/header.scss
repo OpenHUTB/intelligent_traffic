@@ -49,6 +49,7 @@ header.header {
         }
         li:hover {
             background: url(../assets/img/dashboard-hover.png) no-repeat center;
+            background-size: cover;
         }
         li:nth-child(1) {
             position: absolute;

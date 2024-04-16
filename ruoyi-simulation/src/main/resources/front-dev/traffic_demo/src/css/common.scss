@@ -77,10 +77,10 @@
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
     @keyframes breathe {
         0% {
-            border: 1px solid #244a80;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
         100% {
-            border: 1px solid #aaaaaa;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     }
 }
@@ -98,7 +98,7 @@
     height: 250px;
     width: 300px;
     // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(5, 17, 78, 0.8));
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0);
 }
 
 @mixin textStyle {
