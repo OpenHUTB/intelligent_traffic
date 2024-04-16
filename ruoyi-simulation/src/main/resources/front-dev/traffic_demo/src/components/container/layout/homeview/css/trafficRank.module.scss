@@ -1,7 +1,6 @@
 @use "../../../../../css/common.scss" as common;
 .trafficRank {
-    margin-top: 0.5rem;
-    @include common.bottomElementSize;
+    margin-top: -80px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -27,21 +26,22 @@
             display: none;
         }
         > div:nth-child(odd) {
-            background-color: rgba(16, 37, 80, 0.9);
+            background-color: rgba(16, 37, 80, 0.2);
         }
 
-        .list-item {
+        .listItem {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 0.5rem;
             height: 2.5rem;
-            border-bottom: 1px solid rgba(28, 42, 71, 0.7);
+
             span {
+                display: inline-block;
                 text-align: center;
             }
             .status {
-                width: 5rem;
+                width: 6rem;
                 text-align: center;
             }
             .name {
@@ -51,7 +51,7 @@
                 color: #70d274;
             }
             .red {
-                color: rgb(216, 89, 15);
+                color: rgb(223, 46, 15);
             }
         }
     }

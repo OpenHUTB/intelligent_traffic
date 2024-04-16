@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react'
-import styles from './TrafficRank.module.css'
+import React, { useEffect, useRef } from 'react';
+import styles from '../css/trafficRank.module.scss';
 export default function TrafficRank() {
 
     // pedestrain optimization list
@@ -37,10 +37,10 @@ export default function TrafficRank() {
         name: "桐梓坡路",
         status: "轻度拥堵",
     },
-        // {
-        //     name: "玉兰路",
-        //     status: "正常",
-        // },
+    {
+        name: "玉兰路",
+        status: "正常",
+    },
         // {
         //     name: "枫林二路",
         //     status: "畅通",
@@ -52,7 +52,7 @@ export default function TrafficRank() {
             <div className={styles.listItem} key={index}>
                 <span className={styles.rank}>{index + 1}</span>
                 <span className={styles.name}>{item.name}</span>
-                <span className={styles.status + ((item.status.includes("拥堵")) ? styles.red : (item.status.includes("畅通")) ? styles.green : "")}>{item.status}</span>
+                <span className={`${styles[(item.status.includes("拥堵")) ? 'red' : (item.status.includes("畅通")) ? 'green' : '']} ${styles.status}`}>{item.status}</span>
             </div >
         )
     })
