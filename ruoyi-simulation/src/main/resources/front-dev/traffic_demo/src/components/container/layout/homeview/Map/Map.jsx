@@ -46,7 +46,7 @@ export default function Map() {
 
     return (
         <div className={styles.mapContainer}>
-            <div className={styles.title}>区域概览</div>
+            <div className={styles.title}>区域路网</div>
             <div id="container" style={{ height: "400px", width: "500px" }}></div>
         </div>
 
