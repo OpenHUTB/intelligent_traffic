@@ -127,7 +127,7 @@ export default function AverageDelay() {
 
     return (
         <div className={styles.compare}>
-            <div className={styles.title}>交通流速比对</div>
+            <div className={styles.title}>交通流量比对</div>
             <div id="delay-content" style={{ width: "100%", height: '100%' }}></div>
         </div>
     )
