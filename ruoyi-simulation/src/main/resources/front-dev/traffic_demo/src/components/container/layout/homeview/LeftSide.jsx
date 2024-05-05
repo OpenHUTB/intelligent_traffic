@@ -8,7 +8,7 @@ export default function LeftSide() {
         <div className={styles.leftSide}>
             <TrafficInfo3Guage />
             <TrafficRank />
-            <TrafficCompare />
+            {/* <TrafficCompare /> */}
         </div>
     )
 }

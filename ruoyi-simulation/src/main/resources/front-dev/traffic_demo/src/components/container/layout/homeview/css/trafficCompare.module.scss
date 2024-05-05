@@ -1,7 +1,7 @@
 @use "../../../../../css/common.scss" as common;
 .compare {
     @include common.bottomElementSize;
-    width: 100%;
+    width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
