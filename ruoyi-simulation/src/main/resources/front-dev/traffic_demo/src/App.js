@@ -6,7 +6,7 @@ import JunctionMain from 'components/JunctionMain';
 import CruiserMain from 'components/CruiserMain';
 import HomePage from 'components/home';
 import TextArea from 'components/container/TextArea/TextArea';
-
+import HighwayMain from 'components/highway';
 export default function App() {
   const Home = () => {
     return (
@@ -44,6 +44,15 @@ export default function App() {
       </>
     );
   };
+  const Highway = () => {
+    return (
+      <>
+        <Header />
+        <HighwayMain />
+        <TextArea />
+      </>
+    );
+  }
   return (
     <Router>
       <div id="layout">
@@ -52,6 +61,7 @@ export default function App() {
           <Route path="/plan" element={<Plan />} />
           <Route path="/junction" element={<Junction />} />
           <Route path="/cruiser" element={<Cruiser />} />
+          <Route path="/highway" element={<Highway />} />
         </Routes>
 
       </div>

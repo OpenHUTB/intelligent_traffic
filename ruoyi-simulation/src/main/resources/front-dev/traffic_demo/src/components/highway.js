@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from 'css/home.module.scss';
-import LeftSide from 'components/container/layout/homeview/LeftSide';
-import RightSide from 'components/container/layout/homeview/RightSide';
-export default function Home() {
+import LeftSide from 'components/container/layout/highway/LeftSide';
+import RightSide from 'components/container/layout/highway/RightSide';
+export default function Highway() {
 
     return (
         <main>
-            <div id="twinContainer">
+            <div >
                 {/* <video id="twin" muted src={twinVideo} ></video> */}
             </div>
             <div className={styles.leftSide}>
