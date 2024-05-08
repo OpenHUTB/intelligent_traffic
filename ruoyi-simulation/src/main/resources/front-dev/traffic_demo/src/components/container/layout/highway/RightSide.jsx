@@ -1,7 +1,9 @@
 import React from 'react'
-
+import OperationDetect from './OperationDetect'
 export default function RightSide() {
     return (
-        <div>RightSide</div>
+        <div>
+            <OperationDetect />
+        </div>
     )
 }

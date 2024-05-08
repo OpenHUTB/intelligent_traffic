@@ -7,11 +7,31 @@ import styles from './css/totalTrafficVolume.module.scss';
 export default function TotalTrafficVolume() {
     return (
         <div className={styles.slidertrafficFlow}>
-            <h1 className={styles.sliderLabel}><span><TriangleIcon /></span>过车流量</h1>
-            <div className="content-container">
-                <span className="text"><span><CarIcon /></span>机动车过车总量</span>
-                <span className="number">1635<span className="unit">辆</span></span>
+            <div className={styles.title}>累计交通量</div>
+            <div className={styles.contentContainer}>
+                <span className={styles.text}><span><CarIcon /></span>今日交通量</span>
+                <div className={styles.dataContainer}>
+                    <span className={styles.number}>1635<span className={styles.unit}> 上行 (入省)</span></span>
+                    <span className={styles.number}>1635<span className={styles.unit}> 下行 (出省)</span></span>
+                </div>
             </div>
+            <div className={styles.contentContainer}>
+                <span className={styles.text}><span><CarIcon /></span>昨日累计</span>
+                <div className={styles.dataContainer}>
+                    <span className={styles.number}>1635<span className={styles.unit}> 上行 (入省)</span></span>
+                    <span className={styles.number}>1635<span className={styles.unit}> 下行 (出省)</span></span>
+                </div>
+            </div>
+            {/* <div className={styles.sliderLabel}>
+                <span>
+                    <TriangleIcon /> 昨日累计:
+                </span>
+                <div className={styles.dataContainer}>
+                    <span >上行 1635 辆</span>
+                    <span >下行 1635 辆</span>
+                </div>
+            </div> */}
+
         </div>
     )
 }
