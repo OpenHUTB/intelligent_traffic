@@ -18,7 +18,7 @@ header.header {
         list-style: none;
         width: 500px;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         position: absolute;
         right: 50%;
@@ -51,25 +51,25 @@ header.header {
             background: url(../assets/img/dashboard-hover.png) no-repeat center;
             background-size: cover;
         }
-        li:nth-child(1) {
-            position: absolute;
-            bottom: 45px;
-        }
-        li:nth-child(2) {
-            position: absolute;
-            bottom: 65px;
-            left: 0;
-        }
-        li:nth-child(3) {
-            position: absolute;
-            bottom: 65px;
-            right: 0;
-        }
-        li:nth-child(4) {
-            position: absolute;
-            bottom: 65px;
-            right: 0;
-        }
+        // li:nth-child(1) {
+        //     position: absolute;
+        //     bottom: 45px;
+        // }
+        // li:nth-child(2) {
+        //     position: absolute;
+        //     bottom: 65px;
+        //     left: 0;
+        // }
+        // li:nth-child(3) {
+        //     position: absolute;
+        //     bottom: 65px;
+        //     right: 0;
+        // }
+        // li:nth-child(4) {
+        //     position: absolute;
+        //     bottom: 65px;
+        //     right: 0;
+        // }
     }
     .logo {
         @include logoStyle;

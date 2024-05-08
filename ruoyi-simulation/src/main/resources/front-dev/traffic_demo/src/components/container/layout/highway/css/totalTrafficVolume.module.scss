@@ -25,17 +25,18 @@
     }
     .unit {
         font-size: 1rem;
-        margin-left: 0.2rem;
+        margin-left: 1rem;
         font-weight: normal;
     }
 }
-.sliderTrafficFlow {
-    padding: 20px;
-    .sliderLabel {
-        @include sliderSubTileStyle;
+.slidertrafficFlow {
+    .title {
+        @include common.bottomElementTitle;
     }
 
-    .content-container {
+    .contentContainer {
+        margin: 20px;
+        margin-bottom: 0;
         height: 3rem;
         display: flex;
         justify-content: space-between;
@@ -43,6 +44,11 @@
         @include emphasisBorder;
         padding: 1rem;
         background-color: rgba(5, 17, 78, 0.3);
+        .dataContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
         span {
             display: inline-block;
             vertical-align: middle;
@@ -54,4 +60,21 @@
         }
         @include number-with-unit;
     }
+    // .sliderLabel {
+    //     @include sliderSubTileStyle;
+    //     display: flex;
+    //     justify-content: space-between;
+    //     align-items: center;
+    //     margin-left: 40px;
+    //     padding-top: 5px;
+    //     padding-right: 30px;
+    //     @include number-with-unit;
+    //     .dataContainer {
+    //         display: flex;
+    //         justify-content: space-between;
+    //     }
+    //     SVG {
+    //         margin-right: 10px;
+    //     }
+    // }
 }
