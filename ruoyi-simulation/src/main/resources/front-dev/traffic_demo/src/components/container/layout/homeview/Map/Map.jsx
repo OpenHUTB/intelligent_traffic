@@ -14,7 +14,7 @@ export default function Map() {
             const map = new AMap.Map("container", {
                 // set the center of the map
                 resizeEnable: true,
-                center: [112.915539, 28.219803],
+                center: [113.497119, 27.645700],
                 zoom: 15,
             });
             const path = [
@@ -35,7 +35,7 @@ export default function Map() {
                 zIndex: 50,
                 bubble: true,
             })
-            map.add([polygon])
+            // map.add([polygon])
             map.setFitView()
             const polyEditor = new AMap.PolyEditor(map, polygon);
             polyEditor.open();
@@ -46,8 +46,8 @@ export default function Map() {
 
     return (
         <div className={styles.mapContainer}>
-            <div className={styles.title}>区域路网</div>
-            <div id="container" style={{ height: "400px", width: "500px" }}></div>
+            <div className={styles.title}>地图概览</div>
+            <div id="container" style={{ height: "250px", width: "500px" }}></div>
         </div>
 
 
