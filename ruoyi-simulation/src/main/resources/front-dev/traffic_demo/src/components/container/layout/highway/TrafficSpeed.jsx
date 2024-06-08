@@ -127,7 +127,7 @@ export default function TrafficSpeed() {
     return (
         <div className={styles.trafficSpeed}>
             <div className={styles.title}>车流车速</div>
-            <div id="main" style={{ "width": "100%", "height": "400px" }}></div>
+            <div id="main" style={{ "width": "100%", "height": "350px" }}></div>
         </div>
 
     )
