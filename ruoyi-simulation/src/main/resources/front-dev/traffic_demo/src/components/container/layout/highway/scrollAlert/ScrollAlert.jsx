@@ -1,46 +1,94 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styles from '../css/scrollAlert.module.scss';
-export default function ScrollAlert() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const noticeBarListRef = useRef(null);
+export default function TrafficRank() {
 
-    // List of notices
-    const notices = [
-        { userName: "1. Jerry***", saveAmount: "$10", text: "by using mobile topup voucher." },
-        { userName: "2. Tom***", saveAmount: "$8", text: "by using mobile topup voucher." },
-        { userName: "3. Jack***", saveAmount: "$10", text: "by using mobile topup voucher." }
+    // pedestrain optimization list
+    const scrollContainer = useRef(null);
+    useEffect(() => {
+        const startAutoScroll = () => {
+            const container = scrollContainer.current;
+            const scrollAmount = 2.5; // Adjust for faster/slower scrolling
+
+            const interval = setInterval(() => {
+                // When you've scrolled to the end of the original content, reset to the top
+                if (container.scrollTop >= (container.scrollHeight / 2)) {
+                    container.scrollTop = 0; // Set to start without user noticing
+                } else {
+                    container.scrollTop += scrollAmount;
+                }
+            }, 1000); // Adjust the interval for faster/slower scrolling
+
+            return () => clearInterval(interval); // Cleanup on component unmount
+        }
+
+        startAutoScroll();
+    }, []);
+
+
+    const staticListItems = [{
+        name: "逆行",
+        status: "极高",
+    },
+    {
+        name: "异常停车",
+        status: "高",
+    },
+    {
+        name: "超高速",
+        status: "高",
+    },
+    {
+        name: "超低速",
+        status: "普通",
+    },
+    {
+        name: "占用应急车道",
+        status: "普通",
+    },
+    {
+        name: "非机动车闯入",
+        status: "极高",
+    },
+    {
+        name: "行人闯入",
+        status: "极高",
+    },
+    {
+        name: "逆行",
+        status: "极高",
+    }
     ];
 
-    // Autoscroll logic
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % notices.length);
-        }, 3000); // Change every 3 seconds
+    const renderList = staticListItems.map((item, index = 0) => {
+        return (
+            <div className={styles.listItem} key={index}>
+                <span className={styles.rank}>{index + 1}</span>
+                <span className={styles.name}>{item.name}</span>
+                <span className={`${styles.status} ${(item.status.includes("极") ? styles.red : (item.status.includes("高") ? styles.yellow : ""))}`}>
+                    {item.status}
+                </span>
+            </div >
+        )
+    })
 
-        return () => clearInterval(interval);
-    }, [notices.length]);
 
     return (
-        <div className={styles.pageContainer}>
-            <div className={styles.noticebar}>
-                <div className={styles.noticebarListContainer} ref={noticeBarListRef}>
-                    <div className={styles.noticebarList} style={{ transform: `translateY(-${currentIndex * 100}%)`, transition: 'transform 0.5s ease' }}>
-                        {notices.map((notice, index) => (
-                            <div className={styles.noticebarItem} key={index}>
-                                <div className={styles.customNoticeItem}>
-                                    <span className={styles.userName}>{notice.userName}</span> save <span className={styles.saveAmount}>{notice.saveAmount}</span> {notice.text}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className={styles.noticebarCloseIcon}>
-                    <img
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAAXNSR0IArs4c6QAAAfZJREFUaEPt2u1NwzAQBuBLukDZABaoEN2hYgvKCEwAI7ABsAUfI6BIFAaADegCxMgSkUKaj7N97zlK3L91XD9+nSY+OaOZfbKZeSmBp554SjglPLEZSEt6YoEecFLCXQmv1psLIrolon1O+c1b8fgQczX4joed8Gq9+SSi4wqZU76Nhf7D3tcmfP9ePB9xAnABfxPRst5pDHQLljLKvnbF04ko+PTsfFtm5V2zU010G9aOx+Tm8uP1pZ54p52dsO0hJloCaw1O4FhoKawXWBstifUGa6GlsUFgNBqBDQaj0CisCFgajcSKgaXQaKwoOBStgRUH+6K1sBCwK1oTCwNz0dpYKHgIXVJpmxy88LtsBDi7o2Yb53dp1x/p2nC09YPGwhOuUBy0BlYN3Le87XdaWFVw1x+UHYRmEQF+D1tQH7Za9lpoOJiD1URDwX3P2cXPgmLUyGBgzktFjBoZBMzBDj2yUPe0ONgFGwMtCvbBaqPFwCFYTbQIWAKrhQ4GS2I10EFgBBaN9gYjsUi0F1gDi0I7gzWxCLQTOAZWGs0Gx8RKol3A/854aFcqBtD4Mx6aZZlmwa+5y4Kd8TCZuSYyyzI3V9wzFa5VTm57i/YZD3tJcwcy9nYJPPaEQseXEg6dwbFfnxIee0Kh40sJh87g2K+fXcK/GTb9TA793a8AAAAASUVORK5CYII="
-                        alt=""
-                    />
-                </div>
+        <div className={styles.trafficViolation}>
+            <div className={styles.title}>
+                <span>实时告警信息</span>
+            </div>
+            <div className={styles.emergency}>
+                <span>非常紧急</span>
+            </div>
+            <div className={styles.rankContianer}>
+                <span>序号</span>
+                <span className={styles.violationName}>告警信息类型</span>
+                <span>告警级别</span>
+            </div>
+            <div className={styles.listContainer} ref={scrollContainer}>
+                {renderList}
+                {renderList}
             </div>
         </div>
-    );
-};
+    )
+}
