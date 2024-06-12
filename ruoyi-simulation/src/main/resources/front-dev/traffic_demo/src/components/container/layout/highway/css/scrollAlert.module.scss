@@ -1,0 +1,52 @@
+.pageContainer {
+    border: 1px solid red;
+    margin: 0 auto;
+    padding-top: 100px;
+    width: 375px;
+    height: 50px;
+}
+.noticebar {
+    --height: 30px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: #feecef;
+    color: #2e3346;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.noticebarListContainer {
+    flex: 1;
+    height: var(--height);
+}
+.noticebarCloseIcon {
+    width: 15px;
+    height: 15px;
+}
+img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.noticebarItem {
+    height: var(--height);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.userName,
+.saveAmount {
+    color: #fe4960;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 3px;
+}
+.customNoticeItem {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
