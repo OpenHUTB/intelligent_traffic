@@ -16,7 +16,7 @@ export default function TrafficRank() {
                 } else {
                     container.scrollTop += scrollAmount;
                 }
-            }, 1000); // Adjust the interval for faster/slower scrolling
+            }, 60); // Adjust the interval for faster/slower scrolling
 
             return () => clearInterval(interval); // Cleanup on component unmount
         }
