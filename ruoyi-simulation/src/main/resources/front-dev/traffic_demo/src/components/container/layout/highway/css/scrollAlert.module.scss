@@ -8,6 +8,10 @@
     .title {
         @include common.bottomElementTitle;
     }
+    .emergency {
+        border: 1px solid #f7d154;
+        background-color: red;
+    }
     .rankContianer {
         display: flex;
         justify-content: space-between;

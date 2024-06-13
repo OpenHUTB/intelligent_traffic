@@ -16,7 +16,7 @@ export default function TrafficRank() {
                 } else {
                     container.scrollTop += scrollAmount;
                 }
-            }, 60); // Adjust the interval for faster/slower scrolling
+            }, 600); // Adjust the interval for faster/slower scrolling
 
             return () => clearInterval(interval); // Cleanup on component unmount
         }
@@ -78,7 +78,7 @@ export default function TrafficRank() {
                 <span>实时告警信息</span>
             </div>
             <div className={styles.emergency}>
-                <span>非常紧急</span>
+                <span>突出告警</span>
             </div>
             <div className={styles.rankContianer}>
                 <span>序号</span>
@@ -86,7 +86,6 @@ export default function TrafficRank() {
                 <span>告警级别</span>
             </div>
             <div className={styles.listContainer} ref={scrollContainer}>
-                {renderList}
                 {renderList}
             </div>
         </div>
