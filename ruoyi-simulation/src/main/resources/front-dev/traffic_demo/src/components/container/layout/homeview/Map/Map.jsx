@@ -14,8 +14,8 @@ export default function Map() {
             const map = new AMap.Map("container", {
                 // set the center of the map
                 resizeEnable: true,
-                center: [113.497119, 27.645700],
-                zoom: 15,
+                center: [113.497119, 27.645650],
+                zoom: 11,
             });
             const path = [
                 [112.916965, 28.228268],
