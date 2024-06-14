@@ -1,13 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './css/trafficInfo3Guage.module.scss';
 import * as echarts from 'echarts';
 
 export default function TrafficInfo3Guage() {
+    const [congestionDistance, setCongestionDistance] = useState(2);
+    const [congestionIndex, setCongestionIndex] = useState(3);
+    const [speed, setSpeed] = useState(83);
+    const updateData = () => {
+        setCongestionDistance(prev => prev + 0.5);
+        setCongestionIndex(prev => prev + 0.5);
+        setSpeed(prev => prev - 3);
+    };
     useEffect(() => {
+
+
+        const interval = setInterval(updateData, 3000);
+
+        // 设置定时器5秒后清除
+        const timeout = setTimeout(() => {
+            clearInterval(interval);
+        }, 5000);
+
         const chartDom = document.getElementById('jamGuage');
         const myChart = echarts.init(chartDom);
-        let congestionDistance = 5;
-        let congestionIndex = 4.3;
+
         let color = '#f00';
         if (congestionIndex <= 3) {
             color = '#0f0';
@@ -16,7 +32,6 @@ export default function TrafficInfo3Guage() {
         } else if (congestionIndex <= 7) {
             color = '#f90';
         }
-        let speed = 50;
         let option = {
             toolbox: {
                 // feature: {
@@ -428,10 +443,13 @@ export default function TrafficInfo3Guage() {
         };
 
         option && myChart.setOption(option);
+        return () => {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        };
 
 
-
-    }, []);
+    }, [congestionDistance, congestionIndex, speed]);
 
 
     return (

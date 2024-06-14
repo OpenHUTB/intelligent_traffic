@@ -6,9 +6,10 @@ import ScrollAlert from './scrollAlert/ScrollAlert'
 export default function RightSide() {
     return (
         <div>
-            <FunctionICons />
-            <Map />
+            {/* <FunctionICons /> */}
             <ScrollAlert />
+            <Map />
+
         </div>
     )
 }
