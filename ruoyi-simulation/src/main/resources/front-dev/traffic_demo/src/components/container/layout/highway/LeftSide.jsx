@@ -1,5 +1,6 @@
 import React from 'react'
 import Weather from './weather/Weather';
+import TrafficInfo3Guage from '../homeview/TrafficInfo3Guage';
 import TotalTrafficVolume from './TotalTrafficVolume';
 import TrafficSpeed from './TrafficSpeed';
 import styles from './css//leftside.module.scss';
@@ -8,9 +9,10 @@ export default function LeftSide() {
     return (
         <div className={styles.leftside}>
             {/* <Weather /> */}
-            <TotalTrafficVolume />
+            <TrafficInfo3Guage />
+            {/* <TotalTrafficVolume />
             <TrafficSpeed />
-            <OperationDetect />
+            <OperationDetect /> */}
         </div>
     )
 }
