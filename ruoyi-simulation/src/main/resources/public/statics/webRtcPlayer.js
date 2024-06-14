@@ -47,8 +47,7 @@
         //Create Video element and expose that as a parameter
         createWebRtcVideo = function() {
             var video = document.createElement('video');
-            video.style.width="100%";
-            video.style.height="100%";
+
             video.id = "streamingVideo";
             video.playsInline = true;
             video.addEventListener('loadedmetadata', function(e){
@@ -96,13 +95,13 @@
                 }
 
                 datachannel.onclose = function (e) {
-                  console.log(`data channel (${label}) closed`)
+                    //console.log(`data channel (${label}) closed`)
                 }
 
                 datachannel.onmessage = function (e) {
-                  console.log(`Got message (${label})`, e.data)
-                  if (self.onDataChannelMessage)
-                    self.onDataChannelMessage(e.data);
+                    //console.log(`Got message (${label})`, e.data)
+                    if (self.onDataChannelMessage)
+                        self.onDataChannelMessage(e.data);
                 }
 
                 return datachannel;
@@ -154,9 +153,8 @@
 
             return function(stats){
                 //console.log('Printing Stats');
-
                 let newStat = {};
-                console.log('----------------------------- Stats start -----------------------------');
+                //console.log('----------------------------- Stats start -----------------------------');
                 stats.forEach(stat => {
 //                    console.log(JSON.stringify(stat, undefined, 4));
                     if (stat.type == 'inbound-rtp' 

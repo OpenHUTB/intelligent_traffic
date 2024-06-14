@@ -1,10 +1,8 @@
 package com.ruoyi.simulation.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 列表操作工具类
- */
 public class ListUtil {
     /**
      * 将列表转换为字符串
@@ -14,12 +12,16 @@ public class ListUtil {
      * @param <T>
      */
     public static <T> String toString(List<T> list){
+        if(list==null){
+            return "";
+        }
         StringBuffer buffer = new StringBuffer();
         for(T t: list){
             if(t!=null&&!t.equals("")){
                 buffer.append(t+"\n");
             }
         }
-        return buffer.toString();
+        String result = buffer.substring(0,buffer.length()-1);
+        return result;
     }
 }
