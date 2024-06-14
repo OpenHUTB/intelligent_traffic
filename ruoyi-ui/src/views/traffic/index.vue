@@ -2,8 +2,9 @@
   <div>
     <div class="center">
       <left-content :message="message" />
-      <center-map :message="message" @update-message="updateMessage" />
-      <right-content :message="message"/>
+<!--      <center-map :message="message" @update-message="updateMessage" />-->
+      <my-map :message="message" @update-message="updateMessage" ></my-map>
+      <right-content :message="message" />
     </div>
     <div class="bottom">
       <bottom :message="message"/>
@@ -16,8 +17,9 @@ import bottom from './component/bottom.vue';
 import centerMap from "./component/centerMap.vue";
 import leftContent from "./component/leftContent.vue";
 import rightContent from "./component/rightContent.vue";
+import myMap from "./component/myMap.vue";
 export default {
-  components: { centerMap, leftContent, rightContent,bottom },
+  components: { centerMap, leftContent, rightContent, bottom, myMap },
   data() {
     return {
       message: ''

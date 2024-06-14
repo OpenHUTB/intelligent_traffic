@@ -40,19 +40,14 @@
             <version>1.0.1</version>
         </dependency>
         <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>8.0.0</version>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.n52.matlab</groupId>
-            <artifactId>matlab-control</artifactId>
-            <version>5.0.0</version>
         </dependency>
         <dependency>
             <groupId>javabuilder</groupId>
@@ -62,11 +57,14 @@
             <systemPath>${basedir}/lib/javabuilder.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>engine</groupId>
-            <artifactId>engine</artifactId>
-            <version>2022</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/engine.jar</systemPath>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.14.0</version>
         </dependency>
     </dependencies>
     <build>

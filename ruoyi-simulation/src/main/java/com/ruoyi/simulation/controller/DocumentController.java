@@ -1,16 +1,18 @@
 package com.ruoyi.simulation.controller;
 
 import com.ruoyi.simulation.service.DocumentService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.swing.text.Document;
 
 /**
  * 文件信息业务层接口
  */
 @RestController
 @RequestMapping("simulation/file")
-@CrossOrigin
 public class DocumentController {
     @Resource
     private DocumentService documentService;
@@ -20,7 +22,7 @@ public class DocumentController {
      * @return
      */
     @GetMapping("stream")
-    public byte[] getDocumentStream(@RequestParam String filename){
+    public byte[] getDocumentStream(String filename){
         return this.documentService.getDocumentStream(filename);
     }
 }

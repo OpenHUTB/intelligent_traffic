@@ -44,7 +44,7 @@ export default {
       this.center.lat = 28.225764;
       this.zoom = 19;
 
-      map.setMapStyle({style:'midnight'});    
+      map.setMapStyle({style:'midnight'});
     },
 
     builmap() {
@@ -56,7 +56,7 @@ export default {
       map.addEventListener("click", function(e) {
         console.log(e.point.lng + "," + e.point.lat);
       });
-      
+
     },
 
     handleClick() {

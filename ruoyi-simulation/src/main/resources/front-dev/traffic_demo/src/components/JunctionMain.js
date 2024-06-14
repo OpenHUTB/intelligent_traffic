@@ -9,7 +9,7 @@ export default function JunctionMain() {
             <div className="leftSide">
                 <LeftSlider />
             </div>
-            {/* <Centre /> */}
+             {/*<Centre />*/}
             <div className="rightSide">
                 <RightSlider />
             </div>
