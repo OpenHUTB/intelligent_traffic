@@ -1,6 +1,7 @@
 @use "../../../../../css/common.scss" as common;
 .average-delay {
     @include common.bottomElementSize;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
