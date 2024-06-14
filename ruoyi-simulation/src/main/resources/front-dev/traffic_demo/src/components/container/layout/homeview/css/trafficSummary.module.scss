@@ -1,0 +1,53 @@
+@use "../../../../../css/common.scss" as common;
+.trafficSummary {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .dataContainer {
+        margin-top: 5px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+        justify-content: center;
+
+        span {
+            margin: 5px;
+            height: 65px;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            text-align: right;
+            line-height: 65px;
+            .number {
+                padding: 0 10px;
+                font-size: 25px;
+            }
+        }
+
+        .road {
+            background-image: url("../../../../../assets/img/road.png");
+        }
+        .onRoadCar {
+            background-image: url("../../../../../assets/img/car.png");
+        }
+        .people {
+            background-image: url("../../../../../assets/img/people.png");
+        }
+        .capacity {
+            background-image: url("../../../../../assets/img/capacity.png");
+        }
+        .junction {
+            background-image: url("../../../../../assets/img/summaryJunction.jpg");
+        }
+        .cloudjunction {
+            background-image: url("../../../../../assets/img/summaryCloudJunction.jpg");
+        }
+    }
+}

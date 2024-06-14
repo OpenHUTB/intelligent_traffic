@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const infoSlice = createSlice({
     name: "trafficInfo",
     initialState: {
-        car: 0,
+        index: 0,
         road: 0,
         congestion: 0,
         time: 0,

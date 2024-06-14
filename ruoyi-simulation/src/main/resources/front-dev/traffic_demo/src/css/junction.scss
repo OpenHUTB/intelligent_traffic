@@ -31,13 +31,4 @@ main {
         right: 5px;
         top: 8.5rem;
     }
-    .bottomSide {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        z-index: 2;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 }

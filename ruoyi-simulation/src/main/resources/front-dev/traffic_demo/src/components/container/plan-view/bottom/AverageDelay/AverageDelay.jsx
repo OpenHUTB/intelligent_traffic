@@ -23,7 +23,7 @@ export default function AverageDelay() {
                 top: 10,
             },
             legend: {
-                data: ['今天', '明天'],
+                data: ['现状', '优化'],
                 icon: 'pin',
                 textStyle: { color: '#ccc' },
                 right: 0,
@@ -61,7 +61,7 @@ export default function AverageDelay() {
             },
             series: [
                 {
-                    name: '今天',
+                    name: '现状',
                     type: 'line',
                     stack: 'total',
                     smooth: true,
@@ -83,7 +83,7 @@ export default function AverageDelay() {
                     data: randomCurrent
                 },
                 {
-                    name: '明天',
+                    name: '优化',
                     type: 'line',
                     stack: 'total',
                     color: 'rgb(9, 121, 199)',
@@ -113,7 +113,7 @@ export default function AverageDelay() {
 
     return (
         <div className="average-delay">
-            <div className="title">平均延误</div>
+            <div className="title">交通流速对比</div>
             <div id="delay-content"></div>
         </div>
     )
