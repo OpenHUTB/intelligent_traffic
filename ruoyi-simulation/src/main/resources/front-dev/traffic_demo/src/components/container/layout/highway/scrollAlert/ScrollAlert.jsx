@@ -9,7 +9,7 @@ export default function TrafficRank() {
         status: "极高",
     },
     {
-        name: "异常停车", // 修正这里的 `Name` 为 `name`
+        name: "异常停车",
         position: "G60 k987",
         status: "高",
     },
