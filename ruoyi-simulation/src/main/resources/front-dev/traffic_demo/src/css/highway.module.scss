@@ -33,7 +33,6 @@ main {
     .rightSide {
         // @include contentBackground;
         @include breathAnimation;
-        padding: 5px;
         z-index: 2;
         position: absolute;
         right: 5px;
