@@ -15,7 +15,7 @@ body,
     overflow: hidden;
     padding: 0;
     // background: url(../assets/img/cruiser.jpg) no-repeat center center cover;
-    // background-image: url(../assets/img/cruiser.jpg);
+    // background-image: url(../assets/img/bgg.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,16 +29,12 @@ body,
     top: 0;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0);
-    video {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
+    object-fit: cover;
 }
 video#videoElement {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     z-index: 0;
     position: absolute;
     left: 0;

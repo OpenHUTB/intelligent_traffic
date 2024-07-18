@@ -90,9 +90,15 @@
     function digitalTwin() {
 
       const stream = document.getElementById('videoElement');
-      stream.playbackRate = 1.3;
+      // const twin = document.getElementById('twin');
+      // setTimeout(() => {
+      //   twin.play();
+      // }, 3000)
+      // twin.loop = true;
+      // stream.playbackRate = 1.3;
       stream.play();
-      twinPlay(true);
+      stream.loop = true;
+      // twinPlay(true);
     }
   </script>
   <title>智慧交通大模型</title>
@@ -104,7 +110,7 @@
   </div>
   <div id="root">
   </div>
-  <video id="videoElement" muted src="./highway.mp4"></video>
+  <video id="videoElement" muted src="./2.mp4"></video>
   <script type="text/javascript" src="../statics/record.js"></script>
   <script type="text/javascript" src="../statics/webRtcPlayer.js"></script>
   <script type="text/javascript" src="../statics/loadingPixStream.js"></script>
