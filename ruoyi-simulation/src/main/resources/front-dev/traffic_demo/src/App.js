@@ -7,6 +7,7 @@ import CruiserMain from 'components/CruiserMain';
 import HomePage from 'components/home';
 import TextArea from 'components/container/TextArea/TextArea';
 import HighwayMain from 'components/highway';
+import CityMain from 'components/city';
 export default function App() {
   const Home = () => {
     return (
@@ -53,6 +54,15 @@ export default function App() {
       </>
     );
   }
+  const City = () => {
+    return (
+      <>
+        <Header />
+        <CityMain />
+        <TextArea />
+      </>
+    );
+  }
   return (
     <Router>
       <div id="layout">
@@ -62,6 +72,7 @@ export default function App() {
           <Route path="/junction" element={<Junction />} />
           <Route path="/cruiser" element={<Cruiser />} />
           <Route path="/highway" element={<Highway />} />
+          <Route path="/city" element={<City />} />
         </Routes>
 
       </div>
