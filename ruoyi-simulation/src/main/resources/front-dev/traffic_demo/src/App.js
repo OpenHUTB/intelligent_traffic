@@ -8,6 +8,7 @@ import HomePage from 'components/home';
 import TextArea from 'components/container/TextArea/TextArea';
 import HighwayMain from 'components/highway';
 import CityMain from 'components/city';
+import DigitalTwinMain from 'components/DigitalTwin';
 export default function App() {
   const Home = () => {
     return (
@@ -63,6 +64,15 @@ export default function App() {
       </>
     );
   }
+  const DigitalTwin = () => {
+    return (
+      <>
+        <Header />
+        <DigitalTwinMain />
+        <TextArea />
+      </>
+    );
+  }
   return (
     <Router>
       <div id="layout">
@@ -73,6 +83,7 @@ export default function App() {
           <Route path="/cruiser" element={<Cruiser />} />
           <Route path="/highway" element={<Highway />} />
           <Route path="/city" element={<City />} />
+          <Route path="/digitalTwin" element={<DigitalTwin />} />
         </Routes>
 
       </div>
