@@ -1,0 +1,81 @@
+@use "../../../../../css/common.scss" as common;
+.trafficRank {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .title {
+        @include common.bottomElementTitle;
+        text-align: center;
+    }
+    .rankContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 2rem;
+        line-height: 2rem;
+        font-size: 1.1rem;
+        margin: 0.5rem 1rem 0.5rem 0rem;
+        span.street {
+            margin-right: 1.1rem;
+        }
+    }
+    .listContainer {
+        height: 100%;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        > div:nth-child(odd) {
+            background-color: rgba(16, 37, 80, 0.2);
+        }
+
+        .listItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.5rem;
+            height: 2.5rem;
+
+            span {
+                display: inline-block;
+                text-align: center;
+            }
+            .rank {
+                width: 5rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .street {
+                width: 7rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .status {
+                width: 6rem;
+                text-align: center;
+            }
+            .name {
+                width: 6rem;
+            }
+            .trend {
+                width: 6rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+            .green {
+                color: #70d274;
+            }
+            .red {
+                color: rgb(223, 46, 15);
+            }
+        }
+    }
+}
