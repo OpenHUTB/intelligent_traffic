@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react'
-// import PedestrainOptimize from '../Pedestrain-optimize';
-// import StrategyCompare from '../Strategy-Compare';
+import PedestrainOptimize from '../Pedestrain-optimize';
+import StrategyCompare from '../Strategy-Compare';
 import { ReactComponent as LeftIcon } from '../../../../assets/icon/icon-left.svg';
 import { ReactComponent as ForwardIcon } from '../../../../assets/icon/icon-forward.svg';
 import { ReactComponent as NavIcon } from '../../../../assets/icon/icon-nav.svg';
@@ -12,7 +12,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLightTimer } from 'stores/lightTimerSlice';
-import './style.scss';
+import './lightControl.scss';
 
 
 export default function Index() {
@@ -177,22 +177,33 @@ export default function Index() {
 
             <div className="lights-container">
                 <div className="title"><span className='svg'><NavIcon /></span><span>信号灯组运行状态</span></div>
-                <div className="arrows">
+                <div className="arrowsContianer">
                     <div className="arrow-container north">
-                        <ArrowDisplay isGreen={southNorth_left.isGreen} time={southNorth_left.time} IconComponent={LeftIcon} />
-                        <ArrowDisplay isGreen={southNorth_forward.isGreen} time={southNorth_forward.time} IconComponent={ForwardIcon} />
+                        <div className="iconContainer north-arrow">
+                            <ArrowDisplay isGreen={southNorth_left.isGreen} time={southNorth_left.time} IconComponent={LeftIcon} />
+                            <ArrowDisplay isGreen={southNorth_forward.isGreen} time={southNorth_forward.time} IconComponent={ForwardIcon} />
+                        </div>
                     </div>
                     <div className="arrow-container south">
-                        <ArrowDisplay isGreen={southNorth_left.isGreen} time={southNorth_left.time} IconComponent={LeftIcon} />
-                        <ArrowDisplay isGreen={southNorth_forward.isGreen} time={southNorth_forward.time} IconComponent={ForwardIcon} />
+                        <div className="iconContainer south-arrow">
+                            <ArrowDisplay isGreen={southNorth_left.isGreen} time={southNorth_left.time} IconComponent={LeftIcon} />
+                            <ArrowDisplay isGreen={southNorth_forward.isGreen} time={southNorth_forward.time} IconComponent={ForwardIcon} />
+                        </div>
+
                     </div>
                     <div className="arrow-container west">
-                        <ArrowDisplay isGreen={eastWest_left.isGreen} time={eastWest_left.time} IconComponent={LeftIcon} />
-                        <ArrowDisplay isGreen={eastWest_forward.isGreen} time={eastWest_forward.time} IconComponent={ForwardIcon} />
+                        <div className="iconContainer west-arrow">
+                            <ArrowDisplay isGreen={eastWest_left.isGreen} time={eastWest_left.time} IconComponent={LeftIcon} />
+                            <ArrowDisplay isGreen={eastWest_forward.isGreen} time={eastWest_forward.time} IconComponent={ForwardIcon} />
+                        </div>
+
                     </div>
                     <div className="arrow-container east">
-                        <ArrowDisplay isGreen={eastWest_left.isGreen} time={eastWest_left.time} IconComponent={LeftIcon} />
-                        <ArrowDisplay isGreen={eastWest_forward.isGreen} time={eastWest_forward.time} IconComponent={ForwardIcon} />
+                        <div className="iconContainer east-arrow">
+                            <ArrowDisplay isGreen={eastWest_left.isGreen} time={eastWest_left.time} IconComponent={LeftIcon} />
+                            <ArrowDisplay isGreen={eastWest_forward.isGreen} time={eastWest_forward.time} IconComponent={ForwardIcon} />
+                        </div>
+
                     </div>
                     <div className="arrow-centre"></div>
                 </div>

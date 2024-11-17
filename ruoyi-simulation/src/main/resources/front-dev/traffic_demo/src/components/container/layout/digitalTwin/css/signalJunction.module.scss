@@ -35,11 +35,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 0.5rem;
-            height: 2.5rem;
+            height: 2.7rem;
 
             span {
                 display: inline-block;
                 text-align: center;
+                height: 2.7rem;
+                line-height: 2.7rem;
             }
             .rank {
                 width: 5rem;

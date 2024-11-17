@@ -45,11 +45,12 @@ export default function SignalRoad() {
         speed: 40,
         trend: 15.53,
     },
-
-        // {
-        //     name: "枫林二路",
-        //     status: "畅通",
-        // }
+    {
+        name: "尖山路",
+        index: 2,
+        speed: 50,
+        trend: 11.53,
+    }
     ];
 
     const renderList = staticListItems.map((item, index = 0) => {

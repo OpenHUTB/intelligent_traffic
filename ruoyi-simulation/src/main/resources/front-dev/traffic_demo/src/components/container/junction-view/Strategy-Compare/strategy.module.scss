@@ -1,0 +1,33 @@
+@use "../sidebar-left/style.scss" as left;
+@mixin title-sideeffect {
+    &::before {
+        content: "";
+        display: block;
+        height: 20px;
+    }
+}
+.optionsComparison {
+    margin-top: 1rem;
+    background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+    width: 100%;
+    // @include title-sideeffect;
+    &::before {
+        content: "";
+        display: block;
+        height: 20px;
+    }
+    position: relative;
+    .title {
+        @include left.sectionTitle;
+        top: 0;
+    }
+    .videoContainer {
+        margin-top: 0.5 rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
