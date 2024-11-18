@@ -13,7 +13,7 @@ import Form from 'react-bootstrap/Form';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLightTimer } from 'stores/lightTimerSlice';
 import './lightControl.scss';
-
+import JunctionControl from './junction/JunctionControl';
 
 export default function Index() {
     const dispatch = useDispatch();
@@ -177,6 +177,7 @@ export default function Index() {
 
             <div className="lights-container">
                 <div className="title"><span className='svg'><NavIcon /></span><span>信号灯组运行状态</span></div>
+                <JunctionControl />
                 <div className="arrowsContianer">
                     <div className="arrow-container north">
                         <div className="iconContainer north-arrow">
