@@ -1,7 +1,6 @@
 package com.ruoyi.simulation.config;
 
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.simulation.call.CallPaddleSpeech;
 import com.ruoyi.simulation.call.CallUE4Engine;
 import com.ruoyi.simulation.call.CallWizardCoder;
 import com.ruoyi.simulation.util.*;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +17,15 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * 处理客户端命令的监听器
+ */
 @Component
 public class ProcessCommandListener implements ApplicationListener<ApplicationStartedEvent> {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     public static final LinkedBlockingQueue<VoiceUtil> readingQueue = new LinkedBlockingQueue<VoiceUtil>(5);
-
+    @Resource
+    private Environment environment;
     @Resource
     private ProcessOperationUtil processUtil;
     @Resource
@@ -62,7 +66,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             //第二步，发送文字命令，调用“大模型”获取生成交通场景模型所需的代码
             long start = System.currentTimeMillis();
             List<String> codeList = this.callWizardCoder.generateCode(command);
-            String codeStr = ListUtil.toString(codeList);
+            String codeStr = CollectionUtil.toString(codeList);
             logger.info("调用WizardCoder生成代码如下：\n" + codeStr);
             long end = System.currentTimeMillis();
             logger.info("调用WizardCoder耗费时间：" + (end-start));
@@ -96,7 +100,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
         }
         //记录下每个场景的添加建筑命令
         if(StringUtils.equals(codeStr,"get_buildings.py")){
-            String mapName = this.callWizardCoder.getMapName("get_mapname.py");
+            String mapName = this.callUE4Engine.getMapName("get_mapname.py");
             if(!StringUtils.isEmpty(mapName)&&mapName.contains("/")){
                 mapName = mapName.substring(mapName.lastIndexOf("/")+1);
             }
@@ -116,7 +120,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             WebSocketServer.carCountMap.put(sessionId, count+add);
         }
         logger.info(codeStr);
-        this.callWizardCoder.executeExample(codeStr);
+        this.callUE4Engine.executeExample(codeStr);
         return codeStr;
     }
     /**

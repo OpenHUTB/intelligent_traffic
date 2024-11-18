@@ -1,13 +1,10 @@
 package com.ruoyi.simulation.util;
 
 import com.alibaba.fastjson2.JSON;
-import com.ruoyi.simulation.config.ProcessCommandListener;
 import com.ruoyi.simulation.websocket.WebSocketServer;
 
 import javax.websocket.Session;
 import com.ruoyi.simulation.util.StreamSet.Status;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +33,22 @@ public class SendResponseUtil {
         }
     }
 
+    /**
+     * 返回交通指数信息
+     * @param indirectionMap
+     * @param sessionId
+     */
+    public static synchronized void sendIndirectionResponse(Map<String,Object> indirectionMap, String sessionId){
+        try {
+            StreamSet stream = new StreamSet();
+            stream.setIndirectionMap(indirectionMap);
+            WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            Session session = server.getSession();
+            session.getBasicRemote().sendText(JSON.toJSONString(stream));
+        } catch (Exception e) {
+            LoggerUtil.printLoggerStace(e);
+        }
+    }
     /**
      * 返回异常提示响应
      * @param e
@@ -124,6 +137,14 @@ public class SendResponseUtil {
             LoggerUtil.printLoggerStace(e);
         }
     }
+
+    /**
+     * 返回语音响应
+     * @param status
+     * @param soundLocation
+     * @param message
+     * @param sessionId
+     */
     public static synchronized void sendSoundResponse(Status status, String soundLocation, String message, String sessionId){
         try {
             StreamSet stream = new StreamSet();

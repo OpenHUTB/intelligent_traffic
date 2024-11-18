@@ -107,7 +107,7 @@ public class FileOperatorUtil {
             suffix = "."+suffix;
         }
         //指定语音文件的生成位置
-        String targetPath = environment.getProperty("simulation.filepath")+ File.separator+System.currentTimeMillis()+suffix;
+        String targetPath = environment.getProperty("simulation.filepath.audioPath")+ File.separator+System.currentTimeMillis()+suffix;
         File targetFile = new File(targetPath);
         //判断父目录是否存在，若不存在则创建父目录
         if (!targetFile.getParentFile().exists()) {
@@ -127,7 +127,7 @@ public class FileOperatorUtil {
             suffix = "."+suffix;
         }
         //指定语音文件的生成位置
-        String targetPath = environment.getProperty("simulation.filepath")+ File.separator+sessionId+File.separator+System.currentTimeMillis()+suffix;
+        String targetPath = environment.getProperty("simulation.filepath.audioPath")+ File.separator+sessionId+File.separator+System.currentTimeMillis()+suffix;
         File targetFile = new File(targetPath);
         //判断父目录是否存在，若不存在则创建父目录
         if (!targetFile.getParentFile().exists()) {
@@ -196,7 +196,7 @@ public class FileOperatorUtil {
     public void deleteExpiredFiles(String sessionId){
         long millis = System.currentTimeMillis();
         Pattern pattern = Pattern.compile("^[0-9]+$");
-        String directoryPath = environment.getProperty("simulation.filepath")+File.separator+sessionId;
+        String directoryPath = environment.getProperty("simulation.filepath.audioPath")+File.separator+sessionId;
         File directory = new File(directoryPath);
         File[] fileList = directory.listFiles(new FilenameFilter() {
             @Override

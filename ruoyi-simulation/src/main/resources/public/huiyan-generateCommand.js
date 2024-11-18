@@ -136,6 +136,7 @@ $(function () {
                 played=true;
             }
             var data = JSON.parse(result.data);
+            //console.log(data);
             if(data.header.status != '00000'){
                 huiyan.close();
                 record.stop();
@@ -151,7 +152,7 @@ $(function () {
             index = data.payload.index;
             //获取语音识别的结果
             text = data.payload.result;
-            //console.log(text);
+            console.log(text);
             operatorMessage(text,index,name);
         };
         huiyan.onerror = function(err) {
@@ -215,7 +216,7 @@ function operatorMessage(text,index,name){
         //再已经被唤醒的情况下，获取语音命令文本
         var location = checkName(text);
         if(index!=awakeInfo.index&&location!=-1&&sessionStorage['listenerStatus']=="AWAKENED"){
-            //console.log("-----------------------进入if-----------------------");
+            console.log("-----------------------进入if-----------------------");
             var command = text;
             do{
                 command = command.substring(location+4);
@@ -224,7 +225,7 @@ function operatorMessage(text,index,name){
             command = trimPunctuation(command);
             var t = sessionStorage['time'];
             if(name=="TranscriptionResultChanged"){
-                //console.log("-----------------------TranscriptionResultChanged-----------------------");
+                console.log("-----------------------TranscriptionResultChanged-----------------------");
                 if(command.length>=20||(command==awakeInfo.tempContent&&command.length>=4)){
                     awakeInfo.index = index;
                     simulation.send(command);
@@ -234,9 +235,9 @@ function operatorMessage(text,index,name){
                 }
                 awakeInfo.tempContent = command;
             }else if(name=="SentenceEnd"&&command.length>=4){
-                //console.log("-----------------------SentenceEnd-----------------------");
+                console.log("-----------------------SentenceEnd-----------------------");
                 simulation.send(command);
-                //console.log("------------------------------"+command+"-------------------------------");
+                console.log("------------------------------"+command+"-------------------------------");
                 awakeInfo.tempContent = null;
             }
         }

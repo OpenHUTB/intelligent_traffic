@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>智慧交通大模型</title>
+</head>
+<body onload="load()">
+    <div id="videoParentElement"></div>
+    <div id="audioArea" hidden="hidden"></div>
+    <div id="root"></div>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="webRtcPlayer.js"></script>
+    <script type="text/javascript">
+        connect();
+        setTimeout(function(){
+            //播放像素流中的内容
+            if (webRtcPlayerObj){
+                webRtcPlayerObj.video.play();
+            }
+        },2000);
+    </script>
+</body>
+</html>

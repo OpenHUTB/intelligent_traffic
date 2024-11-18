@@ -1,11 +1,9 @@
 package com.ruoyi.simulation.websocket;
 
-import com.alibaba.fastjson2.JSON;
 import com.ruoyi.simulation.util.ElementUtil;
 import com.ruoyi.simulation.util.FileOperatorUtil;
 import com.ruoyi.simulation.util.LoggerUtil;
 import com.ruoyi.simulation.util.VoiceUtil;
-import io.swagger.v3.oas.models.links.Link;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +37,14 @@ public class WebSocketServer {
     public static final Map <String, LinkedList<VoiceUtil>> voiceSuperpositionMap = new ConcurrentHashMap<String,LinkedList<VoiceUtil>>();
     public static final Map<String, Integer> carCountMap = new HashMap<String, Integer>();
     private static FileOperatorUtil fileUtil;
+    /**
+     * 参考坐标系的坐标原点经度坐标
+     */
+    public static double coordinateOriginLongitude = 113.6544;
+    /**
+     * 参考坐标系的坐标原点纬度坐标
+     */
+    public static double coordinateOriginLatitude = 27.684011;
     private Session session = null;
     /**
      * 打开连接的回调函数
@@ -75,6 +81,7 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String command, Session session) {
         logger.info("----------------------------收到消息-----------------------------");
+        logger.info(command);
         try {
             ElementUtil element =  new ElementUtil();
             element.setCommand(command);

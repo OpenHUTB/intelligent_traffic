@@ -57,4 +57,9 @@ public class StreamSet {
      */
     @ApiModelProperty("红绿灯信息")
     private Map<String,Object> lightInfo;
+    /**
+     * 交通指数信息
+     */
+    @ApiModelProperty("交通指数信息")
+    private Map<String,Object> indirectionMap;
 }

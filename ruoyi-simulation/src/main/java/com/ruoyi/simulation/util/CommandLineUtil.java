@@ -7,7 +7,7 @@ import java.io.*;
 
 public abstract class CommandLineUtil<T> {
     private final Logger logger = LoggerFactory.getLogger(CommandLineUtil.class);
-
+    private Process process = null;
     /**
      * 获取process信息
      * @return
@@ -25,9 +25,7 @@ public abstract class CommandLineUtil<T> {
     public T executionCommand(){
         T data = null;
         InputStream ins = null;
-        Process process = null;
         try {
-            long start = System.currentTimeMillis();
             process = this.getProcess();
             //获取执行结果
             ins = process.getErrorStream();
@@ -39,8 +37,6 @@ public abstract class CommandLineUtil<T> {
                 }
             }else{
                 ins = process.getInputStream();
-                long end = System.currentTimeMillis();
-                logger.info("执行UE4指令耗费时间：" + (end-start));
                 data = this.processResult(ins);
             }
         } catch (Exception e) {
@@ -54,11 +50,20 @@ public abstract class CommandLineUtil<T> {
                 LoggerUtil.printLoggerStace(e);
             }
             try {
-                logger.info("执行结果是否为0："+process.waitFor());
+                process.waitFor();
+                //logger.info("执行结果是否为0："+process.waitFor());
             } catch (InterruptedException e) {
                 LoggerUtil.printLoggerStace(e);
             }
         }
         return data;
+    }
+
+    /**
+     * 强制终止当前线程
+     * @return
+     */
+    protected Process destroyForcibly(){
+        return process.destroyForcibly();
     }
 }

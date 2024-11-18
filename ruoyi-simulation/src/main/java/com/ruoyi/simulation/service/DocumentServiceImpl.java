@@ -16,7 +16,7 @@ public class DocumentServiceImpl implements DocumentService {
     public byte[] getDocumentStream(String filename) {
         byte[] byteArray = null;
         try {
-            String filePath = environment.getProperty("simulation.filepath")+ File.separator+filename;
+            String filePath = environment.getProperty("simulation.filepath.audioPath")+ File.separator+filename;
             File file = new File(filePath);
             byteArray = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
