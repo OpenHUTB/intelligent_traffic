@@ -14,12 +14,54 @@ body,
     position: relative;
     overflow: hidden;
     padding: 0;
-    // background: url(../assets/img/cruiser.jpg) no-repeat center center cover;
-    // background-image: url(../assets/img/bgg.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    // background-image: url(../assets/img/bg-bg1.png);
+    // background-size: cover;
+    // background-position: center;
 }
+// #root::before,
+// #root::after {
+//     content: "";
+//     position: absolute;
+//     width: 500px; /* 调整为你的图片大小 */
+//     height: 500px; /* 调整为你的图片大小 */
+//     background-size: contain;
+//     background-repeat: no-repeat;
+// }
+// #root::before {
+//     top: -25px;
+//     right: -165px;
+//     background-image: url(../assets/img/bg-right1.gif);
+//     z-index: 1000;
+// }
+// #root::after {
+//     bottom: -250px;
+//     right: -165px;
+//     background-image: url(../assets/img/bg-right2.gif);
+//     z-index: 1000;
+// }
+
+// #layout::before,
+// #layout::after {
+//     content: "";
+//     position: absolute;
+//     width: 500px; /* 调整为你的图片大小 */
+//     height: 500px; /* 调整为你的图片大小 */
+//     background-size: contain;
+//     background-repeat: no-repeat;
+// }
+// #layout::before {
+//     top: -25px;
+//     left: -165px;
+//     background-image: url(../assets/img/bg-left1.gif);
+//     z-index: 1000;
+// }
+// #layout::after {
+//     bottom: -250px;
+//     left: -165px;
+//     background-image: url(../assets/img/bg-left2.gif);
+//     z-index: 1000;
+// }
+
 #videoParentElement {
     z-index: 1;
     position: absolute;
