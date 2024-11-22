@@ -1,0 +1,67 @@
+@use "../../../../../css/common.scss" as common;
+.optimise {
+    width: 100%;
+    height: 200px;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .header {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        svg {
+            margin-right: 5px;
+            width: 1rem;
+            height: 1rem;
+        }
+        button {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            height: 25px;
+            line-height: 25px;
+            &:hover {
+                color: #349ec9;
+            }
+        }
+        .activeBtn {
+            background-color: #349ec9;
+            border-color: #349ec9;
+            color: #ffffff;
+        }
+    }
+    .optimiseContainer {
+        width: 100%;
+        height: 100px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+        .item {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            .number {
+                text-wrap: nowrap;
+                color: #5cac5f;
+                font-size: 1.8rem;
+                font-weight: bold;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
+            .text {
+                text-align: center;
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+        }
+    }
+}

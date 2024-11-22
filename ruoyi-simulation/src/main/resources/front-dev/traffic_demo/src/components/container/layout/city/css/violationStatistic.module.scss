@@ -1,0 +1,8 @@
+@use "../../../../../css/common.scss" as common;
+.violationStatistic {
+    width: 100%;
+    height: 350px;
+    .title {
+        @include common.bottomElementTitle;
+    }
+}
