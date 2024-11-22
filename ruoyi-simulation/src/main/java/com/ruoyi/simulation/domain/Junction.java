@@ -1,20 +1,28 @@
 package com.ruoyi.simulation.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
  * 路口指标信息实体类
  */
 @Data
+@TableName("simulation_junction")
 public class Junction {
     /**
      * 路口方向id
      */
-    private Integer junctionRoadId;
+    private Integer junctionId;
     /**
      * 路口方向名称
      */
-    private String junctionRoadName;
+    private String junctionName;
+    /**
+     * 交通灯id
+     */
+    @JsonIgnore
+    private Integer trafficLightId;
     /**
      * 拥堵里程
      */
@@ -23,36 +31,4 @@ public class Junction {
      * 拥堵里程趋势变化
      */
     private Double congestionMileageTrend;
-
-    public Integer getJunctionRoadId() {
-        return junctionRoadId;
-    }
-
-    public void setJunctionRoadId(Integer junctionRoadId) {
-        this.junctionRoadId = junctionRoadId;
-    }
-
-    public String getJunctionRoadName() {
-        return junctionRoadName;
-    }
-
-    public void setJunctionRoadName(String junctionRoadName) {
-        this.junctionRoadName = junctionRoadName;
-    }
-
-    public Double getCongestionMileage() {
-        return congestionMileage;
-    }
-
-    public void setCongestionMileage(Double congestionMileage) {
-        this.congestionMileage = congestionMileage;
-    }
-
-    public Double getCongestionMileageTrend() {
-        return congestionMileageTrend;
-    }
-
-    public void setCongestionMileageTrend(Double congestionMileageTrend) {
-        this.congestionMileageTrend = congestionMileageTrend;
-    }
 }
