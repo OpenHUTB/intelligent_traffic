@@ -73,8 +73,7 @@ public class CallUE4Engine {
 
             @Override
             protected Process processResult(InputStream ins) throws Exception {
-                BufferedReader bufferedReader = null;
-                bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
                 while(!StringUtils.isEmpty(str = bufferedReader.readLine())){
                     logger.info(str);
@@ -112,6 +111,11 @@ public class CallUE4Engine {
 
             @Override
             protected Void processResult(InputStream ins) throws Exception {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
+                String str = null;
+                while(!StringUtils.isEmpty(str = bufferedReader.readLine())){
+                    logger.info(str);
+                }
                 return null;
             }
         };

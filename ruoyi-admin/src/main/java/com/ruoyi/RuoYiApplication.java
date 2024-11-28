@@ -1,5 +1,7 @@
 package com.ruoyi;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.annotation.MapperScans;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -12,6 +14,9 @@ import org.springframework.cache.annotation.EnableCaching;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableCaching
+@MapperScans({
+        @MapperScan("com.ruoyi.simulation.dao")
+})
 public class RuoYiApplication {
     public static void main(String[] args) {
         // System.setProperty("spring.devtools.restart.enabled", "false");

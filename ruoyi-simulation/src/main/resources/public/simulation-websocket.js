@@ -19,7 +19,6 @@ window.onbeforeunload = function(){
 simulation.onmessage = function(resultData){
     console.log("----------------------------simulation收到消息-----------------------------");
     var result = JSON.parse(resultData.data);
-    console.log(result);
     var message = result.message;
     var sound = result.sound;
     var signal = result.signal;
@@ -36,7 +35,9 @@ simulation.onmessage = function(resultData){
         digital_simulation = true;
     }
     console.log(signal);
-    if(signal=="TRAFFIC_LIGHT_INSTRUCTION"){
+    if(signal=="TRAFFIC_INDIRECTION"){
+        console.log(JSON.stringify(result));
+    }else if(signal=="TRAFFIC_LIGHT_INSTRUCTION"){
         if(window.location.href.indexOf("#/junction")==-1){
             window.location.hash="#/junction";
         }

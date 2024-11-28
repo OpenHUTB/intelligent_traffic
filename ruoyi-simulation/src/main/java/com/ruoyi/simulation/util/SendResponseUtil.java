@@ -41,6 +41,7 @@ public class SendResponseUtil {
     public static synchronized void sendIndirectionResponse(Map<String,Object> indirectionMap, String sessionId){
         try {
             StreamSet stream = new StreamSet();
+            stream.setSignal("TRAFFIC_INDIRECTION");
             stream.setIndirectionMap(indirectionMap);
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
             Session session = server.getSession();

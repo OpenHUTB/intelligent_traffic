@@ -1,5 +1,6 @@
 package com.ruoyi.simulation.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -26,13 +27,16 @@ public class Road {
     /**
      * 平均速度
      */
+    @TableField(exist = false)
     private Double averageSpeed;
     /**
      * 拥堵指数
      */
+    @TableField(exist = false)
     private Double congestionIndirection;
     /**
      * 拥堵趋势
      */
+    @TableField(exist = false)
     private Double congestionIndirectionTrend;
 }

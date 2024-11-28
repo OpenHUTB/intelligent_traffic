@@ -8,7 +8,7 @@
     </select>
     <insert id="addAverageSpeedList" parameterType="java.util.List">
         <foreach collection="list" item="speed" separator=";">
-            INSERT INTO speed(roadId,value,createTime) VALUES(#{roadId},#{value},#{createTime})
+            INSERT INTO simulation_speed(road_id,value,create_time) VALUES(#{roadId},#{value},#{createTime})
         </foreach>
     </insert>
 </mapper>

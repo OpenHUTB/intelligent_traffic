@@ -135,8 +135,15 @@ simulation:
   wizardCoder:
     interpreterLocation: C:/ProgramData/anaconda3/python.exe    #非虚拟环境的python服务安装位置
     scriptLocation: D:/project/gpt/webui/client.py    #生成代码的客户端脚本位置
+  indirection:
+    interpreterLocation: C:/ProgramData/Python37/python.exe
+    scriptDirectory: D:/project/gpt/webui/indirectionscript/
   ue4Engine:
     interpreterLocation: C:\ProgramData\Python37\python.exe
     scriptDirectory: D:\project\gpt\webui\examples\
     port: 10001
-  filepath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation #音频文件以及视频文件保存路径
+  filepath:
+    audioPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/audio      #音频文件以及视频文件保存路径
+    loggerPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/logger
+    sumoPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/sumo/data.json
+    vehiclePath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/vehicle  #存储车辆轨迹的文本文件所在的文件夹

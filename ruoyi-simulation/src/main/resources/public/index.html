@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" type="image/x-icon" href="statics/favicon.ico">
     <link rel="stylesheet" type="text/css" href="statics/huiyan/css/index.css" media="all">
-    <link href="statics/main.5dca9c34.css" rel="stylesheet">
+    <link href="statics/main.bb177fdd.css" rel="stylesheet">
     <script type="text/javascript" src="statics/huiyan/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/jquery.base64.js"></script>
@@ -15,9 +15,11 @@
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3-engine.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/wav.js"></script>
-    <script defer="defer" src="statics/main.a970c0ae.js"></script>
+    <script defer="defer" src="statics/main.2aca548e.js"></script>
     <title>智慧交通大模型</title>
-    <script type="text/javascript">window._AMapSecurityConfig={securityJsCode:"abeb1094acf058e343c316faf2ce00cd"}</script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig={securityJsCode:"abeb1094acf058e343c316faf2ce00cd"}
+    </script>
     <script type="importmap">
         {
             "imports": {
@@ -27,8 +29,44 @@
         }
     </script>
     <script>
-        //1-表示打招呼,2表示对话,3表示开始任务,4表示任务完成。
-        function updateAnimation(n,t="animationIndex"){localStorage.setItem(t,n),window.dispatchEvent(new CustomEvent("animationIndexChanged",{detail:{animationIndex:n}}))}function updateLight(n,t,e){const i=`light${n}`,o=JSON.stringify({seconds:t,isGreen:e});localStorage.setItem(i,o);const a=`light${n}`;window.dispatchEvent(new CustomEvent("lightTimerChanged",{detail:{[a]:{seconds:t,isGreen:e}}}))}function updateTrafficInfo(n) { var changes = {}; Object.entries(n || {}).forEach(function(entry) { localStorage.setItem(entry[0], entry[1]); changes[entry[0]] = entry[1]; }); window.dispatchEvent(new CustomEvent('TrafficInfoChanged', { detail: changes })); }function twinPlay(n){const t=document.getElementById("twinContainer"),e=document.getElementById("twin");n?(t.style.display="block", e.loop = false,e.play(), console.log("video start"), setTimeout(()=>{t.style.display="none", console.log("end")},22500)):(t.style.display="none")}
+        function updateAnimation(t,n="animationIndex"){
+			localStorage.setItem(n,t),
+			window.dispatchEvent(new CustomEvent("animationIndexChanged",{detail:{animationIndex:t}}))
+		}
+		function updateLight(t,n,e){
+			const o=`light${t}`,
+			i=JSON.stringify({seconds:n,isGreen:e});
+			localStorage.setItem(o,i);
+			const a=`light${t}`;
+			window.dispatchEvent(new CustomEvent("lightTimerChanged",{detail:{[a]:{seconds:n,isGreen:e}}}))
+		}
+		function updateTrafficInfo(t,n){
+			const e=`${t}`;
+			localStorage.setItem(e,n);
+			const o=`${t}`;
+			window.dispatchEvent(new CustomEvent("TrafficInfoChanged",{detail:{[o]:n}}))
+		}
+		function updateJunctionInfo(t,n){
+			const e=`${t}`;
+			localStorage.setItem(e,n);
+			const o=`${t}`;
+			window.dispatchEvent(new CustomEvent("junctionInfoChanged",{detail:{[o]:n}}))
+		}
+		function twinPlay(t){
+			const n=document.getElementById("twinContainer"),
+			e=document.getElementById("twin");
+			t?(n.style.display="block",e.playbackRate=.95,e.play()):(n.style.display="none",e.pause())
+		}
+		function lightVideo(t){
+			const n=document.getElementById("videoElement");
+			t?n.play():n.pause()
+		}
+		function screenShot(){
+			setTimeout((()=>{window.location.href+="#/highway",lightVideo(!0),setTimeout((()=>{lightVideo(!0)}),1e3)}),500)
+		}
+		function digitalTwin(){
+			const t=document.getElementById("videoElement");t.play(),t.loop=!0
+		}
     </script>
 </head>
 <body onload="load()">

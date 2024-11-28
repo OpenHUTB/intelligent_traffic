@@ -12,13 +12,14 @@ import com.ruoyi.simulation.domain.Junction;
 import com.ruoyi.simulation.domain.Road;
 import com.ruoyi.simulation.domain.Speed;
 import com.ruoyi.simulation.util.LoggerUtil;
+import com.ruoyi.simulation.util.ProcessOperationUtil;
 import com.ruoyi.simulation.util.SendResponseUtil;
 import com.ruoyi.simulation.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,9 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
     @Resource
     private CallUE4Engine callUE4Engine;
     @Resource
-    public RedisTemplate<String,String> redisTemplate;
+    private Environment environment;
+    @Resource
+    public RedisTemplate<String,Object> redisTemplate;
     @Resource
     public SpeedMapper speedMapper;
     @Resource
@@ -43,20 +46,21 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
     @Resource
     public JunctionMapper junctionMapper;
     //每天定时获取历史平均速度
-    private Map<String,Double> speedMap = new HashMap<>();
+    private final Map<String,Double> speedMap = new HashMap<>();
     //一天内的平均速度
-    private Map<String, List<Double>> daySpeedMap = new HashMap<>();
-    private Map<String, Double> hourSpeedMap = new HashMap<>();
-    private Map<String, Double> indirectionTrendMap = new HashMap<>();
-    private Map<Integer, Double> mileageTrendMap = new HashMap<>();
-    private Map<String, Double> trafficTrendMap = new HashMap<>();
+    private final Map<String, List<Double>> daySpeedMap = new HashMap<>();
+    private final Map<String, Double> hourSpeedMap = new HashMap<>();
+    private final Map<String, Double> indirectionTrendMap = new HashMap<>();
+    private final Map<Integer, Double> mileageTrendMap = new HashMap<>();
+    private final Map<String, Double> trafficTrendMap = new HashMap<>();
     private int acquiredCount = 0;
     private List<Road> roadList = new ArrayList<>();
     private List<Junction> junctionList = new ArrayList<>();
     @Override
     public void onApplicationEvent(ApplicationStartedEvent e) {
-        executionIndirectionScript();
-        getMapBasicData();
+        this.getMapBasicData();
+        this.killIndirectionScript();
+        this.executionIndirectionScript();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -64,7 +68,21 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
             }
         }).start();
     }
-
+    /**
+     * 杀死之前已经执行的交通指数脚本进程
+     */
+    private void killIndirectionScript(){
+        //获取python.exe安装路径
+        String interpreterLocation = this.environment.getProperty("simulation.indirection.interpreterLocation");
+        //获取python代码文件在服务器中的绝对路径
+        String scriptDirectory = this.environment.getProperty("simulation.indirection.scriptDirectory");
+        Map<String, List<Integer>> processIdMap = ProcessOperationUtil.getProcessIdMap(interpreterLocation, scriptDirectory);
+        List<Integer> processIdList = new ArrayList<>();
+        for(String scriptName: processIdMap.keySet()){
+            processIdList.addAll(processIdMap.get(scriptName));
+        }
+        ProcessOperationUtil.killProcess(processIdList);
+    }
     /**
      * 执行获取交通指数的脚本
      */
@@ -90,16 +108,30 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
      */
     private void getMapBasicData(){
         this.roadList = this.roadMapper.selectList(new QueryWrapper<>());
-        Map<Integer,Integer> roadMap = new HashMap<>();
+        Map<String,Integer> roadMap = new HashMap<>();
         //设置carla中roadId与道路主键之间的对应关系
         for(Road road: this.roadList){
             List<String> relatedList = Arrays.asList(road.getRelatedRoadId().split(","));
             for(String related: relatedList){
-                roadMap.put(Integer.parseInt(related), road.getRoadId());
+                roadMap.put(related, road.getRoadId());
             }
+            //初始化拥堵指数趋势变化初始值
+            this.indirectionTrendMap.put(String.valueOf(road.getRoadId()), 1d);
+            //初始化不同道路的平均车速
+            this.hourSpeedMap.put(String.valueOf(road.getRoadId()),0d);
         }
-        this.redisTemplate.opsForValue().set("roadMap", JSON.toJSONString(roadMap));
+        this.redisTemplate.opsForValue().set("road_map", JSON.toJSONString(roadMap));
         this.junctionList = this.junctionMapper.selectList(new QueryWrapper<>());
+        for(Junction junction: this.junctionList){
+            //初始化拥堵里程趋势变化初始值
+            this.mileageTrendMap.put(junction.getTrafficLightId(), 0d);
+        }
+        //初始化平均延误时间变化趋势初始值
+        trafficTrendMap.put("averageDelayTrend", 0d);
+        //初始化总拥堵里程变化趋势初始值
+        trafficTrendMap.put("congestionMileageTrend", 0d);
+        //初始化总的平均速度变化趋势初始值
+        trafficTrendMap.put("averageSpeedTrend", 0d);
     }
     /**
      * 每天零点整执行读取数据和写入数据的操作
@@ -138,16 +170,16 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
     public void getRedisIndirection(){
         while(true){
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 LoggerUtil.printLoggerStace(e);
             }
             Map<String,Object> indirectionMap = new HashMap<>();
-            //设置交通趋势变化数据
-            this.setTrafficTrend();
             //获取实时的平均车速
             double averageSpeed = this.getAverageSpeed();
             indirectionMap.put("averageSpeed", averageSpeed);
+            //设置平均车速变化趋势
+            this.setAverageSpeedTrend(averageSpeed,indirectionMap);
             //设置实时交通指数
             this.setTrafficIndirection(averageSpeed, indirectionMap);
             //设置不同道路的实时平均车速及拥堵指数
@@ -155,9 +187,13 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
             //设置平均延误时间
             double averageDelay = this.getAverageDelay();
             indirectionMap.put("averageDelay", averageDelay);
+            //设置平均延误时间变化趋势
+            this.setAverageDelayTrend(averageDelay,indirectionMap);
             //设置总拥堵里程
             double congestionMileage = this.getCongestionMileage();
             indirectionMap.put("congestionMileage", congestionMileage);
+            //设置总拥堵里程变化趋势
+            this.setCongestionMileageTrend(congestionMileage, indirectionMap);
             //获取不同路口的拥堵里程
             this.setJunctionIndirection(indirectionMap);
             //获取服务车次
@@ -175,20 +211,38 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
      * @return
      */
     public double getAverageSpeed(){
-        String averageSpeedStr = this.redisTemplate.opsForValue().get("average_speed");
+        Object value = this.redisTemplate.opsForValue().get("average_speed");
         double averageSpeed = 0d;
-        if(!StringUtils.isEmpty(averageSpeedStr)){
-            averageSpeed = Double.parseDouble(averageSpeedStr);
+        if(value!=null){
+            averageSpeed = Double.parseDouble(String.valueOf(value));
         }
         return averageSpeed;
+    }
+
+    /**
+     * 设置车辆平均速度变化趋势
+     * @param averageSpeed
+     * @param indirectionMap
+     */
+    public void setAverageSpeedTrend(double averageSpeed, Map<String,Object> indirectionMap){
+        double trend = this.trafficTrendMap.get("averageSpeedTrend");
+        //计算平均车速指数趋势变化
+        double averageSpeedTrend = 1d;
+        if(trend!=0){
+            averageSpeedTrend = (averageSpeed-trend)/trend;
+        }
+        indirectionMap.put("averageSpeedTrend", averageSpeedTrend);
     }
     /**
      * 设置交通指数
      * @param indirectionMap
      */
     public void setTrafficIndirection(double averageSpeed, Map<String,Object> indirectionMap){
-        this.speedMap.putIfAbsent("ALL", averageSpeed);
-        double trafficIndirection = averageSpeed/this.speedMap.get("ALL");
+        this.speedMap.putIfAbsent("ALL",averageSpeed);
+        double trafficIndirection = 1d;
+        if(this.speedMap.get("ALL")!=0){
+            trafficIndirection = averageSpeed/this.speedMap.get("ALL");
+        }
         indirectionMap.put("trafficIndirection", trafficIndirection);
     }
 
@@ -199,7 +253,7 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
     private void setRoadIndirection(Map<String,Object> indirectionMap){
         Map<String, Road> roadMap = new HashMap<>();
         for(Road road: this.roadList){
-            roadMap.put(String.valueOf(road.getRoadId()),road);
+            roadMap.put(String.valueOf(road.getRoadId()), road);
             //初始化所有的道路平均速度
             road.setAverageSpeed(0d);
             //初始化所有的道路拥堵指数
@@ -219,42 +273,66 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
                 road.setCongestionIndirection(congestionIndirection);
                 double trend = indirectionTrendMap.get(roadId);
                 //计算拥堵指数趋势变化
-                double trendRate = 1d;
-                if(trend!=0){
-                    trendRate = (congestionIndirection-trend)/trend;
+                double IndirectionTrendRate = 1d;
+                if(trend!=1){
+                    IndirectionTrendRate = (congestionIndirection-trend)/trend;
                 }
-                road.setCongestionIndirectionTrend(trendRate);
+                road.setCongestionIndirectionTrend(IndirectionTrendRate);
             }
         }.getRoadAverageSpeed();
         indirectionMap.put("roadIndirection", this.roadList);
-        //将不同道路的平均速度保存到数据库
-        this.setSpeedToHistory();
     }
     /**
      * 设置总的平均延误时间
      */
     public double getAverageDelay(){
-        String averageDelayStr = this.redisTemplate.opsForValue().get("average_delay");
+        Object value = this.redisTemplate.opsForValue().get("average_delay");
         double averageDelay = 0d;
-        if(!StringUtils.isEmpty(averageDelayStr)){
-            averageDelay = Double.parseDouble(averageDelayStr);
+        if(value!=null){
+            averageDelay = Double.parseDouble(String.valueOf(value));
         }
         return averageDelay;
     }
-
+    /**
+     * 设置总的平均延误时间变化趋势
+     * @param averageDelay
+     * @param indirectionMap
+     */
+    public void setAverageDelayTrend(double averageDelay, Map<String,Object> indirectionMap){
+        double trend = this.trafficTrendMap.get("averageDelayTrend");
+        //计算平均车速指数趋势变化
+        double averageDelayTrend = 1d;
+        if(trend!=0){
+            averageDelayTrend = (averageDelay-trend)/trend;
+        }
+        indirectionMap.put("averageDelayTrend", averageDelayTrend);
+    }
     /**
      * 设置总拥堵里程
      */
     public double getCongestionMileage(){
-        String congestionMileageStr = this.redisTemplate.opsForValue().get("congestion_mileage");
+        Object value = this.redisTemplate.opsForValue().get("congestion_mileage");
         //获取总拥堵里程
         double congestionMileage = 0d;
-        if(!StringUtils.isEmpty(congestionMileageStr)){
-            congestionMileage = Double.parseDouble(congestionMileageStr);
+        if(value!=null){
+            congestionMileage = Double.parseDouble(String.valueOf(value));
         }
         return congestionMileage;
     }
-
+    /**
+     * 设置总的平均延误时间变化趋势
+     * @param congestionMileage
+     * @param indirectionMap
+     */
+    public void setCongestionMileageTrend(double congestionMileage, Map<String,Object> indirectionMap){
+        double trend = this.trafficTrendMap.get("congestionMileageTrend");
+        //计算平均车速指数趋势变化
+        double congestionMileageTrend = 1d;
+        if(trend!=0){
+            congestionMileageTrend = (congestionMileage-trend)/trend;
+        }
+        indirectionMap.put("congestionMileageTrend", congestionMileageTrend);
+    }
     /**
      * 设置不同路口的拥堵里程
      * @param indirectionMap
@@ -284,46 +362,43 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
                 junction.setCongestionMileageTrend(trendRate);
             }
         }.getJunctionCongestionMileage();
-        indirectionMap.put("junctionCongestionMileage", junctionList);
+        indirectionMap.put("junctionIndirection", junctionList);
     }
     /**
-     * 保存交通趋势变化数据
+     * 每隔5分钟获取一次趋势变化
      */
+    @Scheduled(cron = "0 0/5 * * * ?")
     private void setTrafficTrend(){
-        long millis = System.currentTimeMillis();
-        //每隔5分钟获取一次趋势变化
-        if(millis%30000==0){
-            for(Road road: this.roadList){
-                this.indirectionTrendMap.put(String.valueOf(road.getRoadId()), 1d);
-            }
-            for(Junction junction: this.junctionList){
-                this.mileageTrendMap.put(junction.getTrafficLightId(), 0d);
-            }
-            //保存不同道路的拥堵指数变化趋势
-            new ParseRoadIndirection(){
-                @Override
-                public void setRoadAverageSpeed(String roadId, double averageSpeed) {
-                    //保存不同道路的实时拥堵指数
-                    speedMap.putIfAbsent(roadId, averageSpeed);
-                    double congestionIndirection = speedMap.get(roadId)/averageSpeed;
-                    indirectionTrendMap.put(roadId, congestionIndirection);
-                }
-            }.getRoadAverageSpeed();
-
-            //保存不同路口的拥堵里程变化趋势
-            new ParseJunctionIndirection(){
-                @Override
-                public void setJunctionCongestionMileage(int trafficLightId, double congestionMileage) {
-                    mileageTrendMap.put(trafficLightId, congestionMileage);
-                }
-            }.getJunctionCongestionMileage();
-            //保存平均延误时间变化趋势
-            trafficTrendMap.put("averageDelay", this.getAverageDelay());
-            //保存总拥堵里程变化趋势
-            trafficTrendMap.put("congestionMileage", this.getCongestionMileage());
-            //保存总的平均速度变化趋势
-            trafficTrendMap.put("averageSpeed", this.getAverageSpeed());
+        for(Road road: this.roadList){
+            this.indirectionTrendMap.put(String.valueOf(road.getRoadId()), 1d);
         }
+        for(Junction junction: this.junctionList){
+            this.mileageTrendMap.put(junction.getTrafficLightId(), 0d);
+        }
+        //保存不同道路的拥堵指数变化趋势
+        new ParseRoadIndirection(){
+            @Override
+            public void setRoadAverageSpeed(String roadId, double averageSpeed) {
+                //保存不同道路的实时拥堵指数
+                speedMap.putIfAbsent(roadId, averageSpeed);
+                double congestionIndirection = speedMap.get(roadId)/averageSpeed;
+                indirectionTrendMap.put(roadId, congestionIndirection);
+            }
+        }.getRoadAverageSpeed();
+
+        //保存不同路口的拥堵里程变化趋势
+        new ParseJunctionIndirection(){
+            @Override
+            public void setJunctionCongestionMileage(int trafficLightId, double congestionMileage) {
+                mileageTrendMap.put(trafficLightId, congestionMileage);
+            }
+        }.getJunctionCongestionMileage();
+        //保存平均延误时间变化趋势
+        trafficTrendMap.put("averageDelayTrend", this.getAverageDelay());
+        //保存总拥堵里程变化趋势
+        trafficTrendMap.put("congestionMileageTrend", this.getCongestionMileage());
+        //保存总的平均速度变化趋势
+        trafficTrendMap.put("averageSpeedTrend", this.getAverageSpeed());
     }
 
     /**
@@ -331,10 +406,10 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
      * @param indirectionMap
      */
     public void setServicedVehicle(Map<String,Object> indirectionMap){
-        String servicedVehicleStr = this.redisTemplate.opsForValue().get("serviced_vehicle");
+        Object value = this.redisTemplate.opsForValue().get("serviced_vehicle");
         double servicedVehicle = 0d;
-        if(!StringUtils.isEmpty(servicedVehicleStr)){
-            servicedVehicle = Double.parseDouble(servicedVehicleStr);
+        if(value!=null){
+            servicedVehicle = Double.parseDouble(String.valueOf(value));
         }
         indirectionMap.put("servicedVehicle", servicedVehicle);
     }
@@ -344,45 +419,47 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
      * @param indirectionMap
      */
     public void setTotalVehicle(Map<String,Object> indirectionMap){
-        String totalVehicleStr = this.redisTemplate.opsForValue().get("total_vehicle");
+        Object value = this.redisTemplate.opsForValue().get("total_vehicle");
         double totalVehicle = 0d;
-        if(!StringUtils.isEmpty(totalVehicleStr)){
-            totalVehicle = Double.parseDouble(totalVehicleStr);
+        if(value!=null){
+            totalVehicle = Double.parseDouble(String.valueOf(value));
         }
         indirectionMap.put("totalVehicle", totalVehicle);
     }
     /**
      * 采集平均速度作为历史数据
+     * 每5秒钟采集一次平均速度数据
      */
-    private void setSpeedToHistory(){
-        long millis = System.currentTimeMillis();
-        //每隔5秒取一次数据进行统计
-        if(millis%5000==0) {
-            new ParseRoadIndirection(){
-                @Override
-                public void setRoadAverageSpeed(String roadId, double averageSpeed) {
-                    hourSpeedMap.put(roadId, hourSpeedMap.get(roadId) + averageSpeed);
-                }
-            }.getRoadAverageSpeed();
-            double averageSpeed = this.getAverageSpeed();
-            if(averageSpeed!=0){
-                this.hourSpeedMap.put("ALL", this.hourSpeedMap.get(averageSpeed) + averageSpeed);
+    @Scheduled(fixedRate = 5000)
+    private void getHourSpeedMap(){
+        new ParseRoadIndirection(){
+            @Override
+            public void setRoadAverageSpeed(String roadId, double averageSpeed) {
+                hourSpeedMap.put(roadId, hourSpeedMap.get(roadId) + averageSpeed);
             }
-            //每采集一次平均速度，将采集次数加一
-            this.acquiredCount ++;
+        }.getRoadAverageSpeed();
+        double averageSpeed = this.getAverageSpeed();
+        if(averageSpeed!=0){
+            this.hourSpeedMap.put("ALL", this.hourSpeedMap.get("ALL") + averageSpeed);
         }
-        //每隔1小时计算一次统计数据
-        if(millis%3600000==0){
-            for(String roadId: this.hourSpeedMap.keySet()){
-                Double value = this.hourSpeedMap.get(roadId);
-                if(this.acquiredCount!=0&&value!=null&&value!=0){
-                    List<Double> valueList = this.daySpeedMap.get(roadId);
-                    valueList.add(value/this.acquiredCount);
-                }
-                //将每个小时的获取速度的次数重新设置为0
-                this.acquiredCount = 0;
-                this.hourSpeedMap.put(roadId, 0d);
+        //每采集一次平均速度，将采集次数加一
+        this.acquiredCount ++;
+    }
+
+    /**
+     * 每小时计算一次当前小时内的平均车速
+     */
+    @Scheduled(cron = "0 0 * * * ?")
+    private void calculateHourSpeed(){
+        for(String roadId: this.hourSpeedMap.keySet()){
+            Double value = this.hourSpeedMap.get(roadId);
+            if(this.acquiredCount!=0&&value!=null&&value!=0){
+                List<Double> valueList = this.daySpeedMap.get(roadId);
+                valueList.add(value/this.acquiredCount);
             }
+            //将每个小时的获取速度的次数重新设置为0
+            this.acquiredCount = 0;
+            this.hourSpeedMap.put(roadId, 0d);
         }
     }
     /**
@@ -393,12 +470,12 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
          * 获取redis中的不同车道的实时平均速度
          */
         public void getRoadAverageSpeed(){
-            String roadAverageSpeedStr = redisTemplate.opsForValue().get("road_average_speed");
-            if(!StringUtils.isEmpty(roadAverageSpeedStr)) {
-                JSONObject jsonObject = JSON.parseObject(roadAverageSpeedStr);
+            Object value = redisTemplate.opsForValue().get("road_average_speed");
+            if(value!=null) {
+                JSONObject jsonObject = JSON.parseObject(String.valueOf(value));
                 for (String roadId : jsonObject.keySet()) {
                     //获取不同道路的实时平均速度
-                    double averageSpeed = Double.valueOf(String.valueOf(jsonObject.get(roadId)));
+                    double averageSpeed = Double.parseDouble(String.valueOf(jsonObject.get(roadId)));
                     if (averageSpeed != 0) {
                         this.setRoadAverageSpeed(roadId, averageSpeed);
                     }
@@ -420,15 +497,13 @@ public class TrafficIndirectionListener implements ApplicationListener<Applicati
          * 获取redis中的不同路口的拥堵里程数据
          */
         public void getJunctionCongestionMileage(){
-            String roadCongestionMileageStr = redisTemplate.opsForValue().get("road_congestion_mileage");
-            if(!StringUtils.isEmpty(roadCongestionMileageStr)) {
-                JSONObject jsonObject = JSON.parseObject(roadCongestionMileageStr);
-                for (String identity : jsonObject.keySet()) {
-                    int trafficLightId = Integer.parseInt(identity.split("_")[0]);
-                    System.out.println(identity);
+            Object value = redisTemplate.opsForValue().get("road_congestion_mileage");
+            if(value!=null) {
+                JSONObject jsonObject = JSON.parseObject(String.valueOf(value));
+                for (String trafficLightId : jsonObject.keySet()) {
                     //获取不同路口的拥堵里程
-                    double congestionMileage = Double.valueOf(String.valueOf(jsonObject.get(identity)));
-                    this.setJunctionCongestionMileage(trafficLightId, congestionMileage);
+                    double congestionMileage = Double.parseDouble(String.valueOf(jsonObject.get(trafficLightId)));
+                    this.setJunctionCongestionMileage(Integer.parseInt(trafficLightId), congestionMileage);
                 }
             }
         }

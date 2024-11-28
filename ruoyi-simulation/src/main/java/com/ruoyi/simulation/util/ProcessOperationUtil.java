@@ -78,7 +78,7 @@ public class ProcessOperationUtil {
      *
      * @param processIdList
      */
-    private void killProcess(List<Integer> processIdList) {
+    public static void killProcess(List<Integer> processIdList) {
         if (processIdList == null || processIdList.isEmpty()) {
             return;
         }
@@ -87,7 +87,7 @@ public class ProcessOperationUtil {
                 @Override
                 protected Process getProcess() throws Exception {
                     ProcessBuilder builder = new ProcessBuilder();
-                    //builder.command("cmd", "/c", "taskkill /f /pid " + processId);//
+                    //根据进程id删除指定的进程
                     builder.command("cmd", "/c", "wmic process where processId="+processId+" call terminate");
                     builder.redirectErrorStream(true);
                     return builder.start();
@@ -112,12 +112,12 @@ public class ProcessOperationUtil {
      *
      * @return
      */
-    public Map<String, List<Integer>> getProcessIdMap(String interpreterLocation, String scriptDirectory) {
+    public static Map<String, List<Integer>> getProcessIdMap(String interpreterLocation, String scriptDirectory) {
         CommandLineUtil<Map<String, List<Integer>>> commandLineUtil = new CommandLineUtil<Map<String, List<Integer>>>() {
             @Override
             protected Process getProcess() throws Exception {
                 ProcessBuilder builder = new ProcessBuilder("cmd", "/c", "wmic process where name='python.exe' get processid,commandline");
-                builder.redirectErrorStream(true);//
+                builder.redirectErrorStream(true);
                 return builder.start();
             }
 

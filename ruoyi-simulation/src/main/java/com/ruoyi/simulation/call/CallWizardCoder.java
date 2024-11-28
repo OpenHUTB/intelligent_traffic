@@ -40,6 +40,7 @@ public class CallWizardCoder {
                 //执行服务器中的python脚本
                 Runtime runtime = Runtime.getRuntime();
                 //>C:/ProgramData/anaconda3/python.exe D:/project/gpt/webui/client.py  --prompt 创建一个驾驶场景对象scenario，并在场景中创建了一个车辆对象v1
+                logger.info("cmd /k "+interpreterLocation+" "+scriptLocation+" --prompt "+command);
                 return runtime.exec("cmd /k "+interpreterLocation+" "+scriptLocation+" --prompt "+command);
             }
             @Override
