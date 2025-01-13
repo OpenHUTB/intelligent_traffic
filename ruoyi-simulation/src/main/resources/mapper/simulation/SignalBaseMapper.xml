@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.simulation.dao.SignalBaselMapper">
+    <select id="getSignalBaseList" resultType="SignalBase">
+        SELECT s.junction_id AS junctionId,s.from_direction AS fromDirection,s.to_direction AS toDirection,s.light_status AS lightStatus,
+            s.start_time AS startTime,s.end_time AS endTime,s.duration,t.traffic_light_id AS trafficLightId,t.turn_direction AS turnDirection
+        FROM simulation_signal_base s,simulation_traffic_light t
+        WHERE s.junction_id = t.junction_id AND s.from_direction = t.from_direction and s.to_direction = t.to_direction AND scheme_id = 1 AND s.junction_id = 3
+        ORDER BY t.traffic_light_id,s.start_time
+    </select>
+</mapper>

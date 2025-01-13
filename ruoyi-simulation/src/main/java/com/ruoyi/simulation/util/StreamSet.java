@@ -1,5 +1,6 @@
 package com.ruoyi.simulation.util;
 
+import com.alibaba.fastjson2.JSONObject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -22,7 +23,7 @@ public class StreamSet {
         }
     }
     public enum Signal{
-        DIGITAL_SIMULATION("DIGITAL_SIMULATION"),TRAFFIC_LIGHT_INSTRUCTION("TRAFFIC_LIGHT_INSTRUCTION"),ORDINARY("ORDINARY");
+        DIGITAL_SIMULATION("DIGITAL_SIMULATION"),JUNCTION_CONTROL("JUNCTION_CONTROL"),ORDINARY("ORDINARY"),TRAFFIC_INDIRECTION("TRAFFIC_INDIRECTION");
         private final String signal;
         Signal(String signal){
             this.signal = signal;
@@ -53,13 +54,13 @@ public class StreamSet {
     @ApiModelProperty("提示信号")
     private String signal;
     /**
-     * 设置红绿灯信息
+     * 路口id
      */
-    @ApiModelProperty("红绿灯信息")
-    private Map<String,Object> lightInfo;
+    @ApiModelProperty("路口id")
+    private Integer junctionId;
     /**
      * 交通指数信息
      */
     @ApiModelProperty("交通指数信息")
-    private Map<String,Object> indirectionMap;
+    private Object data;
 }

@@ -84,6 +84,9 @@ public class WebSocketServer {
         logger.info(command);
         try {
             ElementUtil element =  new ElementUtil();
+            if(command.contains("执行优先")){
+                command = command.replace("执行优先","直行优先");
+            }
             element.setCommand(command);
             element.setSessionId(session.getId());
             commandQueue.put(element);

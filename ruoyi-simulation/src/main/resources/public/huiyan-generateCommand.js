@@ -116,9 +116,9 @@ $(function () {
                     "enable_intermediate_result": true,
                     "enable_punctuation_prediction": true,
                     "enable_inverse_text_normalization": true,
-                    "max_sentence_silence": 800,
+                    "max_sentence_silence": 1200,
                     "enable_words": false,
-                    "hotwords_id": "HWA4BB98A8",
+                    "hotwords_id": "HWCD98821E",
 		            "hotwords_weight": 1
                 }
             };
@@ -226,7 +226,7 @@ function operatorMessage(text,index,name){
             var t = sessionStorage['time'];
             if(name=="TranscriptionResultChanged"){
                 console.log("-----------------------TranscriptionResultChanged-----------------------");
-                if(command.length>=20||(command==awakeInfo.tempContent&&command.length>=4)){
+                if(command.length>=25||(command==awakeInfo.tempContent&&command.length>=4)){
                     awakeInfo.index = index;
                     simulation.send(command);
                     //console.log("------------------------------"+command+"-------------------------------");

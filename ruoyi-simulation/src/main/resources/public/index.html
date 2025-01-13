@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" type="image/x-icon" href="statics/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="statics/huiyan/css/index.css" media="all">
-    <link href="statics/main.bb177fdd.css" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css" href="statics/huiyan/css/index.css" media="all">-->
+    <link href="statics/main.8f074b14.css" rel="stylesheet">
     <script type="text/javascript" src="statics/huiyan/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/jquery.base64.js"></script>
@@ -15,8 +15,11 @@
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3-engine.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/wav.js"></script>
-    <script defer="defer" src="statics/main.2aca548e.js"></script>
+    <script defer="defer" src="statics/main.528f92eb.js"></script>
+    <script defer="defer" src="statics/junctionEvent.js"></script>
+    <script defer="defer" src="statics/lightControl.js"></script>
     <title>智慧交通大模型</title>
+    <style>@media (max-width:2000px) and (min-width:768px){#layout{zoom:0.8}}</style>
     <script type="text/javascript">
         window._AMapSecurityConfig={securityJsCode:"abeb1094acf058e343c316faf2ce00cd"}
     </script>
@@ -65,7 +68,8 @@
 			setTimeout((()=>{window.location.href+="#/highway",lightVideo(!0),setTimeout((()=>{lightVideo(!0)}),1e3)}),500)
 		}
 		function digitalTwin(){
-			const t=document.getElementById("videoElement");t.play(),t.loop=!0
+			const t=document.getElementById("videoElement");
+			t.play(),t.loop=!0
 		}
     </script>
 </head>
@@ -78,8 +82,10 @@
     </div>
     <script type="text/javascript" src="statics/app.js"></script>
     <script type="text/javascript" src="statics/webRtcPlayer.js"></script>
+    <script type="text/javascript" src="statics/digitalTwinEvent.js"></script>
     <script type="text/javascript" src="huiyan-generateCommand.js"></script>
     <script type="text/javascript" src="huiyan-generateVoice.js"></script>
+    <script type="text/javascript" src="jumbotron-control.js"></script>
     <script type="text/javascript" src="simulation-websocket.js"></script>
 </body>
 </html>

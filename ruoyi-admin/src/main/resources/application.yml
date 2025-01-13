@@ -139,8 +139,8 @@ simulation:
     interpreterLocation: C:/ProgramData/Python37/python.exe
     scriptDirectory: D:/project/gpt/webui/indirectionscript/
   ue4Engine:
-    interpreterLocation: C:\ProgramData\Python37\python.exe
-    scriptDirectory: D:\project\gpt\webui\examples\
+    interpreterLocation: C:/ProgramData/Python37/python.exe
+    scriptDirectory: D:/project/gpt/webui/examples/
     port: 10001
   filepath:
     audioPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/audio      #音频文件以及视频文件保存路径

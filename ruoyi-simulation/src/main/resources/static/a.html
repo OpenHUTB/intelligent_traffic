@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function changeURL(){
+            var a= "hello";
+            window.location.hash="/junctionId";
+            console.log("hash:"+window.location.hash);
+            console.log(a);
+        }
+        window.onload = function(e){
+            console.log("onload:"+window.location.hash);
+        }
+    </script>
+</head>
+<body>
+    <button onclick="changeURL()">按钮</button>
+</body>
+</html>

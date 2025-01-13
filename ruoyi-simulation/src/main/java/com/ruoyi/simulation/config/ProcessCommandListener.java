@@ -1,8 +1,10 @@
 package com.ruoyi.simulation.config;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.simulation.call.CallUE4Engine;
 import com.ruoyi.simulation.call.CallWizardCoder;
+import com.ruoyi.simulation.domain.*;
 import com.ruoyi.simulation.util.*;
 import com.ruoyi.simulation.websocket.WebSocketServer;
 import org.slf4j.Logger;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 处理客户端命令的监听器
@@ -24,6 +28,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ProcessCommandListener implements ApplicationListener<ApplicationStartedEvent> {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     public static final LinkedBlockingQueue<VoiceUtil> readingQueue = new LinkedBlockingQueue<VoiceUtil>(5);
+
+    public static TrafficIndirectionCollection indirectionCollection;
+    public static Integer junctionId;
     @Resource
     private Environment environment;
     @Resource
@@ -33,7 +40,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
     @Resource
     private CallUE4Engine callUE4Engine;
     @Resource
-    RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate<Object, Object> redisTemplate;
     @Override
     public void onApplicationEvent(ApplicationStartedEvent e) {
         Thread thread = new Thread(new Runnable() {
@@ -46,7 +53,6 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
         });
         thread.start();
     }
-
     /**
      * 处理语音请求
      */
@@ -59,10 +65,22 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             String command = element.getCommand();
             sessionId = element.getSessionId();
             //判断是否只是提问
-            if(!answer(command,sessionId)){
+            if(this.answer(command,sessionId)){
                 return;
             }
             SendResponseUtil.sendHandleResponse(command, sessionId);
+            //判断是否为快进
+            if(this.fastForward(command,sessionId)){
+                return;
+            }
+            //是否切换路口
+            if(this.transferJunction(command,sessionId)){
+                return;
+            }
+            //是否设置红绿灯
+            if(this.optimizeSignalControl(command, sessionId)){
+                return;
+            }
             //第二步，发送文字命令，调用“大模型”获取生成交通场景模型所需的代码
             long start = System.currentTimeMillis();
             List<String> codeList = this.callWizardCoder.generateCode(command);
@@ -85,6 +103,65 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             }
         }
     }
+    /**
+     * 快速浏览交通情况变化
+     * @param command 文本命令
+     * @param sessionId 会话id
+     * @return
+     */
+    public boolean fastForward(String command, String sessionId){
+        Pattern pattern = Pattern.compile("按(\\d+)倍数快速浏览");
+        Matcher matcher = pattern.matcher(command);
+        if(matcher.find()){
+            processUtil.killAllProcess();
+            String value = matcher.group(1);
+            int times = Integer.parseInt(value) * 5;
+            this.callUE4Engine.executeExample("carla_playback.py --multiple "+ times);
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 切换路口
+     * @param command 文本命令
+     * @param sessionId 会话id
+     */
+    private boolean transferJunction(String command, String sessionId){
+        //判断是否为切换路口操作
+        for(Junction junction: TrafficIndirectionListener.junctionList){
+            if(command.contains(junction.getTransverse())&&command.contains(junction.getPortrait())){
+                junctionId = junction.getJunctionId();
+                //执行进入某个路口的操作
+                this.callUE4Engine.executeExample("enter_intersection.py --id "+(junctionId-1));
+                JSONObject trafficData = SignalControlListener.getSignalControl(junctionId);
+                SendResponseUtil.sendJSONResponse(StreamSet.Signal.JUNCTION_CONTROL, trafficData, sessionId);
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * 判断是否为问答
+     * @param command 命令
+     * @param sessionId 会话id
+     * @return 是否为问答
+     */
+    public boolean answer(String command, String sessionId) {
+        if((command.contains("做什么")||command.contains("干什么")||command.contains("有什么"))&&command.contains("大模型")){
+            String message = "我是智慧交通大模型，能生成交通的三维数字孪生场景，譬如生成汽车、人，安装摄像头、交通信号灯，"
+                    +"也能生成导航路线以进行直观浏览、开展自动路线调度。还能根据突发事件和应急预案，进行可视化调度等。要不请您来试用一下我的功能吧！";
+            SendResponseUtil.sendDialogueResponse(message, sessionId);
+            return true;
+        } else if(command.contains("汇报")&&command.contains("交通运行")&&(command.contains("指数")||command.contains("情况"))){
+            String message = "当前车辆平均速度为：" + indirectionCollection.getAverageSpeed() + "千米每小时。" +
+                    "平均延误时间为：" + indirectionCollection.getAverageDelay() + "秒。" +
+                    "总拥堵里程为：" + indirectionCollection.getCongestionMileage() + "米。";
+            SendResponseUtil.sendDialogueResponse(message, sessionId);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 执行附加进程
      * @param codeStr
@@ -123,18 +200,27 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
         this.callUE4Engine.executeExample(codeStr);
         return codeStr;
     }
+
     /**
-     * 判断是否为问答
-     * @param text
+     * 信控优化
+     * @param text 文本命令
+     * @param sessionId 会话id
      * @return
-     * @throws InterruptedException
      */
-    public boolean answer(String text, String sessionId) {
-        if((text.contains("做什么")||text.contains("干什么")||text.contains("有什么"))&&text.contains("大模型")){
-            String message = "我是智慧交通大模型，能生成交通的三维数字孪生场景，譬如生成汽车、人，安装摄像头、交通信号灯，也能生成导航路线以进行直观浏览、开展自动路线调度。还能根据突发事件和应急预案，进行可视化调度等。要不请您来试用一下我的功能吧！";
-            SendResponseUtil.sendDialogueResponse(message, sessionId);
-            return false;
+    public boolean optimizeSignalControl(String text, String sessionId){
+        if(ProcessCommandListener.junctionId!=null){
+            if(text.contains("自动调控")||text.contains("自动调优")){
+                SignalControlListener.automaticRegulation(callUE4Engine);
+                JSONObject trafficData = SignalControlListener.getSignalControl(junctionId);
+                SendResponseUtil.sendJSONResponse(StreamSet.Signal.JUNCTION_CONTROL, trafficData, sessionId);
+                return true;
+            }else if(text.contains("直行优先")) {
+                SignalControlListener.directPriority(callUE4Engine);
+                JSONObject trafficData = SignalControlListener.getSignalControl(junctionId);
+                SendResponseUtil.sendJSONResponse(StreamSet.Signal.JUNCTION_CONTROL, trafficData, sessionId);
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 }

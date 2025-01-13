@@ -37,6 +37,21 @@ public class ProcessOperationUtil {
         }
         return instruction;
     }
+
+    /**
+     * 杀死所有进程信息
+     */
+    public void killAllProcess(){
+        //获取python.exe安装路径
+        String interpreterLocation = environment.getProperty("simulation.ue4Engine.interpreterLocation");
+        //获取python代码文件在服务器中的绝对路径
+        String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
+        //获取进程id信息
+        Map<String, List<Integer>> processIdMap = getProcessIdMap(interpreterLocation, scriptDirectory);
+        for (String command : processIdMap.keySet()) {
+            killProcessList(processIdMap.get(command));
+        }
+    }
     /**
      * 根据指令以及进程id杀死指定进程
      *
@@ -48,18 +63,18 @@ public class ProcessOperationUtil {
         //获取python代码文件在服务器中的绝对路径
         String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
         //获取进程id信息
-        Map<String, List<Integer>> processIdMap = this.getProcessIdMap(interpreterLocation, scriptDirectory);
+        Map<String, List<Integer>> processIdMap = getProcessIdMap(interpreterLocation, scriptDirectory);
         //如果切换地图，则杀死前一地图中的所有进程
         if (instruction.contains("get_maps.py --mapname")) {
             for (String command : processIdMap.keySet()) {
-                this.killProcess(processIdMap.get(command));
+                killProcessList(processIdMap.get(command));
             }
         } else if(StringUtils.equals(instruction,"Carla_control_G29.py")||StringUtils.equals(instruction,"control_steeringwheel.py")
                 ||StringUtils.equals(instruction, "automatic_control_steeringwheel.py")||StringUtils.equals(instruction,"automatic_control_revised.py")){
             //执行自动驾驶进程后，一律杀死之前的自动驾驶进程
             for(String command: processIdMap.keySet()){
                 if(StringUtils.equals(command,"Carla_control_G29.py")){
-                    this.killProcess(processIdMap.get(command));
+                    killProcessList(processIdMap.get(command));
                 }
             }
         } else {
@@ -67,7 +82,7 @@ public class ProcessOperationUtil {
             for(String command: processIdMap.keySet()){
                 if(StringUtils.equals(command,"manual_control_steeringwheel.py")||StringUtils.equals(command,"Carla_control_G29.py")
                         ||StringUtils.equals(instruction,"automatic_control_revised.py")){
-                    this.killProcess(processIdMap.get(command));
+                    killProcessList(processIdMap.get(command));
                 }
             }
         }
@@ -78,7 +93,7 @@ public class ProcessOperationUtil {
      *
      * @param processIdList
      */
-    public static void killProcess(List<Integer> processIdList) {
+    public static void killProcessList(List<Integer> processIdList) {
         if (processIdList == null || processIdList.isEmpty()) {
             return;
         }

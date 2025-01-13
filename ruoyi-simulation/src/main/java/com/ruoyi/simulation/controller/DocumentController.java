@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 文件信息业务层接口
+ * 文件信息控制层
  */
 @RestController
 @RequestMapping("simulation/file")

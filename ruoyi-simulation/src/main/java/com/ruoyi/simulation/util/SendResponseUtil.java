@@ -1,6 +1,7 @@
 package com.ruoyi.simulation.util;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.simulation.websocket.WebSocketServer;
 
 import javax.websocket.Session;
@@ -34,15 +35,16 @@ public class SendResponseUtil {
     }
 
     /**
-     * 返回交通指数信息
-     * @param indirectionMap
+     * 返回JSON对象的信息
+     * @param signal
+     * @param data
      * @param sessionId
      */
-    public static synchronized void sendIndirectionResponse(Map<String,Object> indirectionMap, String sessionId){
+    public static synchronized void sendJSONResponse(StreamSet.Signal signal, Object data, String sessionId){
         try {
             StreamSet stream = new StreamSet();
-            stream.setSignal("TRAFFIC_INDIRECTION");
-            stream.setIndirectionMap(indirectionMap);
+            stream.setSignal(signal.toString());
+            stream.setData(data);
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
@@ -99,34 +101,6 @@ public class SendResponseUtil {
             //数字仿真
             if(instruction.contains("display_a_frame.py")){
                 stream.setSignal(StreamSet.Signal.DIGITAL_SIMULATION.toString());
-            }else if(instruction.contains("control_traffic_light_test.py")){
-                //设置红绿灯
-                // String codeStr = "control_traffic_light_test.py --color id 1 --color time 60";
-                stream.setSignal(StreamSet.Signal.TRAFFIC_LIGHT_INSTRUCTION.toString());
-                //设置红绿灯参数
-                String prefix = "--color_id";
-                String suffix = "--color_time";
-                String serial = instruction.substring(instruction.indexOf(prefix)+prefix.length(), instruction.indexOf(suffix));
-                String second = instruction.substring(instruction.indexOf(suffix)+suffix.length());
-                Map<String,Object> lightInfo = new HashMap<String,Object>();
-                lightInfo.put("serial",serial);
-                lightInfo.put("second",second);
-                lightInfo.put("roadLength",80);
-                lightInfo.put("carCount", 0);
-                lightInfo.put("congestion", 0);
-                lightInfo.put("waitTime",0);
-                if(WebSocketServer.carCountMap.get(sessionId)!=null&&WebSocketServer.carCountMap.get(sessionId)!=0){
-                    int carCount = WebSocketServer.carCountMap.get(sessionId);
-                    lightInfo.put("carCount", carCount);
-                    int congestion = (int)(Math.random()*(carCount+39)/40);
-                    lightInfo.put("congestion", congestion);
-                    int waitTime = 20+(int)(Math.random()*(carCount+39)/40*20);
-                    lightInfo.put("waitTime",waitTime);
-                }
-                stream.setLightInfo(lightInfo);
-            }else if(instruction.endsWith("Carla_control_G29.py")){
-                Thread.sleep(35000);
-                stream.setMessage("自动驾驶即将结束，请手动接管方向盘!");
             }else if(!instruction.contains("change_weather.py")&&!instruction.contains("generate_traffic.py")){
                 stream.setSignal(StreamSet.Signal.ORDINARY.toString());
             }
