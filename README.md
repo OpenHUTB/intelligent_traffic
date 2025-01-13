@@ -1,6 +1,40 @@
-# 目前资源
+# 轩辕交通大模型前后端
 
-平台测试环境访问：http://172.21.121.130:8081/
+## 服务启动指南
+
+1.启动Redis
+
+打开redis在服务器中的目录`D:/software/Redis-x64-5.0.14.1`，双击`redis-server.exe`即可启动Redis服务。
+
+2.启动中间层服务
+
+在服务器桌面上双击“IntelliJ IDEA Community”，在打开的界面中找到`intelligent_traffic>ruoyi-admin>src>main>java`文件夹，在该文件夹下的`com.ruoyi`包中找到`RuoyiApplication`文件。使用鼠标右键点击`RuoyiApplication`，在弹出的菜单栏中选择`Run RuoyiApplication.main()`即可运行中间层服务。
+
+3.启动wizardCoder
+
+在服务器桌面上双击“PyCharm Community”，再打开的界面中打开`D:/project/gpt/webui /serverxin.py`。使用鼠标右键点击`serverxin.py`文件，在弹出的菜单栏中选择“运行Server”即可启动该服务。
+
+4.启动CarlaUE4
+
+（1）在服务器目录D:/user/alanYang/documents/workspace目录下可以找到多个不同版本的UE文件（文件夹名为WindowsNoEditor），选择好指定的版本后，打开对应的文件夹。在打开的文件夹内中点击`CarlaUE4.exe`即可启动UE4服务。
+（2）继续在CarlaUE4.exe所在的同一目录下打开子目录`Engine/source/Programs/ PixelStreaming/WebServers/SignallingWebServer`，在该目录下双击`run.bat`即可启动像素流推送服务。
+
+5.访问系统页面
+
+在服务器的浏览器地址栏中输入`http://localhost:8080`，即可打开大模型页面进行访问。
+
+注：如果通过其他PC机访问轩辕大模型，要进行以下配置：
+
+①在谷歌浏览器地址栏中输入`chrome://flags/#unsafely-treat-insecure-origin-as-secure#`
+
+②将选项`Insecure origins treated as secure`设置为`Enabled`
+
+③在输入框中输入访问轩辕大模型的地址（`http://服务器IP:8080`）
+
+④然后点击右下角弹出的Relaunch按钮，自动重启浏览器之后就可以调用麦克风了
+
+⑤在PC机左下角点击开始->设置->隐私和安全性->麦克风访问权限，将其开关按钮打开。
+
 
 平台接口文档：http://172.21.121.130:8080/doc.html
 
