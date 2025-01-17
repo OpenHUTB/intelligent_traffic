@@ -35,7 +35,6 @@ public class WebSocketServer {
     public static final LinkedBlockingQueue<VoiceUtil> voiceCommandQueue = new LinkedBlockingQueue<VoiceUtil>(50);
     public static final LinkedBlockingQueue<ElementUtil> commandQueue = new LinkedBlockingQueue<ElementUtil>(50);
     public static final Map <String, LinkedList<VoiceUtil>> voiceSuperpositionMap = new ConcurrentHashMap<String,LinkedList<VoiceUtil>>();
-    public static final Map<String, Integer> carCountMap = new HashMap<String, Integer>();
     private static FileOperatorUtil fileUtil;
     /**
      * 参考坐标系的坐标原点经度坐标
@@ -56,7 +55,6 @@ public class WebSocketServer {
         this.session = session;
         webSocketMap.put(session.getId(), this);
         webSocketCommandMap.put(session.getId(),new HashSet<String>());
-        carCountMap.put(session.getId(),0);
         logger.info("----------------------------连接已建立-----------------------------");
     }
 
@@ -164,5 +162,20 @@ public class WebSocketServer {
         }
         //向队列末尾添加元素，若队列已满则阻塞
         voiceCommandQueue.put(voice);
+    }
+    public static void getConsoleCommand(){
+        Set<String> sessionIdSet = webSocketMap.keySet();
+        while(true){
+            try {
+                ElementUtil element =  new ElementUtil();
+                Scanner input = new Scanner(System.in);
+                System.out.println("请输入文本命令:\n");
+                element.setCommand(input.next());
+                element.setSessionId(new ArrayList<>(sessionIdSet).get(0));
+                commandQueue.put(element);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
