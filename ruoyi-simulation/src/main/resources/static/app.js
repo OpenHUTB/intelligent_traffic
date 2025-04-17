@@ -18,7 +18,6 @@ var resizeTimeout;
 var onDataChannelConnected;
 var responseEventListeners = new Map();
 
-var freezeFrameOverlay = null;
 var shouldShowPlayOverlay = true;
 // A freeze frame is a still JPEG image shown instead of the video.
 var freezeFrame = {
@@ -258,8 +257,6 @@ function showPlayOverlay() {
 			webRtcPlayerObj.video.play();
 
 		requestQualityControl();
-
-		showFreezeFrameOverlay();
 		hideOverlay();
 	});
 	shouldShowPlayOverlay = false;
@@ -369,7 +366,6 @@ var VideoEncoderQP = "N/A";
 function setupWebRtcPlayer(htmlElement, config) {
 	webRtcPlayerObj = new webRtcPlayer({ peerConnectionOptions: config.peerConnectionOptions });
 	htmlElement.appendChild(webRtcPlayerObj.video);
-	htmlElement.appendChild(freezeFrameOverlay);
 
 	webRtcPlayerObj.onWebRtcOffer = function (offer) {
 		if (ws && ws.readyState === WS_OPEN_STATE) {
@@ -395,28 +391,6 @@ function setupWebRtcPlayer(htmlElement, config) {
 		}
 	};
 
-	webRtcPlayerObj.onDataChannelConnected = function () {
-		if (ws && ws.readyState === WS_OPEN_STATE) {
-			//showTextOverlay('WebRTC connected, waiting for video');
-		}
-	};
-
-	function showFreezeFrame() {
-		let base64 = btoa(freezeFrame.jpeg.reduce((data, byte) => data + String.fromCharCode(byte), ''));
-		freezeFrameOverlay.src = 'data:image/jpeg;base64,' + base64;
-		freezeFrameOverlay.onload = function () {
-			freezeFrame.height = freezeFrameOverlay.naturalHeight;
-			freezeFrame.width = freezeFrameOverlay.naturalWidth;
-			resizeFreezeFrameOverlay();
-			if (shouldShowPlayOverlay) {
-				//showPlayOverlay();
-				resizePlayerStyle();
-			} else {
-				showFreezeFrameOverlay();
-			}
-		};
-	}
-
 	webRtcPlayerObj.onDataChannelMessage = function (data) {
 		var view = new Uint8Array(data);
 		if (freezeFrame.receiving) {
@@ -428,7 +402,7 @@ function setupWebRtcPlayer(htmlElement, config) {
 				freezeFrame.receiving = false;
 				freezeFrame.valid = true;
 				console.log(`received complete freeze frame ${freezeFrame.size}`);
-				showFreezeFrame();
+				//showFreezeFrame();
 			} else if (freezeFrame.jpeg.length > freezeFrame.size) {
 				console.error(`received bigger freeze frame than advertised: ${freezeFrame.jpeg.length}/${freezeFrame.size}`);
 				freezeFrame.jpeg = undefined;
@@ -464,10 +438,8 @@ function setupWebRtcPlayer(htmlElement, config) {
 				freezeFrame.receiving = true;
 			} else {
 				console.log(`received complete freeze frame: ${freezeFrame.jpeg.length}/${freezeFrame.size}`);
-				showFreezeFrame();
+				//showFreezeFrame();
 			}
-		} else if (view[0] === ToClientMessageType.UnfreezeFrame) {
-			invalidateFreezeFrameOverlay();
 		} else if (view[0] === ToClientMessageType.VideoEncoderAvgQP) {
 			VideoEncoderQP = new TextDecoder("utf-16").decode(data.slice(1));
 			//console.log(`received VideoEncoderAvgQP ${VideoEncoderQP}`);
@@ -622,58 +594,6 @@ function resizePlayerStyleToArbitrarySize(playerElement) {
 	//Video is now 100% of the playerElement, so set the playerElement style
 	playerElement.style = "top: 0px; left: 0px; width: " + styleWidth + "px; height: " + styleHeight + "px; cursor: " + styleCursor + "; " + styleAdditional;
 }
-
-function setupFreezeFrameOverlay() {
-	freezeFrameOverlay = document.createElement('img');
-	freezeFrameOverlay.id = 'freezeFrameOverlay';
-	freezeFrameOverlay.style.display = 'none';
-	freezeFrameOverlay.style.pointerEvents = 'none';
-	freezeFrameOverlay.style.position = 'absolute';
-	freezeFrameOverlay.style.zIndex = '30';
-}
-function showFreezeFrameOverlay() {
-	if (freezeFrame.valid) {
-		freezeFrameOverlay.style.display = 'block';
-	}
-}
-function invalidateFreezeFrameOverlay() {
-	freezeFrameOverlay.style.display = 'none';
-	freezeFrame.valid = false;
-}
-function resizeFreezeFrameOverlay() {
-	if (freezeFrame.width !== 0 && freezeFrame.height !== 0) {
-		let displayWidth = 0;
-		let displayHeight = 0;
-		let displayTop = 0;
-		let displayLeft = 0;
-		let checkBox = document.getElementById('enlarge-display-to-fill-window-tgl');
-		if (checkBox !== null && checkBox.checked) {
-			let windowAspectRatio = window.innerWidth / window.innerHeight;
-			let videoAspectRatio = freezeFrame.width / freezeFrame.height;
-			if (windowAspectRatio < videoAspectRatio) {
-				displayWidth = window.innerWidth;
-				displayHeight = Math.floor(window.innerWidth / videoAspectRatio);
-				displayTop = Math.floor((window.innerHeight - displayHeight) * 0.5);
-				displayLeft = 0;
-			} else {
-				displayWidth = Math.floor(window.innerHeight * videoAspectRatio);
-				displayHeight = window.innerHeight;
-				displayTop = 0;
-				displayLeft = Math.floor((window.innerWidth - displayWidth) * 0.5);
-			}
-		} else {
-			displayWidth = freezeFrame.width;
-			displayHeight = freezeFrame.height;
-			displayTop = 0;
-			displayLeft = 0;
-		}
-		freezeFrameOverlay.style.width = displayWidth + 'px';
-		freezeFrameOverlay.style.height = displayHeight + 'px';
-		freezeFrameOverlay.style.left = displayLeft + 'px';
-		freezeFrameOverlay.style.top = displayTop + 'px';
-	}
-}
-
 function resizePlayerStyle(event) {
 	var playerElement = document.getElementById('videoParentElement');
 
@@ -701,7 +621,6 @@ function resizePlayerStyle(event) {
 	// the player.
 	playerElementClientRect = playerElement.getBoundingClientRect();
 	setupNormalizeAndQuantize();
-	resizeFreezeFrameOverlay();
 }
 
 function updateVideoStreamSize() {
@@ -1439,18 +1358,7 @@ function onExpandOverlay_Click(/* e */) {
 }
 
 function start() {
-	// update "quality status" to "disconnected" state
-	//let qualityStatus = document.getElementById("qualityStatus");
-	//qualityStatus.className = "grey-status";
-
-	/*let statsDiv = document.getElementById("stats");
-	if (statsDiv) {
-		statsDiv.innerHTML = 'Not connected';
-	}*/
-
 	if (!connect_on_load || is_reconnection) {
-		//showConnectOverlay();
-		invalidateFreezeFrameOverlay();
 		shouldShowPlayOverlay = true;
 		resizePlayerStyle();
 	} else {
@@ -1477,7 +1385,7 @@ function connect() {
 	}
 
 	//ws = new WebSocket(window.location.href.replace('http://', 'ws://').replace('https://', 'wss://'));
-    ws = new WebSocket("ws://"+window.location.hostname+":80");
+    ws = new WebSocket("ws://127.0.0.1:80");
 	ws.onmessage = function (event) {
 		console.log(`<- SS: ${event.data}`);
 		var msg = JSON.parse(event.data);
@@ -1538,7 +1446,6 @@ function onConfig(config) {
 
 function load() {
 	setupHtmlEvents();
-	setupFreezeFrameOverlay();
 	registerKeyboardEvents();
 	start();
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .wrap{
+            border: solid 3px #000;
+            padding: 5px;
+            width:1080px;
+            margin:0px auto;
+        }
+        .answer{
+            border: solid 1px #000;
+            padding:5px;
+            margin-bottom: 5px;
+            min-height: 500px;
+        }
+        #question{
+            width: 1070px;
+            background: #eee;
+        }
+    </style>
+    <link type="text/css" href="bootstrap-3.4.1-dist/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="statics/huiyan/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function sendQuestion(){
+            $(".answer").append("<hr/>");
+            var question = $("#question").val()
+            question = encodeURIComponent(question);
+            const eventSource = new EventSource("http://localhost:8080/simulation/deepseek/stream?question='"+question+"'");
+            eventSource.onmessage = (event) => {
+                $(".answer").append(event.data);
+            };
+        }
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <div class="answer"></div>
+    <textarea id="question" rows="5"></textarea>
+    <button type="button" onclick="sendQuestion()">发送</button>
+</div>
+</body>
+</html>

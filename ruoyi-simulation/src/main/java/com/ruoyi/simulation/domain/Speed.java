@@ -9,7 +9,7 @@ import java.util.Date;
  * 车辆平均速度实体类
  */
 @Data
-@TableName("simulation_speed")
+@TableName("simulation_indirection_speed")
 public class Speed {
     /**
      * 指数id

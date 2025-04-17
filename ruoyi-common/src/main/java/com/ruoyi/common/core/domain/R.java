@@ -66,7 +66,7 @@ public class R<T> implements Serializable
 
     private static <T> R<T> restResult(T data, int code, String msg)
     {
-        R<T> apiResult = new R<>();
+        R<T> apiResult = new R<T>();
         apiResult.setCode(code);
         apiResult.setData(data);
         apiResult.setMsg(msg);

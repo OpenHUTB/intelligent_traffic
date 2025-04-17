@@ -1,8 +1,0 @@
-@use "../../../../../css/common.scss" as common;
-.specialTarget {
-    width: 100%;
-    height: 300px;
-    .title {
-        @include common.bottomElementTitle;
-    }
-}

@@ -139,11 +139,16 @@ simulation:
     interpreterLocation: C:/ProgramData/Python37/python.exe
     scriptDirectory: D:/project/gpt/webui/indirectionscript/
   ue4Engine:
-    interpreterLocation: C:\ProgramData\Python37\python.exe
-    scriptDirectory: D:\project\gpt\webui\examples\
+    interpreterLocation: C:/ProgramData/Python37/python.exe
+    scriptDirectory: D:/project/gpt/webui/examples/
     port: 10001
   filepath:
     audioPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/audio      #音频文件以及视频文件保存路径
     loggerPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/logger
     sumoPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/sumo/data.json
     vehiclePath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/vehicle  #存储车辆轨迹的文本文件所在的文件夹
+  deepseek:
+    url: http://10.0.254.164:8000/v1/completions
+    key: deepseek-llama-70b
+    maxTokens: 500
+    temperature: 0

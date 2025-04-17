@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>智慧交通大模型</title>
 </head>
-<body onload="load()">
+<body>
     <div id="videoParentElement"></div>
-    <div id="audioArea" hidden="hidden"></div>
-    <div id="root"></div>
+    <button type="button" onclick="getPixStream();">获取像素流</button>
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="webRtcPlayer.js"></script>
     <script type="text/javascript">
-        connect();
-        setTimeout(function(){
-            //播放像素流中的内容
-            if (webRtcPlayerObj){
-                webRtcPlayerObj.video.play();
-            }
-        },2000);
+        function getPixStream(){
+            connect();
+            setTimeout(function(){
+                //播放像素流中的内容
+                if (webRtcPlayerObj){
+                    webRtcPlayerObj.video.play();
+                }
+            },1000);
+        }
     </script>
 </body>
 </html>

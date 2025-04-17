@@ -66,6 +66,11 @@
             <artifactId>jna-platform</artifactId>
             <version>5.14.0</version>
         </dependency>
+        <!--获取流式数据-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
         <!--mqtt-->
         <dependency>
             <groupId>org.springframework.integration</groupId>

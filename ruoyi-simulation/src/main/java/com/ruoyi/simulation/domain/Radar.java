@@ -2,6 +2,7 @@ package com.ruoyi.simulation.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import nonapi.io.github.classgraph.json.Id;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class Radar {
     /**
      * 设备编号
      */
+    @Id
     private Integer deviceId;
     /**
      * 雷达设备编号

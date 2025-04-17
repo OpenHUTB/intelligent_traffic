@@ -17,7 +17,7 @@ window.onbeforeunload = function(){
  * 接收到消息的回调方法
  */
 simulation.onmessage = function(resultData){
-    console.log("----------------------------simulation收到消息-----------------------------");
+    //console.log("----------------------------simulation收到消息-----------------------------");
     var result = JSON.parse(resultData.data);
     var message = result.message;
     var sound = result.sound;
@@ -34,42 +34,21 @@ simulation.onmessage = function(resultData){
         console.log("video display call");
         digital_simulation = true;
     }
-    console.log(signal);
     if(signal=="TRAFFIC_INDIRECTION"){
-        console.log(JSON.stringify(result));
-    }else if(signal=="TRAFFIC_LIGHT_INSTRUCTION"){
-        if(window.location.href.indexOf("#/junction")==-1){
-            window.location.hash="#/junction";
+        var indirectionMap = result.data;
+        if(window.location.hash==null||window.location.hash==""){
+            setTrafficIndirection(indirectionMap)
         }
-        var lightInfo = result.lightInfo;
-        var serial = parseInt(lightInfo.serial);
-        var second = parseInt(lightInfo.second);
-        var carCount = parseInt(lightInfo.carCount);
-        var roadLength = parseInt(lightInfo.roadLength);
-        var congestion = parseInt(lightInfo.congestion);
-        var waitTime = parseInt(lightInfo.waitTime);
+        if(indirectionMap.currentJunction!=null){
+            setJunctionIndirection(indirectionMap);
+            sessionStorage['junctionId'] = indirectionMap.currentJunction.junctionId;
+        }
+    }else if(signal=="JUNCTION_CONTROL"){
+        sessionStorage['trafficData'] = JSON.stringify(result.data);
+        window.location.hash="/junction";
         setTimeout(function(){
-            updateLight(serial, second, true);
-            console.log(carCount, roadLength, congestion, waitTime);
-
-           const newNumbers = [carCount, roadLength, congestion, waitTime];
-
-           const elements = document.querySelectorAll('.number');
-           elements.forEach((el, index) => {
-               if (index < newNumbers.length) {
-                   el.childNodes.forEach(node => {
-                       if (node.nodeType === 3) {
-                           const text = node.textContent.replace(/\s/g, '');
-                           if (text === '0') {
-                               node.textContent = node.textContent.replace('0', newNumbers[index].toString());
-                           }
-                       }
-                   });
-               }
-           });
-        },1500);
-    }else if(signal!=null&&window.location.href.indexOf("#/junction")!=-1){
-        window.location.hash="";
+            lightControlDataChanged(result.data);
+        },"500");
     }
 }
 /**

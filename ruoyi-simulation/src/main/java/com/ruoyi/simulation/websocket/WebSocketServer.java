@@ -84,6 +84,9 @@ public class WebSocketServer {
         logger.info(command);
         try {
             ElementUtil element =  new ElementUtil();
+            if(command.contains("执行优先")){
+                command = command.replace("执行优先","直行优先");
+            }
             element.setCommand(command);
             element.setSessionId(session.getId());
             commandQueue.put(element);
@@ -161,5 +164,20 @@ public class WebSocketServer {
         }
         //向队列末尾添加元素，若队列已满则阻塞
         voiceCommandQueue.put(voice);
+    }
+    public static void getConsoleCommand(){
+        while(true){
+            try{
+                ElementUtil element = new ElementUtil();
+                Scanner input = new Scanner(System.in);
+                System.out.println("请输入文本命令:");
+                element.setCommand(input.next());
+                List<String> sessionIdList = new ArrayList<String>(webSocketMap.keySet());
+                element.setSessionId(sessionIdList.get(0));
+                commandQueue.put(element);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
