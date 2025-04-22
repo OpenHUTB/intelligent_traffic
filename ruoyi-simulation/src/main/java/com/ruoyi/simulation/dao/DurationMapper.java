@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  * 时段信息数据库访问层
  */
 @Mapper
-public interface PhaseMapper extends BaseMapper<Duration> {
+public interface DurationMapper extends BaseMapper<Duration> {
 }

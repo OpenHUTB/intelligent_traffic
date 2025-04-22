@@ -1,7 +1,6 @@
 package com.ruoyi.simulation.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ruoyi.simulation.domain.Signalbase;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

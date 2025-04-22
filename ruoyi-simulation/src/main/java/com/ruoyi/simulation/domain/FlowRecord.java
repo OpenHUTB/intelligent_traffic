@@ -16,9 +16,13 @@ public class FlowRecord {
      */
     private Integer recordId;
     /**
-     * 交通灯id
+     * 路口id
      */
-    private Integer trafficLightId;
+    private Integer junctionId;
+    /**
+     * 相位
+     */
+    private Integer phase;
     /**
      * 所属时段
      */

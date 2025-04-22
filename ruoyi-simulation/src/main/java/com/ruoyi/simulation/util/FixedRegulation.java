@@ -3,6 +3,7 @@ package com.ruoyi.simulation.util;
 import com.ruoyi.simulation.domain.FlowRecord;
 import com.ruoyi.simulation.domain.GreenGroup;
 import com.ruoyi.simulation.domain.TrafficLight;
+import org.intellij.lang.annotations.Flow;
 
 import java.util.*;
 
@@ -20,39 +21,47 @@ public class FixedRegulation {
     public static List<TrafficLight> assignSignalControl(List<TrafficLight> trafficLightList, List<FlowRecord> recordList, List<GreenGroup> groupList){
         //获取绿波组中周期相同的红绿灯组合
         List<List<Integer>> commonJunctionList = FixedRegulation.getCommonJunctionList(groupList);
-        //获取不同红绿灯对应的平均真实流量比
-        trafficLightList = setTrafficLightFlow(recordList, trafficLightList);
+        //将红绿灯按路口分组
+        Map<Integer,List<TrafficLight>> junctionLightMap = TrafficLightUtil.getJunctionTrafficLightMap(trafficLightList);
         //将红绿灯按相位分组
-        Map<Integer,List<TrafficLightCouple>> junctionCoupleMap = TrafficLightUtil.mergeTrafficLight(trafficLightList);
+        Map<Integer, Map<Integer, TrafficLightCouple>> junctionCoupleMap = TrafficLightUtil.mergeTrafficLight(junctionLightMap);
+        //获取不同红绿灯对应的平均真实流量比
+        Map<Integer,List<TrafficLightCouple>> junctionMap = setCoupleFlow(recordList, junctionCoupleMap);
         //利用韦伯斯特公式获取各路口最佳周期时间
-        Map<Integer,Integer> junctionCycleMap = WebsterUtil.getOptimalCycleTime(junctionCoupleMap);
+        Map<Integer,Integer> junctionCycleMap = WebsterUtil.getOptimalCycleTime(junctionMap);
         //为绿波路段路口设置公共周期
         for(List<Integer> junctionIdList: commonJunctionList){
             setCommonCycleTime(junctionCycleMap, junctionIdList);
         }
         //根据公共周期设置各个相位的信控数据
-        WebsterUtil.setJunctionSignal(junctionCycleMap,junctionCoupleMap);
+        WebsterUtil.setJunctionSignal(junctionCycleMap, junctionMap);
         return trafficLightList;
     }
+
     /**
-     * 获取不同交通灯下的平均流量
+     * 为不同相位下的交通灯设置流量值
      * @param recordList
-     * @return
+     * @param junctionCoupleMap
      */
-    private static List<TrafficLight> setTrafficLightFlow(List<FlowRecord> recordList, List<TrafficLight> trafficLightList){
-        Map<Integer, TrafficLight> trafficLightMap = new HashMap<>();
-        for(TrafficLight trafficLight: trafficLightList){
-            trafficLightMap.put(trafficLight.getTrafficLightId(), trafficLight);
-        }
-        List<TrafficLight> tempList = new ArrayList<>();
-        //获取指定时段下的流量数据，并存储具有历史流量数据的红绿灯集合
+    private static Map<Integer,List<TrafficLightCouple>> setCoupleFlow(List<FlowRecord> recordList, Map<Integer,Map<Integer, TrafficLightCouple>> junctionCoupleMap){
         for(FlowRecord record: recordList){
-            int trafficLightId = record.getTrafficLightId();
-            TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
-            trafficLight.setFlowTrend(record.getAverageFlow());
-            tempList.add(trafficLight);
+            int junctionId = record.getJunctionId();
+            Map<Integer, TrafficLightCouple> coupleMap = junctionCoupleMap.get(junctionId);
+            int phaseId = record.getPhase();
+            TrafficLightCouple couple = coupleMap.get(phaseId);
+            //设置相位流量比
+            double trafficFlow  = record.getAverageFlow();
+            double flowRate = trafficFlow/WebsterUtil.MAX_FLOW;
+            couple.setFlowRate(flowRate);
+            couple.justifyIndirection();
         }
-        return tempList;
+        Map<Integer,List<TrafficLightCouple>> junctionMap = new HashMap<>();
+        for(int junctionId: junctionCoupleMap.keySet()){
+            Map<Integer, TrafficLightCouple> coupleMap = junctionCoupleMap.get(junctionId);
+            List<TrafficLightCouple> coupleList = new ArrayList<>(coupleMap.values());
+            junctionMap.put(junctionId, coupleList);
+        }
+        return junctionMap;
     }
     /**
      * 获取具有相同周期的红绿灯组合

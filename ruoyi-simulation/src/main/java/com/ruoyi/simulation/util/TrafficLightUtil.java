@@ -24,29 +24,22 @@ public class TrafficLightUtil {
     }
     /**
      * 将红绿灯按相位分组
-     * @param trafficLightList
+     * @param junctionLightMap
      * @return
      */
-    public static Map<Integer, List<TrafficLightCouple>> mergeTrafficLight(List<TrafficLight> trafficLightList){
-        Map<Integer, List<TrafficLightCouple>> junctionCoupleMap = new HashMap<>();
-        Map<Integer,List<TrafficLight>> junctionLightMap = getJunctionTrafficLightMap(trafficLightList);
-        for(int junctionId:junctionLightMap.keySet()){
-            trafficLightList = junctionLightMap.get(junctionId);
-            //将交通灯根据所在的方位加入到组合中
+    public static Map<Integer, Map<Integer, TrafficLightCouple>> mergeTrafficLight(Map<Integer,List<TrafficLight>> junctionLightMap){
+        Map<Integer, Map<Integer, TrafficLightCouple>> junctionCoupleMap = new HashMap<>();
+        for(int junctionId : junctionLightMap.keySet()){
+            List<TrafficLight> trafficLightList = junctionLightMap.get(junctionId);
+            //将交通灯根据所在的方位加入到组合中(key-相位，value-红绿灯组合)
             Map<Integer, TrafficLightCouple> coupleMap = new HashMap<>();
             for(TrafficLight trafficLight: trafficLightList) {
-                int phase = trafficLight.getPhase();
+                int phase = trafficLight.getGreenPhase();
                 coupleMap.putIfAbsent(phase, new TrafficLightCouple(phase, trafficLight.getPrefixTime()));
                 TrafficLightCouple couple = coupleMap.get(phase);
                 couple.add(trafficLight);
             }
-            List<TrafficLightCouple> coupleList = new ArrayList<>();
-            for(int phase: coupleMap.keySet()){
-                TrafficLightCouple couple = coupleMap.get(phase);
-                couple.justifyIndirection();
-                coupleList.add(couple);
-            }
-            junctionCoupleMap.put(junctionId, coupleList);
+            junctionCoupleMap.put(junctionId, coupleMap);
         }
         return junctionCoupleMap;
     }

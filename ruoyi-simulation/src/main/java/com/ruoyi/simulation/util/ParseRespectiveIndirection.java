@@ -5,7 +5,6 @@ import com.alibaba.fastjson2.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-
 /**
  * 抽象类：用来解析redis中的不同车道、不同道路、不同红绿灯的交通指数
  */

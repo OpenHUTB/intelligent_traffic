@@ -25,13 +25,13 @@ public class SignalControlListener implements ServletContextListener {
      */
     private static final Map<Integer,List<TrafficLight>> junctionLightMap = new HashMap<>();;
     @Resource
-    private SignalBaselMapper signalControlMapper;
+    private SignalBaselMapper signalbaselMapper;
     @Resource
     private CallUE4Engine callUE4Engine;
     @Resource
     private TrafficLightMapper trafficLightMapper;
     @Resource
-    private PhaseMapper phaseMapper;
+    private DurationMapper phaseMapper;
     @Resource
     private FlowRecordMapper recordMapper;
     @Resource
@@ -41,11 +41,7 @@ public class SignalControlListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         List<TrafficLight> trafficLightList = initialTrafficLight();
-        try {
-            this.fixedRegulation(trafficLightList);
-        } catch (InterruptedException e) {
-            LoggerUtil.printLoggerStace(e);
-        }
+        this.fixedRegulation(trafficLightList);
         //临时存储信控方案
         this.setTemporarySignal(trafficLightList);
         TrafficLightUtil.setCarlaTrafficLight(redisTemplate, trafficLightList);
@@ -57,47 +53,57 @@ public class SignalControlListener implements ServletContextListener {
      * @return
      */
     public List<TrafficLight> initialTrafficLight(){
-        Map<Integer, TrafficLight> trafficLightMap = new HashMap<>();
         //获取不同交通灯对应的信控信息
-        List<Signalbase> signalbaseList = this.signalControlMapper.getSignalBaseList();
+        List<Signalbase> signalbaseList = this.signalbaselMapper.getSignalBaseList();
+        List<TrafficLight> trafficLightList = this.trafficLightMapper.selectList(new QueryWrapper<>());
+        Map<Integer, TrafficLight>  trafficLightMap = getTrafficLightMap(trafficLightList);
         for(Signalbase signal: signalbaseList){
             //设置不同红绿灯对应的信控数据
             int trafficLightId = signal.getTrafficLightId();
             TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
-            if(trafficLight==null){
-                trafficLight = new TrafficLight(trafficLightId);
-                trafficLight.setJunctionId(signal.getJunctionId());
-                trafficLight.setFromDirection(signal.getFromDirection());
-                trafficLight.setTurnDirection(signal.getTurnDirection());
-                trafficLight.setClearanceDistance(signal.getClearanceDistance());
-                trafficLight.setWalkDistance(signal.getWalkDistance());
-                trafficLightMap.put(trafficLightId, trafficLight);
-            }
-            if(signal.getLightStatus()== Signalbase.LightStatus.RED){
+            if(signal.getLightStatus()==Signalbase.LightStatus.RED){
+                if(trafficLight.getRedTime()==null){
+                    trafficLight.setRedTime(0);
+                }
                 trafficLight.setRedTime(trafficLight.getRedTime()+signal.getDuration());
-                if(trafficLight.getGreenTime()==0){
+                if(trafficLight.getGreenTime()==null || trafficLight.getGreenTime()==0){
                     trafficLight.setPrefixTime(trafficLight.getPrefixTime()+signal.getDuration());
                 }
-            }else if(signal.getLightStatus()== Signalbase.LightStatus.GREEN||signal.getLightStatus()== Signalbase.LightStatus.GREEN_YELLOW){
+            }else if(signal.getLightStatus()==Signalbase.LightStatus.GREEN || signal.getLightStatus()==Signalbase.LightStatus.GREEN_YELLOW){
                 //获取绿灯所在相位
-                if(trafficLight.getPhase()==null){
+                if(trafficLight.getGreenPhase()==null){
                     int phaseId = signal.getPhase();
-                    trafficLight.setPhase(phaseId);
+                    trafficLight.setGreenPhase(phaseId);
                 }
                 trafficLight.setGreenTime(trafficLight.getGreenTime()+signal.getDuration());
             }else if(signal.getLightStatus()== Signalbase.LightStatus.YELLOW){
+                if(trafficLight.getYellowTime()==null){
+                    trafficLight.setYellowTime(0);
+                }
                 trafficLight.setYellowTime(trafficLight.getYellowTime()+signal.getDuration());
             }
         }
-        List<TrafficLight> trafficLightList = new ArrayList<>(trafficLightMap.values());
         return trafficLightList;
+    }
+
+    /**
+     * 获取交通灯信息
+     * @param trafficLightList
+     * @return
+     */
+    private Map<Integer, TrafficLight> getTrafficLightMap(List<TrafficLight> trafficLightList){
+        Map<Integer, TrafficLight> trafficLightMap = new HashMap<>();
+        for(TrafficLight trafficLight : trafficLightList){
+            trafficLightMap.put(trafficLight.getTrafficLightId(), trafficLight);
+        }
+        return trafficLightMap;
     }
     /**
      * 固定周期信控优化
      * @param trafficLightList
      * @throws InterruptedException
      */
-    public void fixedRegulation(List<TrafficLight> trafficLightList) throws InterruptedException {
+    public void fixedRegulation(List<TrafficLight> trafficLightList) {
         //获取所有的绿波组
         List<GreenGroup> groupList = this.greenGroupMapper.getGroupList();
         //获取区域中的红绿灯时段划分信息列表
@@ -116,17 +122,26 @@ public class SignalControlListener implements ServletContextListener {
      * 自适应信控优化
      * @throws InterruptedException
      */
-    public void automaticRegulation() throws InterruptedException {
+    public void automaticRegulation() {
         //获取不同路口对应的红绿灯集合
         List<TrafficLight> trafficLightList = this.trafficLightMapper.selectList(new QueryWrapper<>());
-        do {
-            Thread.sleep(60000);
-            AutoRegulation.assignSignalControl(trafficLightList);
-            //临时存储信控方案
-            this.setTemporarySignal(trafficLightList);
-            TrafficLightUtil.setCarlaTrafficLight(redisTemplate, trafficLightList);
-            Thread.sleep(14 * 60000);
-        } while(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                do {
+                    try {
+                        Thread.sleep(3 * 60000);
+                        AutoRegulation.assignSignalControl(trafficLightList);
+                        //临时存储信控方案
+                        setTemporarySignal(trafficLightList);
+                        TrafficLightUtil.setCarlaTrafficLight(redisTemplate, trafficLightList);
+                        Thread.sleep(27 * 60000);
+                    } catch (InterruptedException e) {
+                        LoggerUtil.printLoggerStace(e);
+                    }
+                } while(true);
+            }
+        }).start();
     }
     /**
      * 临时存储信控方案信息

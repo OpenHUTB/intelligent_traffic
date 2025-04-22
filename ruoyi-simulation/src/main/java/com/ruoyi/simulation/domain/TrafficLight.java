@@ -113,14 +113,10 @@ public class TrafficLight {
     @TableField(exist = false)
     private Integer flowTrend = 0;
     /**
-     * 所在相位
+     * 绿灯所在相位
      */
     @TableField(exist = false)
-    private Integer phase;
-    public TrafficLight(Integer trafficLightId){
-        this.trafficLightId = trafficLightId;
-    }
-
+    private Integer greenPhase;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

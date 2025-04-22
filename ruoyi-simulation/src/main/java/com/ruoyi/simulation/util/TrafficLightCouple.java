@@ -2,7 +2,6 @@ package com.ruoyi.simulation.util;
 
 import com.ruoyi.simulation.domain.TrafficLight;
 import lombok.Data;
-
 import java.util.*;
 
 /**
@@ -49,14 +48,12 @@ public class TrafficLightCouple {
     public void add(TrafficLight trafficLight){
         trafficLightList.add(trafficLight);
     }
+
+    /**
+     * 调整不同红绿灯对应的清空距离和行人过街时间
+     */
     public void justifyIndirection(){
         for(TrafficLight trafficLight: trafficLightList){
-            //设置相位流量比
-            double trafficFlow  = trafficLight.getFlowTrend();
-            double flowRate = trafficFlow * 1.0/WebsterUtil.MAX_FLOW;
-            if(this.flowRate<flowRate){
-                this.flowRate = flowRate;
-            }
             //设置相位清空损失时间：清空损失时间=启动损失时间+清空距离/车辆速度+安全余量
             double lowerSpeed = getLowerSpeed(flowRate);
             double clearanceDistance = trafficLight.getClearanceDistance() + 5;

@@ -172,14 +172,6 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
                 ||StringUtils.equals(codeStr,"automatic_control_revised.py")){
             codeStr = "Carla_control_G29.py";
         }
-        if(codeStr.contains("generate_traffic.py --number-of-vehicles")){
-            int add = Integer.parseInt(codeStr.replace("generate_traffic.py --number-of-vehicles","").trim());
-            int count = 0;
-            if(WebSocketServer.carCountMap.containsKey(sessionId)){
-                count = WebSocketServer.carCountMap.get(sessionId);
-            }
-            WebSocketServer.carCountMap.put(sessionId, count+add);
-        }
         logger.info(codeStr);
         this.callUE4Engine.executeExample(codeStr);
         return codeStr;

@@ -583,24 +583,19 @@ public class TrafficIndirectionListener implements ServletContextListener {
             }
         }.getRespectiveIndirection(redisTemplate,"traffic_light_stop");
     }
-
     /**
      * 设置过去一段时间不同交通灯的车流量
      */
     private void setFlowTrend(){
-        Map<Integer,TrafficLight> trafficLightMap = new HashMap<>();
         for(TrafficLight trafficLight: trafficLightList) {
-            trafficLightMap.put(trafficLight.getTrafficLightId(), trafficLight);
-        }
-        new ParseRespectiveIndirection(){
-            @Override
-            protected void setRespectiveIndirection(String trafficLightId, double flow) {
-                int flowTrend = (int)Math.round(flow*60);
-                TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
-                trafficLight.setFlowTrend(flowTrend);
+            String key = "traffic_light_flow"+trafficLight.getTrafficLightId();
+            Object value = this.redisTemplate.opsForValue().get(key);
+            int flow = 0;
+            if(value!=null){
+                flow = (int)Math.ceil(Double.parseDouble(String.valueOf(value)));
             }
-        }.getRespectiveIndirection(redisTemplate, "traffic_light_flow");
-        redisTemplate.delete("traffic_light_flow");
+            trafficLight.setFlowTrend(flow);
+        }
     }
     /**
      * 设置实时的服务车次
