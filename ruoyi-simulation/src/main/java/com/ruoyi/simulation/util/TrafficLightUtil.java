@@ -58,16 +58,13 @@ public class TrafficLightUtil {
         });
         int length = coupleList.size();
         TrafficLightCouple current = coupleList.get(0);
-        int redTime = cycle - current.getGreenTime() - TrafficLight.YELLOW_TIME;
-        current.setLightTime(redTime, current.getGreenTime(), TrafficLight.YELLOW_TIME, current.getPrefixTime());
+        current.setLightTime(cycle, 0);
         for(int i=1;i<length;i++) {
             TrafficLightCouple prefix = coupleList.get(i-1);
             current = coupleList.get(i);
-            redTime = cycle - current.getGreenTime() - TrafficLight.YELLOW_TIME;
             //前缀时间=前一个相位的绿灯时间+前一相位黄灯时间+清空损失时间
             int prefixTime = prefix.getPrefixTime() + prefix.getGreenTime() + prefix.getClearingLostTime();
-            current.setPrefixTime(prefixTime);
-            current.setLightTime(redTime, current.getGreenTime(), TrafficLight.YELLOW_TIME, prefixTime);
+            current.setLightTime(cycle, prefixTime);
         }
     }
     /**
@@ -76,10 +73,12 @@ public class TrafficLightUtil {
      */
     public static void setCarlaTrafficLight(RedisTemplate<String,Object> redisTemplate, List<TrafficLight> trafficLightList){
         for(TrafficLight trafficLight: trafficLightList){
+            //保存每个红绿灯信控数据到Redis
             int trafficLightId = trafficLight.getTrafficLightId();
             redisTemplate.opsForValue().set("prefix_time_"+trafficLightId, trafficLight.getPrefixTime());
-            //保存每个红绿灯信控数据到Redis
-            redisTemplate.opsForValue().set("signal_control_"+trafficLightId, trafficLight);
+            redisTemplate.opsForValue().set("green_time_"+trafficLightId, trafficLight.getGreenTime());
+            redisTemplate.opsForValue().set("yellow_time_"+trafficLightId, trafficLight.getYellowTime());
+            redisTemplate.opsForValue().set("suffix_time_"+trafficLightId, trafficLight.getSuffixTime());
         }
     }
 }

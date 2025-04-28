@@ -23,7 +23,7 @@ public class SignalControlListener implements ServletContextListener {
     /**
      * 每个路口id对应的红绿灯集合
      */
-    private static final Map<Integer,List<TrafficLight>> junctionLightMap = new HashMap<>();;
+    public static final Map<Integer,List<TrafficLight>> junctionLightMap = new HashMap<>();;
     @Resource
     private SignalBaselMapper signalbaselMapper;
     @Resource
@@ -104,8 +104,6 @@ public class SignalControlListener implements ServletContextListener {
      * @throws InterruptedException
      */
     public void fixedRegulation(List<TrafficLight> trafficLightList) {
-        //获取所有的绿波组
-        List<GreenGroup> groupList = this.greenGroupMapper.getGroupList();
         //获取区域中的红绿灯时段划分信息列表
         List<Duration> phaseList = this.phaseMapper.selectList(new QueryWrapper<>());
         int durationId = this.getDurationId(phaseList);
@@ -113,6 +111,8 @@ public class SignalControlListener implements ServletContextListener {
         LambdaQueryWrapper<FlowRecord> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(FlowRecord::getDurationId, durationId);
         List<FlowRecord> recordList = this.recordMapper.selectList(queryWrapper);
+        //获取所有的绿波组
+        List<GreenGroup> groupList = this.greenGroupMapper.getGroupList();
         FixedRegulation.assignSignalControl(trafficLightList, recordList, groupList);
     }
     private int getDurationId(List<Duration> phaseList){
@@ -147,7 +147,7 @@ public class SignalControlListener implements ServletContextListener {
      * 临时存储信控方案信息
      * @param trafficLightList
      */
-    private void setTemporarySignal(List<TrafficLight> trafficLightList){
+    public static void setTemporarySignal(List<TrafficLight> trafficLightList){
         for(TrafficLight trafficLight: trafficLightList){
             //将红绿灯按路口进行划分
             int junctionId = trafficLight.getJunctionId();

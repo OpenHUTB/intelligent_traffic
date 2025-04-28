@@ -94,17 +94,18 @@ public class TrafficLightCouple {
 
     /**
      * 设置红绿灯组的红黄蓝三种灯光的时间
-     * @param redTime
-     * @param greenTime
-     * @param yellowTime
+     * @param cycle
      * @param prefixTime
      */
-    public void setLightTime(int redTime, int greenTime, int yellowTime, int prefixTime){
+    public void setLightTime(int cycle, int prefixTime){
+        int redTime = cycle - this.getGreenTime() - TrafficLight.YELLOW_TIME;
+        int suffixTime = redTime - prefixTime;
         for(TrafficLight trafficLight: trafficLightList){
             trafficLight.setRedTime(redTime);
-            trafficLight.setGreenTime(greenTime);
-            trafficLight.setYellowTime(yellowTime);
             trafficLight.setPrefixTime(prefixTime);
+            trafficLight.setGreenTime(this.greenTime);
+            trafficLight.setYellowTime(TrafficLight.YELLOW_TIME);
+            trafficLight.setSuffixTime(suffixTime);
         }
     }
 }

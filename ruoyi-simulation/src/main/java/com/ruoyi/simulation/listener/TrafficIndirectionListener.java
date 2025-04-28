@@ -56,7 +56,7 @@ public class TrafficIndirectionListener implements ServletContextListener {
     private int acquiredCount = 0;
     private List<Road> roadList = new ArrayList<>();
     public static List<Junction> junctionList = new ArrayList<>();
-    public static List<TrafficLight> trafficLightList = new ArrayList<>();
+    private List<TrafficLight> trafficLightList = new ArrayList<>();
     @Override
     public void contextInitialized(ServletContextEvent e){
         this.getMapBasicData();
