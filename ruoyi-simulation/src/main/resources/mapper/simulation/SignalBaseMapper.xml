@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.simulation.dao.SignalBaselMapper">
     <select id="getSignalBaseList" resultType="SignalBase">
-        SELECT s.junction_id junctionId,s.from_direction fromDirection,s.to_direction toDirection,s.phase,s.light_status lightStatus,s.start_time startTime,
+        SELECT s.junction_id junctionId,s.from_direction fromDirection,s.to_direction toDirection,s.phase,s.light_state lightState,s.start_time startTime,
         s.end_time endTime,s.duration,t.traffic_light_id trafficLightId
         FROM simulation_signal_base s,simulation_traffic_light t
         WHERE s.junction_id = t.junction_id AND s.from_direction = t.from_direction and s.to_direction = t.to_direction AND scheme_id = 1 AND road_type = "MOTOR_WAY"

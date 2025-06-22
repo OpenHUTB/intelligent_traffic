@@ -3,10 +3,11 @@ package com.ruoyi.simulation.domain;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ruoyi.simulation.util.StateStage;
+import com.ruoyi.simulation.domain.Signalbase.TrafficLightState;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 交通灯信息实体类
@@ -66,16 +67,6 @@ public class TrafficLight {
     @TableField(exist = false)
     private Integer greenTime = 0;
     /**
-     * 起始红灯时间
-     */
-    @TableField(exist = false)
-    private Integer prefixTime = 0;
-    /**
-     * 绿灯间隔时间
-     */
-    @TableField(exist = false)
-    private int suffixTime;
-    /**
      * 拥堵里程
      */
     @TableField(exist = false)
@@ -117,6 +108,27 @@ public class TrafficLight {
      */
     @TableField(exist = false)
     private Integer greenPhase;
+    /**
+     * 红绿灯对应的状态及持续时间
+     */
+    @TableField(exist = false)
+    private List<StateStage> stageList = new ArrayList<>();
+    /**
+     * 一个周期内每秒钟对应的红绿灯状态
+     */
+    @TableField(exist = false)
+    private TrafficLightState[] stateArr;
+    /**
+     * 添加一个红绿灯状态
+     * @param state
+     * @param length
+     */
+    public void addState(Signalbase.TrafficLightState state, int length){
+        StateStage stage = new StateStage();
+        stage.setState(state);
+        stage.setLength(length);
+        this.stageList.add(stage);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

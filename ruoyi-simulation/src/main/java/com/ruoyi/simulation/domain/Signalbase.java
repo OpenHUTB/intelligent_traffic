@@ -1,5 +1,6 @@
 package com.ruoyi.simulation.domain;
 
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
@@ -13,8 +14,8 @@ public class Signalbase {
     /**
      * 交通灯状态
      */
-    public enum LightStatus{
-        RED,GREEN,YELLOW,GREEN_YELLOW
+    public enum TrafficLightState{
+        RED, GREEN, YELLOW, GREEN_YELLOW;
     }
     private Integer signalControlId;
     /**
@@ -52,7 +53,7 @@ public class Signalbase {
     /**
      * 机动车道信号灯状态，表示该方向阶段内的绿灯、黄灯、红灯变化。
      */
-    private LightStatus lightStatus;
+    private TrafficLightState lightState;
     /**
      * 每个阶段的开始时间。
      */

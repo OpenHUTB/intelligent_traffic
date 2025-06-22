@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public class ProcessCommandListener implements ApplicationListener<ApplicationStartedEvent> {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     public static final LinkedBlockingQueue<VoiceUtil> readingQueue = new LinkedBlockingQueue<VoiceUtil>(5);
-    public static Integer junctionId;
+    public static Integer junctionId = 6;
     @Resource
     private Environment environment;
     @Resource

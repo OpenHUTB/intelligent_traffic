@@ -1,5 +1,6 @@
 package com.ruoyi.simulation.service;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.simulation.domain.TrafficLight;
 import com.ruoyi.simulation.listener.ProcessCommandListener;
@@ -35,6 +36,13 @@ public class SignalServiceImpl implements SignalService {
         JSONObject trafficData = SignalControlListener.getSignalControl(ProcessCommandListener.junctionId);
         result.setStatus(ResultUtil.Status.SUCCESS);
         result.setData(trafficData);
+
+        for(int junctionId: SignalControlListener.junctionLightMap.keySet()){
+            System.out.println("--------------------------------------------"+junctionId+"--------------------------------------------");
+            for(TrafficLight trafficLight :SignalControlListener.junctionLightMap.get(junctionId)){
+                System.out.println(JSON.toJSONString(trafficLight));
+            }
+        }
         return result;
     }
 }
