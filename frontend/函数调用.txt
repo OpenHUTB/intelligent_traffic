@@ -1,0 +1,151 @@
+
+路口视频播放控制，优化前视频，优化后视频：
+preVideo();
+optVideo();
+
+
+1. 修改效果评价组件 evaluationDataChanged(object)
+接收一个对象作为参数，对象中包含四个属性，如下示例
+evaluationDataChanged(
+   {
+  preIndex: 10,    
+  optIndex: 5,    
+  preSpeed: 15, 
+  optSpeed: 25,
+  preContent: "优化前控制方案", 
+  optContent: "优化后控制方案" 
+}
+)
+
+2. 修改协调效果跟踪,接收一个对象作为参数resultTrackDataChanged(object)
+
+resultTrackDataChanged(
+     {
+  timeRange: '14:30:00-14:51:43',
+  district1: '岳麓西大道',
+  district2: '岳麓西大道',
+  direction: '东向西', 
+  data: [
+    {
+      name: '东向西',
+      averageTime: '1.5',
+      timeCompare: '5%',
+      averageParking: '2',
+      parkingCompare: '5%',
+      timeDirection: true,
+      parkingDirection: true,
+    },
+    {
+      name: '西向东',
+      averageTime: '1.5',
+      timeCompare: '5%',
+      averageParking: '2',
+      parkingCompare: '5%',
+      timeDirection: true,
+      parkingDirection: true,
+    },
+    {
+      name: '东向西',
+      averageTime: '1.5',
+      timeCompare: '5%',
+      averageParking: '2',
+      parkingCompare: '5%',
+      timeDirection: true,
+      parkingDirection: true,
+    },
+    {
+      name: '北向南',
+      averageTime: '1.5',
+      timeCompare: '5%',
+      averageParking: '2',
+      parkingCompare: '5%',
+      timeDirection: true,
+      parkingDirection: true,
+    },
+  ],
+}
+)
+
+
+
+
+5. 更改路口信息，junctionInfoDataChanged()
+接收一个对象作为参数，对象中包含四个属性如下示例
+示例代码如下：
+
+junctionInfoDataChanged(
+    {
+    district1: '青山路',
+    district2: '岳麓西大道',
+    carLanes: 4,
+    pedestrianLanes: 2,
+  }
+)
+
+6. 更改控制策略：controlStrategyDataChanged(object)
+接收一个对象作为参数，对象中包含四个属性如下示例：
+
+controlStrategyDataChanged(
+    {
+    day: '星期三',
+    time: '晚高峰(17:00-19:00)',
+    controlMode1: '辅路优先',
+    controlMode2: '感应控制'
+  }
+)
+
+7. 更改红绿灯控制和时间配比（这两个模块是联动一起的）示例如下：
+
+lightControlDataChanged(
+     {
+    north: {
+        left: {
+            redDurationTime: 200,
+            greenDurationTime: 30,
+            initialLight: 'green',
+        },
+        forward: {
+            redDurationTime: 25,
+            greenDurationTime: 35,
+            initialLight: 'red',
+        },
+    },
+    east: {
+        left: {
+            redDurationTime: 28,
+            greenDurationTime: 38,
+            initialLight: 'red',
+        },
+        forward: {
+            redDurationTime: 33,
+            greenDurationTime: 43,
+            initialLight: 'green',
+        },
+    },
+    south: {
+        left: {
+            redDurationTime: 32,
+            greenDurationTime: 42,
+            initialLight: 'red',
+        },
+        forward: {
+            redDurationTime: 37,
+            greenDurationTime: 47,
+            initialLight: 'green',
+        },
+    },
+    west: {
+        left: {
+            redDurationTime: 25,
+            greenDurationTime: 35,
+            initialLight: 'red',
+        },
+        forward: {
+            redDurationTime: 30,
+            greenDurationTime: 40,
+            initialLight: 'green',
+        },
+    },
+}
+)
+

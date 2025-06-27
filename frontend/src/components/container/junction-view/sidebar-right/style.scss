@@ -1,0 +1,373 @@
+@use "../../../../css/common";
+@use "../sidebar-left/style" as left;
+
+@mixin title-sideeffect {
+    &::before {
+        content: "";
+        display: block;
+        height: 20px;
+    }
+}
+section.slider-right {
+    @include common.border-animation;
+    margin-top: 0.2rem;
+    width: 400px;
+    // @include common.contentBackground;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .lights-container {
+        @include common.contentBackground;
+        width: 100%;
+        position: relative;
+        width: 100%;
+        @include title-sideeffect;
+        .title {
+            @include left.sectionTitle;
+            height: 20px;
+        }
+        .arrows {
+            width: 100%;
+            height: 12rem;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .north {
+                border: 1px solid #349ec9;
+                position: absolute;
+                top: 2%;
+                transform: rotate(180deg);
+                .time {
+                    transform: rotate(180deg);
+                }
+            }
+            .west {
+                border: 1px solid red;
+                position: absolute;
+                left: 15%;
+                transform: rotate(90deg);
+            }
+            .south {
+                border: 1px solid yellow;
+                position: absolute;
+                bottom: 2%;
+            }
+            .east {
+                border: 1px solid green;
+                position: absolute;
+                right: 15%;
+                transform: rotate(-90deg);
+            }
+            .arrow-container {
+                width: 4rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .arrow {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .green {
+                    color: green;
+                }
+                .red {
+                    color: red;
+                }
+                SVG {
+                    border-radius: 50%;
+                    margin: 3px;
+                }
+                SVG.green {
+                    background-color: #34d43a;
+                }
+                SVG.red {
+                    background-color: rgb(224, 38, 38);
+                }
+            }
+        }
+    }
+
+    // lights-optimize-container
+    .lights-optimize-container {
+        @include common.contentBackground;
+        position: relative;
+        width: 100%;
+        @include title-sideeffect;
+        div.title {
+            @include left.sectionTitle;
+            top: 0;
+        }
+
+        // optimize methods style include in this section
+        .optimize-methods {
+            width: 100%;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            label {
+                text-wrap: nowrap;
+                vertical-align: middle;
+                text-align: center;
+            }
+            .select-custom {
+                $optionalBackground: #33497e;
+                color: #fff;
+                margin: 0 1rem;
+                width: 30%;
+                background-color: $optionalBackground;
+                border: none;
+                option {
+                    background-color: $optionalBackground;
+                }
+            }
+        }
+        // seconds control container include in this section
+        .seconds-control-container {
+            margin-right: 1rem;
+            position: absolute;
+            margin-top: 0.5rem;
+            width: 95%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            .rangeBars-container {
+                width: 100%;
+                height: 9rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                .singleBar {
+                    width: 87%;
+                    position: relative;
+                    margin: 0.5rem;
+                    .custom-range {
+                        margin-left: 15px;
+                        width: 100%;
+                        height: 5px;
+                        transition: opacity 0.5s;
+                        appearance: none;
+                        border-radius: 4px;
+                        outline: 1px solid #da6e0a;
+                        &::-webkit-slider-thumb {
+                            appearance: none;
+                            width: 1rem;
+                            height: 1rem;
+                            background: url(../../../../assets/icon/icon-green-pointer.svg) no-repeat center center;
+                            background-size: contain;
+
+                            cursor: pointer;
+                            margin-bottom: 1.7rem; /* Adjust this value as needed */
+                        }
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+
+                    .select-value {
+                        position: absolute;
+                        left: -1rem; /* Adjust this value as needed */
+                        top: -0.5rem;
+                        padding: 2px 10px;
+                        border-radius: 10px;
+                        text-align: center;
+                        font-weight: bold;
+                        user-select: none;
+                        color: green;
+                    }
+                }
+            }
+            .rangeBars-container2 {
+                position: absolute;
+                top: 1.1rem;
+                right: 0.5rem;
+                width: 70%;
+                height: 9rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                .singleBar {
+                    width: 95%;
+                    position: relative;
+                    margin: 1rem;
+
+                    .custom-range-2 {
+                        position: absolute;
+                        top: -0.7rem;
+                        margin-left: 10px;
+                        width: 100%;
+                        height: 5px;
+
+                        transition: opacity 0.5s;
+                        appearance: none;
+
+                        &::-webkit-slider-thumb {
+                            appearance: none;
+                            width: 1rem;
+                            height: 1rem;
+                            background: url(../../../../assets/icon/icon-red-pointer.svg) no-repeat center center;
+                            background-size: contain;
+                            cursor: pointer;
+                            margin-bottom: 1.7rem; /* Adjust this value as needed */
+                        }
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+                    .select-value.red {
+                        position: absolute;
+                        right: -2.2rem; /* Adjust this value as needed */
+                        top: -1.5rem;
+                        padding: 2px 10px;
+                        border-radius: 10px;
+                        text-align: center;
+                        font-weight: bold;
+                        user-select: none;
+                        color: red;
+                    }
+                }
+            }
+            .control-buttons {
+                height: 100%;
+                width: 30%;
+                .custom-button-group {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    .btn-primary {
+                        margin: 0.2rem;
+                        color: #ccc;
+                        background-color: rgba(5, 17, 78, 0.6);
+                    }
+                    .active-btn {
+                        background-color: #349ec9;
+                        border-color: #349ec9;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
+    // pedestrain optimize container include in this section
+    .pedestrain-optimization-container {
+        @include common.contentBackground;
+        $layoutWidth: 5rem;
+        width: 100%;
+        position: relative;
+        @include title-sideeffect;
+        .title {
+            @include left.sectionTitle;
+            top: 0;
+        }
+        main.pedestrian-main {
+            $mainHeight: 6.3rem;
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            .pedestrain-scroll-container {
+                @include common.contentBackground;
+                .nav-container {
+                    margin-bottom: 1rem;
+                    font-weight: bold;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    span {
+                        width: $layoutWidth;
+                        text-align: center;
+                        text-wrap: nowrap;
+                    }
+                }
+
+                .list-container {
+                    color: #ddd;
+                    height: $mainHeight;
+                    overflow: auto;
+                    &::-webkit-scrollbar {
+                        width: 0;
+                    }
+                    > div:nth-child(odd) {
+                        background-color: rgba(16, 37, 80, 0.9);
+                    }
+                    .list-item {
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        border-left: 3px solid #349ec9;
+                        margin: 0.6rem 0;
+                        span {
+                            width: $layoutWidth;
+                            text-align: center;
+                        }
+                        .name {
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
+            .pedestrian-index {
+                @include common.contentBackground;
+                position: relative;
+                .number {
+                    $centerWidth: 5rem;
+
+                    text-align: center;
+                    line-height: $centerWidth;
+                    border: 1px solid rgb(16, 37, 80);
+                    border-radius: 50%;
+                    font-size: 2rem;
+                    position: absolute;
+                    width: $centerWidth;
+                    height: $centerWidth;
+                    top: 40%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(to right, #349ec9 0%, green 100%);
+                }
+                .description {
+                    position: absolute;
+                    top: 75%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    text-wrap: nowrap;
+                }
+            }
+        }
+    }
+
+    //option comparison style
+    .options-comparison {
+        background-image: linear-gradient(to bottom, rgba(5, 17, 78, 0.2), rgba(5, 17, 78, 0.8));
+        width: 100%;
+        @include title-sideeffect;
+        position: relative;
+        .title {
+            @include left.sectionTitle;
+            top: 0;
+        }
+        .video-container {
+            margin-top: 0.5 rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

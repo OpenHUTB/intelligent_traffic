@@ -1,0 +1,98 @@
+@use "../../../../../css/common.scss" as common;
+.controlStrategy {
+    width: 100%;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .strategyMain {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        .buttonGroup {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: nowrap;
+            margin-top: 10px;
+            svg {
+                width: 1rem;
+                height: 1rem;
+            }
+            span {
+                height: 25px;
+                line-height: 25px;
+                font-weight: bold;
+                text-align: center;
+            }
+            button {
+                width: 3.5rem;
+                background-color: rgba(0, 0, 0, 0.2);
+                color: #ffffff;
+                font-size: 1rem;
+                cursor: pointer;
+                height: 25px;
+                line-height: 25px;
+                text-wrap: nowrap;
+                &:hover {
+                    color: #349ec9;
+                }
+            }
+            button.active {
+                background-color: #349ec9;
+            }
+        }
+        .timeContainer {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            label {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            svg {
+                margin-left: 5px;
+                width: 1rem;
+                height: 1rem;
+                margin-right: 45px;
+            }
+            select {
+                width: 13rem;
+                margin: 0 5px;
+                color: #ffffff;
+                border-radius: 5px;
+                padding: 5px;
+                background-color: rgba(7, 17, 37, 0);
+                cursor: pointer;
+                &:hover {
+                    color: #349ec9;
+                }
+            }
+        }
+        .controlMode {
+            width: 100%;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            svg {
+                margin-left: 5px;
+                width: 1rem;
+                height: 1rem;
+                margin-right: 10px;
+            }
+            label {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            select {
+                margin-right: 5px;
+                color: #ffffff;
+                border-radius: 5px;
+                padding: 5px;
+                background-color: rgba(7, 17, 37, 0);
+            }
+        }
+    }
+}

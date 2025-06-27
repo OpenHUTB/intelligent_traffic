@@ -1,0 +1,32 @@
+.junctionControl {
+    width: 100%;
+    height: 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+    .controlPattern {
+        background-color: rgba(20, 82, 100, 0.4);
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .value {
+            text-wrap: wrap;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .name {
+            color: #fff;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

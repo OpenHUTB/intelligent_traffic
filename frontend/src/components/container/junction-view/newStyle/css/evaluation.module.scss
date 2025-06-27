@@ -1,0 +1,145 @@
+@use "../../../../../css/common.scss" as common;
+
+.evaluation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    // background-color: rgba(255, 255, 255, 0.3);
+
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .dataContainer {
+        width: 100%;
+        margin-top: 5px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        .compare {
+            background: url("../../../../../assets/img/compare-bg-2.png") no-repeat;
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            .dataTitle {
+                font-size: 1.2rem;
+                color: white;
+                margin-top: 5px;
+                font-weight: bold;
+                text-wrap: nowrap;
+            }
+            span.index {
+                margin-top: 15px;
+                height: 25px;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                vertical-align: middle;
+                text-align: left;
+                line-height: 25px;
+                text-wrap: nowrap;
+                .number {
+                    padding: 0 5px;
+                    font-weight: bold;
+                    color: aqua;
+                    font-size: 25px;
+                }
+            }
+            span.speed {
+                margin-top: 15px;
+                height: 25px;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                vertical-align: middle;
+                text-align: left;
+                line-height: 25px;
+                .number {
+                    padding: 0 5px;
+                    font-weight: bold;
+                    font-size: 25px;
+                    color: aqua;
+                }
+            }
+        }
+
+        // .road {
+        //     background-image: url("../../../../../assets/img/road.png");
+        // }
+        // .onRoadCar {
+        //     background-image: url("../../../../../assets/img/car.png");
+        // }
+        // .people {
+        //     background-image: url("../../../../../assets/img/people.png");
+        // }
+        // .capacity {
+        //     background-image: url("../../../../../assets/img/capacity.png");
+        // }
+        // .junction {
+        //     background-image: url("../../../../../assets/img/summaryJunction.jpg");
+        // }
+        // .cloudjunction {
+        //     background-image: url("../../../../../assets/img/summaryCloudJunction.jpg");
+        // }
+    }
+    .optimiseRecord {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        .recordTitle {
+            margin-top: 15px;
+            padding-left: 10px;
+            background: url("../../../../../assets/img/ratio-bg.png") no-repeat;
+            background-size: cover;
+            width: 100%;
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 2rem;
+            background-color: rgba(28, 42, 71, 0.7);
+            color: white;
+            text-wrap: nowrap;
+        }
+        .recordContainer {
+            width: 100%;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 75px;
+
+            .rank {
+                background: url("../../../../../assets/img/scrollAlert.png") no-repeat;
+                background-size: cover;
+                height: 90%;
+                width: 3px;
+            }
+            .contentContainer {
+                width: 95%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                .position {
+                    font-size: 1.1rem;
+                    line-height: 1.2rem;
+                    width: 100%;
+                    text-align: left;
+                }
+                .content {
+                    line-height: 2rem;
+                    margin-top: 15px;
+                    width: 100%;
+                    text-align: left;
+                    align-self: flex-start;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    letter-spacing: 1px;
+                    -webkit-line-clamp: 2; // 控制显示的行数为2
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+    }
+}

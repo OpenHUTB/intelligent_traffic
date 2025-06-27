@@ -1,0 +1,48 @@
+.nav {
+    position: fixed;
+    z-index: 1000;
+    width: 191px;
+    height: 456px;
+    // border: 1px solid red;
+    left: 16px;
+    top: 135px;
+
+    .navList {
+        font-size: 18px;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: space-between;
+
+        li {
+            display: flex;
+            background: url("../assets/image/nav-unselect.png") no-repeat center center;
+            width: 191px;
+            height: 46px;
+            cursor: pointer;
+
+            a {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                color: #bbb;
+            }
+
+            // 选中状态的样式
+            &.active {
+                background: url("../assets/image/nav-select.png") no-repeat center center;
+
+                a {
+                    font-weight: 700;
+                    color: #ffffff;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

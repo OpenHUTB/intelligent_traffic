@@ -1,0 +1,141 @@
+@use "../../../../../css/common.scss" as common;
+@mixin picStyle {
+    position: relative;
+}
+@mixin svgStyle {
+    width: 30px;
+    height: 30px;
+    margin: 6px;
+}
+@mixin west {
+    bottom: 220px !important;
+    left: -140px !important;
+    transform: rotate(-90deg) !important;
+}
+
+@mixin north {
+    top: 90px !important;
+    right: -80px;
+}
+@mixin south {
+    bottom: 85px !important;
+    left: 165px !important;
+    transform: rotate(180deg) !important;
+}
+@mixin east {
+    bottom: -60px !important;
+    right: 100px !important;
+    transform: rotate(90deg) !important;
+}
+@mixin lightDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lightControl {
+    width: 100%;
+    position: relative;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .controlMain {
+        background: url("../../../../../assets/img/trafficLight-bg.png") no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 400px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        .lightContainer {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .iconContainer {
+            position: absolute;
+        }
+        // .iconRoadContainer {
+        //     position: absolute;
+        // }
+        .west {
+            @include picStyle;
+            .iconContainer {
+                @include west;
+                svg {
+                    @include svgStyle;
+                }
+            }
+            .lightContainer {
+                @include west;
+            }
+            // .iconRoadContainer {
+            //     svg {
+            //         @include svgStyle;
+            //     }
+            //     bottom: 220px;
+            //     left: 115px;
+            //     transform: rotate(-90deg);
+            // }
+        }
+        .north {
+            @include picStyle;
+            .iconContainer {
+                @include north;
+                svg {
+                    @include svgStyle;
+                }
+            }
+            .lightContainer {
+                @include north;
+            }
+            // .iconRoadContainer {
+            //     svg {
+            //         @include svgStyle;
+            //     }
+            //     top: 315px;
+            //     right: -85px;
+            // }
+        }
+        .south {
+            @include picStyle;
+            .iconContainer {
+                @include south;
+                svg {
+                    @include svgStyle;
+                }
+            }
+            .lightContainer {
+                @include south;
+            }
+            // .iconRoadContainer {
+            //     svg {
+            //         @include svgStyle;
+            //     }
+            //     bottom: 310px;
+            //     left: 165px;
+            //     transform: rotate(180deg);
+            // }
+        }
+        .east {
+            @include picStyle;
+            .iconContainer {
+                @include east;
+                svg {
+                    @include svgStyle;
+                }
+            }
+            .lightContainer {
+                @include east;
+            }
+            // .iconRoadContainer {
+            //     svg {
+            //         @include svgStyle;
+            //     }
+            //     bottom: -60px;
+            //     left: -190px;
+            //     transform: rotate(90deg);
+            // }
+        }
+    }
+}
