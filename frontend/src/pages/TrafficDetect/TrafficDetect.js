@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import ScrollAllert from 'components/bottoms/scrollAlert/ScrollAlert'
 import RightTopBtn from 'components/rights/RightTopBtn/RightTopBtn'
 import TotalTrafficMonitor from 'components/rights/TotalTrafficMonitor/TotalTrafficMonitor'
+import FunctionBar from 'components/rights/FunctionBar/FunctionBar'
 export default function TrafficDetect() {
   return (
     <div className={styles.trafficDetectContainer}>
@@ -13,6 +14,7 @@ export default function TrafficDetect() {
           <ScrollAllert />
         </div>
         <div className={styles.rightContent}>
+          <FunctionBar class={styles.functionBar} />
           <RightTopBtn headerTitle='监控指数设置' />
           <TotalTrafficMonitor />
         </div>

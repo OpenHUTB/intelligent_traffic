@@ -56,10 +56,10 @@ export default function TotalTrafficMonitor() {
           },
           data: [
             {
-              value: 0,
+              value: 5,
               name: '交通指数',
               title: {
-                offsetCenter: ['-5%', '80%'],
+                offsetCenter: ['5%', '80%'],
                 fontSize: 14,
                 fontWeight: 300,
                 fontFamily: 'Arial',
@@ -67,7 +67,7 @@ export default function TotalTrafficMonitor() {
                 show: true,
               },
               detail: {
-                offsetCenter: ['-5%', '50%'],
+                offsetCenter: ['5%', '50%'],
                 fontSize: 18,
                 fontWeight: 800,
                 fontFamily: 'Arial',
@@ -117,10 +117,10 @@ export default function TotalTrafficMonitor() {
           },
           pointer: {
             icon: `image://${Pointer}`,
-            length: 150, // 可以根据图片大小调整
-            width: 150, // 可以根据图片大小调整
+            length: 160, // 可以根据图片大小调整
+            width: 160, // 可以根据图片大小调整
             // height: 100, // 可以根据图片大小调整
-            offsetCenter: ['90%', '90%'],
+            offsetCenter: ['-00%', '50%'],
             keepAspect: true, // 保持图片比例
           },
         },
@@ -169,7 +169,7 @@ export default function TotalTrafficMonitor() {
               value: 70,
               name: '平均速度',
               title: {
-                offsetCenter: ['-5%', '80%'],
+                offsetCenter: ['5%', '80%'],
                 fontSize: 14,
                 fontWeight: 300,
                 fontFamily: 'Arial',
@@ -227,10 +227,11 @@ export default function TotalTrafficMonitor() {
           },
           pointer: {
             icon: `image://${Pointer}`,
-            width: 120, // 可以根据图片大小调整
+            length: 160, // 可以根据图片大小调整
+            width: 160, // 可以根据图片大小调整
             // height: 100, // 可以根据图片大小调整
-            // offsetCenter: ['25%', '25%'],
-            // keepAspect: true, // 保持图片比例
+            offsetCenter: ['-00%', '50%'],
+            keepAspect: true, // 保持图片比例
           },
         },
       ],

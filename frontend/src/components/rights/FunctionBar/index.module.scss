@@ -1,0 +1,27 @@
+.functionBar {
+    width: 52px;
+    height: 140px;
+    position: absolute;
+    left: -15%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .img {
+        border-radius: 10px;
+        width: 52px;
+        height: 52px;
+        background-color: #00182a58;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 32px;
+            height: 32px;
+        }
+    }
+    .img.active {
+        background: linear-gradient(to bottom, #04a7ad 0%, #0effb0 100%);
+    }
+}
