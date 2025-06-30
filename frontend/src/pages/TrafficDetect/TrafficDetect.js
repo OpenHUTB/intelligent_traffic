@@ -14,6 +14,8 @@ export default function TrafficDetect() {
   const bigMapShow = useSelector((state) => state.map.bigMapShow)
   return (
     <div className={styles.trafficDetectContainer}>
+      <div className={styles.leftBar}></div>
+      <div className={styles.bottomBar}></div>
       <div className={styles.mainContent}>
         {bigMapShow && <Amap />}
         <div className={styles.bottomContent}>

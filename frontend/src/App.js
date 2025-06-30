@@ -4,15 +4,18 @@ import Header from 'components/Header'
 import PlanMain from 'components/PlanMain'
 import JunctionMain from 'components/JunctionMain'
 import CruiserMain from 'components/CruiserMain'
-import HomePage from 'components/home'
+
 import TextArea from 'components/container/TextArea/TextArea'
 import HighwayMain from 'components/highway'
 import CityMain from 'components/city'
-import DigitalTwinMain from 'components/DigitalTwin'
+
 import TrafficDetect from 'pages/TrafficDetect/TrafficDetect'
 import Nav from 'components/Nav'
 import DigitalTwinPage from 'pages/DigitalTwin/DigitalTwin'
+import TrafficFlow from 'pages/TrafficFlow/TrafficFlow'
+
 export default function App() {
+  // 智慧交通监测
   let Home = () => {
     return (
       <>
@@ -23,6 +26,8 @@ export default function App() {
       </>
     )
   }
+
+  // 智慧路口信控优化
   const Junction = () => {
     return (
       <>
@@ -33,12 +38,13 @@ export default function App() {
       </>
     )
   }
+  // 交通流量智能分析
   const Plan = () => {
     return (
       <>
         <Header />
         <Nav />
-        <PlanMain />
+        <TrafficFlow></TrafficFlow>
         <TextArea />
       </>
     )

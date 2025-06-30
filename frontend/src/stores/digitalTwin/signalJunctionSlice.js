@@ -1,46 +1,52 @@
 // signalJunctionSlice.js
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    listItems: [
-        {
-            name: '尖山路与岳麓西大道交叉口',
-            index: 1,
-            trend: 18.53,
-            trendDirection: true
-        },
-        {
-            name: '青山路与尖山路交叉口',
-            index: 3,
-            trend: 20.53,
-            trendDirection: true
-        },
-        {
-            name: '旺龙路与青山路交叉口',
-            index: 4,
-            trend: 15.53,
-            trendDirection: false
-        },
-        {
-            name: '旺龙路与青山路交叉口',
-            index: 4,
-            trend: 15.53,
-            trendDirection: false
-        },
-    ],
-};
+  listItems: [
+    {
+      name: '尖山路与岳麓西大道交叉口',
+      index: 1,
+      trend: 18.53,
+      trendDirection: true,
+    },
+    {
+      name: '青山路与尖山路交叉口',
+      index: 3,
+      trend: 20.53,
+      trendDirection: true,
+    },
+    {
+      name: '旺龙路与青山路交叉口',
+      index: 4,
+      trend: 15.53,
+      trendDirection: false,
+    },
+    {
+      name: '旺龙路与青山路交叉口',
+      index: 4,
+      trend: 15.53,
+      trendDirection: false,
+    },
+    {
+      name: '旺龙路与青山路交叉口',
+      index: 4,
+      trend: 15.53,
+      trendDirection: false,
+    },
+  ],
+}
 
 const signalJunctionSlice = createSlice({
-    name: 'signalJunction',
-    initialState,
-    reducers: {
-        setListItems: (state, action) => {
-            state.listItems = action.payload;
-        },
+  name: 'signalJunction',
+  initialState,
+  reducers: {
+    setListItems: (state, action) => {
+      state.listItems = action.payload
     },
-});
+  },
+})
 
-export const { setListItems } = signalJunctionSlice.actions;
+export const { setListItems } = signalJunctionSlice.actions
 
-export default signalJunctionSlice.reducer;
+export default signalJunctionSlice.reducer

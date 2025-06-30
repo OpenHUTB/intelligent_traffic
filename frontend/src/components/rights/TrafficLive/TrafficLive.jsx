@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './index.module.scss'
 import video1 from 'assets/videos/twin.mp4'
+
 export default function TraffiLive() {
   const liveVideoUrl = [
     {

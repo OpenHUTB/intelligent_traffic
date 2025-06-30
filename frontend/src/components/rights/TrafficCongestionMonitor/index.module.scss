@@ -1,6 +1,6 @@
 @use "../../../css/common.scss" as common;
 .overview {
-    margin-top: 28px;
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -23,10 +23,10 @@
             align-items: center;
             .icon {
                 width: 90px;
-                height: 74px;
+                height: 70px;
             }
             .descriptionContainer {
-                height: 60px;
+                height: 50px;
                 // border: 1px solid red;
                 display: flex;
                 flex-direction: column;
