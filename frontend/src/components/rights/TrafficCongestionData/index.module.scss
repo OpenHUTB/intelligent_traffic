@@ -1,0 +1,82 @@
+@use "../../../css/common.scss" as common;
+.trafficViolationContainer {
+    margin-top: 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    @include common.rightElementSize;
+    .title {
+        @include common.bottomElementTitle;
+    }
+
+    .mainContent {
+        width: 100%;
+        height: calc(100% - 40px);
+        background: url("../../../assets/image/bottom-bg-green.png") no-repeat center center;
+        background-size: 100% 100%;
+        padding: 0px 15px 10px 15px;
+
+        .rankContianer {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr 2fr;
+            gap: 10px;
+            align-items: center;
+            height: 70px;
+            font-size: 14px;
+            font-weight: 400;
+
+            span {
+                color: #aab6c7;
+                text-align: center;
+                text-wrap: wrap;
+                white-space: pre-line;
+            }
+        }
+        .listContainer {
+            height: 100%;
+            overflow: auto;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            > div:nth-child(odd) {
+                background-color: rgba(115, 252, 253, 0.38);
+            }
+
+            .listItem {
+                display: grid;
+                grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr 2fr;
+                gap: 5px;
+                align-items: center;
+                height: 44px;
+                font-size: 16px;
+                font-weight: 500;
+
+                span {
+                    text-align: center;
+                    line-height: 20px;
+                }
+                .green {
+                    border-radius: 2px;
+                    width: fit-content;
+                    margin: 0 auto; // 在网格单元格中自动居中
+                    padding: 3px 10px;
+                    background-color: #4a83ce;
+                }
+                .yellow {
+                    border-radius: 2px;
+                    background-color: #ff9f05;
+                    width: fit-content;
+                    margin: 0 auto;
+                    padding: 3px 10px;
+                }
+                .red {
+                    border-radius: 2px;
+                    background-color: #f36133;
+                    width: fit-content;
+                    margin: 0 auto;
+                    padding: 3px 10px;
+                }
+            }
+        }
+    }
+}

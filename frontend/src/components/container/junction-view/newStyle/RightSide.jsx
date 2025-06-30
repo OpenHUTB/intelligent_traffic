@@ -8,7 +8,7 @@ import ClickOptimise from './ClickOptimise'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Chat from './Chat'
-import Map from 'components/container/layout/homeview/Map/Map'
+// import Map from 'components/container/layout/homeview/Map/Map'
 
 export default function RightSide() {
   const timeProgressDisplay = useSelector(
@@ -21,7 +21,7 @@ export default function RightSide() {
       <Chat />
       {/* <JunctionInfo />
             <ControlStrategy /> */}
-      <Map />
+      {/* <Map /> */}
       <LightControl />
       {timeProgressDisplay && <TimeProgress />}
       {timeChangeShow && <ClickOptimise></ClickOptimise>}

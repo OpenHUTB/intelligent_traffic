@@ -100,6 +100,12 @@
     // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(5, 17, 78, 0.8));
     // background-color: rgba(255, 255, 255, 0.3);
 }
+@mixin rightElementSize {
+    height: 330px;
+    width: 100%;
+    background: url("../assets/image/rightElement-bg.png") no-repeat center center;
+    background-size: 100% 100%;
+}
 
 @mixin textStyle {
     font-size: 1.3rem;

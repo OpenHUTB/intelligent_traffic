@@ -20,10 +20,10 @@ export default function TotalTrafficMonitor() {
 
     const option1 = {
       grid: {
-        left: '3%',
+        left: '5%',
         right: '3%',
-        bottom: '1%',
-        top: '10%',
+        bottom: '-1%',
+        top: '15%',
         containLabel: false,
       },
       tooltip: {
@@ -83,7 +83,7 @@ export default function TotalTrafficMonitor() {
             },
           },
           splitLine: {
-            distance: 1,
+            distance: -5,
             length: 10,
             lineStyle: {
               color: '#fff',

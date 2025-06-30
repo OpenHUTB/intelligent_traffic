@@ -9,9 +9,9 @@ export default function Header() {
     { path: '/', label: '智慧交通监测' },
     { path: '/plan', label: '交通流量智能分析' },
     { path: '/junction', label: '智慧路口信控优化' },
-    { path: '/highway', label: '智慧交通数字孪生' },
+    { path: '/digitalTwin', label: '智慧交通数字孪生' },
     { path: '/city', label: '智慧问答辅助决策' },
-    { path: '/digitalTwin', label: '实景三维动态巡查' },
+    { path: '/highway', label: '实景三维动态巡查' },
   ]
 
   const getActiveIndex = () => {

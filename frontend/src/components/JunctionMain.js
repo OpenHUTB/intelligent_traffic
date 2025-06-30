@@ -4,7 +4,7 @@ import Centre from './Centre.js'
 // import RightSlider from './container/junction-view/sidebar-right';
 import LeftSide from 'components/container/junction-view/newStyle/LeftSide.jsx'
 import RightSide from 'components/container/junction-view/newStyle/RightSide.jsx'
-import BigMap from 'components/container/junction-view/newStyle/BigMap.jsx'
+// import BigMap from 'components/container/junction-view/newStyle/BigMap.jsx'
 import '../css/junction.scss'
 import { useSelector } from 'react-redux'
 import { setBigMapShow } from 'stores/junctionLight/mapSlice'
@@ -16,7 +16,6 @@ export default function JunctionMain() {
         {/* <LeftSlider /> */}
         <LeftSide />
       </div>
-      <div className='centerMap'>{bigMapShow && <BigMap />}</div>
 
       <div className='rightSide'>
         <RightSide />

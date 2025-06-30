@@ -11,6 +11,7 @@ import CityMain from 'components/city'
 import DigitalTwinMain from 'components/DigitalTwin'
 import TrafficDetect from 'pages/TrafficDetect/TrafficDetect'
 import Nav from 'components/Nav'
+import DigitalTwinPage from 'pages/DigitalTwin/DigitalTwin'
 export default function App() {
   let Home = () => {
     return (
@@ -25,10 +26,10 @@ export default function App() {
   const Junction = () => {
     return (
       <>
-        <Header />
+        {/* <Header />
         <Nav />
         <JunctionMain />
-        <TextArea />
+        <TextArea /> */}
       </>
     )
   }
@@ -77,7 +78,7 @@ export default function App() {
       <>
         <Header />
         <Nav />
-        <DigitalTwinMain />
+        <DigitalTwinPage />
         <TextArea />
       </>
     )

@@ -1,0 +1,55 @@
+@use "../../../css/common.scss" as common;
+.overview {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    @include common.rightElementSize;
+    .title {
+        @include common.bottomElementTitle;
+    }
+
+    .dataContainer {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+
+        .dataItem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .icon {
+                width: 90px;
+                height: 74px;
+            }
+            .descriptionContainer {
+                height: 60px;
+                // border: 1px solid red;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-left: 15px;
+            }
+            .description {
+                text-wrap: nowrap;
+                color: #bbb;
+                font-size: 16px;
+            }
+            .number {
+                font-size: 2rem;
+                color: #0effb0;
+                font-weight: 700;
+                text-wrap: nowrap;
+            }
+            .unit {
+                font-size: 0.8rem;
+                color: #fff;
+                font-weight: 400;
+            }
+        }
+    }
+}

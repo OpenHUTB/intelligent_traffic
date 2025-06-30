@@ -11,7 +11,6 @@ export default function Weather() {
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleTimeString()
   )
-  const [temperatureNumber, setTemperatureNumber] = useState('')
   const [weatherStr, setWeatherStr] = useState('')
   const date = new Date()
     .toLocaleDateString('zh-CN', {
@@ -33,45 +32,15 @@ export default function Weather() {
     }
   }, [])
 
-  // using the AMapLoader.load method to load JSAPI to set the weather;
-  useEffect(() => {
-    AMapLoader.load({
-      key: 'd8ab80d5c581443cc3862879e172edff',
-      version: '2.0',
-      plugins: ['AMap.Weather'],
-    }).then((AMap) => {
-      const weather = new AMap.Weather()
-      weather.getLive('长沙市', (err, data) => {
-        if (!err) {
-          const { temperature, weather } = data
-          setTemperatureNumber(temperature)
-          console.log(weatherStr)
-          setWeatherStr(weather)
-        }
-      })
-    })
-  }, [])
   return (
     <div className='weather-time-container'>
       <div className='time-contianer'>
         <div className='date'>
-          <img className='timeIcon' src={TimeIcon} alt='' srcset='' />
+          <img className='timeIcon' src={TimeIcon} alt='' />
           <div className='date'>{date}</div>
           <div className='time'>{currentTime}</div>
-          {/* <span>{dayOfWeek}</span> */}
         </div>
-        {/* <div className='time'>{currentTime}</div> */}
       </div>
-      {/* <div className="weather-container">
-                <div className="temperature">{`温度： ${temperatureNumber} °C`} </div>
-                <div className="weather">
-                    {weatherStr.includes("晴") ? <span className="weatherIcon"><SunIcon /></span> : null}
-                    {weatherStr.includes("云") ? <span className="weatherIcon"><CloudIcon /></span> : null}
-                    {weatherStr.includes("阴") ? <span className="weatherIcon"><CloudIcon /></span> : null}
-                    {weatherStr.includes("雨") ? <span className="weatherIcon"><RainIcon /></span> : null}
-                    {weatherStr.includes("雪") ? <span className="weatherIcon"><SnowIcon /></span> : null}
-                </div>
-            </div> */}
     </div>
   )
 }

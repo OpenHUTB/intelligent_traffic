@@ -113,13 +113,13 @@ export default function Map() {
         [112.876533, 28.233528], // 旺龙路与青山路交叉口
       ].map((p) => new AMap.LngLat(...p))
 
-      const polyline = new AMap.Polyline({
-        path: path,
-        strokeColor: 'blue',
-        strokeWeight: 14,
-        lineJoin: 'round',
-      })
-      map.add(polyline)
+      // const polyline = new AMap.Polyline({
+      //   path: path,
+      //   strokeColor: 'blue',
+      //   strokeWeight: 14,
+      //   lineJoin: 'round',
+      // })
+      // map.add(polyline)
 
       // 动态交通灯标记
       pos.forEach((p, i) => {
