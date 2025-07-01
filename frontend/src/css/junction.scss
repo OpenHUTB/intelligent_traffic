@@ -1,0 +1,43 @@
+@import "reset";
+@import "common";
+// whole body style and layout
+@mixin mainLayout {
+    display: grid;
+    grid-template-rows: 4fr 3fr;
+}
+
+main {
+    z-index: 1;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    .centre {
+        width: 100%;
+        height: 100%;
+    }
+    // left side style
+    .leftSide {
+        z-index: 2;
+        position: absolute;
+        left: 5px;
+        top: 7.5rem;
+        border-radius: 5px;
+    }
+    // right side style
+    .rightSide {
+        @include contentBackground;
+        z-index: 2;
+        position: absolute;
+        right: 5px;
+        top: 7.5rem;
+        border-radius: 5px;
+    }
+    .centerMap {
+        position: absolute;
+        right: 25%;
+        top: 25%;
+        width: 1200px;
+        height: 800px;
+    }
+}

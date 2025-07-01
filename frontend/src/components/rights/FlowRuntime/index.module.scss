@@ -1,0 +1,76 @@
+@use "../../../css/common.scss" as common;
+.FlowRuntimeContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2rem 0;
+    // background-color: rgba(255, 255, 255, 0.3);
+    @include common.rightElementSize;
+
+    .title {
+        @include common.bottomElementTitle;
+    }
+
+    .contentContainer {
+        position: relative;
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dataList {
+        padding: 25px 20px;
+        height: 100%;
+        // border: 1px solid rgba(255, 255, 255, 1);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .dataItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .location {
+        width: 50px;
+        font-size: 13px;
+        font-weight: 400;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .progressContainer {
+        flex: 1;
+        height: 6px;
+        background-color: #ffffff1a;
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progressBar {
+        height: 100%;
+        background: linear-gradient(to right, #ffffff00, #0effb0);
+        border-radius: 6px;
+        transition: width 0.7s ease-out;
+    }
+
+    .volume {
+        width: 30px;
+        font-size: 10px;
+        font-weight: 400;
+        color: white;
+        text-align: right;
+        flex-shrink: 0;
+    }
+}

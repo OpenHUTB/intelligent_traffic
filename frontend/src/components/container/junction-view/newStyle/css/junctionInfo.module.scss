@@ -1,0 +1,66 @@
+@use "../../../../../css/common.scss" as common;
+@mixin roadInfomix {
+    margin: 5px;
+    height: 55px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    text-align: left;
+    line-height: 55px;
+    padding-left: 70px;
+    .number {
+        padding: 0 5px;
+        font-weight: bold;
+        color: aqua;
+    }
+}
+.jucntionInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .district {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        svg {
+            margin-right: 5px;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        label {
+            width: 6rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        select {
+            color: #ffffff;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: rgba(7, 17, 37, 0);
+        }
+    }
+    .infoMain {
+        .roadInfo {
+            margin-top: 5px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            justify-content: center;
+            span.pedestrain {
+                @include roadInfomix;
+                background-image: url("../../../../../assets/img/people.png");
+            }
+            span.car {
+                margin-right: 5px;
+                @include roadInfomix;
+                background-image: url("../../../../../assets/img/capacity.png");
+            }
+        }
+    }
+}

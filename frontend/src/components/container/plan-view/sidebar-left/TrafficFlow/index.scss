@@ -1,0 +1,59 @@
+@use "css/common.scss";
+
+.trafficFlow {
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 20rem;
+    .container {
+        background: url("../../../../../assets/img/ratio-bg.png") center center;
+        background-size: cover;
+        display: grid;
+        grid-template-rows: 1fr 2fr;
+        height: 70px;
+        width: 210px;
+        .title {
+            width: 100%;
+            color: #ccc;
+            margin-bottom: 1rem;
+            height: 1rem;
+            vertical-align: middle;
+            // background-color: rgba(23, 47, 73, 0.5);
+            .icon {
+                text-align: center;
+                margin-right: 0.2rem;
+                SVG {
+                    $SVG-size: 0.7rem;
+                    width: $SVG-size;
+                    height: $SVG-size;
+                    vertical-align: middle;
+                    path {
+                        fill: rgb(49, 137, 225);
+                    }
+                }
+            }
+            .text {
+                text-wrap: nowrap;
+            }
+        }
+    }
+
+    .numbers-container {
+        width: 100%;
+        // background: rgba(30, 40, 55, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0.5rem;
+        }
+        .unit {
+            color: rgb(119, 197, 254);
+        }
+    }
+}

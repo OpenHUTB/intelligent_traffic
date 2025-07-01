@@ -1,0 +1,34 @@
+// @import "reset.scss";
+// @import "common.scss";
+
+header.header {
+    position: relative;
+    width: 100%;
+    height: 95px;
+    background-image: url(../assets/image/head-bg1.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+
+    .logo {
+        // border: 1px solid red;
+        position: absolute;
+        right: 20px;
+        top: 30%;
+        transform: translateY(-50%);
+        background-image: url(../assets/image/logo.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 191px;
+        height: 50px;
+        z-index: 10;
+    }
+    .weather {
+        // border: 1px solid red;
+        position: absolute;
+        right: 200px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 300px;
+    }
+}

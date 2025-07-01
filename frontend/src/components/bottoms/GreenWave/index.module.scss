@@ -1,0 +1,178 @@
+@use "../../../css/common.scss" as common;
+.greenWave {
+    border: 1px solid #ccc;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    .title {
+        @include common.bottomElementTitle;
+        background: url("../../../assets/image/bottom-title.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+
+    .mainContent {
+        width: 100%;
+        height: calc(100% - 46px);
+        background: url("../../../assets/image/bottom-bg-green.png") no-repeat;
+        background-size: 100% 100%;
+        padding: 50px 20px;
+
+        .contentWrapper {
+            display: flex;
+            height: 100%;
+            gap: 20px;
+        }
+
+        .leftPanel {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            justify-content: space-evenly;
+        }
+
+        .rightPanel {
+            border-left: 1px solid #666;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            justify-content: flex-start;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+            margin-left: 25px;
+        }
+
+        .functionSection {
+            .radioGroup {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+
+                .radioItem {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    color: #fff;
+                    cursor: pointer;
+
+                    input[type="radio"] {
+                        margin: 0;
+                        width: 20px;
+                        height: 20px;
+                        border: 2px solid #0effb0;
+                        border-radius: 50%;
+                        appearance: none; // 移除默认样式
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        background: transparent;
+                        cursor: pointer;
+                        position: relative;
+
+                        &:checked {
+                            border-color: #0effb0;
+
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 10px;
+                                height: 10px;
+                                border-radius: 50%;
+                                background: #0effb0;
+                            }
+                        }
+
+                        &:focus {
+                            outline: none;
+                            box-shadow: 0 0 0 2px rgba(0, 170, 0, 0.3);
+                        }
+                    }
+                }
+            }
+
+            .controlRow {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .controlItem {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex: 1;
+
+                .label {
+                    color: #fff;
+                    font-size: 16px;
+                    white-space: nowrap;
+                    min-width: 80px;
+                    font-weight: 500;
+                }
+
+                .selectBox {
+                    flex: 1;
+                    padding: 8px 12px;
+                    border: 1px solid #666;
+                    border-radius: 4px;
+                    background: rgba(0, 0, 0, 0.3);
+                    color: #fff;
+                    font-size: 14px;
+
+                    option {
+                        background: #333;
+                        color: #fff;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: #00aaff;
+                    }
+                }
+
+                .radioGroup {
+                    display: flex;
+                    gap: 10px;
+                    flex: 1;
+                }
+            }
+        }
+
+        .actionButton {
+            width: 143px;
+            height: 40px;
+            background: url("../../../assets/image/btn2.png") no-repeat center center;
+            background-size: 100% 100%;
+            font-size: 14px;
+
+            // 清除button默认样式
+            border: none;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            color: inherit; // 或者设置你想要的文字颜色
+
+            &.active {
+                background: url("../../../assets/image/btn1.png") no-repeat center center;
+                background-size: 100% 100%;
+            }
+
+            // 可选：移除点击时的默认效果
+            &:focus {
+                outline: none;
+            }
+
+            &:active {
+                outline: none;
+            }
+        }
+    }
+}

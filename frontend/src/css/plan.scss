@@ -1,0 +1,53 @@
+@import "reset";
+@import "common";
+// whole body style and layout
+@mixin mainLayout {
+    display: grid;
+    grid-template-rows: 4fr 3fr;
+}
+
+main {
+    z-index: 1;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+
+    .centre {
+        width: 100%;
+        height: 100%;
+    }
+    // left side style
+    #twinContainer {
+        @include border-animation;
+        width: 600px;
+        height: 400px;
+        display: none;
+        position: absolute;
+        left: 5px;
+        top: 9rem;
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    }
+    .leftSide {
+        @include contentBackground;
+        @include border-animation;
+        width: 400px;
+        position: absolute;
+        left: 5px;
+        top: 9rem;
+    }
+    // right side style
+    .rightSide {
+        @include contentBackground;
+        z-index: 2;
+        position: absolute;
+        right: 5px;
+        top: 8.5rem;
+    }
+}

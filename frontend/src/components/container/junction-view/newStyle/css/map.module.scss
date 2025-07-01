@@ -1,0 +1,9 @@
+@use "../../../../../css/common.scss" as common;
+.mapContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .title {
+        @include common.bottomElementTitle;
+    }
+}

@@ -1,0 +1,69 @@
+@use "../../../css/common.scss" as common;
+.trafficTrendContainer {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    @include common.rightElementSize;
+
+    .title {
+        @include common.bottomElementTitle;
+        text-align: center;
+    }
+    .mainContent {
+        width: 100%;
+        height: calc(100% - 40px);
+        background: url("../../../assets/image/bottom-bg-green.png") no-repeat center center;
+        background-size: 100% 100%;
+        padding: 0px 15px 10px 15px;
+    }
+    .rankContainer {
+        text-align: center;
+        display: grid;
+        grid-template-columns: 5fr 3fr 2fr;
+        gap: 10px;
+        align-items: center;
+        height: 44px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #aab6c7;
+        padding: 0 10px;
+        span {
+            text-align: left;
+        }
+    }
+    .listContainer {
+        // border: 1px solid #ccc;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        > div:nth-child(odd) {
+            background-color: rgba(115, 252, 253, 0.38);
+        }
+
+        .listItem {
+            display: grid;
+            grid-template-columns: 5fr 3fr 2fr;
+            height: 44px;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 0 10px;
+
+            span {
+                text-align: left;
+                line-height: 44px;
+            }
+            .trendBox {
+                text-align: left;
+                display: flex;
+                align-items: center;
+                svg {
+                    margin-left: 5px;
+                    width: 12px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+}

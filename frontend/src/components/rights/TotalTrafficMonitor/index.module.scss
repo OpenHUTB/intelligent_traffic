@@ -1,0 +1,26 @@
+@use "../../../css/common.scss" as common;
+.trafficJamContainer {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    @include common.rightElementSize;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .speedGuageContainer {
+        width: 100%;
+        height: 80%;
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        div {
+            // background-image: url("../../../../../assets/img/bg-guage2.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    }
+}
