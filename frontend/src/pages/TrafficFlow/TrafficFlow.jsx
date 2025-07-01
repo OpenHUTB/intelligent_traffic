@@ -7,6 +7,8 @@ import RightTopBtn from 'components/rights/RightTopBtn/RightTopBtn'
 import FlowAnalysis from 'components/rights/FlowAnalysis/FlowAnalysis'
 import FLowRuntime from 'components/rights/FlowRuntime/FLowRuntime'
 import FlowTrend from 'components/rights/FlowTrend/FlowTrend'
+import FlowSpeed from 'components/bottoms/FlowSpeed/FlowSpeed'
+
 export default function TrafficFlow() {
   const bigMapShow = useSelector((state) => state.map.bigMapShow)
   return (
@@ -15,7 +17,9 @@ export default function TrafficFlow() {
       <div className={styles.bottomBar}></div>
       <div className={styles.mainContent}>
         {bigMapShow && <Amap />}
-        <div className={styles.bottomContent}></div>
+        <div className={styles.bottomContent}>
+          <FlowSpeed />
+        </div>
         <div className={styles.rightContent}>
           <FunctionBar class={styles.functionBar} />
           <RightTopBtn headerTitle='交通流量智能分析设置' />

@@ -1,187 +1,233 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import alert from 'assets/image/alert.png'
+import * as echarts from 'echarts'
 
-export default function TrafficRank() {
-  // 生成今天内的随机时间
-  const generateRandomTimeToday = () => {
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    const randomMs = Math.floor(Math.random() * now.getTime() - today.getTime())
-    const randomTime = new Date(today.getTime() + randomMs)
-    return randomTime.toLocaleTimeString('zh-CN', { hour12: false }).slice(0, 5) // 格式: HH:MM
+export default function FlowSpeed() {
+  const generateRandomArray = (length, min, max) => {
+    return Array.from(
+      { length },
+      () => Math.floor(Math.random() * (max - min + 1)) + min
+    )
   }
 
-  const staticListItems = [
-    {
-      name: '逆行',
-      position: 'G60 k987',
-      number: '沪A12345',
-      status: '极高',
-      isAlert: '是',
-      isDeal: '否',
-      speed: '0',
-      time: generateRandomTimeToday(),
-    },
-    {
-      name: '异常停车',
-      position: 'G60 k987',
-      number: '湘A19B155',
-      status: '高',
-      isAlert: '是',
-      isDeal: '否',
-      speed: '20',
-      time: generateRandomTimeToday(),
-    },
-    {
-      name: '超高速',
-      status: '高',
-      position: 'G60 k984',
-      number: '湘A91812',
-      isAlert: '是',
-      isDeal: '否',
-      speed: '120',
-      time: generateRandomTimeToday(),
-    },
-    {
-      name: '超低速',
-      status: '普通',
-      position: 'G60 k988',
-      number: '湘E6L123',
-      isAlert: '否',
-      isDeal: '否',
-      speed: '10',
-      time: generateRandomTimeToday(),
-    },
-    {
-      name: '占用应急车道',
-      status: '普通',
-      position: 'G60 k985',
-      number: '湘A8L877',
-      isAlert: '否',
-      isDeal: '否',
-      speed: '30',
-      time: generateRandomTimeToday(),
-    },
-  ]
-
-  const scrollContainer = useRef(null)
-  const [currentItem, setCurrentItem] = useState(null)
+  const [randomCurrent, setRandomCurrent] = useState(
+    generateRandomArray(12, 30, 90)
+  )
+  const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 60))
 
   useEffect(() => {
-    const startAutoScroll = () => {
-      const scrollAmount = 2.5 // Adjust for faster/slower scrolling
+    window.addEventListener('lightTimerChanged', (event) => {
+      const key = Object.keys(event.detail)[0]
+      const isGreen = event.detail[key].isGreen
 
-      const interval = setInterval(() => {
-        const container = scrollContainer.current
-        if (container) {
-          // When you've scrolled to the end of the original content, reset to the top
-          if (container.scrollTop >= container.scrollHeight / 2) {
-            container.scrollTop = 0 // Set to start without user noticing
-          } else {
-            container.scrollTop += scrollAmount
-          }
-        }
-      }, 300) // Adjust the interval for faster/slower scrolling
+      if (isGreen) {
+        setRandomCurrent(generateRandomArray(12, 0, 70))
+        setRandomToday(generateRandomArray(12, 0, 50))
+      } else {
+        setRandomCurrent(generateRandomArray(12, 0, 120))
+        setRandomToday(generateRandomArray(12, 0, 90))
+      }
+    })
+  }, [randomCurrent, randomToday])
 
-      return interval
-    }
-
-    const intervalId = startAutoScroll()
-
-    const highStatusItems = staticListItems.filter(
-      (item) => item.status === '极高' || item.status === '高'
+  useEffect(() => {
+    // Initialize the bar chart (left side)
+    const trafficFlowBarChart = echarts.init(
+      document.getElementById('speedbarchart')
     )
 
-    // 函数：随机选择一个对象
-    const getRandomItem = () => {
-      const randomIndex = Math.floor(Math.random() * highStatusItems.length)
-      return highStatusItems[randomIndex]
+    // Initialize the line chart (right side)
+    const trafficFlowLineChart = echarts.init(
+      document.getElementById('speedlinechart')
+    )
+
+    const timeLabels = [
+      '00:00',
+      '01:00',
+      '02:00',
+      '03:00',
+      '04:00',
+      '05:00',
+      '06:00',
+      '07:00',
+      '08:00',
+      '09:00',
+      '10:00',
+      '11:00',
+      '12:00',
+    ]
+
+    // Bar chart configuration (left side)
+    const barGraphOption = {
+      title: {
+        text: '单位：分钟',
+        textStyle: { color: '#FFF', fontSize: 13, fontWeight: 'normal' },
+      },
+      legend: {
+        show: true,
+        data: ['当前流量', '周均流量'],
+        textStyle: { color: '#FFF' },
+        top: '0',
+        right: '0',
+      },
+      xAxis: {
+        type: 'category',
+        data: timeLabels,
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisLabel: {
+          rotate: 45,
+          textStyle: { color: '#ccc' },
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisTick: {
+          show: true,
+          length: 5,
+        },
+        splitNumber: 3,
+        splitLine: {
+          lineStyle: {
+            color: '#777',
+          },
+        },
+        splitArea: {
+          show: true,
+          areaStyle: {
+            color: ['rgba(56, 67, 87,0.1)', 'rgba(56, 67, 87,0.1)'],
+          },
+        },
+      },
+      grid: { left: '8%', right: '4%', bottom: '15%', containLabel: true },
+      series: [
+        {
+          name: '当前流量',
+          data: randomCurrent,
+          type: 'bar',
+          color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+            { offset: 0, color: '#00F2FF20' },
+            { offset: 1, color: '#00F2FF' },
+          ]),
+          barWidth: '35%',
+        },
+        {
+          name: '周均流量',
+          data: randomToday,
+          type: 'bar',
+          color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+            { offset: 0, color: '#0EFFB020' },
+            { offset: 1, color: '#0EFFB0' },
+          ]),
+          barWidth: '35%',
+        },
+      ],
     }
 
-    // 设置初始显示的对象
-    setCurrentItem(getRandomItem())
+    // Line chart configuration (right side)
+    const lineGraphOption = {
+      title: {
+        text: '单位：分钟',
+        textStyle: { color: '#FFF', fontSize: 13, fontWeight: 'normal' },
+      },
+      legend: {
+        show: true,
+        data: ['当前流量', '周均流量'],
+        textStyle: { color: '#FFF' },
+        top: '0',
+        right: '0',
+      },
+      xAxis: {
+        type: 'category',
+        data: timeLabels,
+        axisLine: { lineStyle: { color: '#ccc' } },
+        splitNumber: 4,
+        splitLine: {
+          lineStyle: {
+            color: '#ccc',
+          },
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { lineStyle: { color: '#ccc' } },
+        axisTick: {
+          show: true,
+          length: 5,
+        },
+        splitNumber: 3,
+        splitLine: {
+          lineStyle: {
+            color: '#777',
+          },
+        },
+        splitArea: {
+          show: true,
+          areaStyle: {
+            color: ['rgba(56, 67, 87,0.1)', 'rgba(56, 67, 87,0.1)'],
+          },
+        },
+      },
+      grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+      series: [
+        {
+          name: '当前流量',
+          data: randomCurrent,
+          type: 'line',
+          smooth: true,
+          showSymbol: false,
+          color: '#00F2FF',
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#37F2FF6B' },
+              { offset: 1, color: '#4A83CE00' },
+            ]),
+          },
+        },
+        {
+          name: '周均流量',
+          data: randomToday,
+          type: 'line',
+          smooth: true,
+          color: '#0EFFB0',
+          showSymbol: false,
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#0EFFB0' },
+              { offset: 1, color: '#90FF8610' },
+            ]),
+          },
+        },
+      ],
+    }
 
-    // 每 3 秒钟更新一次显示的对象
-    const randomItemIntervalId = setInterval(() => {
-      setCurrentItem(getRandomItem())
-    }, 3000)
+    trafficFlowBarChart.setOption(barGraphOption)
+    trafficFlowLineChart.setOption(lineGraphOption)
 
-    // 清除定时器
+    // Clean up function
     return () => {
-      clearInterval(intervalId)
-      clearInterval(randomItemIntervalId)
+      trafficFlowBarChart.dispose()
+      trafficFlowLineChart.dispose()
     }
-  }, [])
-
-  const renderList = staticListItems.map((item, index) => {
-    return (
-      <div className={styles.listItem} key={index}>
-        <span className={styles.rank}>{index + 1}</span>
-        <span className={styles.name}>{item.name}</span>
-        <span className={styles.positionText}>{item.position}</span>
-        <span className={styles.number}>{item.number}</span>
-        <span
-          className={`${styles.isAlert} ${
-            item.isAlert === '是' ? styles.alertYes : styles.alertNo
-          }`}
-        >
-          {item.isAlert}
-        </span>
-        <span
-          className={`${styles.isDeal} ${
-            item.isDeal === '是' ? styles.dealYes : styles.dealNo
-          }`}
-        >
-          {item.isDeal}
-        </span>
-        <span className={styles.speed}>{item.speed} km/h</span>
-        <span className={styles.time}>{item.time}</span>
-        <span
-          className={`${styles.status} ${
-            item.status.includes('极')
-              ? styles.red
-              : item.status.includes('高')
-              ? styles.yellow
-              : styles.green
-          }`}
-        >
-          {item.status}
-        </span>
-      </div>
-    )
-  })
-
-  if (!currentItem) {
-    return <div>加载中...</div>
-  }
+  }, [randomCurrent, randomToday])
 
   return (
-    <div className={styles.trafficViolationContainer}>
+    <div className={styles.trafficVolume}>
       <div className={styles.title}>
-        <span>实时告警信息</span>
+        <span>路口交通流量</span>
       </div>
-      <div className={styles.emergency}>
-        <img className={styles.gif} src={alert} alt='' />
-        <span
-          className={styles.alertText}
-        >{`${currentItem.name}   ${currentItem.position}   ${currentItem.status} `}</span>
-      </div>
-      <div className={styles.mainContent}>
-        <div className={styles.rankContianer}>
-          <span>序号</span>
-          <span className={styles.violationName}>类型</span>
-          <span className={styles.violationPosition}>位置</span>
-          <span className={styles.violationNumber}>车牌号</span>
-          <span className={styles.violationAlert}>报警</span>
-          <span className={styles.violationDeal}>处理</span>
-          <span className={styles.violationSpeed}>车速</span>
-          <span className={styles.violationTime}>发生时间</span>
-          <span>告警级别</span>
+      <div className={styles.contentContainer}>
+        <div className={styles.chartContainer}>
+          <div
+            id='speedbarchart'
+            style={{ width: '100%', height: '100%' }}
+          ></div>
         </div>
-        <div className={styles.listContainer} ref={scrollContainer}>
-          {renderList}
-          {/* {renderList} */}
+        <div className={styles.chartContainer}>
+          <div
+            id='speedlinechart'
+            style={{ width: '100%', height: '100%' }}
+          ></div>
         </div>
       </div>
     </div>

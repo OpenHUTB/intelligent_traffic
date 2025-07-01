@@ -43,7 +43,7 @@ nbdist/
 *.swp
 
 !*/build/*.java
-!*/build/*.html
+!*/build/*.html 
 !*/build/*.xml
 ruoyi-ui/public/video/identify.mp4
 
