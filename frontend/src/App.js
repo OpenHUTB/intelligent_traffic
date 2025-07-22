@@ -14,6 +14,8 @@ import Nav from 'components/Nav'
 import DigitalTwinPage from 'pages/DigitalTwin/DigitalTwin'
 import TrafficFlow from 'pages/TrafficFlow/TrafficFlow'
 
+import JunctionLight from 'pages/JunctionLight/JunctionLight'
+
 export default function App() {
   // 智慧交通监测
   let Home = () => {
@@ -31,10 +33,10 @@ export default function App() {
   const Junction = () => {
     return (
       <>
-        {/* <Header />
+        <Header />
         <Nav />
-        <JunctionMain />
-        <TextArea /> */}
+        <JunctionLight></JunctionLight>
+        <TextArea />
       </>
     )
   }
@@ -49,6 +51,7 @@ export default function App() {
       </>
     )
   }
+  // 实景三维动态巡查
   const Cruiser = () => {
     return (
       <>
@@ -59,6 +62,7 @@ export default function App() {
       </>
     )
   }
+
   const Highway = () => {
     return (
       <>
