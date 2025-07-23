@@ -1,15 +1,19 @@
 @use "../../../css/common.scss" as common;
 
 .junctionTimeprogress {
+    overflow: hidden;
+    margin-left: 20px;
     position: relative;
     z-index: 2;
     @include common.rightElementSize;
-    height: 430px;
+    height: 100%;
+    width: 1150px;
     .title {
         @include common.bottomElementTitle;
+        padding-left: 25px;
     }
     .progressMain {
-        height: 300px; // 给图表一个固定高度
+        height: 100%; // 给图表一个固定高度
         .modeContainer {
             width: 100%;
             display: grid;

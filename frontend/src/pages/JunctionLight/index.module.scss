@@ -43,6 +43,8 @@
             margin-bottom: 0px;
             margin-left: 46px;
             transform: none !important; // 强制移除任何变换
+            display: flex;
+            justify-content: space-between;
         }
         .rightContent {
             border: 1px solid #ccc;

@@ -1,0 +1,56 @@
+@use "../../../css/common.scss" as common;
+@mixin secondTitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+.junctionOptstrategy {
+    width: 100%;
+    height: 300px;
+    // border: 1px solid #ccc;
+    padding: 10px 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    header {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .dot {
+        width: 7px;
+        height: 7px;
+        display: inline-block;
+        margin-right: 5px;
+        background-color: black;
+    }
+    .preStrategyTitle {
+        @include secondTitle;
+        color: #ffd30e;
+        .dot {
+            background-color: #ffd30e;
+        }
+    }
+    .currentStrategyTitle {
+        @include secondTitle;
+        color: #0effb0;
+        .dot {
+            background-color: #0effb0;
+        }
+    }
+    .optResultTitle {
+        @include secondTitle;
+        color: #4eb3ff;
+        .dot {
+            background-color: #4eb3ff;
+        }
+    }
+    .content {
+        width: 100%;
+        height: 42px;
+        background-color: #7bfffd20;
+        line-height: 42px;
+    }
+}

@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux'
 import styles from './index.module.scss'
 import RightTopBtn from 'components/rights/RightTopBtn/RightTopBtn'
 import JunctionTimeprogress from 'components/rights/JunctionTimeprogress/JunctionTimeprogress'
+import JunctionOptResult from 'components/rights/JunctionOptResult/JunctionOptResult'
+import JunctionOptstrategy from 'components/rights/JunctionOptstrategy/JunctionOptstrategy'
+import JunctionOpt from 'components/bottoms/JunctionOpt/JunctionOpt'
+import JunctionGreenFlow from 'components/bottoms/JunctionGreenFLow/JunctionGreenFlow'
 export default function JunctionLight() {
   const bigMapShow = useSelector((state) => state.map.bigMapShow)
   return (
@@ -13,11 +17,16 @@ export default function JunctionLight() {
       <div className={styles.bottomBar}></div>
       <div className={styles.mainContent}>
         {bigMapShow && <Amap />}
-        <div className={styles.bottomContent}></div>
+        <div className={styles.bottomContent}>
+          <JunctionOpt />
+          <JunctionGreenFlow />
+        </div>
         <div className={styles.rightContent}>
           <FunctionBar class={styles.functionBar} />
           {/* <RightTopBtn headerTitle='信控模式管理' /> */}
           <JunctionTimeprogress />
+          <JunctionOptResult />
+          {/* <JunctionOptstrategy /> */}
         </div>
       </div>
     </div>
