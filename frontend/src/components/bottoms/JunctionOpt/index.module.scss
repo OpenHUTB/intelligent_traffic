@@ -16,8 +16,25 @@
     scrollbar-width: none;
 
     .title {
-        @include common.bottomElementTitle;
-        padding-left: 25px;
+        width: 100%;
+        height: 46px;
+        background: url("../../../assets/image/bottom-title.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+        span {
+            font-size: 22px;
+            font-weight: 700;
+            margin-left: 2rem;
+            background: linear-gradient(to bottom, #ffffff, #73fcfd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
     }
     .dot {
         width: 7px;

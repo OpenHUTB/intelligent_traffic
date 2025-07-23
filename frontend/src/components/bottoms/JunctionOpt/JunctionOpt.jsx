@@ -3,7 +3,9 @@ import styles from './index.module.scss'
 export default function JunctionOpt() {
   return (
     <div className={styles.junctionOptstrategy}>
-      <header className={styles.title}>信控优化策略</header>
+      <header className={styles.title}>
+        <span>信控优化策略</span>
+      </header>
       <main>
         <div className={styles.preStrategy}>
           <div className={styles.preStrategyTitle}>

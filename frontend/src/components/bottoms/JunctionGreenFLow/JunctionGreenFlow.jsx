@@ -122,7 +122,7 @@ export default function JunctionGreenFlow() {
           },
         },
         axisLabel: {
-          show: true,
+          show: false,
           color: '#ffffff',
           fontSize: 12,
           formatter: '{value}s',
@@ -139,6 +139,7 @@ export default function JunctionGreenFlow() {
           show: true,
           lineStyle: {
             color: '#ffffff',
+            type: 'dashed',
           },
         },
         axisTick: {
@@ -177,7 +178,10 @@ export default function JunctionGreenFlow() {
             }
           }),
           label: {
-            show: false,
+            show: true,
+            position: 'inside',
+            color: '#ffffff',
+            fontSize: 10,
           },
           barHeight: 10,
           barWidth: '10px',
@@ -254,7 +258,7 @@ export default function JunctionGreenFlow() {
         <div
           ref={chartRef}
           className={styles.chartContainer}
-          style={{ width: '100%', height: '280px' }}
+          style={{ width: '100%', height: '250px' }}
         />
       </main>
     </div>
