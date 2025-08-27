@@ -1,151 +1,274 @@
+## 智慧交通监测页：
 
-路口视频播放控制，优化前视频，优化后视频：
-preVideo();
-optVideo();
+1. 修改区间速度
+接收一个对象作为参数，示例如下
+updateDistrictSpeed({
+    congestionIndex: 8,
+    speed: 30,
+  })
 
 
-1. 修改效果评价组件 evaluationDataChanged(object)
-接收一个对象作为参数，对象中包含四个属性，如下示例
-evaluationDataChanged(
-   {
-  preIndex: 10,    
-  optIndex: 5,    
-  preSpeed: 15, 
-  optSpeed: 25,
-  preContent: "优化前控制方案", 
-  optContent: "优化后控制方案" 
-}
-)
+2. 修改交通数据感知，单个修改
+updateTrafficInfo('index',3)修改指数
+updateTrafficInfo('road',3)修改拥堵里程
+updateTrafficInfo('congestion',11)修改拥堵路段总数
+updateTrafficInfo('time',111)修改拥堵时长
 
-2. 修改协调效果跟踪,接收一个对象作为参数resultTrackDataChanged(object)
-
-resultTrackDataChanged(
-     {
-  timeRange: '14:30:00-14:51:43',
-  district1: '岳麓西大道',
-  district2: '岳麓西大道',
-  direction: '东向西', 
-  data: [
+3. 修改道路拥堵情况,接收一个数组作为参数，示例如下：
+signalRoadDataChanged([
     {
-      name: '东向西',
-      averageTime: '1.5',
-      timeCompare: '5%',
-      averageParking: '2',
-      parkingCompare: '5%',
-      timeDirection: true,
-      parkingDirection: true,
+      name: '岳麓西大道123',
+      index: '2',
+      distance: '5',
+      status: '否',
+      speed: '33',
+      trend: '-3%',
     },
     {
-      name: '西向东',
-      averageTime: '1.5',
-      timeCompare: '5%',
-      averageParking: '2',
-      parkingCompare: '5%',
-      timeDirection: true,
-      parkingDirection: true,
+      name: '旺龙路',
+      index: '1',
+      distance: '2',
+      status: '异常',
+      speed: '5',
+      trend: '-3%',
     },
     {
-      name: '东向西',
-      averageTime: '1.5',
-      timeCompare: '5%',
-      averageParking: '2',
-      parkingCompare: '5%',
-      timeDirection: true,
-      parkingDirection: true,
+      name: '尖山路',
+      index: '5',
+      distance: '5',
+      status: '否',
+      speed: '15',
+      trend: '-3%',
     },
     {
-      name: '北向南',
-      averageTime: '1.5',
-      timeCompare: '5%',
-      averageParking: '2',
-      parkingCompare: '5%',
-      timeDirection: true,
-      parkingDirection: true,
+      name: '望青路',
+      index: '6',
+      distance: '5',
+      status: '否',
+      speed: '20',
+      trend: '-3%',
     },
-  ],
-}
-)
-
-
-
-
-5. 更改路口信息，junctionInfoDataChanged()
-接收一个对象作为参数，对象中包含四个属性如下示例
-示例代码如下：
-
-junctionInfoDataChanged(
     {
-    district1: '青山路',
-    district2: '岳麓西大道',
-    carLanes: 4,
-    pedestrianLanes: 2,
-  }
-)
+      name: '青山路',
+      index: '7',
+      distance: '5',
+      status: '否',
+      speed: '62',
+      trend: '-11113%',
+    },
+  ])
 
-6. 更改控制策略：controlStrategyDataChanged(object)
-接收一个对象作为参数，对象中包含四个属性如下示例：
 
-controlStrategyDataChanged(
+
+4. 修改实时告警信息，接受数组作为参数，示例如下：
+scrollAlertDataChanged([
     {
-    day: '星期三',
-    time: '晚高峰(17:00-19:00)',
-    controlMode1: '辅路优先',
-    controlMode2: '感应控制'
-  }
-)
+      name: '逆行',
+      position: 'G60 k987',
+      number: '沪A12345',
+      status: '极高',
+      isAlert: '是',
+      isDeal: '否',
+      speed: '0',
+      time: "07:11",
+    },
+    {
+      name: '异常停车',
+      position: 'G60 k987',
+      number: '湘A19B155',
+      status: '高',
+      isAlert: '是',
+      isDeal: '否',
+      speed: '20',
+      time:"09:01",
+    },
+    {
+      name: '超高速',
+      status: '高',
+      position: 'G60 k984',
+      number: '湘A91812',
+      isAlert: '是',
+      isDeal: '否',
+      speed: '23123',
+      time: "23:11",
+    },
+    {
+      name: '超低速',
+      status: '普通',
+      position: 'G60 k988',
+      number: '湘E6L123',
+      isAlert: '否',
+      isDeal: '否',
+      speed: '123110',
+      time:"09:28",
+    },
+    {
+      name: '占用应急车道',
+      status: '普通',
+      position: 'G60 k985',
+      number: '湘A8L877',
+      isAlert: '否',
+      isDeal: '否',
+      speed: '3121320',
+      time: "07:11",
+    },
+  ])
 
-7. 更改红绿灯控制和时间配比（这两个模块是联动一起的）示例如下：
+  ## 交通流量智能分析 页面
+  1. 修改交通速度，传入两个数组作为参数，每个数组为12个元素，第一个数组为当前速度，第二个速度为周均速度
+  updateFlowSpeed( [62,60,59,58,57,56,65,70,68,66,64,63], [50,49,48,47,47,46,53,57,55,54,53,52] )
 
-lightControlDataChanged(
-     {
+  2. 修改路口交通流量，按照如下数据格式传入，current数组表示当前流量，weekly数组表示周均流量
+  flowAnalysisChanged({ flow: { current: [130,125,120,118,115,112,160,190,175,168,162,158], weekly: [110,105,100,98,95,93,130,150,140,135,130,125] } })
+
+  3.修改实时交通流量监测
+  flowRuntimeChanged([
+    { location: '旺龙路1', totalvolume: 120 },
+    { location: '望青路1', totalvolume: 1510 },
+    { location: '尖山路', totalvolume: 1801 },
+    { location: '岳麓大1道', totalvolume: 1510 },
+    { location: '青山1路', totalvolume: 170 },
+    { location: '望安1路', totalvolume: 160 },
+  ])
+
+
+  4.修改信控路口
+signalJunctionDataChanged([
+    {
+      name: '尖山路与岳麓西大道交叉口',
+      index: 1111,
+      trend: 18.53,
+      trendDirection: true,
+    },
+    {
+      name: '青山路与尖山路交叉口',
+      index: 3,
+      trend: 20.53,
+      trendDirection: true,
+    },
+    {
+      name: '旺龙路与青山路交叉口',
+      index: 4,
+      trend: 15.53,
+      trendDirection: false,
+    },
+    {
+      name: '旺龙路与青山路交叉口',
+      index: 4,
+      trend: 15.53,
+      trendDirection: false,
+    },
+    {
+      name: '旺龙路与青山路交叉口',
+      index: 4,
+      trend: 15.53,
+      trendDirection: true,
+    },
+  ])
+
+  ##智慧路口信控优化
+  1.修改当前绿波路段
+  junctionGreenFlowChanged([
+  {
+    name: '尖山路',
+    redDurationTime: 146,
+    greenDurationTime: 9,
+    yellowDurationTime: 3,
+  },
+  {
+    name: '旺龙路',
+    redDurationTime: 84,
+    greenDurationTime: 71,
+    yellowDurationTime: 3,
+  },
+  {
+    name: '望青路',
+    redDurationTime: 110,
+    greenDurationTime: 45,
+    yellowDurationTime: 3,
+  },
+  {
+    name: '岳麓西大道1',
+    redDurationTime: 11110,
+    greenDurationTime: 35,
+    yellowDurationTime: 3,
+  },
+  {
+    name: '天顶路11',
+    redDurationTime: 110,
+    greenDurationTime: 40,
+    yellowDurationTime: 3,
+  },
+])
+
+2.修改信控优化策略,接收一个对象来修改三个区间的文字，示例如下
+junctionOptChanged({
+  previousPlanText: '路线1，路线2，路线3，绿波持续时间1511分钟',
+  currentPlanText:
+    '路口1： 红灯40秒，绿灯12秒，黄灯3秒\n路口21： 红灯351秒，绿灯15秒，黄灯3秒',
+  optimizeResultText: '通过区间时间与停车次数统计',
+})
+
+3.修改信控管理模式的时间轴 ,示例如下
+junctionTimeprogressChanged(
+    {
     north: {
-        left: {
-            redDurationTime: 200,
-            greenDurationTime: 30,
-            initialLight: 'green',
-        },
-        forward: {
-            redDurationTime: 25,
-            greenDurationTime: 35,
-            initialLight: 'red',
-        },
+      left: {
+        redDurationTime: 10,
+        greenDurationTime: 20,
+        initialLight: 'red',
+      },
+      forward: {
+        redDurationTime: 140,
+        greenDurationTime: 120,
+        initialLight: 'green',
+      },
     },
     east: {
-        left: {
-            redDurationTime: 28,
-            greenDurationTime: 38,
-            initialLight: 'red',
-        },
-        forward: {
-            redDurationTime: 33,
-            greenDurationTime: 43,
-            initialLight: 'green',
-        },
+      left: {
+        redDurationTime: 120,
+        greenDurationTime: 40,
+        initialLight: 'red',
+      },
+      forward: {
+        redDurationTime: 130,
+        greenDurationTime: 130,
+        initialLight: 'green',
+      },
     },
     south: {
-        left: {
-            redDurationTime: 32,
-            greenDurationTime: 42,
-            initialLight: 'red',
-        },
-        forward: {
-            redDurationTime: 37,
-            greenDurationTime: 47,
-            initialLight: 'green',
-        },
+      left: { redDurationTime: 90, greenDurationTime: 70, initialLight: 'red' },
+      forward: {
+        redDurationTime: 90,
+        greenDurationTime: 70,
+        initialLight: 'green',
+      },
     },
     west: {
-        left: {
-            redDurationTime: 25,
-            greenDurationTime: 35,
-            initialLight: 'red',
-        },
-        forward: {
-            redDurationTime: 30,
-            greenDurationTime: 40,
-            initialLight: 'green',
-        },
-    },
-}
-)
+      left: {
+        redDurationTime: 110,
+        greenDurationTime: 135,
+        initialLight: 'red',
+      },
+      forward: {
+        redDurationTime: 10,
+        greenDurationTime: 140,
+        initialLight: 'green',
+      },
+    }
+})
+
+
+4.修改信控优化效果下的折线图,currentFlow表示当前流量，weekAvgFlow表示周均流量
+junctionOptResultChanged({
+  currentFlow: [10, 48, 45, 43, 40, 38, 55, 60, 58, 57, 52, 50, 19],
+  weekAvgFlow: [26, 44, 42, 40, 39, 37, 50, 54, 53, 52, 48, 47, 16],
+})
+
+5. 修改信控优化效果下的信用优化策略
+junctionOptstrategyChanged({
+  previousStr: '工作日场景，晴天模式111，手动调控，直行与左转同级控制',
+  currentOptr: '周末晚高峰场景，夜晚雨天模式11，自动调优，直行优先',
+  result: '通过区间时间与停车次数统计111',
+})
 

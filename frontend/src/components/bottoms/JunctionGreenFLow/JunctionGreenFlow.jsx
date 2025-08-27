@@ -2,21 +2,14 @@ import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import styles from './index.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import { setLight } from 'stores/junctionLight/lightControlSlice'
-import optIcon from 'assets/image/opt-icon.png'
-import manualIcon from 'assets/image/Frame.png'
+import { setLight } from 'stores/storesNewUI/lightControlSlice.js'
 
 export default function JunctionGreenFlow() {
   const chartRef = useRef(null)
   const chartInstance = useRef(null)
-  const trafficLights = useSelector((state) => state.lightControl)
-
-  console.log('trafficlights:', trafficLights)
-  console.log('trafficlights map:', trafficLights instanceof Map)
-  console.log('trafficlights keys:', Object.keys(trafficLights))
-
-  // 路名数组，按照你要求的顺序
-  const roadNames = ['尖山路', '旺龙路', '望青路', '岳麓西大道', '天顶路']
+  const dispatch = useDispatch()
+  // 现在 slice 返回的是一个包含路段对象的数组
+  const roads = useSelector((state) => state.greenFlow)
 
   // 转换数据为echarts格式，计算每个方向的偏移量
   const prepareChartData = () => {
@@ -24,46 +17,54 @@ export default function JunctionGreenFlow() {
     const redData = []
     const yellowData = []
     const greenData = []
-    const offsets = [] // 存储每个方向的x轴偏移量
+    const offsets = []
 
     let currentOffset = 0
-    let roadIndex = 0
 
-    Object.entries(trafficLights).forEach(([direction, movements]) => {
-      Object.entries(movements).forEach(([movement, light]) => {
-        //只处理前五个数据
-        if (roadIndex >= 5) {
-          return // 跳过多余的数据
-        }
-        const { redDurationTime, greenDurationTime } = light
-        const yellowDuration = 3
-
-        // 使用路名替代方向和转向名称
-        const roadName = roadNames[roadIndex]
-        categories.push(roadName)
-        roadIndex++
-
-        offsets.push(currentOffset)
-
-        // 保持原来的堆叠数据格式
-        redData.push(redDurationTime)
-        yellowData.push(yellowDuration)
-        greenData.push(greenDurationTime)
-
-        // 计算下一个方向的偏移量（当前方向的总时长）
-        currentOffset += redDurationTime + yellowDuration + greenDurationTime
-      })
+    // 只取前五个（如果不足五个就全取）
+    roads.slice(0, 5).forEach((road) => {
+      const {
+        name,
+        redDurationTime,
+        greenDurationTime,
+        yellowDurationTime = 3,
+      } = road
+      categories.push(name)
+      offsets.push(currentOffset)
+      redData.push(redDurationTime)
+      yellowData.push(yellowDurationTime)
+      greenData.push(greenDurationTime)
+      currentOffset += redDurationTime + yellowDurationTime + greenDurationTime
     })
 
-    // 反转数组，让第一个数据在y轴最高点
-    categories.reverse()
-    redData.reverse()
-    yellowData.reverse()
-    greenData.reverse()
-    offsets.reverse()
-
-    return { categories, redData, yellowData, greenData, offsets }
+    // 反转，使第一个在顶部
+    return {
+      categories: categories.slice().reverse(),
+      redData: redData.slice().reverse(),
+      yellowData: yellowData.slice().reverse(),
+      greenData: greenData.slice().reverse(),
+      offsets: offsets.slice().reverse(),
+    }
   }
+
+  useEffect(() => {
+    const handleSignalJunctionDataChanged = (event) => {
+      console.log('junctionGreenFlow:', event.detail)
+      dispatch(setLight(event.detail))
+    }
+
+    window.addEventListener(
+      'junctionGreenFlowChanged',
+      handleSignalJunctionDataChanged
+    )
+
+    return () => {
+      window.removeEventListener(
+        'junctionGreenFlowChanged',
+        handleSignalJunctionDataChanged
+      )
+    }
+  }, [dispatch])
 
   useEffect(() => {
     if (!chartRef.current) return
@@ -237,7 +238,7 @@ export default function JunctionGreenFlow() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [trafficLights])
+  }, [roads])
 
   // 组件卸载时销毁echarts实例
   useEffect(() => {

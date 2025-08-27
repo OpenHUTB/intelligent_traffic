@@ -9,9 +9,12 @@ import TrafficCongestionData from 'components/rights/TrafficCongestionData/Traff
 import Amap from 'components/AMap/Amap'
 import { useSelector } from 'react-redux'
 import { setBigMapShow } from 'stores/junctionLight/mapSlice'
+import { useDispatch } from 'react-redux'
 
 export default function TrafficDetect() {
   const bigMapShow = useSelector((state) => state.map.bigMapShow)
+  const dispatch = useDispatch()
+  // 监听大地图显示状态变化
   return (
     <div className={styles.trafficDetectContainer}>
       <div className={styles.leftBar}></div>

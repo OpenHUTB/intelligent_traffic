@@ -1,36 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styles from './index.module.scss'
 import JunctionOptstrategy from 'components/rights/JunctionOptstrategy/JunctionOptstrategy'
 import * as echarts from 'echarts'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { setBothFlows } from 'stores/storesNewUI/junctionOptResultSlice'
 export default function JunctionOptResult() {
-  const generateRandomArray = (length, min, max) => {
-    return Array.from(
-      { length },
-      () => Math.floor(Math.random() * (max - min + 1)) + min
-    )
-  }
-
-  const [randomCurrent, setRandomCurrent] = useState(
-    generateRandomArray(12, 30, 90)
+  // 从 redux 获取折线图数据
+  const dispatch = useDispatch()
+  const { currentFlow, weekAvgFlow } = useSelector(
+    (state) => state.junctionOptResult
   )
-  const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 60))
-  useEffect(() => {
-    window.addEventListener('lightTimerChanged', (event) => {
-      const key = Object.keys(event.detail)[0]
-      const isGreen = event.detail[key].isGreen
-      //   const index = parseInt(key.match(/\d+/)[0]) - 1
-      //   setActiveIndex(index)
 
-      if (isGreen) {
-        setRandomCurrent(generateRandomArray(12, 0, 70))
-        setRandomToday(generateRandomArray(12, 0, 50))
-      } else {
-        setRandomCurrent(generateRandomArray(12, 0, 120))
-        setRandomToday(generateRandomArray(12, 0, 90))
-      }
-    })
-  }, [randomCurrent, randomToday])
+  useEffect(() => {
+    const handleJunctionOptResultChanged = (event) => {
+      console.log('junctionOptResultChanged', event.detail)
+      dispatch(setBothFlows(event.detail))
+    }
+
+    window.addEventListener(
+      'junctionOptResultChanged',
+      handleJunctionOptResultChanged
+    )
+
+    return () => {
+      window.removeEventListener(
+        'junctionOptResultChanged',
+        handleJunctionOptResultChanged
+      )
+    }
+  }, [dispatch])
+
   useEffect(() => {
     // Initialize the line chart
     const trafficFlowLineChart = echarts.init(
@@ -98,50 +97,36 @@ export default function JunctionOptResult() {
       series: [
         {
           name: '当前流量',
-          data: randomCurrent,
+          data: currentFlow,
           type: 'line',
           smooth: true,
           showSymbol: false,
           color: '#00F2FF',
           areaStyle: {
-            color: new echarts.graphic.LinearGradient(
-              0,
-              0,
-              0,
-              1, // x1, y1, x2, y2 - defines the direction of the gradient
-              [
-                { offset: 0, color: '#37F2FF6B' }, // starting color
-                { offset: 1, color: '#4A83CE00' },
-                // ending color
-              ]
-            ),
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#37F2FF6B' },
+              { offset: 1, color: '#4A83CE00' },
+            ]),
           },
         },
         {
           name: '周均流量',
-          data: randomToday,
+          data: weekAvgFlow,
           type: 'line',
           smooth: true,
           color: '#0EFFB0',
           showSymbol: false,
           areaStyle: {
-            color: new echarts.graphic.LinearGradient(
-              0,
-              0,
-              0,
-              1, // x1, y1, x2, y2 - defines the direction of the gradient
-              [
-                { offset: 0, color: '#0EFFB0' }, // starting color
-                { offset: 1, color: '#90FF8610' },
-                // ending color
-              ]
-            ),
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#0EFFB0' },
+              { offset: 1, color: '#90FF8610' },
+            ]),
           },
         },
       ],
     }
     trafficFlowLineChart.setOption(lineGraphOption)
-  }, [randomCurrent, randomToday])
+  }, [currentFlow, weekAvgFlow])
 
   return (
     <div className={styles.trafficVolume}>

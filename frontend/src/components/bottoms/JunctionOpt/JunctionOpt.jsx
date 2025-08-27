@@ -1,6 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import styles from './index.module.scss'
+import { setAllTexts } from 'stores/storesNewUI/junctionOptSlice'
+// 展示型组件：数据来自 junctionOpt slice
 export default function JunctionOpt() {
+  const { previousPlanText, currentPlanText, optimizeResultText } = useSelector(
+    (state) => state.junctionOpt
+  )
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const handleJunctionOptChanged = (event) => {
+      console.log('junctionOptChanged', event.detail)
+      dispatch(setAllTexts(event.detail))
+    }
+
+    window.addEventListener('junctionOptChanged', handleJunctionOptChanged)
+
+    return () => {
+      window.removeEventListener('junctionOptChanged', handleJunctionOptChanged)
+    }
+  }, [dispatch])
+
   return (
     <div className={styles.junctionOptstrategy}>
       <header className={styles.title}>
@@ -12,9 +33,7 @@ export default function JunctionOpt() {
             <span className={styles.dot}></span>
             <span className={styles.text}>原有配时方案</span>
           </div>
-          <div className={styles.content}>
-            路线1，路线2，路线3，绿波持续时间15分钟
-          </div>
+          <div className={styles.content}>{previousPlanText}</div>
         </div>
         <div className={styles.currentStrategy}>
           <div className={styles.currentStrategyTitle}>
@@ -22,9 +41,9 @@ export default function JunctionOpt() {
             <span className={styles.text}>当前绿波方案</span>
           </div>
           <div className={styles.content}>
-            路口1： 红灯40秒，绿灯12秒，黄灯3秒
-            <br />
-            路口2： 红灯35秒，绿灯15秒，黄灯3秒
+            {currentPlanText.split('\n').map((line, idx) => (
+              <div key={idx}>{line}</div>
+            ))}
           </div>
         </div>
         <div className={styles.optResult}>
@@ -32,7 +51,7 @@ export default function JunctionOpt() {
             <span className={styles.dot}></span>
             <span className={styles.text}>绿波优化效果</span>
           </div>
-          <div className={styles.content}>通过区间时间与停车次数统计</div>
+          <div className={styles.content}>{optimizeResultText}</div>
         </div>
       </main>
     </div>

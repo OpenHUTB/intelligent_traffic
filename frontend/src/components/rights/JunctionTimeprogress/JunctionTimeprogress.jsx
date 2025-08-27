@@ -2,30 +2,29 @@ import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import styles from './index.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import { setLight } from 'stores/junctionLight/lightControlSlice'
+import {
+  setTrafficState,
+  mergeTrafficState,
+} from 'stores/storesNewUI/junctionTimeprogressSlice'
 import optIcon from 'assets/image/opt-icon.png'
 import manualIcon from 'assets/image/Frame.png'
+
 export default function JunctionTimeprogress() {
   const chartRef = useRef(null)
   const chartInstance = useRef(null)
-  const trafficLights = useSelector((state) => state.lightControl)
-
-  console.log('trafficlights:', trafficLights)
-  console.log('trafficlights map:', trafficLights instanceof Map)
-  console.log('trafficlights keys:', Object.keys(trafficLights))
-
-  // 方向映射
-  const directionMap = {
-    north: '北向',
-    east: '东向',
-    south: '南向',
-    west: '西向',
+  const { directionMap, movementMap, trafficState } = useSelector(
+    (state) => state.junctionTimeprogress
+  )
+  const dispatch = useDispatch()
+  const OPTclick = () => {
+    console.log('一键优化')
+    // 示例：这里可以调用后端算法；当前只是再次写入（触发重绘）
+    dispatch(mergeTrafficState(trafficState))
   }
 
-  const movementMap = {
-    left: '左转',
-    forward: '直行',
-  }
+  console.log('trafficState from slice:', trafficState)
+
+  // directionMap & movementMap 现在来自 Redux，可在运行时调整
 
   // 转换数据为echarts格式
   const prepareChartData = () => {
@@ -34,7 +33,7 @@ export default function JunctionTimeprogress() {
     const yellowData = []
     const greenData = []
 
-    Object.entries(trafficLights).forEach(([direction, movements]) => {
+    Object.entries(trafficState).forEach(([direction, movements]) => {
       Object.entries(movements).forEach(([movement, light]) => {
         const { redDurationTime, greenDurationTime } = light
         const yellowDuration = 3
@@ -52,6 +51,35 @@ export default function JunctionTimeprogress() {
 
     return { categories, redData, yellowData, greenData }
   }
+
+  useEffect(() => {
+    // 支持两种方式：1) 自定义事件 2) 直接调用全局函数
+    const handleJunctionTimeprogressChanged = (event) => {
+      const payload = event.detail
+      console.log('junctionTimeprogressChanged event:', payload)
+      dispatch(setTrafficState(payload))
+    }
+    window.addEventListener(
+      'junctionTimeprogressChanged',
+      handleJunctionTimeprogressChanged
+    )
+
+    // 暴露全局函数，允许直接传对象（无需包装 CustomEvent）
+    window.junctionTimeprogressChanged = (payload, { merge = false } = {}) => {
+      if (merge) {
+        dispatch(mergeTrafficState(payload))
+      } else {
+        dispatch(setTrafficState(payload))
+      }
+    }
+
+    return () => {
+      window.removeEventListener(
+        'junctionTimeprogressChanged',
+        handleJunctionTimeprogressChanged
+      )
+    }
+  }, [dispatch])
 
   useEffect(() => {
     if (!chartRef.current) return
@@ -206,7 +234,7 @@ export default function JunctionTimeprogress() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [trafficLights])
+  }, [trafficState, directionMap, movementMap])
 
   // 组件卸载时销毁echarts实例
   useEffect(() => {
@@ -225,14 +253,14 @@ export default function JunctionTimeprogress() {
       </div>
       <main className={styles.progressMain}>
         <div className={styles.modeContainer}>
-          <div className={styles.opt}>
+          <div className={styles.opt} onClick={OPTclick}>
             <img src={optIcon} alt='' />
             <span>一键优化</span>
           </div>
-          <dvi className={styles.manual}>
+          <div className={styles.manual}>
             <img src={manualIcon} alt='' />
             <span>手动控制</span>
-          </dvi>
+          </div>
         </div>
         <div
           ref={chartRef}

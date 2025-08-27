@@ -11,11 +11,14 @@ export default function TrafficCongestionMonitor() {
   console.log(info)
   useEffect(() => {
     const handleTrafficInfoChange = (event) => {
-      console.log(event.detail)
-      const newInfo = { ...info, ...event.detail }
-      dispatch(setInfo(newInfo))
+      // dispatch only the partial payload; reducer will merge with existing state
+      const payload = event?.detail || {}
+      dispatch(setInfo(payload))
     }
     window.addEventListener('TrafficInfoChanged', handleTrafficInfoChange)
+    return () => {
+      window.removeEventListener('TrafficInfoChanged', handleTrafficInfoChange)
+    }
   }, [info, dispatch])
 
   const dataItems = [

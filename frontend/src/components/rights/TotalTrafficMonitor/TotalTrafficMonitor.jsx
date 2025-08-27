@@ -2,17 +2,26 @@ import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import * as echarts from 'echarts'
 import Pointer from 'assets/image/pointer.png'
+import { useSelector, useDispatch } from 'react-redux'
+import { setDistrictSpeed } from 'stores/storesNewUI/districtSpeedSlice'
 
 export default function TotalTrafficMonitor() {
-  const [congestionDistance, setCongestionDistance] = useState(2)
-  const [congestionIndex, setCongestionIndex] = useState(3)
-  const [speed, setSpeed] = useState(10)
+  const dispatch = useDispatch()
+  const { congestionIndex, speed } = useSelector((state) => state.districtSpeed)
+  //监听updateDistrctSpeed事件
 
-  const updateData = () => {
-    setCongestionDistance((prev) => prev + 0.5)
-    setCongestionIndex((prev) => prev + 0.5)
-    setSpeed((prev) => prev - 3)
-  }
+  useEffect(() => {
+    const handleUpdate = (event) => {
+      console.log('Update District Speed:', event.detail)
+      dispatch(setDistrictSpeed(event.detail))
+    }
+
+    window.addEventListener('updateDistrictSpeed', handleUpdate)
+
+    return () => {
+      window.removeEventListener('updateDistrictSpeed', handleUpdate)
+    }
+  }, [dispatch])
 
   useEffect(() => {
     const speedGuage1 = echarts.init(document.getElementById('trafficIndex'))
@@ -56,7 +65,7 @@ export default function TotalTrafficMonitor() {
           },
           data: [
             {
-              value: 5,
+              value: congestionIndex,
               name: '交通指数',
               title: {
                 offsetCenter: ['5%', '80%'],
@@ -89,12 +98,12 @@ export default function TotalTrafficMonitor() {
               color: '#fff',
               width: 2,
             },
-            show: false, // 显示刻度线
+            show: false,
           },
           minorSplitLine: {
-            show: true, // 显示小刻度线
-            length: 6, // 小刻度线长度
-            distance: 111, // 小刻度线距离
+            show: true,
+            length: 6,
+            distance: 111,
             lineStyle: {
               color: '#aaa',
               width: 1,
@@ -117,11 +126,10 @@ export default function TotalTrafficMonitor() {
           },
           pointer: {
             icon: `image://${Pointer}`,
-            length: 160, // 可以根据图片大小调整
-            width: 160, // 可以根据图片大小调整
-            // height: 100, // 可以根据图片大小调整
+            length: 160,
+            width: 160,
             offsetCenter: ['-00%', '50%'],
-            keepAspect: true, // 保持图片比例
+            keepAspect: true,
           },
         },
       ],
@@ -131,8 +139,8 @@ export default function TotalTrafficMonitor() {
       grid: {
         left: '3%',
         right: '3%',
-        bottom: '1%', // 统一为第一个图表的值
-        top: '10%', // 统一为第一个图表的值
+        bottom: '1%',
+        top: '10%',
         containLabel: false,
       },
       tooltip: {
@@ -162,11 +170,11 @@ export default function TotalTrafficMonitor() {
           progress: {
             show: true,
             roundCap: true,
-            width: 12, // 统一为第一个图表的值
+            width: 12,
           },
           data: [
             {
-              value: 70,
+              value: speed,
               name: '平均速度',
               title: {
                 offsetCenter: ['5%', '80%'],
@@ -178,10 +186,10 @@ export default function TotalTrafficMonitor() {
               },
               detail: {
                 offsetCenter: ['-5%', '50%'],
-                fontSize: 18, // 统一为第一个图表的值
-                fontWeight: 800, // 统一为第一个图表的值
+                fontSize: 18,
+                fontWeight: 800,
                 fontFamily: 'Arial',
-                color: '#FFFFFF', // 统一为第一个图表的颜色
+                color: '#FFFFFF',
                 show: true,
               },
             },
@@ -193,16 +201,16 @@ export default function TotalTrafficMonitor() {
             },
           },
           splitLine: {
-            distance: 1, // 统一为第一个图表的值
+            distance: 1,
             length: 10,
             lineStyle: {
               color: '#fff',
               width: 2,
             },
-            show: false, // 统一为第一个图表的设置
+            show: false,
           },
           minorSplitLine: {
-            show: true, // 添加小刻度线配置与第一个图表一致
+            show: true,
             length: 6,
             distance: 111,
             lineStyle: {
@@ -214,24 +222,23 @@ export default function TotalTrafficMonitor() {
             distance: 8,
             length: 5,
             lineStyle: {
-              color: '#fff', // 统一为第一个图表的颜色
+              color: '#fff',
               width: 1,
             },
           },
           axisLabel: {
-            distance: -25, // 统一为第一个图表的值
-            fontSize: 12, // 统一为第一个图表的值
-            fontWeight: 500, // 统一为第一个图表的值
+            distance: -25,
+            fontSize: 12,
+            fontWeight: 500,
             fontFamily: 'Arial',
             color: '#fff',
           },
           pointer: {
             icon: `image://${Pointer}`,
-            length: 160, // 可以根据图片大小调整
-            width: 160, // 可以根据图片大小调整
-            // height: 100, // 可以根据图片大小调整
+            length: 160,
+            width: 160,
             offsetCenter: ['-00%', '50%'],
-            keepAspect: true, // 保持图片比例
+            keepAspect: true,
           },
         },
       ],
@@ -239,7 +246,97 @@ export default function TotalTrafficMonitor() {
 
     speedGuage1.setOption(option1)
     speedGuage2.setOption(option2)
+
+    // // 设置5秒定时器更新数据
+    // const interval = setInterval(() => {
+    //   updateData()
+    // }, 5000)
+
+    // 清理定时器
+    return () => {
+      // clearInterval(interval)
+      // speedGuage1.dispose()
+      // speedGuage2.dispose()
+    }
   }, [])
+
+  // 当状态更新时，更新图表数据
+  useEffect(() => {
+    const speedGuage1 = echarts.getInstanceByDom(
+      document.getElementById('trafficIndex')
+    )
+    const speedGuage2 = echarts.getInstanceByDom(
+      document.getElementById('trafficSpeed')
+    )
+
+    if (speedGuage1) {
+      speedGuage1.setOption(
+        {
+          series: [
+            {
+              data: [
+                {
+                  value: congestionIndex,
+                  name: '交通指数',
+                  title: {
+                    offsetCenter: ['5%', '80%'],
+                    fontSize: 14,
+                    fontWeight: 300,
+                    fontFamily: 'Arial',
+                    color: '#fff',
+                    show: true,
+                  },
+                  detail: {
+                    offsetCenter: ['5%', '50%'],
+                    fontSize: 18,
+                    fontWeight: 800,
+                    fontFamily: 'Arial',
+                    color: '#FFFFFF',
+                    show: true,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        false
+      )
+    }
+
+    if (speedGuage2) {
+      speedGuage2.setOption(
+        {
+          series: [
+            {
+              data: [
+                {
+                  value: speed,
+                  name: '平均速度',
+                  title: {
+                    offsetCenter: ['5%', '80%'],
+                    fontSize: 14,
+                    fontWeight: 300,
+                    fontFamily: 'Arial',
+                    color: '#fff',
+                    show: true,
+                  },
+                  detail: {
+                    offsetCenter: ['-5%', '50%'],
+                    fontSize: 18,
+                    fontWeight: 800,
+                    fontFamily: 'Arial',
+                    color: '#FFFFFF',
+                    show: true,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        false
+      )
+    }
+  }, [congestionIndex, speed])
 
   return (
     <div className={styles.trafficJamContainer}>

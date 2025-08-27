@@ -45,10 +45,13 @@
         .rightContent {
             // border: 1px solid #ccc;
             width: 22%;
-            height: 98%;
+            height: 99%;
             position: absolute;
             right: 0;
             top: 2%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
     }
 }

@@ -9,6 +9,7 @@ import JunctionOptResult from 'components/rights/JunctionOptResult/JunctionOptRe
 import JunctionOptstrategy from 'components/rights/JunctionOptstrategy/JunctionOptstrategy'
 import JunctionOpt from 'components/bottoms/JunctionOpt/JunctionOpt'
 import JunctionGreenFlow from 'components/bottoms/JunctionGreenFLow/JunctionGreenFlow'
+import video1 from 'assets/videos/junction.mp4'
 export default function JunctionLight() {
   const bigMapShow = useSelector((state) => state.map.bigMapShow)
   return (
@@ -16,6 +17,12 @@ export default function JunctionLight() {
       <div className={styles.leftBar}></div>
       <div className={styles.bottomBar}></div>
       <div className={styles.mainContent}>
+        <video
+          src={video1}
+          className={styles.junctionVideo}
+          loop
+          autoPlay
+        ></video>
         {bigMapShow && <Amap />}
         <div className={styles.bottomContent}>
           <JunctionOpt />
