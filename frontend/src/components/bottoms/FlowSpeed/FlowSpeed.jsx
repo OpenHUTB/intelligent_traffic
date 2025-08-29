@@ -1,63 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styles from './index.module.scss'
 import * as echarts from 'echarts'
+import { useDispatch, useSelector } from 'react-redux'
+import { applyFlowSpeedUpdate } from 'stores/storesNewUI/flowSpeedSlice'
 
 export default function FlowSpeed() {
-  const generateRandomArray = (length, min, max) => {
-    return Array.from(
-      { length },
-      () => Math.floor(Math.random() * (max - min + 1)) + min
-    )
-  }
-
-  const [randomCurrent, setRandomCurrent] = useState(
-    generateRandomArray(12, 30, 90)
+  const dispatch = useDispatch()
+  const { current, weekly, timeLabels } = useSelector(
+    (state) => state.flowSpeed
   )
-  const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 60))
 
+  // 监听速度数据事件（新的 flowSpeedChanged）；兼容旧的 lightTimerChanged 仅带 series 的情况
   useEffect(() => {
-    window.addEventListener('lightTimerChanged', (event) => {
+    const handleSpeedChange = (event) => {
       const key = Object.keys(event.detail)[0]
-      const isGreen = event.detail[key].isGreen
+      const payload = event.detail[key] || {}
+      dispatch(applyFlowSpeedUpdate(payload))
+    }
+    window.addEventListener('flowSpeedChanged', handleSpeedChange)
+    // 兼容旧事件名（如果仍被调用）
+    window.addEventListener('lightTimerChanged', handleSpeedChange)
+    return () => {
+      window.removeEventListener('flowSpeedChanged', handleSpeedChange)
+      window.removeEventListener('lightTimerChanged', handleSpeedChange)
+    }
+  }, [dispatch])
 
-      if (isGreen) {
-        setRandomCurrent(generateRandomArray(12, 0, 70))
-        setRandomToday(generateRandomArray(12, 0, 50))
-      } else {
-        setRandomCurrent(generateRandomArray(12, 0, 120))
-        setRandomToday(generateRandomArray(12, 0, 90))
-      }
-    })
-  }, [randomCurrent, randomToday])
-
+  // 绘图
   useEffect(() => {
-    // Initialize the bar chart (left side)
-    const trafficFlowBarChart = echarts.init(
-      document.getElementById('speedbarchart')
-    )
+    const barEl = document.getElementById('speedbarchart')
+    const lineEl = document.getElementById('speedlinechart')
+    if (!barEl || !lineEl) return
+    const barChart = echarts.init(barEl)
+    const lineChart = echarts.init(lineEl)
 
-    // Initialize the line chart (right side)
-    const trafficFlowLineChart = echarts.init(
-      document.getElementById('speedlinechart')
-    )
-
-    const timeLabels = [
-      '00:00',
-      '01:00',
-      '02:00',
-      '03:00',
-      '04:00',
-      '05:00',
-      '06:00',
-      '07:00',
-      '08:00',
-      '09:00',
-      '10:00',
-      '11:00',
-      '12:00',
-    ]
-
-    // Bar chart configuration (left side)
     const barGraphOption = {
       title: {
         text: '单位：分钟',
@@ -65,45 +41,33 @@ export default function FlowSpeed() {
       },
       legend: {
         show: true,
-        data: ['当前流量', '周均流量'],
+        data: ['当前速度', '周均速度'],
         textStyle: { color: '#FFF' },
-        top: '0',
-        right: '0',
+        top: 0,
+        right: 0,
       },
       xAxis: {
         type: 'category',
         data: timeLabels,
         axisLine: { lineStyle: { color: '#ccc' } },
-        axisLabel: {
-          rotate: 45,
-          textStyle: { color: '#ccc' },
-        },
+        axisLabel: { rotate: 45, textStyle: { color: '#ccc' } },
       },
       yAxis: {
         type: 'value',
         axisLine: { lineStyle: { color: '#ccc' } },
-        axisTick: {
-          show: true,
-          length: 5,
-        },
+        axisTick: { show: true, length: 5 },
         splitNumber: 3,
-        splitLine: {
-          lineStyle: {
-            color: '#777',
-          },
-        },
+        splitLine: { lineStyle: { color: '#777' } },
         splitArea: {
           show: true,
-          areaStyle: {
-            color: ['rgba(56, 67, 87,0.1)', 'rgba(56, 67, 87,0.1)'],
-          },
+          areaStyle: { color: ['rgba(56,67,87,0.1)', 'rgba(56,67,87,0.1)'] },
         },
       },
       grid: { left: '8%', right: '4%', bottom: '15%', containLabel: true },
       series: [
         {
-          name: '当前流量',
-          data: randomCurrent,
+          name: '当前速度',
+          data: current,
           type: 'bar',
           color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
             { offset: 0, color: '#00F2FF20' },
@@ -112,8 +76,8 @@ export default function FlowSpeed() {
           barWidth: '35%',
         },
         {
-          name: '周均流量',
-          data: randomToday,
+          name: '周均速度',
+          data: weekly,
           type: 'bar',
           color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
             { offset: 0, color: '#0EFFB020' },
@@ -124,7 +88,6 @@ export default function FlowSpeed() {
       ],
     }
 
-    // Line chart configuration (right side)
     const lineGraphOption = {
       title: {
         text: '单位：分钟',
@@ -132,47 +95,32 @@ export default function FlowSpeed() {
       },
       legend: {
         show: true,
-        data: ['当前流量', '周均流量'],
+        data: ['当前速度', '周均速度'],
         textStyle: { color: '#FFF' },
-        top: '0',
-        right: '0',
       },
       xAxis: {
         type: 'category',
         data: timeLabels,
         axisLine: { lineStyle: { color: '#ccc' } },
         splitNumber: 4,
-        splitLine: {
-          lineStyle: {
-            color: '#ccc',
-          },
-        },
+        splitLine: { lineStyle: { color: '#ccc' } },
       },
       yAxis: {
         type: 'value',
         axisLine: { lineStyle: { color: '#ccc' } },
-        axisTick: {
-          show: true,
-          length: 5,
-        },
+        axisTick: { show: true, length: 5 },
         splitNumber: 3,
-        splitLine: {
-          lineStyle: {
-            color: '#777',
-          },
-        },
+        splitLine: { lineStyle: { color: '#777' } },
         splitArea: {
           show: true,
-          areaStyle: {
-            color: ['rgba(56, 67, 87,0.1)', 'rgba(56, 67, 87,0.1)'],
-          },
+          areaStyle: { color: ['rgba(56,67,87,0.1)', 'rgba(56,67,87,0.1)'] },
         },
       },
       grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
       series: [
         {
-          name: '当前流量',
-          data: randomCurrent,
+          name: '当前速度',
+          data: current,
           type: 'line',
           smooth: true,
           showSymbol: false,
@@ -185,8 +133,8 @@ export default function FlowSpeed() {
           },
         },
         {
-          name: '周均流量',
-          data: randomToday,
+          name: '周均速度',
+          data: weekly,
           type: 'line',
           smooth: true,
           color: '#0EFFB0',
@@ -201,20 +149,19 @@ export default function FlowSpeed() {
       ],
     }
 
-    trafficFlowBarChart.setOption(barGraphOption)
-    trafficFlowLineChart.setOption(lineGraphOption)
+    barChart.setOption(barGraphOption)
+    lineChart.setOption(lineGraphOption)
 
-    // Clean up function
     return () => {
-      trafficFlowBarChart.dispose()
-      trafficFlowLineChart.dispose()
+      barChart.dispose()
+      lineChart.dispose()
     }
-  }, [randomCurrent, randomToday])
+  }, [current, weekly, timeLabels])
 
   return (
     <div className={styles.trafficVolume}>
       <div className={styles.title}>
-        <span>路口交通流量</span>
+        <span>交通速度 </span>
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.chartContainer}>

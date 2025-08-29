@@ -1,20 +1,23 @@
 import React from 'react'
 import styles from './index.module.scss'
 import video1 from 'assets/videos/twin.mp4'
+import live from 'assets/videos/live.mp4'
+import mock from 'assets/videos/mock.mp4'
+import combine from 'assets/videos/combine.mp4'
 
 export default function TraffiLive() {
   const liveVideoUrl = [
     {
       title: '交通实时画面',
-      url: video1,
+      url: live,
     },
     {
       title: '交通全景视频融合',
-      url: video1,
+      url: combine,
     },
     {
       title: '通行车辆动态提取',
-      url: video1,
+      url: mock,
     },
   ]
 
@@ -24,7 +27,13 @@ export default function TraffiLive() {
         <span>{item.title}</span>
       </div>
       <div className={styles.videoContainer}>
-        <video className={styles.video} controls src={item.url}></video>
+        <video
+          className={styles.video}
+          // controls
+          src={item.url}
+          autoPlay
+          loop
+        ></video>
       </div>
     </div>
   ))

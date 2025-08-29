@@ -1,42 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styles from './index.module.scss'
-
 import * as echarts from 'echarts'
+import { useDispatch, useSelector } from 'react-redux'
+import { setFlowAnalysisSeries } from 'stores/storesNewUI/flowAnalysisSlice'
 
 export default function FlowAnalysis() {
-  const generateRandomArray = (length, min, max) => {
-    return Array.from(
-      { length },
-      () => Math.floor(Math.random() * (max - min + 1)) + min
-    )
-  }
-
-  const [randomCurrent, setRandomCurrent] = useState(
-    generateRandomArray(12, 30, 90)
+  const dispatch = useDispatch()
+  const { current, weekly, timeLabels } = useSelector(
+    (state) => state.flowAnalysis
   )
-  const [randomToday, setRandomToday] = useState(generateRandomArray(12, 0, 60))
-  useEffect(() => {
-    window.addEventListener('lightTimerChanged', (event) => {
-      const key = Object.keys(event.detail)[0]
-      const isGreen = event.detail[key].isGreen
-      //   const index = parseInt(key.match(/\d+/)[0]) - 1
-      //   setActiveIndex(index)
 
-      if (isGreen) {
-        setRandomCurrent(generateRandomArray(12, 0, 70))
-        setRandomToday(generateRandomArray(12, 0, 50))
-      } else {
-        setRandomCurrent(generateRandomArray(12, 0, 120))
-        setRandomToday(generateRandomArray(12, 0, 90))
-      }
-    })
-  }, [randomCurrent, randomToday])
+  // 监听全局事件 flowAnalysisChanged
   useEffect(() => {
-    // Initialize the line chart
-    const trafficFlowLineChart = echarts.init(
-      document.getElementById('trafficvolumelinechart')
-    )
-    // console.log('rendering');
+    const handler = (event) => {
+      const key = Object.keys(event.detail)[0]
+      const payload = event.detail[key] || {}
+      dispatch(setFlowAnalysisSeries(payload))
+    }
+    window.addEventListener('flowAnalysisChanged', handler)
+    return () => window.removeEventListener('flowAnalysisChanged', handler)
+  }, [dispatch])
+
+  useEffect(() => {
+    const chartEl = document.getElementById('trafficvolumelinechart')
+    if (!chartEl) return
+    const trafficFlowLineChart = echarts.init(chartEl)
     const lineGraphOption = {
       title: {
         text: '单位：分钟',
@@ -51,21 +39,7 @@ export default function FlowAnalysis() {
       },
       xAxis: {
         type: 'category',
-        data: [
-          '00:00',
-          '01:00',
-          '02:00',
-          '03:00',
-          '04:00',
-          '05:00',
-          '06:00',
-          '07:00',
-          '08:00',
-          '09:00',
-          '10:00',
-          '11:00',
-          '12:00',
-        ],
+        data: timeLabels,
         axisLine: { lineStyle: { color: '#ccc' } },
         splitNumber: 4,
         splitLine: {
@@ -98,7 +72,7 @@ export default function FlowAnalysis() {
       series: [
         {
           name: '当前流量',
-          data: randomCurrent,
+          data: current,
           type: 'line',
           smooth: true,
           showSymbol: false,
@@ -119,7 +93,7 @@ export default function FlowAnalysis() {
         },
         {
           name: '周均流量',
-          data: randomToday,
+          data: weekly,
           type: 'line',
           smooth: true,
           color: '#0EFFB0',
@@ -141,7 +115,8 @@ export default function FlowAnalysis() {
       ],
     }
     trafficFlowLineChart.setOption(lineGraphOption)
-  }, [randomCurrent, randomToday])
+    return () => trafficFlowLineChart.dispose()
+  }, [current, weekly, timeLabels])
 
   return (
     <div className={styles.trafficVolume}>

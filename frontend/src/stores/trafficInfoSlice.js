@@ -1,19 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const infoSlice = createSlice({
-    name: "trafficInfo",
-    initialState: {
-        index: 0,
-        road: 0,
-        congestion: 0,
-        time: 0,
+  name: 'trafficInfo',
+  initialState: {
+    index: 2.1,
+    road: 2,
+    congestion: 2,
+    time: 5.5,
+  },
+  reducers: {
+    setInfo: (state, action) => {
+      const payload = action.payload || {}
+      // merge only keys that are defined in payload to avoid overwriting with undefined
+      Object.keys(payload).forEach((key) => {
+        if (payload[key] !== undefined) state[key] = payload[key]
+      })
+      return state
     },
-    reducers: {
-        setInfo: (state, action) => {
-            return { ...state, ...action.payload }
-        },
-    },
-});
+  },
+})
 
-export const { setInfo } = infoSlice.actions;
-export default infoSlice.reducer;
+export const { setInfo } = infoSlice.actions
+export default infoSlice.reducer

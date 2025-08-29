@@ -1,0 +1,244 @@
+@use "../../css/common.scss" as common;
+.junctionLight {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: url("../../assets/image/GPT-bg.png") no-repeat center center;
+    background-size: 100% 100%;
+
+    .leftBar {
+        height: 98%;
+        background-image: url("../../assets/image/left-bar.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 12px;
+        position: absolute;
+        left: 0;
+    }
+
+    .bottomBar {
+        width: 100%;
+        height: 12px;
+        background-image: url("../../assets/image/bottom-bar.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .mainContent {
+        box-sizing: border-box;
+        padding-left: 10%;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 2fr 8fr;
+        gap: 20px;
+
+        .userConversationContainer {
+            background: url("../../assets/image/GPT-user-bg.png") no-repeat center center;
+            background-size: 100% 100%;
+            height: 100%; // 固定高度
+            display: flex;
+            flex-direction: column;
+
+            .title {
+                @include common.bottomElementTitle;
+                flex-shrink: 0; // 标题不变化
+            }
+
+            .userinputContainer {
+                flex: 1; // 占用剩余空间
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+                overflow: hidden; // 防止超出
+
+                .chatContainer {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+
+                    .messagesContainer {
+                        flex: 1; // 占用剩余空间
+                        overflow-y: auto; // 内容超出时滚动
+                        padding: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+
+                        &::-webkit-scrollbar {
+                            width: 6px;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background: rgba(255, 255, 255, 0.1);
+                            border-radius: 3px;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            background: rgba(255, 255, 255, 0.3);
+                            border-radius: 3px;
+
+                            &:hover {
+                                background: rgba(255, 255, 255, 0.5);
+                            }
+                        }
+                    }
+
+                    .inputContainer {
+                        flex-shrink: 0; // 输入框不变化
+                        display: flex;
+                        padding: 10px;
+                        gap: 10px;
+
+                        .inputField {
+                            flex: 1;
+                            padding: 12px;
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            outline: none;
+
+                            &:focus {
+                                border-color: #6c5ce7;
+                            }
+                        }
+
+                        .sendButton {
+                            padding: 12px 24px;
+                            background-color: #6c5ce7;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            transition: background-color 0.2s;
+                            background: url(../../assets/image/btn1.png) center center;
+                            background-size: 100% 100%;
+
+                            &:hover:not(:disabled) {
+                                background-color: #5b4bc4;
+                            }
+
+                            &:disabled {
+                                opacity: 0.6;
+                                cursor: not-allowed;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .message {
+                max-width: 85%;
+                padding: 12px 16px;
+                border-radius: 15px;
+                margin: 5px 0;
+
+                .content {
+                    word-wrap: break-word;
+                    line-height: 1.4;
+                }
+            }
+
+            .userMessage {
+                align-self: flex-end;
+                background-color: #0098a9;
+                color: white;
+                border-bottom-right-radius: 5px;
+            }
+
+            .aiMessage {
+                align-self: flex-start;
+                background-color: #00747927;
+                color: #ffffff;
+                border-bottom-left-radius: 5px;
+            }
+
+            .typingIndicator {
+                animation: blink 1s infinite;
+            }
+        }
+
+        .gptResponseContainer {
+            background: url("../../assets/image/GPT-AI-bg.png") no-repeat center center;
+            background-size: 100% 100%;
+            height: 100%; // 固定高度，不变化
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; // 内容超出时滚动
+
+            .title {
+                @include common.bottomElementTitle;
+                background: url("../../assets/image/GPT-AI-title-bg.png") no-repeat center center;
+                background-size: 100% 100%;
+                flex-shrink: 0; // 标题不变化
+            }
+
+            .searchResultsContainer {
+                max-height: 90%; // 限制最大高度?
+                overflow-y: auto; // 内容超出时滚动，容器大小不变
+                padding: 20px;
+                box-sizing: border-box;
+
+                &::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 4px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 4px;
+
+                    &:hover {
+                        background: rgba(255, 255, 255, 0.5);
+                    }
+                }
+
+                .detailedResponseContent {
+                    line-height: 1.6;
+                    font-size: 20px;
+                    color: #ffffff;
+                    background-color: #00747927;
+                    border-radius: 8px;
+                    padding: 20px;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    // 不设置高度，让内容自然撑开，超出时由父容器滚动
+                    max-height: 900px;
+                    overflow-y: auto;
+                }
+
+                .noSearchPlaceholder {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    color: rgba(255, 255, 255, 0.7);
+                    font-size: 20px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@keyframes blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+    51%,
+    100% {
+        opacity: 0;
+    }
+}

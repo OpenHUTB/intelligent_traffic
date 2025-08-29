@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  bigMapShow: false,
+  bigMapShow: true,
   smallMapShow: true,
 }
 

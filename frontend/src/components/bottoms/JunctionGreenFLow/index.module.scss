@@ -1,0 +1,85 @@
+@use "../../../css/common.scss" as common;
+
+.junctionTimeprogress {
+    overflow: hidden;
+    margin-left: 20px;
+    position: relative;
+    z-index: 2;
+    @include common.rightElementSize;
+    height: 100%;
+    width: 1150px;
+    background: url("../../../assets/image/bottom-bg-green.png") no-repeat center center;
+    background-size: 100% 100%;
+    .title {
+        width: 100%;
+        height: 46px;
+        background: url("../../../assets/image/bottom-title.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+        span {
+            font-size: 22px;
+            font-weight: 700;
+            margin-left: 2rem;
+            background: linear-gradient(to bottom, #ffffff, #73fcfd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+    }
+    .progressMain {
+        height: 100%; // 给图表一个固定高度
+        .modeContainer {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            padding: 10px;
+            margin: 10px 0;
+
+            .opt {
+                border: 1px solid #d9d9d9;
+                width: 237px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                background: url("~assets/image/opt-bg.png") no-repeat center center;
+                background-size: 100% 100%;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 8px;
+                }
+            }
+
+            .manual {
+                border: 1px solid #d9d9d9;
+                width: 237px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                background: url("~assets/image/opt-bg.png") no-repeat center center;
+                background-size: 100% 100%;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 8px;
+                }
+            }
+        }
+        .chartContainer {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

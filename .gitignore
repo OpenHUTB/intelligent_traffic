@@ -54,3 +54,5 @@ ruoyi-simulation/src/main/resources/front-dev/traffic_demo/node_modules/
 **/node_modules/
 ruoyi-ui/node_modules/
 frontend/node_modules/
+
+frontend/.env

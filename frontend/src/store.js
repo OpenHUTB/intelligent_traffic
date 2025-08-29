@@ -25,9 +25,23 @@ import aiMessageReducer from './stores/junctionLight/aiMessageSlice'
 import mapReducer from './stores/junctionLight/mapSlice'
 import positionReducer from './stores/junctionLight/positionSlice'
 import timeShowReducer from './stores/junctionLight/timeShowSlice'
-
+import districtSpeedReducer from 'stores/storesNewUI/districtSpeedSlice'
+import highwayScrollAlertReducer from 'stores/storesNewUI/scrollAlertSlice'
+import trafficCongestionReducer from 'stores/storesNewUI/trafficCongestionSlice'
+import flowSpeedReducer from 'stores/storesNewUI/flowSpeedSlice'
+import flowAnalysisReducer from 'stores/storesNewUI/flowAnalysisSlice'
+import flowRuntimeReducer from 'stores/storesNewUI/flowRuntimeSlice'
+import greenFLowReducer from 'stores/storesNewUI/lightControlSlice.js'
+import junctionOptReducer from 'stores/storesNewUI/junctionOptSlice'
+import junctionTimeprogressReducer from 'stores/storesNewUI/junctionTimeprogressSlice'
+import junctionOptstrategyReducer from 'stores/storesNewUI/junctionOptstrategySlice'
+import junctionOptResultReducer from 'stores/storesNewUI/junctionOptResultSlice'
+import optSelectReducer from 'stores/storesNewUI/optselectSlice.js'
 const store = configureStore({
   reducer: {
+    optSelect: optSelectReducer,
+    greenFlow: greenFLowReducer,
+    districtSpeed: districtSpeedReducer,
     animation: animationReducer,
     lightTimer: lightTimerReducer,
     trafficInfo: infoReducer,
@@ -53,6 +67,15 @@ const store = configureStore({
     map: mapReducer,
     position: positionReducer,
     timeShow: timeShowReducer,
+    highwayScrollAlert: highwayScrollAlertReducer,
+    trafficCongestion: trafficCongestionReducer,
+    flowSpeed: flowSpeedReducer,
+    flowAnalysis: flowAnalysisReducer,
+    flowRuntime: flowRuntimeReducer,
+    junctionOpt: junctionOptReducer,
+    junctionTimeprogress: junctionTimeprogressReducer,
+    junctionOptstrategy: junctionOptstrategyReducer,
+    junctionOptResult: junctionOptResultReducer,
   },
 })
 

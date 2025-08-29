@@ -1,0 +1,75 @@
+@use "../../../css/common.scss" as common;
+@mixin secondTitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+.junctionOptstrategy {
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    position: absolute;
+    left: -1300px;
+    top: 0px;
+    width: 200%;
+    height: 600px;
+    // border: 1px solid #ccc;
+    padding: 10px 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    header {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .dot {
+        width: 7px;
+        height: 7px;
+        display: inline-block;
+        margin-right: 5px;
+        background-color: black;
+    }
+    .preStrategyTitle {
+        @include secondTitle;
+        color: #ffd30e;
+        .dot {
+            background-color: #ffd30e;
+        }
+    }
+    .currentStrategyTitle {
+        @include secondTitle;
+        color: #0effb0;
+        .dot {
+            background-color: #0effb0;
+        }
+    }
+
+    .optResultTitle {
+        @include secondTitle;
+        color: #4eb3ff;
+        .dot {
+            background-color: #4eb3ff;
+        }
+        .controlItem {
+            color: #ffd30e;
+            margin-left: auto;
+            .label {
+                margin-right: 10px;
+            }
+            .selectBox {
+                height: 25px;
+            }
+        }
+    }
+    .content {
+        width: 100%;
+        background-color: #7bfffd20;
+        line-height: 42px;
+    }
+}
