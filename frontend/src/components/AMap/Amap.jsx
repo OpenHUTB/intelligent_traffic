@@ -78,6 +78,30 @@ export default function Amap({ isVisible = true }) {
   useEffect(() => {
     let map = null
     let isDestroyed = false
+    let handleMapClick = null // 引用以便卸载
+    // 发送坐标到后端的工具函数
+    const sendCoordinates = async (lng, lat) => {
+      try {
+        const payload = { longitude: lng, latitude: lat }
+        console.log('Sending coordinates to backend:', payload)
+        const res = await fetch(
+          'http://localhost:8080/simulation/section/transferJunction',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }
+        )
+        if (!res.ok) {
+          console.warn('Backend responded with non-OK status', res.status)
+        } else {
+          const data = await res.json().catch(() => null)
+          console.log('Backend response:', data ?? 'no json body')
+        }
+      } catch (err) {
+        console.error('Failed to send coordinates:', err)
+      }
+    }
 
     const initMap = async () => {
       try {
@@ -133,6 +157,20 @@ export default function Amap({ isVisible = true }) {
         }
 
         mapInstanceRef.current = map
+
+        // 地图点击事件: 获取经纬度并发送到后端
+        handleMapClick = (e) => {
+          if (!e || !e.lnglat) return
+          // 高德返回的是 AMap.LngLat 实例
+          const lng = Number(e.lnglat.getLng?.() ?? e.lnglat.lng)
+          const lat = Number(e.lnglat.getLat?.() ?? e.lnglat.lat)
+          if (isNaN(lng) || isNaN(lat)) {
+            console.warn('Invalid click coordinates:', e.lnglat)
+            return
+          }
+          sendCoordinates(lng, lat)
+        }
+        map.on('click', handleMapClick)
 
         // 等待地图完全加载后再添加覆盖物
         map.on('complete', () => {
@@ -308,18 +346,23 @@ export default function Amap({ isVisible = true }) {
             map.setFeatures(['bg', 'road', 'building', 'water'])
 
             // 添加卫星图层混合
-            const baseLayers = [
-              new AMap.TileLayer.Satellite({
-                detectRetina: true, // 视网膜屏优化
-                zIndex: 1,
-              }),
-              new AMap.TileLayer.RoadNet({
-                zIndex: 10,
-                opacity: 0.9,
-              }),
-            ]
-
-            map.add(baseLayers)
+            try {
+              const baseLayers = [
+                new AMap.TileLayer.Satellite({
+                  detectRetina: true, // 视网膜屏优化
+                  zIndex: 1,
+                }),
+                new AMap.TileLayer.RoadNet({
+                  zIndex: 10,
+                  opacity: 0.9,
+                }),
+              ]
+              // 分开添加，避免一次性数组添加导致潜在销毁问题
+              baseLayers.forEach((layer) => map.add(layer))
+              markersRef.current.push(...baseLayers)
+            } catch (layerErr) {
+              console.warn('添加底图图层失败:', layerErr)
+            }
 
             // 延迟执行动画
             setTimeout(initAnimations, 1000)
@@ -342,19 +385,35 @@ export default function Amap({ isVisible = true }) {
     return () => {
       isDestroyed = true
 
+      // 卸载点击事件
+      if (mapInstanceRef.current && handleMapClick) {
+        try {
+          mapInstanceRef.current.off('click', handleMapClick)
+        } catch (e) {
+          console.warn('移除点击事件失败:', e)
+        }
+      }
+
       // 清理所有标记
       if (markersRef.current.length > 0) {
-        markersRef.current.forEach((marker) => {
-          try {
-            if (marker && typeof marker.destroy === 'function') {
-              marker.destroy()
-            } else if (map && typeof map.remove === 'function') {
-              map.remove(marker)
-            }
-          } catch (error) {
-            console.warn('清理标记时出错:', error)
+        try {
+          if (
+            mapInstanceRef.current &&
+            typeof mapInstanceRef.current.remove === 'function'
+          ) {
+            // 过滤掉已经被移除的对象
+            const overlays = markersRef.current.filter(Boolean)
+            if (overlays.length) mapInstanceRef.current.remove(overlays)
           }
-        })
+        } catch (error) {
+          console.warn('批量移除覆盖物时出错:', error)
+          // 回退逐个移除
+          markersRef.current.forEach((ov) => {
+            try {
+              mapInstanceRef.current?.remove?.(ov)
+            } catch (_) {}
+          })
+        }
         markersRef.current = []
       }
 

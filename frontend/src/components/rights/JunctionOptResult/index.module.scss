@@ -13,6 +13,12 @@
 
     .title {
         @include common.bottomElementTitle;
+        display: flex;
+        justify-content: space-between;
+        .details {
+            cursor: pointer;
+            margin-right: 10px;
+        }
     }
     .contentContainer {
         position: relative;

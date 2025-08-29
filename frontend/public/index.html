@@ -18,6 +18,9 @@
         }
       </script>
   <script>
+    // 注入output目录下的文件列表
+    window.__OUTPUT_FILE_LIST = ["各路口信控优化对比.xls"];
+    
     function updateAnimation(value, key = "animationIndex") {
       localStorage.setItem(key, value);
       // Dispatch a custom event for changes made in the same window/tab

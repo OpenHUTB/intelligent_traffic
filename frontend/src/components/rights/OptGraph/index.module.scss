@@ -1,0 +1,68 @@
+@use "../../../css/common.scss" as common;
+
+.trafficVolume {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2rem 0;
+    height: 100%;
+    // @include common.rightElementSize;
+
+    .title {
+        width: 100%;
+        height: 46px;
+        background: url("../../../assets/image/bottom-title.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+        span {
+            font-size: 22px;
+            font-weight: 700;
+            margin-left: 2rem;
+            background: linear-gradient(to bottom, #ffffff, #73fcfd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+    }
+
+    .contentContainer {
+        margin-top: 20px;
+        position: relative;
+        width: 100%;
+        height: 350px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1%;
+        width: 100%;
+        height: calc(100% - 40px);
+        // background: url("../../../assets/image/bottom-bg-green.png") no-repeat center center;
+        // background-size: 100% 100%;
+        .chartContainer {
+            width: 100%;
+            height: 100%;
+            // border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 5px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:first-child {
+                // 左侧柱状图容器的特殊样式（如果需要）
+            }
+
+            &:last-child {
+                // 右侧折线图容器的特殊样式（如果需要）
+            }
+        }
+    }
+}

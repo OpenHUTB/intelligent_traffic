@@ -8,17 +8,26 @@
     margin: 15px 0;
 }
 .junctionOptstrategy {
-    width: 100%;
-    height: 300px;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    position: absolute;
+    left: -1300px;
+    top: 0px;
+    width: 200%;
+    height: 600px;
     // border: 1px solid #ccc;
     padding: 10px 20px;
     overflow-y: auto;
     scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     header {
-        font-size: 16px;
+        font-size: 26px;
         font-weight: bold;
         margin-bottom: 20px;
     }
+
     .dot {
         width: 7px;
         height: 7px;
@@ -40,21 +49,27 @@
             background-color: #0effb0;
         }
     }
+
     .optResultTitle {
         @include secondTitle;
         color: #4eb3ff;
         .dot {
             background-color: #4eb3ff;
         }
+        .controlItem {
+            color: #ffd30e;
+            margin-left: auto;
+            .label {
+                margin-right: 10px;
+            }
+            .selectBox {
+                height: 25px;
+            }
+        }
     }
     .content {
         width: 100%;
-        height: 42px;
         background-color: #7bfffd20;
         line-height: 42px;
-        // 文字省略显示
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
     }
 }

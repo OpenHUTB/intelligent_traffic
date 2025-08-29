@@ -101,3 +101,10 @@ function junctionOptResultChanged(infoObject) {
   })
   window.dispatchEvent(event)
 }
+
+function optSelectChanged(infoObject) {
+  const event = new CustomEvent('optSelectChanged', {
+    detail: infoObject,
+  })
+  window.dispatchEvent(event)
+}

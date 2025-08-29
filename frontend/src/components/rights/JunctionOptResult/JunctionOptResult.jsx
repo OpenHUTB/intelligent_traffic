@@ -1,10 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+
 import styles from './index.module.scss'
 import JunctionOptstrategy from 'components/rights/JunctionOptstrategy/JunctionOptstrategy'
 import * as echarts from 'echarts'
 import { useSelector, useDispatch } from 'react-redux'
 import { setBothFlows } from 'stores/storesNewUI/junctionOptResultSlice'
+import btnDetails from 'assets/image/btn-details.png'
+import OptText from '../OptText/OptText'
 export default function JunctionOptResult() {
+  //控制OptText是否需要显示,点击details的按钮才显示和隐藏
+  const [showOptText, setShowOptText] = useState(false)
+  const toggleOptText = () => {
+    setShowOptText(!showOptText)
+  }
   // 从 redux 获取折线图数据
   const dispatch = useDispatch()
   const { currentFlow, weekAvgFlow } = useSelector(
@@ -130,8 +138,9 @@ export default function JunctionOptResult() {
 
   return (
     <div className={styles.trafficVolume}>
-      <div className={styles.title}>
+      <div className={styles.title} onClick={toggleOptText}>
         <span>信控优化效果分析</span>
+        <img className={styles.details} src={btnDetails} alt='' />
       </div>
       <div className={styles.contentContainer}>
         <div
@@ -140,6 +149,7 @@ export default function JunctionOptResult() {
         ></div>
       </div>
       <JunctionOptstrategy />
+      {showOptText && <OptText />}
     </div>
   )
 }

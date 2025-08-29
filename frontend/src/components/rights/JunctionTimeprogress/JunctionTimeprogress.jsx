@@ -8,6 +8,8 @@ import {
 } from 'stores/storesNewUI/junctionTimeprogressSlice'
 import optIcon from 'assets/image/opt-icon.png'
 import manualIcon from 'assets/image/Frame.png'
+import download from 'assets/image/download.png'
+import { downloadFiles } from 'utils/fileDownload'
 
 export default function JunctionTimeprogress() {
   const chartRef = useRef(null)
@@ -20,6 +22,34 @@ export default function JunctionTimeprogress() {
     console.log('一键优化')
     // 示例：这里可以调用后端算法；当前只是再次写入（触发重绘）
     dispatch(mergeTrafficState(trafficState))
+  }
+
+  // 方案导出：使用新的下载工具
+  const exportPlan = async () => {
+    try {
+      const results = await downloadFiles({
+        fileSource: 'auto', // 自动选择最佳方式
+        onProgress: (progress) => {
+          console.log(
+            `下载进度: ${progress.current}/${progress.total} - ${progress.filename}`
+          )
+          // 这里可以显示进度条或Toast提示
+        },
+        onError: (error) => {
+          console.error('下载出错:', error)
+        },
+        onSuccess: (results) => {
+          const message = `下载完成！成功: ${results.success}个，失败: ${results.failed}个`
+          alert(message)
+          if (results.errors.length > 0) {
+            console.error('下载错误详情:', results.errors)
+          }
+        },
+      })
+    } catch (error) {
+      console.error('下载失败:', error)
+      alert(`下载失败: ${error.message}`)
+    }
   }
 
   console.log('trafficState from slice:', trafficState)
@@ -52,8 +82,52 @@ export default function JunctionTimeprogress() {
     return { categories, redData, yellowData, greenData }
   }
 
+  // WebSocket监听文件更新的useEffect
   useEffect(() => {
-    // 支持两种方式：1) 自定义事件 2) 直接调用全局函数
+    let ws = null
+
+    const connectWebSocket = () => {
+      try {
+        ws = new WebSocket('ws://localhost:8080/ws/files')
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data)
+            if (data.type === 'fileGenerated' && data.files) {
+              console.log('收到新文件推送:', data.files)
+              // 更新全局文件列表
+              window.__OUTPUT_FILE_LIST = data.files
+              // 可以在这里触发UI更新或显示提示
+            }
+          } catch (e) {
+            console.warn('WebSocket消息解析失败:', e)
+          }
+        }
+
+        ws.onerror = (error) => {
+          console.warn('WebSocket连接失败:', error)
+        }
+
+        ws.onclose = () => {
+          console.info('WebSocket连接已关闭')
+        }
+      } catch (e) {
+        console.info('WebSocket不可用，使用轮询方式')
+      }
+    }
+
+    // 尝试连接WebSocket
+    connectWebSocket()
+
+    return () => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close()
+      }
+    }
+  }, [])
+
+  // 事件监听和全局函数注册的useEffect
+  useEffect(() => {
     const handleJunctionTimeprogressChanged = (event) => {
       const payload = event.detail
       console.log('junctionTimeprogressChanged event:', payload)
@@ -250,6 +324,10 @@ export default function JunctionTimeprogress() {
     <div className={styles.junctionTimeprogress}>
       <div className={styles.title}>
         <span>信控模式管理</span>
+        <div className={styles.download} onClick={exportPlan}>
+          <img src={download} alt='' />
+          <span className={styles.text}>方案导出</span>
+        </div>
       </div>
       <main className={styles.progressMain}>
         <div className={styles.modeContainer}>

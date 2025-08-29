@@ -29,7 +29,7 @@ export default function CruiserSetting() {
           pitch: 0.0,
           speed: 50.0,
           weather: weather || 'ClearSunset',
-          JunctionIdList: routeMap[simulationControl],
+          junctionIdList: routeMap[simulationControl],
         }
 
         const response = await fetch(

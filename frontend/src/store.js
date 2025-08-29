@@ -36,8 +36,10 @@ import junctionOptReducer from 'stores/storesNewUI/junctionOptSlice'
 import junctionTimeprogressReducer from 'stores/storesNewUI/junctionTimeprogressSlice'
 import junctionOptstrategyReducer from 'stores/storesNewUI/junctionOptstrategySlice'
 import junctionOptResultReducer from 'stores/storesNewUI/junctionOptResultSlice'
+import optSelectReducer from 'stores/storesNewUI/optselectSlice.js'
 const store = configureStore({
   reducer: {
+    optSelect: optSelectReducer,
     greenFlow: greenFLowReducer,
     districtSpeed: districtSpeedReducer,
     animation: animationReducer,
