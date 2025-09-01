@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './index.module.scss'
-import video1 from 'assets/videos/twin.mp4'
 import live from 'assets/videos/live.mp4'
 import mock from 'assets/videos/mock.mp4'
 import combine from 'assets/videos/combine.mp4'

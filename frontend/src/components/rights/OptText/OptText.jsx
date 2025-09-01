@@ -5,7 +5,7 @@ import { setAllOptstrategyText } from 'stores/storesNewUI/junctionOptstrategySli
 import OptGraph from '../OptGraph/OptGraph'
 // 展示：路口信控优化策略三段文字
 // 文本来自 redux: state.junctionOptstrategy.{previousStr,currentOptr,result}
-export default function OptText() {
+export default function OptText({ onClose }) {
   const { previousStr, currentOptr, result } = useSelector(
     (state) => state.junctionOptstrategy
   )
@@ -97,7 +97,17 @@ export default function OptText() {
 
   return (
     <div className={styles.junctionOptstrategy}>
-      <header>信控优化策略</header>
+      <header>
+        信控优化策略
+        <button
+          type='button'
+          aria-label='关闭'
+          className={styles.closeBtn}
+          onClick={() => onClose && onClose()}
+        >
+          ×
+        </button>
+      </header>
 
       <main>
         <div className={styles.currentStrategy}>

@@ -149,7 +149,7 @@ export default function JunctionOptResult() {
         ></div>
       </div>
       <JunctionOptstrategy />
-      {showOptText && <OptText />}
+      {showOptText && <OptText onClose={() => setShowOptText(false)} />}
     </div>
   )
 }
