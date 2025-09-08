@@ -6,7 +6,6 @@ const initialState = {
     {
       name: '岳麓西大道',
       index: '2',
-      distance: '5',
       status: '否',
       speed: '33',
       trend: '-3%',
@@ -14,7 +13,6 @@ const initialState = {
     {
       name: '旺龙路',
       index: '1',
-      distance: '2',
       status: '异常',
       speed: '5',
       trend: '-3%',
@@ -22,7 +20,6 @@ const initialState = {
     {
       name: '尖山路',
       index: '5',
-      distance: '5',
       status: '否',
       speed: '15',
       trend: '-3%',
@@ -30,7 +27,6 @@ const initialState = {
     {
       name: '望青路',
       index: '6',
-      distance: '5',
       status: '否',
       speed: '20',
       trend: '-3%',
@@ -38,7 +34,6 @@ const initialState = {
     {
       name: '青山路',
       index: '7',
-      distance: '5',
       status: '否',
       speed: '62',
       trend: '-3%',

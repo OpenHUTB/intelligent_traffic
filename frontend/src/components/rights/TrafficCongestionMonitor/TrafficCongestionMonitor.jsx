@@ -23,8 +23,8 @@ export default function TrafficCongestionMonitor() {
 
   const dataItems = [
     { description: '交通拥堵指数', value: info.index, unit: '' },
-    { description: '拥堵里程', value: info.road, unit: 'Km' },
-    { description: '拥堵路段总数', value: info.congestion, unit: '个' },
+    { description: '拥堵里程', value: info.congestion, unit: 'm' },
+    { description: '拥堵路段总数', value: info.road, unit: '个' },
     { description: '平均拥堵时长', value: info.time, unit: 'min' },
   ]
 

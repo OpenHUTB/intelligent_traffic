@@ -119,7 +119,29 @@ export default function TrafficRank() {
   ))
 
   if (!currentItem) {
-    return <div className={styles.trafficViolationContainer}>加载中...</div>
+    return (
+      <div className={styles.trafficViolationContainer}>
+        <div className={styles.title}>
+          <span>实时告警信息</span>
+        </div>
+        <div className={styles.mainContent}>
+          <div className={styles.rankContianer}>
+            <span>序号</span>
+            <span className={styles.violationName}>类型</span>
+            <span className={styles.violationPosition}>位置</span>
+            <span className={styles.violationNumber}>车牌号</span>
+            <span className={styles.violationAlert}>报警</span>
+            <span className={styles.violationDeal}>处理</span>
+            <span className={styles.violationSpeed}>车速</span>
+            <span className={styles.violationTime}>发生时间</span>
+            <span>告警级别</span>
+          </div>
+          <div className={styles.empty} ref={scrollContainer}>
+            当前暂无告警信息
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

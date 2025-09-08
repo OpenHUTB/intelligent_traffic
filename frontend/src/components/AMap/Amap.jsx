@@ -448,7 +448,7 @@ export default function Amap({ isVisible = true }) {
       <div
         id='container1'
         style={{
-          height: '80%',
+          height: '100%',
           width: '100%',
           borderRadius: '16px',
           boxShadow: '0 8px 24px rgba(0,255,255,0.2)',

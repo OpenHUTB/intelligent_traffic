@@ -56,7 +56,7 @@ export default function TrafficCongestionData() {
       <span className={styles.name}>{item.name}</span>
       <span className={styles.positionText}>{item.index}</span>
       <span className={styles.number}>{item.speed}</span>
-      <span className={styles.time}>{item.distance}</span>
+      {/* <span className={styles.time}>{item.distance}</span> */}
       <span className={styles.speed}>{item.trend}</span>
       <span
         className={`${styles.status} ${
@@ -80,7 +80,6 @@ export default function TrafficCongestionData() {
           <span className={styles.trafficName}>{`街道\n名称`}</span>
           <span className={styles.trafficIndex}>{`交通\n指数`}</span>
           <span className={styles.trafficSpeed}>{`平均\n速度`}</span>
-          <span className={styles.trafficDistance}>{`拥堵\n里程`}</span>
           <span className={styles.trafficTrend}>{`拥堵\n趋势`}</span>
           <span>{`告警\n级别`}</span>
         </div>

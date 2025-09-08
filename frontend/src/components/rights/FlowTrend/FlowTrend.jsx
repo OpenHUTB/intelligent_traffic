@@ -44,6 +44,7 @@ export default function FlowTrend() {
       <div className={styles.listItem} key={index}>
         <span className={styles.street}>{item.name}</span>
         <span className={styles.name}>{item.index.toFixed(2)}</span>
+        <span className={styles.time}>{item.time}</span>
         <span className={styles.trendBox}>
           <span className={styles.trend}>{item.trend.toFixed(2)}%</span>
           {item.trendDirection ? <UP /> : <DOWN />}
@@ -59,8 +60,9 @@ export default function FlowTrend() {
       </div>
       <div className={styles.mainContent}>
         <div className={styles.rankContainer}>
-          <span>路段名称</span>
+          <span className={styles.street}>路段名称</span>
           <span className={styles.street}>拥堵里程</span>
+          <span className={styles.time}>通行时间</span>
           <span>拥堵趋势</span>
         </div>
         <div className={styles.listContainer}>{renderList}</div>

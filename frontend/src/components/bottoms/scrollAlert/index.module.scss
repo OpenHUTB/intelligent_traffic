@@ -57,7 +57,15 @@
         background: url("../../../assets/image/bottom-bg-green.png") no-repeat center center;
         background-size: 100% 100%;
         padding: 0px 15px 10px 15px;
-
+        .empty {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: 500;
+            color: #ffffff;
+        }
         .rankContianer {
             display: grid;
             grid-template-columns: 0.8fr 1.2fr 1.5fr 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
