@@ -25,14 +25,13 @@ export default function Header() {
           <Link to='/digitalTwin'>实景三维动态巡查</Link>
         </li>
       </ul> */}
+      <div className='logo'></div>
       <div className='title'>
-        <h2 className='title-1'> </h2>
+        <h2 className='title-1'>基于数字孪生的交通大模型</h2>
       </div>
       <div className='weather'>
         <Weather />
       </div>
-
-      <div className='logo'></div>
     </header>
   )
 }

@@ -10,8 +10,8 @@ updateDistrictSpeed({
 
 2. 修改交通数据感知，单个修改
 updateTrafficInfo('index',3)修改指数
-updateTrafficInfo('road',3)修改拥堵里程
-updateTrafficInfo('congestion',11)修改拥堵路段总数
+updateTrafficInfo('road',3)修改拥堵路段总数
+updateTrafficInfo('congestion',11)修改拥堵里程
 updateTrafficInfo('time',111)修改拥堵时长
 
 3. 修改道路拥堵情况,接收一个数组作为参数，示例如下：
@@ -19,7 +19,6 @@ signalRoadDataChanged([
     {
       name: '岳麓西大道123',
       index: '2',
-      distance: '5',
       status: '否',
       speed: '33',
       trend: '-3%',
@@ -27,7 +26,6 @@ signalRoadDataChanged([
     {
       name: '旺龙路',
       index: '1',
-      distance: '2',
       status: '异常',
       speed: '5',
       trend: '-3%',
@@ -35,7 +33,6 @@ signalRoadDataChanged([
     {
       name: '尖山路',
       index: '5',
-      distance: '5',
       status: '否',
       speed: '15',
       trend: '-3%',
@@ -43,7 +40,6 @@ signalRoadDataChanged([
     {
       name: '望青路',
       index: '6',
-      distance: '5',
       status: '否',
       speed: '20',
       trend: '-3%',
@@ -51,7 +47,6 @@ signalRoadDataChanged([
     {
       name: '青山路',
       index: '7',
-      distance: '5',
       status: '否',
       speed: '62',
       trend: '-11113%',
@@ -60,7 +55,7 @@ signalRoadDataChanged([
 
 
 
-4. 修改实时告警信息，接受数组作为参数，示例如下：
+4. 修改实时告警信息，接受数组作为参数，默认数值已清空，如未传入数据则显示“当前暂无告警信息”示例如下：
 scrollAlertDataChanged([
     {
       name: '逆行',
@@ -137,31 +132,31 @@ signalJunctionDataChanged([
     {
       name: '尖山路与岳麓西大道交叉口',
       index: 1111,
-      trend: 18.53,
+      time: 18.53,
       trendDirection: true,
     },
     {
       name: '青山路与尖山路交叉口',
       index: 3,
-      trend: 20.53,
+      time: 20.53,
       trendDirection: true,
     },
     {
       name: '旺龙路与青山路交叉口',
       index: 4,
-      trend: 15.53,
+      time: 15.53,
       trendDirection: false,
     },
     {
       name: '旺龙路与青山路交叉口',
       index: 4,
-      trend: 15.53,
+      time: 15.53,
       trendDirection: false,
     },
     {
       name: '旺龙路与青山路交叉口',
       index: 4,
-      trend: 15.53,
+      time: 15.53,
       trendDirection: true,
     },
   ])

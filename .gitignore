@@ -56,3 +56,8 @@ ruoyi-ui/node_modules/
 frontend/node_modules/
 
 frontend/.env
+
+### ignore all build file and build.zip in the frontend
+frontend/dist/
+frontend/build/
+frontend/build.zip

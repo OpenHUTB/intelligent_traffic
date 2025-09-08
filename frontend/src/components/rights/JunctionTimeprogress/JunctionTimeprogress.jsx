@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import * as echarts from 'echarts'
 import styles from './index.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
@@ -9,7 +9,8 @@ import {
 import optIcon from 'assets/image/opt-icon.png'
 import manualIcon from 'assets/image/Frame.png'
 import download from 'assets/image/download.png'
-import { downloadFiles } from 'utils/fileDownload'
+import { Modal, Checkbox, Spin, message, Button } from 'antd'
+import axios from 'axios'
 
 export default function JunctionTimeprogress() {
   const chartRef = useRef(null)
@@ -24,33 +25,140 @@ export default function JunctionTimeprogress() {
     dispatch(mergeTrafficState(trafficState))
   }
 
-  // 方案导出：使用新的下载工具
-  const exportPlan = async () => {
+  // ================= 新下载逻辑（基于后端接口） =================
+  const [fileModalOpen, setFileModalOpen] = useState(false)
+  const [fileLoading, setFileLoading] = useState(false)
+  const [downloading, setDownloading] = useState(false)
+  const [fileList, setFileList] = useState([]) // {documentId, documentName, url, type}
+  const [selectedIds, setSelectedIds] = useState(new Set())
+
+  const API_BASE = 'http://localhost:8080/simulation/file'
+
+  // 获取文件列表
+  const fetchFileList = useCallback(async () => {
+    setFileLoading(true)
     try {
-      const results = await downloadFiles({
-        fileSource: 'auto', // 自动选择最佳方式
-        onProgress: (progress) => {
-          console.log(
-            `下载进度: ${progress.current}/${progress.total} - ${progress.filename}`
-          )
-          // 这里可以显示进度条或Toast提示
-        },
-        onError: (error) => {
-          console.error('下载出错:', error)
-        },
-        onSuccess: (results) => {
-          const message = `下载完成！成功: ${results.success}个，失败: ${results.failed}个`
-          alert(message)
-          if (results.errors.length > 0) {
-            console.error('下载错误详情:', results.errors)
-          }
-        },
+      const res = await axios.get(`${API_BASE}/documentList`, {
+        params: { type: 'signal' },
       })
-    } catch (error) {
-      console.error('下载失败:', error)
-      alert(`下载失败: ${error.message}`)
+      if (res.data?.status === 'SUCCESS' && Array.isArray(res.data.data)) {
+        const list = res.data.data
+        setFileList(list)
+        setSelectedIds(new Set(list.map((i) => i.documentId))) // 默认全选
+      } else {
+        message.error(res.data?.message || '获取文件列表失败')
+      }
+    } catch (e) {
+      console.error(e)
+      message.error('文件列表请求错误')
+    } finally {
+      setFileLoading(false)
+    }
+  }, [])
+
+  // 点击“方案导出”按钮：拉取列表并打开弹窗
+  const exportPlan = async () => {
+    setFileModalOpen(true)
+    if (fileList.length === 0) {
+      fetchFileList()
     }
   }
+
+  const toggleSelect = (id) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const selectAll = () => {
+    setSelectedIds(new Set(fileList.map((i) => i.documentId)))
+  }
+
+  const clearAll = () => {
+    setSelectedIds(new Set())
+  }
+
+  // 实际下载单个文件
+  const downloadOne = async (doc) => {
+    try {
+      const response = await axios.get(`${API_BASE}/download`, {
+        params: { documentId: doc.documentId },
+        responseType: 'blob',
+      })
+
+      // 如果后端返回JSON错误，而不是文件
+      if (response.data.type === 'application/json') {
+        const text = await response.data.text()
+        try {
+          const json = JSON.parse(text)
+          throw new Error(json.message || '下载失败')
+        } catch (e) {
+          throw new Error('下载失败')
+        }
+      }
+
+      // 从header获取文件名
+      let filename = doc.documentName || '文件'
+      const disposition = response.headers['content-disposition']
+      if (disposition) {
+        const match = /filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/i.exec(
+          disposition
+        )
+        if (match) {
+          filename = decodeURIComponent(match[1] || match[2] || filename)
+        }
+      } else if (doc.url) {
+        // fallback: 使用原始url里的扩展名
+        const ext = doc.url.split('.').pop()
+        if (ext && !filename.endsWith(`.${ext}`)) filename += `.${ext}`
+      } else if (!/\.\w+$/.test(filename)) {
+        filename += '.xls'
+      }
+
+      const blob = response.data
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      setTimeout(() => window.URL.revokeObjectURL(url), 1500)
+      return { ok: true, id: doc.documentId }
+    } catch (e) {
+      return { ok: false, id: doc.documentId, error: e.message }
+    }
+  }
+
+  const handleDownload = async () => {
+    if (selectedIds.size === 0) {
+      message.warning('请选择至少一个文件')
+      return
+    }
+    setDownloading(true)
+    const targets = fileList.filter((f) => selectedIds.has(f.documentId))
+    const results = []
+    for (let i = 0; i < targets.length; i++) {
+      const r = await downloadOne(targets[i])
+      results.push(r)
+    }
+    setDownloading(false)
+    const success = results.filter((r) => r.ok).length
+    const failed = results.length - success
+    if (failed === 0) {
+      message.success(`全部下载完成（${success}个）`)
+    } else {
+      message.warning(`成功 ${success} 个，失败 ${failed} 个`)
+      console.warn(
+        '下载失败明细:',
+        results.filter((r) => !r.ok)
+      )
+    }
+  }
+  // ========================================================
 
   console.log('trafficState from slice:', trafficState)
 
@@ -346,6 +454,73 @@ export default function JunctionTimeprogress() {
           style={{ width: '100%', height: '300px' }}
         />
       </main>
+
+      <Modal
+        title='选择要导出的文件'
+        open={fileModalOpen}
+        onCancel={() => setFileModalOpen(false)}
+        footer={[
+          <Button key='refresh' onClick={fetchFileList} disabled={fileLoading}>
+            刷新
+          </Button>,
+          <Button key='all' onClick={selectAll} disabled={fileLoading}>
+            全选
+          </Button>,
+          <Button key='clear' onClick={clearAll} disabled={fileLoading}>
+            清空
+          </Button>,
+          <Button
+            key='download'
+            type='primary'
+            loading={downloading}
+            onClick={handleDownload}
+          >
+            {downloading ? '下载中...' : '下载'}
+          </Button>,
+        ]}
+        width={520}
+      >
+        {fileLoading ? (
+          <div style={{ textAlign: 'center', padding: 40 }}>
+            <Spin />
+          </div>
+        ) : fileList.length === 0 ? (
+          <div style={{ padding: '12px 8px' }}>暂无可下载文件</div>
+        ) : (
+          <div
+            style={{
+              maxHeight: 300,
+              overflowY: 'auto',
+              border: '1px solid #333',
+              borderRadius: 4,
+              padding: 8,
+            }}
+          >
+            {fileList.map((f) => (
+              <div
+                key={f.documentId}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '4px 4px',
+                  borderBottom: '1px solid #222',
+                }}
+              >
+                <Checkbox
+                  checked={selectedIds.has(f.documentId)}
+                  onChange={() => toggleSelect(f.documentId)}
+                  style={{ flex: 1 }}
+                >
+                  {f.documentName}
+                </Checkbox>
+              </div>
+            ))}
+          </div>
+        )}
+        <div style={{ marginTop: 8, fontSize: 12, opacity: 0.7 }}>
+          说明：选择需要下载的信控方案,请至少选择一个方案.
+        </div>
+      </Modal>
     </div>
   )
 }

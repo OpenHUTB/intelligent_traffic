@@ -18,7 +18,7 @@
 
         .rankContianer {
             display: grid;
-            grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr 2fr;
+            grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 2fr;
             gap: 10px;
             align-items: center;
             height: 45px;
@@ -44,7 +44,7 @@
 
             .listItem {
                 display: grid;
-                grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr 2fr;
+                grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 2fr;
                 gap: 5px;
                 align-items: center;
                 height: 44px;

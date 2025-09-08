@@ -26,6 +26,26 @@
         font-size: 26px;
         font-weight: bold;
         margin-bottom: 20px;
+        position: relative;
+        padding-right: 40px; // space for close button
+    }
+
+    .closeBtn {
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 14px 28px;
+        transition: color 0.2s;
+        &:hover {
+            color: #ffd30e;
+        }
     }
 
     .dot {
