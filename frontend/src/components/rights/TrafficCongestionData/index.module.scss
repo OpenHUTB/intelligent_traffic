@@ -50,6 +50,16 @@
                 height: 44px;
                 font-size: 16px;
                 font-weight: 500;
+                .trendBox {
+                    text-align: left;
+                    display: flex;
+                    align-items: center;
+                    svg {
+                        margin-left: 5px;
+                        width: 12px;
+                        height: 16px;
+                    }
+                }
 
                 span {
                     text-align: center;

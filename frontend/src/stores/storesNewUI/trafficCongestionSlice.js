@@ -9,6 +9,7 @@ const initialState = {
       status: '否',
       speed: '33',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '旺龙路',
@@ -16,6 +17,7 @@ const initialState = {
       status: '异常',
       speed: '5',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '尖山路',
@@ -23,6 +25,7 @@ const initialState = {
       status: '否',
       speed: '15',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '望青路',
@@ -30,6 +33,7 @@ const initialState = {
       status: '否',
       speed: '20',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '青山路',
@@ -37,6 +41,7 @@ const initialState = {
       status: '否',
       speed: '62',
       trend: '-3%',
+      trendDirection: false,
     },
   ],
 }

@@ -3,6 +3,7 @@ import AMapLoader from '@amap/amap-jsapi-loader'
 import { useEffect, useRef } from 'react'
 import styles from './index.module.scss'
 import trafficIcon from 'assets/icon/trafficLight.png'
+import alertIcon from 'assets/image/alertIcon.png'
 import { useSelector, useDispatch } from 'react-redux'
 
 const getSpeedColor = (speed) => {
@@ -53,17 +54,40 @@ export default function Amap({ isVisible = true }) {
 
   // 完整的路段速度数据
   const segmentSpeeds = [
-    { position: [112.874925, 28.231105], speed: '25km/h', value: 25 },
-    { position: [112.887528, 28.225882], speed: '35km/h', value: 35 },
-    { position: [112.887394, 28.230496], speed: '18km/h', value: 18 },
-    { position: [112.888371, 28.233413], speed: '42km/h', value: 42 },
-    { position: [112.880524, 28.236542], speed: '30km/h', value: 30 },
+    {
+      position: [112.88986559863608, 28.233521759437362],
+      speed: '25km/h',
+      value: 25,
+    },
+    {
+      position: [112.88162777880416, 28.236600120864875],
+      speed: '35km/h',
+      value: 35,
+    },
+    {
+      position: [112.89138394718731, 28.22981448138176],
+      speed: '18km/h',
+      value: 18,
+    },
+    {
+      position: [112.88309825500113, 28.228717157479597],
+      speed: '42km/h',
+      value: 42,
+    },
+    {
+      position: [112.8796528812412, 28.232420220010862],
+      speed: '30km/h',
+      value: 30,
+    },
   ]
     .map((segment) => {
       const cleanPos = validateAndCleanCoordinates(segment.position)
       return cleanPos ? { ...segment, position: cleanPos } : null
     })
     .filter(Boolean)
+
+  // 使用 segmentSpeeds 的坐标作为黄色点位
+  const yellowPositions = segmentSpeeds.map((s) => s?.position).filter(Boolean)
 
   // 当地图变为可见时，触发resize
   useEffect(() => {
@@ -300,34 +324,28 @@ export default function Amap({ isVisible = true }) {
               console.warn('创建中心点标记失败:', error)
             }
 
-            // 动态速度标签
-            segmentSpeeds.forEach((segment, index) => {
-              if (!segment || !segment.position) return
+            // 移除速度文本展示，改为使用黄色点（下方已有黄色点标记逻辑）
 
-              try {
-                const [lng, lat] = segment.position
-                const textMarker = new AMap.Text({
+            // 使用警告图标标记（alertIcon）
+            try {
+              yellowPositions.forEach((coord, idx) => {
+                const [lng, lat] = coord
+                const alertMarker = new AMap.Marker({
                   position: new AMap.LngLat(lng, lat),
-                  text: segment.speed,
-                  style: {
-                    background: `linear-gradient(45deg, ${getSpeedColor(
-                      segment.value
-                    )}, #000)`,
-                    'border-radius': '15px',
-                    color: '#FFF',
-                    'font-size': '16px',
-                    'box-shadow': '0 4px 12px rgba(0,0,0,0.3)',
-                    padding: '4px 8px',
-                  },
-                  offset: new AMap.Pixel(0, -10),
-                  angle: -5,
+                  icon: new AMap.Icon({
+                    image: alertIcon,
+                    size: new AMap.Size(36, 36),
+                    imageSize: new AMap.Size(36, 36),
+                  }),
+                  offset: new AMap.Pixel(-12, -12),
+                  zIndex: 130,
                 })
-                map.add(textMarker)
-                markersRef.current.push(textMarker)
-              } catch (error) {
-                console.warn(`创建速度标签 ${index} 失败:`, error, segment)
-              }
-            })
+                map.add(alertMarker)
+                markersRef.current.push(alertMarker)
+              })
+            } catch (error) {
+              console.warn('创建警告图标标记失败:', error)
+            }
 
             // 修正后的动画逻辑
             const initAnimations = () => {
