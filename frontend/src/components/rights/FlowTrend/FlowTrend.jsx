@@ -43,7 +43,7 @@ export default function FlowTrend() {
     return (
       <div className={styles.listItem} key={index}>
         <span className={styles.street}>{item.name}</span>
-        <span className={styles.name}>{item.index.toFixed(2)}</span>
+        <span className={styles.congestion}>{item.congestion.toFixed(2)}</span>
         <span className={styles.time}>{item.time}</span>
         <span className={styles.trendBox}>
           <span className={styles.trend}>{item.trend.toFixed(2)}%</span>

@@ -131,32 +131,37 @@ scrollAlertDataChanged([
 signalJunctionDataChanged([
     {
       name: '尖山路与岳麓西大道交叉口',
-      index: 1111,
-      time: 18.53,
-      trendDirection: true,
+      congestion: 1111, //拥堵里程
+      time: 18.53, //拥堵时间
+      trend: 11, //拥堵趋势的数字
+      trendDirection: true, //拥堵趋势的箭头
     },
     {
       name: '青山路与尖山路交叉口',
-      index: 3,
+      congestion: 11,
       time: 20.53,
+      trend: 11,
       trendDirection: true,
     },
     {
       name: '旺龙路与青山路交叉口',
-      index: 4,
+      congestion: 4,
       time: 15.53,
+      trend: 11,
       trendDirection: false,
     },
     {
       name: '旺龙路与青山路交叉口',
-      index: 4,
+      congestion: 4,
       time: 15.53,
+      trend: 9,
       trendDirection: false,
     },
     {
       name: '旺龙路与青山路交叉口',
-      index: 4,
+      congestion: 4,
       time: 15.53,
+      trend: 19,
       trendDirection: true,
     },
   ])
