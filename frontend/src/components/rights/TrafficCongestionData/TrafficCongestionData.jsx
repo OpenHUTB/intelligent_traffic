@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styles from './index.module.scss'
+import { ReactComponent as UP } from 'assets/image/UP.svg'
+import { ReactComponent as DOWN } from 'assets/image/DOWN.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   setTrafficCongestionList,
@@ -57,7 +59,10 @@ export default function TrafficCongestionData() {
       <span className={styles.positionText}>{item.index}</span>
       <span className={styles.number}>{item.speed}</span>
       {/* <span className={styles.time}>{item.distance}</span> */}
-      <span className={styles.speed}>{item.trend}</span>
+      <span className={styles.trendBox}>
+        <span className={styles.trend}>{item.trend}</span>
+        {item.trendDirection ? <UP /> : <DOWN />}
+      </span>
       <span
         className={`${styles.status} ${
           item.status && item.status.includes('异常')

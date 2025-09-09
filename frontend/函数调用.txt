@@ -17,11 +17,12 @@ updateTrafficInfo('time',111)修改拥堵时长
 3. 修改道路拥堵情况,接收一个数组作为参数，示例如下：
 signalRoadDataChanged([
     {
-      name: '岳麓西大道123',
+      name: '岳麓西大道',
       index: '2',
       status: '否',
       speed: '33',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '旺龙路',
@@ -29,6 +30,7 @@ signalRoadDataChanged([
       status: '异常',
       speed: '5',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '尖山路',
@@ -36,6 +38,7 @@ signalRoadDataChanged([
       status: '否',
       speed: '15',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '望青路',
@@ -43,13 +46,15 @@ signalRoadDataChanged([
       status: '否',
       speed: '20',
       trend: '-3%',
+      trendDirection: false,
     },
     {
       name: '青山路',
       index: '7',
       status: '否',
       speed: '62',
-      trend: '-11113%',
+      trend: '-3%',
+      trendDirection: false,
     },
   ])
 
