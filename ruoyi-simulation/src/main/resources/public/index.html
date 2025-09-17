@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" type="image/x-icon" href="statics/favicon.ico">
-    <!--<link rel="stylesheet" type="text/css" href="statics/huiyan/css/index.css" media="all">-->
-    <link href="statics/main.76c7ac37.css" rel="stylesheet">
+    <link href="statics/main.3de42fe8.css" rel="stylesheet">
     <script type="text/javascript" src="statics/huiyan/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/jquery.cookie.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/jquery.base64.js"></script>
@@ -15,7 +14,7 @@
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/mp3-engine.js"></script>
     <script type="text/javascript" src="statics/huiyan/js/recorder/engine/wav.js"></script>
-    <script defer="defer" src="statics/main.bf7342b6.js"></script>
+    <script defer="defer" src="statics/main.ffc7a19b.js"></script>
     <script defer="defer" src="statics/junctionEvent.js"></script>
     <script defer="defer" src="statics/lightControl.js"></script>
     <title>智慧交通大模型</title>
@@ -32,45 +31,54 @@
         }
     </script>
     <script>
-        function updateAnimation(t,n="animationIndex"){
-			localStorage.setItem(n,t),
+        function updateAnimation(t,e="animationIndex"){
+			localStorage.setItem(e,t),
 			window.dispatchEvent(new CustomEvent("animationIndexChanged",{detail:{animationIndex:t}}))
 		}
-		function updateLight(t,n,e){
-			const o=`light${t}`,
-			i=JSON.stringify({seconds:n,isGreen:e});
-			localStorage.setItem(o,i);
-			const a=`light${t}`;
-			window.dispatchEvent(new CustomEvent("lightTimerChanged",{detail:{[a]:{seconds:n,isGreen:e}}}))
+		function updateLight(t,e,n,o,i){
+			const a=`light${t}`,
+			d={seconds:e,isGreen:n};
+			Array.isArray(o)&&Array.isArray(i)||(n?(o=[55,53,52,50,49,51,63,68,64,60,58,56],i=[50,48,47,45,44,46,52,58,55,53,51,50]):(o=[35,33,32,31,30,29,40,42,41,38,37,36],i=[45,44,43,42,41,40,48,49,48,47,46,45])),
+			d.current=o,
+			d.weekly=i,
+			localStorage.setItem(a,JSON.stringify(d));
+			const l=`light${t}`;
+			window.dispatchEvent(new CustomEvent("lightTimerChanged",{detail:{[l]:d}}))
 		}
-		function updateTrafficInfo(t,n){
-			const e=`${t}`;
-			localStorage.setItem(e,n);
-			const o=`${t}`;
-			window.dispatchEvent(new CustomEvent("TrafficInfoChanged",{detail:{[o]:n}}))
+		function updateFlowSpeed(t,e,n="flow"){
+			const o={};
+			Array.isArray(t)&&(o.current=t),
+			Array.isArray(e)&&(o.weekly=e),
+			window.dispatchEvent(new CustomEvent("flowSpeedChanged",{detail:{[n]:o}}))
 		}
-		function updateJunctionInfo(t,n){
-			const e=`${t}`;
-			localStorage.setItem(e,n);
-			const o=`${t}`;
-			window.dispatchEvent(new CustomEvent("junctionInfoChanged",{detail:{[o]:n}}))
+		function updateTrafficInfo(t,e){
+			const n=`${t}`;
+			localStorage.setItem(n,e);const o=`${t}`;
+			window.dispatchEvent(new CustomEvent("TrafficInfoChanged",{detail:{[o]:e}}))
+		}
+		function updateJunctionInfo(t,e){
+			const n=`${t}`;
+			localStorage.setItem(n,e);const o=`${t}`;
+			window.dispatchEvent(new CustomEvent("junctionInfoChanged",{detail:{[o]:e}}))
 		}
 		function twinPlay(t){
-			const n=document.getElementById("twinContainer"),
-			e=document.getElementById("twin");
-			t?(n.style.display="block",e.playbackRate=.95,e.play()):(n.style.display="none",e.pause())
+			const e=document.getElementById("twinContainer"),n=document.getElementById("twin");
+			t?(e.style.display="block",n.playbackRate=.95,n.play()):(e.style.display="none",n.pause())
 		}
 		function lightVideo(t){
-			const n=document.getElementById("videoElement");
-			t?n.play():n.pause()
+			const e=document.getElementById("videoElement");
+			t?e.play():e.pause()
 		}
 		function screenShot(){
-			setTimeout((()=>{window.location.href+="#/highway",lightVideo(!0),setTimeout((()=>{lightVideo(!0)}),1e3)}),500)
+			setTimeout(()=>{
+				window.location.href+="#/highway",lightVideo(!0),setTimeout(()=>{lightVideo(!0)},1e3)
+			},500)
 		}
 		function digitalTwin(){
 			const t=document.getElementById("videoElement");
 			t.play(),t.loop=!0
 		}
+		window.__OUTPUT_FILE_LIST=["各路口信控优化对比.xls"]
     </script>
 </head>
 <body onload="load()">

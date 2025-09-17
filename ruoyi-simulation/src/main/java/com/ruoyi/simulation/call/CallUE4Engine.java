@@ -12,18 +12,69 @@ import java.io.*;
 
 @Component
 public class CallUE4Engine {
-    private final Logger logger = LoggerFactory.getLogger(CallWizardCoder.class);
+    private final Logger logger = LoggerFactory.getLogger(CallUE4Engine.class);
     @Resource
     private Environment environment;
-    public String getMapName(String params){
-        CommandLineUtil<String> commandLine = new CommandLineUtil<String>() {
-            private Process process;
+
+    /**
+     * 执行examples文件
+     * @param params
+     * @return
+     */
+    public void executeExamples(String params){
+        new Thread(new Runnable() {
             @Override
-            protected Process getProcess() throws Exception {
+            public void run() {
                 //获取python解释器在服务器中的绝对路径
                 String interpreterLocation = environment.getProperty("simulation.ue4Engine.interpreterLocation");
                 //获取python代码文件在服务器中的绝对路径
                 String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
+                executeSynchronized(interpreterLocation, scriptDirectory, params);
+            }
+        }).start();
+    }
+
+    /**
+     * 获取交通指数
+     * @param params
+     */
+    public void executeIndirection(String params){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //获取python解释器在服务器中的绝对路径
+                String interpreterLocation = environment.getProperty("simulation.indirection.interpreterLocation");
+                //获取python代码文件在服务器中的绝对路径
+                String scriptDirectory = environment.getProperty("simulation.indirection.scriptDirectory");
+                executeSynchronized(interpreterLocation, scriptDirectory, params);
+            }
+        }).start();
+    }
+
+    /**
+     * 获取carla中的数据
+     * @param params
+     * @return
+     */
+    public String getInformation(String params){
+        //获取python解释器在服务器中的绝对路径
+        String interpreterLocation = environment.getProperty("simulation.ue4Engine.interpreterLocation");
+        //获取python代码文件在服务器中的绝对路径
+        String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
+        return executeSynchronized(interpreterLocation, scriptDirectory, params);
+    }
+    /**
+     * 通过Java调用cmd命令同步执行python脚本
+     * @param interpreterLocation
+     * @param scriptDirectory
+     * @param params
+     * @return
+     */
+    private String executeSynchronized(String interpreterLocation, String scriptDirectory, String params){
+        CommandLineUtil<String> commandLine = new CommandLineUtil<String>() {
+            private Process process;
+            @Override
+            protected Process getProcess() throws Exception {
                 String scriptLocation = scriptDirectory + params;
                 //执行服务器中的python脚本
                 Runtime runtime = Runtime.getRuntime();
@@ -33,7 +84,6 @@ public class CallUE4Engine {
 
             @Override
             protected String processResult(InputStream ins) throws Exception {
-                String mapName = null;
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
                 String str = null;
                 while((str = bufferedReader.readLine())!=null){
@@ -42,88 +92,11 @@ public class CallUE4Engine {
                         //检测到"gpt_end"则说明场景名称获取成功，否则说明发生了异常
                         break;
                     }
-                    mapName = str;
                     logger.info(str);
                 }
-                return mapName;
+                return str;
             }
         };
         return commandLine.executionCommand();
-    }
-    /**
-     * 执行指令
-     * @param params
-     * @return
-     */
-    public void executeExample(String params) {//get_buildings.py
-        CommandLineUtil<Process> commandLine = new CommandLineUtil<Process>() {
-            @Override
-            protected Process getProcess() throws Exception {
-                //获取python解释器在服务器中的绝对路径
-                String interpreterLocation = environment.getProperty("simulation.ue4Engine.interpreterLocation");
-                //获取python代码文件在服务器中的绝对路径
-                String scriptDirectory = environment.getProperty("simulation.ue4Engine.scriptDirectory");
-                String scriptLocation = scriptDirectory + params;
-                //执行服务器中的python脚本
-                Runtime runtime = Runtime.getRuntime();
-                //>C:/Buffer/gpt/gpt-main/webui/python/python.exe C:/Buffer/gpt/gpt-main/webui/client.py  --prompt 创建一个驾驶场景对象scenario，并在场景中创建了一个车辆对象v1
-                logger.info("cmd /k "+interpreterLocation+" "+scriptLocation);
-                return runtime.exec("cmd /k "+interpreterLocation+" "+scriptLocation);
-            }
-
-            @Override
-            protected Process processResult(InputStream ins) throws Exception {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
-                String str = null;
-                while(!StringUtils.isEmpty(str = bufferedReader.readLine())){
-                    logger.info(str);
-                }
-                return null;
-            }
-        };
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                commandLine.executionCommand();
-            }
-        }).start();
-    }
-    /**
-     * 获取交通数据
-     * @param params
-     * @return
-     */
-    public void getTrafficIndirection(String params) {//get_buildings.py
-        CommandLineUtil<Void> commandLine = new CommandLineUtil<Void>() {
-            @Override
-            protected Process getProcess() throws Exception {
-                //获取python解释器在服务器中的绝对路径
-                String interpreterLocation = environment.getProperty("simulation.indirection.interpreterLocation");
-                //获取python代码文件在服务器中的绝对路径
-                String scriptDirectory = environment.getProperty("simulation.indirection.scriptDirectory");
-                String scriptLocation = scriptDirectory + params;
-                //执行服务器中的python脚本
-                Runtime runtime = Runtime.getRuntime();
-                //>C:/ProgramData/Python37/python.exe D:/project/gpt/webui/indirectionscript/
-                logger.info("cmd /k "+interpreterLocation+" "+scriptLocation);
-                return runtime.exec("cmd /k "+interpreterLocation+" "+scriptLocation);
-            }
-
-            @Override
-            protected Void processResult(InputStream ins) throws Exception {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(ins,"gbk"));
-                String str = null;
-                while(!StringUtils.isEmpty(str = bufferedReader.readLine())){
-                    logger.info(str);
-                }
-                return null;
-            }
-        };
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                commandLine.executionCommand();
-            }
-        }).start();
     }
 }

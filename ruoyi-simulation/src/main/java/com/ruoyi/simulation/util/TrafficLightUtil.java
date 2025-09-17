@@ -1,7 +1,12 @@
 package com.ruoyi.simulation.util;
 
-import com.ruoyi.common.utils.StringUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.simulation.domain.Signalbase.TrafficLightState;
 import com.ruoyi.simulation.domain.TrafficLight;
+import com.ruoyi.simulation.listener.SignalControlListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
@@ -10,6 +15,7 @@ import java.util.*;
  * 红绿灯工具类
  */
 public class TrafficLightUtil {
+    private static Logger logger = LoggerFactory.getLogger(SignalControlListener.class);
     /**
      * 获取不同路口对应的红绿灯集合
      * @return
@@ -35,7 +41,7 @@ public class TrafficLightUtil {
             Map<Integer, TrafficLightCouple> coupleMap = new HashMap<>();
             for(TrafficLight trafficLight: trafficLightList) {
                 int phase = trafficLight.getGreenPhase();
-                coupleMap.putIfAbsent(phase, new TrafficLightCouple(phase, trafficLight.getPrefixTime()));
+                coupleMap.putIfAbsent(phase, new TrafficLightCouple(phase));
                 TrafficLightCouple couple = coupleMap.get(phase);
                 couple.add(trafficLight);
             }
@@ -68,17 +74,88 @@ public class TrafficLightUtil {
         }
     }
     /**
+     * 获取交通灯id与交通灯的映射
+     * @param trafficLightList
+     * @return
+     */
+    public static Map<Integer, TrafficLight> getTrafficLightMap(List<TrafficLight> trafficLightList){
+        Map<Integer, TrafficLight> trafficLightMap = new HashMap<>();
+        for(TrafficLight trafficLight: trafficLightList){
+            trafficLightMap.put(trafficLight.getTrafficLightId(), trafficLight);
+        }
+        return trafficLightMap;
+    }
+
+    /**
+     * 为红绿灯一个周期内，每秒钟对应的状态赋值
+     * @param trafficLightList
+     */
+    public static void initialStateArr(List<TrafficLight> trafficLightList){
+        for(TrafficLight trafficLight: trafficLightList){
+            //计算红绿灯信控周期
+            int cycle = 0;
+            List<StateStage> stateList = trafficLight.getStageList();
+            for(StateStage stage : stateList){
+                cycle+=stage.getLength();
+            }
+            TrafficLightState[] stateArr = new TrafficLightState[cycle];
+            trafficLight.setStateArr(stateArr);
+            //计算红绿灯每个周期内每秒钟对应的状态
+            int index = 0;
+            for(StateStage stage: stateList){
+                int length = stage.getLength();
+                TrafficLightState state = stage.getState();
+                for(int i=0;i<length;i++){
+                    stateArr[index+i] = state;
+                }
+                index += stage.getLength();
+            }
+        }
+    }
+    /**
      * 设置carla中的部分红绿灯参数
      * @param trafficLightList
      */
     public static void setCarlaTrafficLight(RedisTemplate<String,Object> redisTemplate, List<TrafficLight> trafficLightList){
+        Map<String, TrafficLightState[]> stateMap = new HashMap<>();
         for(TrafficLight trafficLight: trafficLightList){
             //保存每个红绿灯信控数据到Redis
             int trafficLightId = trafficLight.getTrafficLightId();
-            redisTemplate.opsForValue().set("prefix_time_"+trafficLightId, trafficLight.getPrefixTime());
-            redisTemplate.opsForValue().set("green_time_"+trafficLightId, trafficLight.getGreenTime());
-            redisTemplate.opsForValue().set("yellow_time_"+trafficLightId, trafficLight.getYellowTime());
-            redisTemplate.opsForValue().set("suffix_time_"+trafficLightId, trafficLight.getSuffixTime());
+            TrafficLightState[] stateArr = trafficLight.getStateArr();
+            stateMap.put(String.valueOf(trafficLightId), stateArr);
+        }
+        redisTemplate.opsForValue().set("signal_control_map", JSONObject.toJSONString(stateMap));
+    }
+    /**
+     * 合并红绿灯中相邻且具有相同state的stage
+     * @param stageList
+     */
+    public static List<StateStage> mergeStage(List<StateStage> stageList){
+        List<StateStage> tempList = new ArrayList<>();
+        for(StateStage stage: stageList){
+            if(tempList.isEmpty()){
+                tempList.add(stage);
+                continue;
+            }
+            StateStage temp = tempList.get(tempList.size()-1);
+            if(temp.getState()!=stage.getState()){
+                tempList.add(stage);
+                continue;
+            }
+            temp.setLength(temp.getLength()+stage.getLength());
+        }
+        return tempList;
+    }
+    public static void loggerSignal(List<TrafficLight> trafficLightList, String message){
+        System.out.println("====================================================================="+message+"=====================================================================");
+        //将红绿灯按路口分组
+        Map<Integer,List<TrafficLight>> junctionLightMap = TrafficLightUtil.getJunctionTrafficLightMap(trafficLightList);
+        for(int junctionId: junctionLightMap.keySet()){
+            System.out.println("---------------------------------------------------------------------"+junctionId+"---------------------------------------------------------------------");
+            trafficLightList = junctionLightMap.get(junctionId);
+            for(TrafficLight trafficLight: trafficLightList){
+                System.out.println(trafficLight.getTrafficLightId()+"\t:"+trafficLight.getFromDirection()+"\t:"+trafficLight.getTurnDirection()+"\t:"+JSON.toJSONString(trafficLight.getStageList()));
+            }
         }
     }
 }

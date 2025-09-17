@@ -147,8 +147,11 @@ simulation:
     loggerPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/logger
     sumoPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/sumo/data.json
     vehiclePath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/vehicle  #存储车辆轨迹的文本文件所在的文件夹
+    uploadPath: D:/users/alanYang/documents/accessory/intelligentTraffic/simulation/uploadPath  #存储上传下载的路径
   deepseek:
     url: http://10.0.254.164:8000/v1/completions
     key: deepseek-llama-70b
     maxTokens: 500
     temperature: 0
+  world:
+    map: /Game/Carla/Maps/Town10HD_Opt

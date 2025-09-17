@@ -1,12 +1,16 @@
 package com.ruoyi.simulation.listener;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.simulation.call.CallUE4Engine;
 import com.ruoyi.simulation.dao.*;
 import com.ruoyi.simulation.domain.*;
+import com.ruoyi.simulation.domain.Signalbase.TrafficLightState;
 import com.ruoyi.simulation.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +24,12 @@ import java.util.*;
  */
 @Component
 public class SignalControlListener implements ServletContextListener {
+    private static Logger logger = LoggerFactory.getLogger(SignalControlListener.class);
     /**
      * 每个路口id对应的红绿灯集合
      */
-    public static final Map<Integer,List<TrafficLight>> junctionLightMap = new HashMap<>();;
+    public static final Map<Integer,List<TrafficLight>> junctionLightMap = new HashMap<>();
+    public List<TrafficLight> trafficLightList;
     @Resource
     private SignalBaselMapper signalbaselMapper;
     @Resource
@@ -35,17 +41,21 @@ public class SignalControlListener implements ServletContextListener {
     @Resource
     private FlowRecordMapper recordMapper;
     @Resource
-    private GreenGroupMapper greenGroupMapper;
+    private GreenWaveMapper greenWaveMapper;
     @Resource
     public RedisTemplate<String,Object> redisTemplate;
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        List<TrafficLight> trafficLightList = initialTrafficLight();
-        this.fixedRegulation(trafficLightList);
-        //临时存储信控方案
-        this.setTemporarySignal(trafficLightList);
-        TrafficLightUtil.setCarlaTrafficLight(redisTemplate, trafficLightList);
-        this.callUE4Engine.executeExample("traffic_light_settings.py");
+        this.trafficLightList = initialTrafficLight();
+        TrafficLightUtil.loggerSignal(trafficLightList,"优化前信控方案");
+        this.fixedRegulation(this.trafficLightList);
+        TrafficLightUtil.loggerSignal(trafficLightList,"绿波信控方案");
+        //初始化一个周期内每秒钟对应的红绿灯状态
+        TrafficLightUtil.initialStateArr(trafficLightList);
+        //临时存储信控方setTemporarySignal案
+        setTemporarySignal(this.trafficLightList);
+        TrafficLightUtil.setCarlaTrafficLight(this.redisTemplate, this.trafficLightList);
+        //this.callUE4Engine.executeExample("traffic_light_settings.py");
     }
 
     /**
@@ -56,52 +66,46 @@ public class SignalControlListener implements ServletContextListener {
         //获取不同交通灯对应的信控信息
         List<Signalbase> signalbaseList = this.signalbaselMapper.getSignalBaseList();
         List<TrafficLight> trafficLightList = this.trafficLightMapper.selectList(new QueryWrapper<>());
-        Map<Integer, TrafficLight>  trafficLightMap = getTrafficLightMap(trafficLightList);
+        //获取红绿灯id与红绿灯的映射关系
+        Map<Integer, TrafficLight> trafficLightMap = TrafficLightUtil.getTrafficLightMap(trafficLightList);
+        Map<Integer, TrafficLight> temporaryMap = new HashMap<>();
         for(Signalbase signal: signalbaseList){
             //设置不同红绿灯对应的信控数据
             int trafficLightId = signal.getTrafficLightId();
             TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
-            if(signal.getLightStatus()==Signalbase.LightStatus.RED){
+            if(signal.getLightState()== TrafficLightState.RED){
                 if(trafficLight.getRedTime()==null){
                     trafficLight.setRedTime(0);
                 }
                 trafficLight.setRedTime(trafficLight.getRedTime()+signal.getDuration());
-                if(trafficLight.getGreenTime()==null || trafficLight.getGreenTime()==0){
-                    trafficLight.setPrefixTime(trafficLight.getPrefixTime()+signal.getDuration());
-                }
-            }else if(signal.getLightStatus()==Signalbase.LightStatus.GREEN || signal.getLightStatus()==Signalbase.LightStatus.GREEN_YELLOW){
+                trafficLight.addState(TrafficLightState.RED, signal.getDuration());
+            }else if(signal.getLightState()== TrafficLightState.GREEN || signal.getLightState()== TrafficLightState.GREEN_YELLOW){
                 //获取绿灯所在相位
                 if(trafficLight.getGreenPhase()==null){
                     int phaseId = signal.getPhase();
                     trafficLight.setGreenPhase(phaseId);
                 }
                 trafficLight.setGreenTime(trafficLight.getGreenTime()+signal.getDuration());
-            }else if(signal.getLightStatus()== Signalbase.LightStatus.YELLOW){
+                trafficLight.addState(TrafficLightState.GREEN, signal.getDuration());
+            }else if(signal.getLightState()== TrafficLightState.YELLOW){
                 if(trafficLight.getYellowTime()==null){
                     trafficLight.setYellowTime(0);
                 }
                 trafficLight.setYellowTime(trafficLight.getYellowTime()+signal.getDuration());
+                trafficLight.addState(TrafficLightState.YELLOW, signal.getDuration());
             }
+            temporaryMap.putIfAbsent(trafficLightId,trafficLight);
+        }
+        trafficLightList = new ArrayList<>(temporaryMap.values());
+        for(TrafficLight trafficLight: trafficLightList){
+            List<StateStage> stageList = TrafficLightUtil.mergeStage(trafficLight.getStageList());
+            trafficLight.setStageList(stageList);
         }
         return trafficLightList;
-    }
-
-    /**
-     * 获取交通灯信息
-     * @param trafficLightList
-     * @return
-     */
-    private Map<Integer, TrafficLight> getTrafficLightMap(List<TrafficLight> trafficLightList){
-        Map<Integer, TrafficLight> trafficLightMap = new HashMap<>();
-        for(TrafficLight trafficLight : trafficLightList){
-            trafficLightMap.put(trafficLight.getTrafficLightId(), trafficLight);
-        }
-        return trafficLightMap;
     }
     /**
      * 固定周期信控优化
      * @param trafficLightList
-     * @throws InterruptedException
      */
     public void fixedRegulation(List<TrafficLight> trafficLightList) {
         //获取区域中的红绿灯时段划分信息列表
@@ -112,11 +116,11 @@ public class SignalControlListener implements ServletContextListener {
         queryWrapper.eq(FlowRecord::getDurationId, durationId);
         List<FlowRecord> recordList = this.recordMapper.selectList(queryWrapper);
         //获取所有的绿波组
-        List<GreenGroup> groupList = this.greenGroupMapper.getGroupList();
-        FixedRegulation.assignSignalControl(trafficLightList, recordList, groupList);
+        List<GreenWave> waveList = this.greenWaveMapper.selectList(new QueryWrapper<>());
+        FixedRegulation.assignSignalControl(trafficLightList, recordList, waveList);
     }
     private int getDurationId(List<Duration> phaseList){
-        return 1;
+        return 2;
     }
     /**
      * 自适应信控优化
@@ -162,27 +166,26 @@ public class SignalControlListener implements ServletContextListener {
         }
     }
     /**
-     * 获取信号控制
-     * @param junctionId 路口id
-     * @return 交通信号
+     * 获取指定路口的红绿灯时间
+     * @param junctionId
+     * @return
      */
-    public static JSONObject getSignalControl(int junctionId){
+    public static JSONObject getJunctionSignal(int junctionId){
+        List<TrafficLight> trafficLightList = SignalControlListener.junctionLightMap.get(junctionId);
+        if(trafficLightList==null){
+            return null;
+        }
         JSONObject trafficData = new JSONObject();
-        //获取指定路口的红绿灯时间
-        List<TrafficLight> trafficLightList = junctionLightMap.get(junctionId);
-        if(trafficLightList!=null){
-            for(TrafficLight trafficLight: trafficLightList){
-                String fromDirection = trafficLight.getFromDirection().toLowerCase();
-                trafficData.putIfAbsent(fromDirection, new JSONObject());
-                JSONObject directionMap = trafficData.getJSONObject(fromDirection);
-                String turnDirection = trafficLight.getTurnDirection().toLowerCase();
-                directionMap.put(turnDirection, new JSONObject());
-                JSONObject signalMap = directionMap.getJSONObject(turnDirection);
-                signalMap.put("redDurationTime", trafficLight.getRedTime());
-                signalMap.put("greenDurationTime", trafficLight.getGreenTime());
-                signalMap.put("yellowDurationTime", trafficLight.getYellowTime());
-                signalMap.put("prefixDurationTime", trafficLight.getPrefixTime());
-            }
+        for(TrafficLight trafficLight: trafficLightList){
+            String fromDirection = trafficLight.getFromDirection().toLowerCase();
+            trafficData.putIfAbsent(fromDirection, new JSONObject());
+            JSONObject directionMap = trafficData.getJSONObject(fromDirection);
+            String turnDirection = trafficLight.getTurnDirection().toLowerCase();
+            directionMap.put(turnDirection, new JSONObject());
+            JSONObject signalMap = directionMap.getJSONObject(turnDirection);
+            signalMap.put("redDurationTime", trafficLight.getRedTime());
+            signalMap.put("greenDurationTime", trafficLight.getGreenTime());
+            signalMap.put("yellowDurationTime", trafficLight.getYellowTime());
         }
         return trafficData;
     }

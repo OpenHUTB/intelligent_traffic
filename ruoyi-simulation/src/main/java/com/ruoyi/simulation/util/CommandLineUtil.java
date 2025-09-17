@@ -63,7 +63,7 @@ public abstract class CommandLineUtil<T> {
      * 强制终止当前线程
      * @return
      */
-    protected Process destroyForcibly(){
-        return process.destroyForcibly();
+    protected void destroyForcibly(){
+        process.destroyForcibly();
     }
 }

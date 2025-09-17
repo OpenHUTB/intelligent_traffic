@@ -45,7 +45,3 @@ function optVideo(){
     optVideo.play();
 }
 
-function updateMessage(aiMessage){
-    const event = new CustomEvent('aiResponseUpdate', { detail: aiMessage });
-    window.dispatchEvent(event);
-}

@@ -25,6 +25,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class RuoYiApplication {
     public static void main(String[] args) {
         SpringApplication.run(RuoYiApplication.class, args);
-        //WebSocketServer.getConsoleCommand();
     }
 }

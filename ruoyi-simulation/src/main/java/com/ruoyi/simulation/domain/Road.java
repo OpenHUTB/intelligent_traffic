@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Data
 @TableName("simulation_road")
-public class Road implements Comparable {
+public class Road implements Comparable<Road> {
     /**
      * 道路id
      */
@@ -42,8 +42,7 @@ public class Road implements Comparable {
     private Double congestionIndirectionRate;
 
     @Override
-    public int compareTo(@NotNull Object o) {
-        Road road = (Road)o;
+    public int compareTo(@NotNull Road road) {
         return (int)(this.congestionIndirection - road.getCongestionIndirection());
     }
 }

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public class ProcessCommandListener implements ApplicationListener<ApplicationStartedEvent> {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     public static final LinkedBlockingQueue<VoiceUtil> readingQueue = new LinkedBlockingQueue<VoiceUtil>(5);
-    public static Integer junctionId;
+    public static Integer junctionId = 6;
     @Resource
     private Environment environment;
     @Resource
@@ -42,7 +42,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
     @Override
     public void onApplicationEvent(ApplicationStartedEvent e) {
         //执行仿真交通数据的脚本
-        this.callUE4Engine.executeExample("twin_navigation.py");
+        //this.callUE4Engine.executeExample("twin_navigation.py");
         while(true){
             processCommand();
         }
@@ -65,6 +65,9 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             SendResponseUtil.sendHandleResponse(command, sessionId);
             //判断是否为快进
             if(this.fastForward(command,sessionId)){
+                return;
+            }
+            if(this.cruise(command, sessionId)){
                 return;
             }
             //是否切换路口
@@ -106,7 +109,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             processUtil.killAllProcess();
             String value = matcher.group(1);
             int times = Integer.parseInt(value) * 5;
-            this.callUE4Engine.executeExample("carla_playback.py --multiple "+ times);
+            this.callUE4Engine.executeExamples("carla_playback.py --multiple "+ times);
             return true;
         }
         return false;
@@ -122,11 +125,18 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             if(command.contains(junction.getTransverse())&&command.contains(junction.getPortrait())){
                 junctionId = junction.getJunctionId();
                 //执行进入某个路口的操作
-                this.callUE4Engine.executeExample("enter_intersection.py --id "+(junctionId-1));
-                JSONObject trafficData = SignalControlListener.getSignalControl(junctionId);
+                this.callUE4Engine.executeExamples("enter_intersection.py --id "+(junctionId-1));
+                JSONObject trafficData = SignalControlListener.getJunctionSignal(junctionId);
                 SendResponseUtil.sendJSONResponse(StreamSet.Signal.JUNCTION_CONTROL, trafficData, sessionId);
                 return true;
             }
+        }
+        return false;
+    }
+    private boolean cruise(String command, String sessionId){
+        if(command.contains("巡游模式")){
+            this.callUE4Engine.executeExamples("cruise_function.py");
+            return true;
         }
         return false;
     }
@@ -161,7 +171,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
         }
         //记录下每个场景的添加建筑命令
         if(StringUtils.equals(codeStr,"get_buildings.py")){
-            String mapName = this.callUE4Engine.getMapName("get_mapname.py");
+            String mapName = this.callUE4Engine.getInformation("get_mapname.py");
             if(!StringUtils.isEmpty(mapName)&&mapName.contains("/")){
                 mapName = mapName.substring(mapName.lastIndexOf("/")+1);
             }
@@ -173,7 +183,7 @@ public class ProcessCommandListener implements ApplicationListener<ApplicationSt
             codeStr = "Carla_control_G29.py";
         }
         logger.info(codeStr);
-        this.callUE4Engine.executeExample(codeStr);
+        this.callUE4Engine.executeExamples(codeStr);
         return codeStr;
     }
 }

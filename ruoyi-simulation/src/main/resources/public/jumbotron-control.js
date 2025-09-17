@@ -1,46 +1,23 @@
+var alarmingLevelMap = {
+    "MINOR":"低",
+    "GENERAL":"普通",
+    "SERIOUS":"高",
+    "FATAL":"极高"
+}
+var alarmingTypeMap = {
+    "WRONG_WAY":"逆行",
+    "REVERSE":"异常倒车",
+    "ABNORMAL_STOP":"异常停车",
+    "LOWER_SPEED":"超低速"
+}
 /**
  * 设置交通指数信息
  */
 function setTrafficIndirection(indirectionMap){
-    wholeIndexChanged({
-        congestionIndex: indirectionMap.speedIndirection,
-        speed: indirectionMap.averageSpeed
-    });
-    var alarmData = [];
-    for(var i=0;i<indirectionMap.alarmIndirection.length;i++){
-        var alarmIndirection = indirectionMap.alarmIndirection[i];
-        alarmData.push({
-            "name":alarmIndirection.roadName,
-            "index":alarmIndirection.congestionIndirection,
-            "speed":alarmIndirection.averageSpeed,
-            "trend":alarmIndirection.congestionIndirectionRate
-        });
-    }
-    //设置各个道路的交通指数
-    jamIndexChanged(alarmData);
-    var roadData = [];
-    for(var i=0;i<indirectionMap.roadIndirection.length;i++){
-        var roadIndirection = indirectionMap.roadIndirection[i];
-        roadData.push({
-            "name":roadIndirection.roadName,
-            "index":roadIndirection.congestionIndirection,
-            "speed":roadIndirection.averageSpeed,
-            "trend":roadIndirection.congestionIndirectionRate,
-            "trendDirection": roadIndirection.congestionIndirectionRate>0
-        });
-    }
-    signalRoadDataChanged(roadData);
-    //设置各个路口的交通指数
-    var junctionData = [];
-    for(var i=0;i<indirectionMap.junctionIndirection.length;i++){
-        junctionData.push({
-            "name":indirectionMap.junctionIndirection[i].junctionName,
-            "index":indirectionMap.junctionIndirection[i].congestionMileage,
-            "trend":indirectionMap.junctionIndirection[i].congestionMileageRate,
-            "trendDirection": indirectionMap.junctionIndirection[i].congestionMileageRate>0
-        })
-    }
-    signalJunctionDataChanged(junctionData);
+    setGlobalIndirection(indirectionMap);
+    setRoadIndirection(indirectionMap);
+    setJunctionIndirection(indirectionMap);
+    setAlarming(indirectionMap);
     //设置主页右侧部分指数
     optimiseOverviewChanged({
         "averageDelay": indirectionMap.averageDelayChange,
@@ -58,46 +35,103 @@ function setTrafficIndirection(indirectionMap){
     ]);
 }
 /**
+ * 设置全局指数
+ */
+function setGlobalIndirection(indirectionMap){
+    //设置全局交通指数和平均速度
+    updateDistrictSpeed({
+        congestionIndex: indirectionMap.speedIndirection,
+        speed: indirectionMap.averageSpeed
+    });
+    //设置交通拥堵指数
+    updateTrafficInfo('index',indirectionMap.congestionIndirection);
+    //修改拥堵里程
+    updateTrafficInfo('congestion', indirectionMap.congestionMileage);
+    //修改拥堵路段总数
+    updateTrafficInfo('road',3);
+    //修改拥堵时长
+    updateTrafficInfo('time',indirectionMap.averageDelay);
+}
+/**
+ * 设置各道路指数
+ */
+function setRoadIndirection(indirectionMap){
+    var roadIndirectionList = [];
+    for(var i=0;i<indirectionMap.roadIndirection.length;i++){
+        var roadIndirection = indirectionMap.roadIndirection[i];
+        roadIndirectionList.push({
+            "name":roadIndirection.roadName,
+            "index":roadIndirection.congestionIndirection,
+            "speed":roadIndirection.averageSpeed,
+            "trend":roadIndirection.congestionIndirectionRate+"%",
+            "trendDirection": roadIndirection.congestionIndirectionRate>0,
+            'status':'无'
+        });
+    }
+    signalRoadDataChanged(roadIndirectionList);
+}
+/**
  * 设置各个路口的交通指数
  */
 function setJunctionIndirection(indirectionMap){
-    //设置效果评价
-    evaluationDataChanged({
-        preIndex: indirectionMap.congestionIndirection.toFixed(2),
-        preSpeed: indirectionMap.averageSpeed,
-        optIndex: (indirectionMap.congestionIndirection * 0.8).toFixed(2),
-        optSpeed: (indirectionMap.averageSpeed * 1.2).toFixed(2),
-        preContent: "默认设置",
-        optContent: "自动调优，直行优先"
-    });
-    //设置各个路口的交通数据-平均通行次数-平均停车次数
-    var junctionData = {
-        "district1": indirectionMap.currentJunction.transverse,
-        "district2": indirectionMap.currentJunction.portrait,
-        "data":[]
-    }
-    //设置各个红绿灯的平均通行时间与停车次数
-    for(var i=0;i<indirectionMap.currentJunction.trafficLightList.length;i++){
-        trafficLight = indirectionMap.currentJunction.trafficLightList[i];
-        junctionData.data.push({
-            "name": trafficLight.trafficLightName,
-            "averageTime": trafficLight.averageDelay,
-            "timeCompare": trafficLight.averageDelayRate,
-            "averageParking": trafficLight.stopTimes,
-            "parkingCompare": trafficLight.stopTimesRate,
-            "timeDirection": trafficLight.averageDelayRate>0,
-            "parkingDirection": trafficLight.stopTimesRate>0,
+    //设置各个路口的交通指数
+    var junctionData = [];
+    for(var i=0;i<indirectionMap.junctionIndirection.length;i++){
+        var junctionIndirection = indirectionMap.junctionIndirection[i];
+        junctionData.push({
+            "name":junctionIndirection.junctionName,
+            "congestion":junctionIndirection.congestionMileage,
+            "time": junctionIndirection.averageDelay,
+            "trend":junctionIndirection.averageDelayRate,
+            "trendDirection": junctionIndirection.averageDelayRate>0
         });
     }
-    resultTrackDataChanged(junctionData);
-    //设置路口信息
-    junctionInfoDataChanged({
-        "district1": indirectionMap.currentJunction.transverse,
-        "district2": indirectionMap.currentJunction.portrait,
-        "carLanes": 8,
-        "pedestrianLanes": 2,
+    signalJunctionDataChanged(junctionData);
+}
+/**
+ * 设置告警信息
+ */
+function setAlarming(indirectionMap){
+    const alarmData = [];
+    if(indirectionMap.alarmingList.length>5){
+        while(alarmData.length<5&&indirectionMap.alarmingList.length>0){
+            // 生成随机索引
+            const index = Math.floor(Math.random() * indirectionMap.alarmingList.length);
+            // 记录被删除的元素（可选）
+            const alarm = indirectionMap.alarmingList[index];
+            var alarmingType = alarmingTypeMap[alarm.type];
+            var alarmingLevel = alarmingLevelMap[alarm.level];
+            alarmData.push({
+                "name":alarmingType,
+                "position": alarm.location.longitude.toFixed(10)+","+alarm.location.latitude.toFixed(10),
+                "number": alarm.plate.substring(0,7),
+                "status": alarmingLevel,
+                "isAlert": "是",
+                "isDeal": "否",
+                "speed": alarm.speed,
+                "time": new Date(alarm.time).toLocaleString()
+            });
+            // 删除该索引位置的元素
+            indirectionMap.alarmingList.splice(index, 1);
+        }
+    }else{
+        for(let i=0;i<indirectionMap.alarmingList.length;i++){
+            const alarm = indirectionMap.alarmingList[i];
+            var alarmingType = alarmingTypeMap[alarm.type];
+            var alarmingLevel = alarmingLevelMap[alarm.level];
+            alarmData.push({
+                "name":alarmingType,
+                "position": alarm.location.longitude.toFixed(10)+","+alarm.location.latitude.toFixed(10),
+                "number": alarm.plate.substring(0,7),
+                "status": alarmingLevel,
+                "isAlert": "是",
+                "isDeal": "否",
+                "speed": alarm.speed,
+                "time": new Date(alarm.time).toLocaleString()
+            });
+        }
     }
-)
+    scrollAlertDataChanged(alarmData);
 }
 /**
  * 初始化红绿灯数据

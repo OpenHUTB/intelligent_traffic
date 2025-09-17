@@ -14,12 +14,11 @@ public abstract class ParseRespectiveIndirection {
      * 获取redis中的不同车道、不同道路、不同红绿灯的交通指数
      * @param redisKey redis中的键
      */
-    public void getRespectiveIndirection(RedisTemplate<String,Object> redisTemplate, String redisKey){
+    public String getRespectiveIndirection(RedisTemplate<String,Object> redisTemplate, String redisKey){
         Object redisValue = redisTemplate.opsForValue().get(redisKey);
         if(redisValue!=null) {
             JSONObject jsonObject = JSON.parseObject(String.valueOf(redisValue));
             for (String key : jsonObject.keySet()) {
-                //获取不同道路的实时平均速度
                 double value = Double.parseDouble(String.valueOf(jsonObject.get(key)));
                 if (value != 0) {
                     value = Math.ceil(value * 100)/100;
@@ -27,6 +26,7 @@ public abstract class ParseRespectiveIndirection {
                 }
             }
         }
+        return String.valueOf(redisValue);
     }
     /**
      * 设置实时平均车速

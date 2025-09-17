@@ -30,6 +30,18 @@ public class Junction {
      */
     private String portrait;
     /**
+     * 地区区域
+     */
+    private String area;
+    /**
+     * 经度
+     */
+    private Double longitude;
+    /**
+     * 纬度
+     */
+    private Double latitude;
+    /**
      * 拥堵里程
      */
     @TableField(exist = false)
@@ -39,6 +51,26 @@ public class Junction {
      */
     @TableField(exist = false)
     private Double congestionMileageRate;
+    /**
+     * 停车次数
+     */
+    @TableField(exist = false)
+    private Double stopTimes;
+    /**
+     * 停车次数变化率
+     */
+    @TableField(exist = false)
+    private Double stopTimesRate;
+    /**
+     * 平均通行时间
+     */
+    @TableField(exist = false)
+    private Double averageDelay;
+    /**
+     * 平均通行时间变化率
+     */
+    @TableField(exist = false)
+    private Double averageDelayRate;
     /**
      * 交通灯对应的指数集合
      */

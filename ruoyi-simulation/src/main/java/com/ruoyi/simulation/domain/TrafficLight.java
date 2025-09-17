@@ -3,10 +3,11 @@ package com.ruoyi.simulation.domain;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ruoyi.simulation.util.StateStage;
+import com.ruoyi.simulation.domain.Signalbase.TrafficLightState;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 交通灯信息实体类
@@ -31,10 +32,6 @@ public class TrafficLight {
      */
     private String trafficLightName;
     /**
-     * 路口id
-     */
-    private Integer junctionId;
-    /**
      * 起始方位
      */
     private String fromDirection;
@@ -51,6 +48,18 @@ public class TrafficLight {
      */
     private Double walkDistance;
     /**
+     * 上一个路口ID
+     */
+    private Integer prefixJunctionId;
+    /**
+     * 路口id
+     */
+    private Integer junctionId;
+    /**
+     * 下一个路口ID
+     */
+    private Integer nextJunctionId;
+    /**
      * 红灯时间
      */
     @TableField(exist = false)
@@ -66,47 +75,11 @@ public class TrafficLight {
     @TableField(exist = false)
     private Integer greenTime = 0;
     /**
-     * 起始红灯时间
-     */
-    @TableField(exist = false)
-    private Integer prefixTime = 0;
-    /**
-     * 绿灯间隔时间
-     */
-    @TableField(exist = false)
-    private int suffixTime;
-    /**
-     * 拥堵里程
-     */
-    @TableField(exist = false)
-    @JsonIgnore
-    private Double congestionMileage = 0d;
-    /**
      * 等候红灯的车辆数量
      */
     @TableField(exist = false)
     @JsonIgnore
     private Integer waitVehicle;
-    /**
-     * 平均通行时间
-     */
-    @TableField(exist = false)
-    private Double averageDelay;
-    /**
-     * 平均通行时间变化率
-     */
-    @TableField(exist = false)
-    private Double averageDelayRate;
-    /**
-     * 停车次数
-     */
-    @TableField(exist = false)
-    private Double stopTimes;
-    /**
-     * 停车次数变化率
-     */
-    @TableField(exist = false)
-    private Double stopTimesRate;
     /**
      * 流量
      */
@@ -117,6 +90,27 @@ public class TrafficLight {
      */
     @TableField(exist = false)
     private Integer greenPhase;
+    /**
+     * 红绿灯对应的状态及持续时间
+     */
+    @TableField(exist = false)
+    private List<StateStage> stageList = new ArrayList<>();
+    /**
+     * 一个周期内每秒钟对应的红绿灯状态
+     */
+    @TableField(exist = false)
+    private TrafficLightState[] stateArr;
+    /**
+     * 添加一个红绿灯状态
+     * @param state
+     * @param length
+     */
+    public void addState(Signalbase.TrafficLightState state, int length){
+        StateStage stage = new StateStage();
+        stage.setState(state);
+        stage.setLength(length);
+        this.stageList.add(stage);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

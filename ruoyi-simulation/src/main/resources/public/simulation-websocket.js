@@ -36,13 +36,7 @@ simulation.onmessage = function(resultData){
     }
     if(signal=="TRAFFIC_INDIRECTION"){
         var indirectionMap = result.data;
-        if(window.location.hash==null||window.location.hash==""){
-            setTrafficIndirection(indirectionMap)
-        }
-        if(indirectionMap.currentJunction!=null){
-            setJunctionIndirection(indirectionMap);
-            sessionStorage['junctionId'] = indirectionMap.currentJunction.junctionId;
-        }
+        setTrafficIndirection(indirectionMap);
     }else if(signal=="JUNCTION_CONTROL"){
         sessionStorage['trafficData'] = JSON.stringify(result.data);
         window.location.hash="/junction";

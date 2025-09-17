@@ -27,6 +27,9 @@ public class SendResponseUtil {
             StreamSet stream = new StreamSet();
             stream.setMessage("正在为您"+message);
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            if(server==null){
+                return;
+            }
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
         } catch (Exception e) {
@@ -46,6 +49,9 @@ public class SendResponseUtil {
             stream.setSignal(signal.toString());
             stream.setData(data);
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            if(server==null){
+                return;
+            }
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
         } catch (Exception e) {
@@ -66,6 +72,9 @@ public class SendResponseUtil {
             StreamSet stream = new StreamSet();
             stream.setMessage(message+"请联系管理员。");
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            if(server==null){
+                return;
+            }
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
         } catch (Exception ex) {
@@ -83,6 +92,9 @@ public class SendResponseUtil {
             StreamSet stream = new StreamSet();
             stream.setMessage(message);
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            if(server==null){
+                return;
+            }
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
         } catch (Exception e) {
@@ -106,6 +118,9 @@ public class SendResponseUtil {
             }
             //通过websocket向前端发送数据
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            if(server==null){
+                return;
+            }
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
         } catch (Exception e) {
@@ -126,6 +141,9 @@ public class SendResponseUtil {
             stream.setStatus(status.toString());
             stream.setMessage(message);
             WebSocketServer server = WebSocketServer.webSocketMap.get(sessionId);
+            if(server==null){
+                return;
+            }
             Session session = server.getSession();
             session.getBasicRemote().sendText(JSON.toJSONString(stream));
         } catch (Exception e) {

@@ -47,7 +47,7 @@ public class CarlaInformationListener implements ServletContextListener {
         String loggerPath = environment.getProperty("simulation.loggerPath");
         loggerPath = loggerPath+"recording" + sdf.format(new Date())+".log";
         String codeStr = "start_recoder.py --loggerPath "+ loggerPath;
-        this.callUE4Engine.executeExample(codeStr);
+        this.callUE4Engine.executeExamples(codeStr);
     }
 
     /**

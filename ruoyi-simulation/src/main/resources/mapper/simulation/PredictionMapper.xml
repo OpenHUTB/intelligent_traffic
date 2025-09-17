@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.simulation.dao.PredictionMapper">
+    <select id="getNearestList" resultType="Prediction">
+        SELECT b.*
+        FROM simulation_prediction b ,
+            (
+                SELECT DISTINCT DATE(a.prediction_time) prediction_time
+                FROM simulation_prediction a
+                WHERE WEEKDAY(a.prediction_time) = WEEKDAY(now())
+                ORDER BY RAND() LIMIT 1
+            ) c
+        WHERE DATE(b.prediction_time) = DATE(c.prediction_time) AND TIME(b.prediction_time)>=TIME(now())
+        ORDER BY b.prediction_time LIMIT 12
+    </select>
+</mapper>

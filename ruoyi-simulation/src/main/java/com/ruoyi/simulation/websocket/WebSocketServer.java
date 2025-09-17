@@ -31,6 +31,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class WebSocketServer {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     public static final Map<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<String, WebSocketServer>();
+    //记录上一次执行的命令，便于处理命令的互斥
     public static final Map<String, Set<String>> webSocketCommandMap = new ConcurrentHashMap<String, Set<String>>();
     public static final LinkedBlockingQueue<VoiceUtil> voiceCommandQueue = new LinkedBlockingQueue<VoiceUtil>(50);
     public static final LinkedBlockingQueue<ElementUtil> commandQueue = new LinkedBlockingQueue<ElementUtil>(50);
@@ -162,20 +163,5 @@ public class WebSocketServer {
         }
         //向队列末尾添加元素，若队列已满则阻塞
         voiceCommandQueue.put(voice);
-    }
-    public static void getConsoleCommand(){
-        while(true){
-            try{
-                ElementUtil element = new ElementUtil();
-                Scanner input = new Scanner(System.in);
-                System.out.println("请输入文本命令:");
-                element.setCommand(input.next());
-                List<String> sessionIdList = new ArrayList<String>(webSocketMap.keySet());
-                element.setSessionId(sessionIdList.get(0));
-                commandQueue.put(element);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        }
     }
 }
