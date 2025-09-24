@@ -35,6 +35,13 @@ public class SignalServiceImpl implements SignalService {
         JSONObject trafficData = SignalControlListener.getJunctionSignal(ProcessCommandListener.junctionId);
         result.setStatus(ResultUtil.Status.SUCCESS);
         result.setData(trafficData);
+
+        for(int junctionId: SignalControlListener.junctionLightMap.keySet()){
+            System.out.println("--------------------------------------------"+junctionId+"--------------------------------------------");
+            for(TrafficLight trafficLight :SignalControlListener.junctionLightMap.get(junctionId)){
+                System.out.println(JSON.toJSONString(trafficLight));
+            }
+        }
         return result;
     }
 

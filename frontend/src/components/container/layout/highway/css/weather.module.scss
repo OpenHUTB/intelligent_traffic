@@ -1,0 +1,47 @@
+@use "../../../../../css/common.scss" as common;
+.weatherContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .weatherDetails {
+        margin-top: 5px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+        justify-content: center;
+
+        span {
+            margin: 5px;
+            height: 65px;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            vertical-align: middle;
+            text-align: right;
+            line-height: 65px;
+            .number {
+                padding: 0 10px;
+                font-size: 25px;
+            }
+        }
+
+        .windSpeed {
+            background-image: url("../../../../../assets/img/windSpeed.png");
+        }
+        .windDirection {
+            background-image: url("../../../../../assets/img/windDirection.png");
+        }
+        .rainVolume {
+            background-image: url("../../../../../assets/img/rainVolume.png");
+        }
+        .moisture {
+            background-image: url("../../../../../assets/img/moisture.png");
+        }
+    }
+}

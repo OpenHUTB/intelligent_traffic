@@ -1,0 +1,12 @@
+.rightside {
+    width: 400px;
+    background-image: linear-gradient(to bottom, rgba(13, 37, 73, 0.9), rgba(13, 37, 73, 0.9));
+    border-radius: 10px;
+}
+.rightside::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}

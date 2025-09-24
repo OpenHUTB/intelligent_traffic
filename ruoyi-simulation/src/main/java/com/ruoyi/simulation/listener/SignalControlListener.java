@@ -47,6 +47,7 @@ public class SignalControlListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         this.trafficLightList = initialTrafficLight();
+<<<<<<< HEAD
         TrafficLightUtil.loggerSignal(trafficLightList,"优化前信控方案");
         this.fixedRegulation(this.trafficLightList);
         TrafficLightUtil.loggerSignal(trafficLightList,"绿波信控方案");
@@ -56,6 +57,15 @@ public class SignalControlListener implements ServletContextListener {
         setTemporarySignal(this.trafficLightList);
         TrafficLightUtil.setCarlaTrafficLight(this.redisTemplate, this.trafficLightList);
         //this.callUE4Engine.executeExample("traffic_light_settings.py");
+=======
+        this.fixedRegulation(this.trafficLightList);
+        //初始化一个周期内每秒钟对应的红绿灯状态
+        TrafficLightUtil.initialStateArr(trafficLightList);
+        //临时存储信控方setTemporarySignal案
+        this.setTemporarySignal(this.trafficLightList);
+        TrafficLightUtil.setCarlaTrafficLight(this.redisTemplate, this.trafficLightList);
+        this.callUE4Engine.executeExample("traffic_light_settings.py");
+>>>>>>> origin/master
     }
 
     /**
@@ -66,9 +76,14 @@ public class SignalControlListener implements ServletContextListener {
         //获取不同交通灯对应的信控信息
         List<Signalbase> signalbaseList = this.signalbaselMapper.getSignalBaseList();
         List<TrafficLight> trafficLightList = this.trafficLightMapper.selectList(new QueryWrapper<>());
+<<<<<<< HEAD
         //获取红绿灯id与红绿灯的映射关系
         Map<Integer, TrafficLight> trafficLightMap = TrafficLightUtil.getTrafficLightMap(trafficLightList);
         Map<Integer, TrafficLight> temporaryMap = new HashMap<>();
+=======
+        Map<Integer, TrafficLight>  trafficLightMap = getTrafficLightMap(trafficLightList);
+        Map<Integer, TrafficLight> temporaryMap = new HashMap();
+>>>>>>> origin/master
         for(Signalbase signal: signalbaseList){
             //设置不同红绿灯对应的信控数据
             int trafficLightId = signal.getTrafficLightId();
@@ -98,8 +113,12 @@ public class SignalControlListener implements ServletContextListener {
         }
         trafficLightList = new ArrayList<>(temporaryMap.values());
         for(TrafficLight trafficLight: trafficLightList){
+<<<<<<< HEAD
             List<StateStage> stageList = TrafficLightUtil.mergeStage(trafficLight.getStageList());
             trafficLight.setStageList(stageList);
+=======
+            TrafficLightUtil.mergeStage(trafficLight.getStageList());
+>>>>>>> origin/master
         }
         return trafficLightList;
     }
@@ -164,6 +183,13 @@ public class SignalControlListener implements ServletContextListener {
                 tempList.add(trafficLight);
             }
         }
+        for(int junctionId: junctionLightMap.keySet()){
+            logger.info("============================================================"+junctionId+"============================================================");
+            trafficLightList = junctionLightMap.get(junctionId);
+            for(TrafficLight trafficLight:trafficLightList){
+                logger.info(JSON.toJSONString(trafficLight.getStageList()));
+            }
+        }
     }
     /**
      * 获取指定路口的红绿灯时间
@@ -176,6 +202,7 @@ public class SignalControlListener implements ServletContextListener {
             return null;
         }
         JSONObject trafficData = new JSONObject();
+<<<<<<< HEAD
         for(TrafficLight trafficLight: trafficLightList){
             String fromDirection = trafficLight.getFromDirection().toLowerCase();
             trafficData.putIfAbsent(fromDirection, new JSONObject());
@@ -186,6 +213,22 @@ public class SignalControlListener implements ServletContextListener {
             signalMap.put("redDurationTime", trafficLight.getRedTime());
             signalMap.put("greenDurationTime", trafficLight.getGreenTime());
             signalMap.put("yellowDurationTime", trafficLight.getYellowTime());
+=======
+        //获取指定路口的红绿灯时间
+        List<TrafficLight> trafficLightList = junctionLightMap.get(junctionId);
+        if(trafficLightList!=null){
+            for(TrafficLight trafficLight: trafficLightList){
+                String fromDirection = trafficLight.getFromDirection().toLowerCase();
+                trafficData.putIfAbsent(fromDirection, new JSONObject());
+                JSONObject directionMap = trafficData.getJSONObject(fromDirection);
+                String turnDirection = trafficLight.getTurnDirection().toLowerCase();
+                directionMap.put(turnDirection, new JSONObject());
+                JSONObject signalMap = directionMap.getJSONObject(turnDirection);
+                signalMap.put("redDurationTime", trafficLight.getRedTime());
+                signalMap.put("greenDurationTime", trafficLight.getGreenTime());
+                signalMap.put("yellowDurationTime", trafficLight.getYellowTime());
+            }
+>>>>>>> origin/master
         }
         return trafficData;
     }

@@ -1,6 +1,5 @@
 package com.ruoyi;
 
-import com.ruoyi.simulation.websocket.WebSocketServer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.annotation.MapperScans;
 import org.springframework.boot.SpringApplication;

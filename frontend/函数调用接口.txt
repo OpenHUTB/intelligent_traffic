@@ -1,0 +1,151 @@
+1. 更新交通运行监控 wholeIndexChanged()：
+接收一个对象参数，对象中包含两个属性，
+congestionIndex 对应  交通指数
+speed  对应  平均速度
+
+wholeIndexChanged({
+    congestionIndex: 2, 
+    speed: 70,          
+})
+
+2. 更新拥堵警情 jamIndexChanged()：
+接收一个数组参数，每个数组对应一个路段的情况：
+jamIndexChanged(
+    [{
+        name: "旺龙路",
+        speed: 3434,
+        trend: 18.11111,
+        index: 7666,
+    }, {
+        name: "旺龙路",
+        speed: 25777,
+        trend: 286756758,
+        index: 65675675
+    }]
+)
+
+3. 更新信控道路 signalRoadDataChanged():
+接收一个数组作为参数，数组中的每一个对象对应一行路段的情况：
+name 对应 路名
+index 对应 拥堵指数
+speed 对应 平均速度
+trend 对应 拥堵趋势百分比
+signalRoadDataChanged([
+        {
+            name: '青山路',
+            index: 1,
+            speed: 20,
+            trend: 18.53,
+            trendDirection: true,
+        },
+        {
+            name: '旺龙路',
+            index: 3,
+            speed: 30,
+            trend: 20.53,
+            trendDirection: true,
+        },
+        {
+            name: '岳麓西大道',
+            index: 4,
+            speed: 40,
+            trend: 15.53,
+            trendDirection: false,
+        },
+        {
+            name: '尖山路',
+            index: 2,
+            speed: 50,
+            trend: 11.53,
+            trendDirection: false,
+        },
+    ])
+
+4. 更新信控路口 signalJunctionDataChanged():
+
+接收一个数组作为参数，数组中的每一个对象对应一行路段的情况：
+name 对应 路名
+index 对应 拥堵指数
+trend 对应 拥堵趋势百分比
+trendDirection 
+signalJunctionDataChanged([
+        {
+            name: '尖山路与岳麓西大道交叉口',
+            index: 1,
+            trend: 1118.53,
+            trendDirection: false
+        },
+        {
+            name: '青山路与尖山路交叉口',
+            index: 3,
+            trend: 210.53,
+            trendDirection: true
+        },
+        {
+            name: '旺龙路与青山路交叉口',
+            index: 4,
+            trend: 15.5311,
+            trendDirection: true
+        },
+        {
+            name: '旺龙路与青山路交叉口',
+            index: 4,
+            trend: 15.53,
+            trendDirection: true
+        },
+    ])
+
+5. 更新信号优化总览：
+接收一个对象参数，对象中包含三个属性，
+averageDelay  对应  平均延误多少分钟
+congestionMileage 对应 拥堵里程变化百分比
+averageSpeed 对应 平均速度的变化百分比
+optimiseOverviewChanged({
+  averageDelay: 66.5,
+  congestionMileage: 6.8,
+  averageSpeed: 5.0,
+})
+
+6. 更改运行分析：
+
+1） 在线路口和离线路口的更新：
+接收一个数组作为参数，数组中包含两个对象对应在线路口和离线路口：
+violationListChanged(  [
+        { name: '在线路口', value: 11 },
+        { name: '离线路口', value: 15 },
+    ])
+
+2） 优化路口，优化次数和服务车次，路网车辆的更新：
+接收一个数组作为参数：注意不要改动里面的name，修改value即可；
+optimiseListChanged([
+        { name: '优化路口占比(%)', value: 7111111 },
+        { name: '优化次数(次)', value: 8 },
+        { name: '服务车次（万辆）', value: 0.3 },
+        { name: '路网车辆 (万辆)', value: 1 },
+    ])
+
+7. 路口控制模式：
+接收一个对象作为参数：
+adaptive 对应 自适应控制
+dynamic 对应 动态调控
+manual 对应 人工调控
+controlModuleChanged({
+    "adaptive": 111,
+    "dynamic": 222,
+    "manual": 5555
+})
+
+8. 实时优化播报：
+
+接收一个数组作为参数： 每一个对象对应一条优化，在对象中，name 对应具体的优化内容，time对应时间
+
+scrollAlertDataChanged([
+  {
+    name: `在新路口, 西方向左转 红灯增加2秒, 绿灯减少1秒; 直行绿灯增加8秒, 红灯减少4秒`,
+    time: '10:00:00',
+  },
+    {
+    name: `在新路口, 西方向左转 红灯增加2秒, 绿灯减少1秒; 直行绿灯增加8秒, 红灯减少4秒`,
+    time: '10:00:00',
+  },
+])

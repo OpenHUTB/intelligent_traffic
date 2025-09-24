@@ -1,0 +1,143 @@
+@use "../../../../../css/common.scss" as common;
+.resultTrack {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .header {
+        margin: 25px 0;
+        display: flex;
+        align-items: center;
+        svg {
+            margin-right: 5px;
+            width: 1rem;
+            height: 1rem;
+        }
+        .text {
+            margin-right: 50px;
+        }
+        .time {
+            color: aqua;
+        }
+    }
+    .district {
+        label {
+            width: 6rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        select {
+            color: #ffffff;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: rgba(7, 17, 37, 0);
+        }
+    }
+    .buttonGroup {
+        margin-top: 15px;
+        .name {
+            width: 6rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        button {
+            border-radius: 3px;
+            background-color: rgba(7, 17, 37, 0);
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+            height: 2rem;
+            line-height: 2rem;
+            margin-right: 5px;
+            &:hover {
+                color: #349ec9;
+            }
+        }
+        .activeBtn {
+            background-color: #349ec9;
+            border-color: #349ec9;
+            color: #ffffff;
+        }
+    }
+    .dataPresent {
+        padding: 0 5px;
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        .dataTitle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 2rem;
+            line-height: 2rem;
+            background-color: rgba(7, 17, 37, 1);
+        }
+        .listItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.5rem;
+            height: 2.7rem;
+            svg {
+                width: 1rem;
+                height: 1rem;
+            }
+            span {
+                height: 2.7rem;
+                line-height: 2.7rem;
+            }
+            .averageTime {
+                width: 4rem;
+                text-align: right;
+            }
+            .timeCompareBox {
+                display: flex;
+                align-items: center;
+            }
+            .timeCompare {
+                text-align: right;
+                width: 8rem;
+                -webkit-line-clamp: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                svg {
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+            .parkCompareBox {
+                display: flex;
+                align-items: center;
+            }
+            .parkingCompare {
+                text-align: right;
+                width: 5rem;
+                -webkit-line-clamp: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                svg {
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+            .averageParking {
+                width: 4rem;
+                text-align: center;
+            }
+            .name {
+                width: 4rem;
+                white-space: nowrap;
+            }
+        }
+    }
+}

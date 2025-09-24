@@ -43,9 +43,21 @@ nbdist/
 *.swp
 
 !*/build/*.java
-!*/build/*.html
+!*/build/*.html 
 !*/build/*.xml
 ruoyi-ui/public/video/identify.mp4
 
 ###
 ruoyi-simulation/src/main/resources/front-dev/traffic_demo/node_modules/
+
+### ignore all node_modules in projects
+**/node_modules/
+ruoyi-ui/node_modules/
+frontend/node_modules/
+
+frontend/.env
+
+### ignore all build file and build.zip in the frontend
+frontend/dist/
+frontend/build/
+frontend/build.zip

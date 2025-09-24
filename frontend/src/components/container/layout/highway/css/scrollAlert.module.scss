@@ -1,0 +1,89 @@
+@use "../../../../../css/common.scss" as common;
+.trafficViolation {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+    width: 100%;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .emergency {
+        background-color: #ffa726;
+        width: 300px;
+        margin-top: 10px;
+        border-radius: 20px;
+        align-self: center;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include common.attentionShaking;
+        box-shadow:
+            rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+            rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+            rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+        .gif {
+            height: 40px;
+            width: 40px;
+        }
+        .alertText {
+            color: #ff4c4c;
+            margin: 0 auto;
+        }
+    }
+
+    .rankContianer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 2rem;
+        line-height: 2rem;
+        font-size: 1.1rem;
+        margin: 0.5rem 1rem 0.5rem 0rem;
+        span.street {
+            margin-right: 1.1rem;
+        }
+    }
+    .listContainer {
+        height: 100%;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        > div:nth-child(odd) {
+            background-color: rgba(16, 37, 80, 0.9);
+        }
+
+        .listItem {
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.5rem;
+            height: 2rem;
+            border-bottom: 1px solid rgba(28, 42, 71, 0.7);
+            span {
+                text-align: center;
+            }
+            .status {
+                width: 5rem;
+                text-align: center;
+            }
+            .name {
+                width: 6rem;
+            }
+            .green {
+                color: #70d274;
+            }
+            .yellow {
+                color: #f7d154;
+            }
+            .red {
+                color: rgb(230, 39, 13);
+            }
+        }
+    }
+}

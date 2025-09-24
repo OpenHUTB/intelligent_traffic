@@ -3,12 +3,8 @@ package com.ruoyi.simulation.util;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.simulation.domain.GreenWave;
 import com.ruoyi.simulation.domain.TrafficLight;
-import com.ruoyi.simulation.listener.TrafficIndirectionListener;
-import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import springfox.documentation.spring.web.plugins.SpringIntegrationPluginNotPresentInClassPathCondition;
-
 import java.util.*;
 
 /**

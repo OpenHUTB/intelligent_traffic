@@ -1,0 +1,80 @@
+@use "../../../../../css/common.scss" as common;
+.junctionCapture {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    .title {
+        @include common.bottomElementTitle;
+    }
+    .list {
+        padding: 0 5px;
+        .listItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            background-color: #102e5d;
+            span {
+                height: 1.5rem;
+                line-height: 1.5rem;
+            }
+            .license {
+                line-height: 1.5rem;
+                height: 1.5rem;
+                border-radius: 5px;
+                padding: 0 10px;
+                background-color: #1053c8;
+            }
+        }
+    }
+    .pictures {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        .imgContainer {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 5px;
+            img {
+                border-radius: 5px;
+                object-fit: cover;
+                width: 245px;
+                height: 225px;
+            }
+            video {
+                border-radius: 5px;
+                object-fit: cover;
+                width: 245px;
+                height: 225px;
+            }
+            // &:nth-child(1) {
+            //     background: url("../../../../../assets/img/1.jpg") no-repeat center;
+            //     background-size: cover;
+            // }
+
+            // &:nth-child(2) {
+            //     background: url("../../../../../assets/img/2.jpg") no-repeat center;
+            //     background-size: cover;
+            // }
+
+            .imgTitle {
+                position: absolute;
+                bottom: 0;
+                height: 2rem;
+                line-height: 2rem;
+                text-align: center;
+                width: 100%;
+                background: url(../../../../../assets/img/newJunction-imgTitle.png) no-repeat;
+                background-size: 100% 100%;
+                background-size: cover;
+            }
+        }
+    }
+}

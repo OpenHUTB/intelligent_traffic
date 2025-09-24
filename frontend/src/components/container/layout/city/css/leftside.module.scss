@@ -1,0 +1,14 @@
+@use "../../../../../css/common.scss" as common;
+.leftside {
+    width: 400px;
+    background-image: linear-gradient(to bottom, rgba(13, 37, 73, 0.9), rgba(13, 37, 73, 0.9));
+    border-radius: 10px;
+}
+.leftside::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // background-color: rgba(100, 152, 197, 0.4);
+    z-index: -2;
+}

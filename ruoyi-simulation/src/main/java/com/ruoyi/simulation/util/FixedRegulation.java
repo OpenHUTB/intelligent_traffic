@@ -170,7 +170,6 @@ public class FixedRegulation {
         }
         return groupJunctionIdList;
     }
-
     /**
      * 重新更新绿波路线下的信控数据
      * @param waveList
