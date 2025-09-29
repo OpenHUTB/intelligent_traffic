@@ -75,22 +75,17 @@ public class TrafficLight {
     @TableField(exist = false)
     private Integer greenTime = 0;
     /**
-<<<<<<< HEAD
-=======
-     * 拥堵里程
-     */
-    @TableField(exist = false)
-    @JsonIgnore
-    private Double congestionMileage = 0d;
-    /**
->>>>>>> origin/master
      * 等候红灯的车辆数量
      */
     @TableField(exist = false)
     @JsonIgnore
     private Integer waitVehicle;
     /**
-     * 流量
+     * 交通流量
+     */
+    private Integer flow;
+    /**
+     * 流量变化趋势
      */
     @TableField(exist = false)
     private Integer flowTrend = 0;

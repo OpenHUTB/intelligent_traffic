@@ -1,7 +1,5 @@
 package com.ruoyi.simulation.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.simulation.domain.*;
 import com.ruoyi.simulation.listener.ProcessCommandListener;
 import org.apache.commons.lang3.StringUtils;
@@ -217,9 +215,9 @@ public class IndirectionUtil {
         for(Junction junction: junctionList){
             junctionMap.put(junction.getJunctionId(), junction);
         }
-        JunctionIndirectionUtil.setCongestionMileage(trafficLightMap, junctionMap, redisTemplate);
-        JunctionIndirectionUtil.setAverageDelay(trafficLightMap, junctionMap, redisTemplate);
-        JunctionIndirectionUtil.setStopTimes(trafficLightMap, junctionMap, redisTemplate);
+        IndirectionJunctionUtil.setCongestionMileage(trafficLightMap, junctionMap, redisTemplate);
+        IndirectionJunctionUtil.setAverageDelay(trafficLightMap, junctionMap, redisTemplate);
+        IndirectionJunctionUtil.setStopTimes(trafficLightMap, junctionMap, redisTemplate);
         indirection.setJunctionIndirection(junctionList);
         //设置当前所在路口
         indirection.setCurrentJunction(junctionMap.get(ProcessCommandListener.junctionId));
@@ -230,31 +228,119 @@ public class IndirectionUtil {
      * @return
      */
     public static void setAlarming(List<String> plateList, RedisTemplate<String, Object> redisTemplate, TrafficIndirectionCollection indirection){
-        List<Alarming> alarmingList = null;
         Object redisValue = redisTemplate.opsForValue().get("abnormal_vehicle_list");
-        if(redisValue!=null) {
-            alarmingList = com.alibaba.fastjson2.JSON.parseArray(String.valueOf(redisValue),Alarming.class);
-            for(Alarming alarming: alarmingList){
-                alarming.setTime(LocalDateTime.now());
-                String plate = plateMap.get(alarming.getVehicleId());
-                if(StringUtils.isBlank(plate)&&!plateList.isEmpty()){
-                    plate = plateList.remove(0);
-                    plateMap.put(alarming.getVehicleId(), plate);
-                }
-                alarming.setPlate(plate);
-                double speed = alarming.getSpeed();
-                alarming.setSpeed(Math.floor(speed * 100)/100);
-                if(alarming.getType()== Alarming.AlarmingType.LOWER_SPEED){
-                    alarming.setLevel(Alarming.AlarmingLevel.MINOR);
-                }else if(alarming.getType() == Alarming.AlarmingType.ABNORMAL_STOP){
-                    alarming.setLevel(Alarming.AlarmingLevel.GENERAL);
-                }else if(alarming.getType() == Alarming.AlarmingType.REVERSE){
-                    alarming.setLevel(Alarming.AlarmingLevel.SERIOUS);
-                }else if(alarming.getType() == Alarming.AlarmingType.WRONG_WAY){
-                    alarming.setLevel(Alarming.AlarmingLevel.FATAL);
-                }
+        if(redisValue==null) {
+            return;
+        }
+        List<Alarming> alarmingList = com.alibaba.fastjson2.JSON.parseArray(String.valueOf(redisValue),Alarming.class);
+        for(Alarming alarming: alarmingList){
+            alarming.setTime(LocalDateTime.now());
+            String plate = plateMap.get(alarming.getVehicleId());
+            if(StringUtils.isBlank(plate)&&!plateList.isEmpty()){
+                plate = plateList.remove(0);
+                plateMap.put(alarming.getVehicleId(), plate);
+            }
+            alarming.setPlate(plate);
+            double speed = alarming.getSpeed();
+            alarming.setSpeed(Math.floor(speed * 100)/100);
+            if(alarming.getType()== Alarming.AlarmingType.LOWER_SPEED){
+                alarming.setLevel(Alarming.AlarmingLevel.MINOR);
+            }else if(alarming.getType() == Alarming.AlarmingType.ABNORMAL_STOP){
+                alarming.setLevel(Alarming.AlarmingLevel.GENERAL);
+            }else if(alarming.getType() == Alarming.AlarmingType.REVERSE){
+                alarming.setLevel(Alarming.AlarmingLevel.SERIOUS);
+            }else if(alarming.getType() == Alarming.AlarmingType.WRONG_WAY){
+                alarming.setLevel(Alarming.AlarmingLevel.FATAL);
             }
         }
         indirection.setAlarmingList(alarmingList);
+    }
+    /**
+     * 设置交通优化对比数据
+     */
+    public static void setOptimizationComparison(Map<Integer, TrafficLight> trafficLightMap, List<Junction> junctionList, RedisTemplate<String, Object> redisTemplate, TrafficIndirectionCollection indirection){
+        //初始化路口信息
+        Map<Integer, Junction> junctionMap = new HashMap<>();
+        for(Junction junction: junctionList){
+            junctionMap.put(junction.getJunctionId(), junction);
+        }
+        IndirectionJunctionUtil.setTrafficFlow(trafficLightMap, junctionMap, redisTemplate);
+        if(indirection.getBeforeOptimizationList()==null){
+            setBeforeOptimizationList(junctionList, indirection);
+        }
+        if(indirection.getAfterOptimizationList()==null){
+            setAfterOptimizationList(junctionList, indirection);
+        }
+    }
+    /**
+     * 获取优化前的各路口交通指数
+     * @param junctionList
+     * @return
+     */
+    public static void setBeforeOptimizationList(List<Junction> junctionList, TrafficIndirectionCollection indirection){
+        //设置优化后的各路口交通指数
+        Map<String,List<Axis>> beforeOptimizationList = new HashMap<>();
+        //设置各路口的流量数据
+        List<Axis> axisList = new ArrayList<>();
+        for(Junction junction: junctionList){
+            axisList.add(new Axis("旺龙路与尖山路", 32));
+            axisList.add(new Axis("旺龙路与青山路", 44));
+            axisList.add(new Axis("青山路与尖山路", 25));
+            axisList.add(new Axis("望青路与青山路", 28));
+            axisList.add(new Axis("岳麓大道与旺龙路", 29));
+            axisList.add(new Axis("岳麓大道与麓谷大道", 86));
+        }
+        beforeOptimizationList.put("trafficFlow", axisList);
+        //设置各路口车辆排队长度数据
+        axisList = new ArrayList<>();
+        for(Junction junction: junctionList){
+            axisList.add(new Axis("旺龙路与尖山路", 8.3));
+            axisList.add(new Axis("旺龙路与青山路", 9.9));
+            axisList.add(new Axis("青山路与尖山路", 5.3));
+            axisList.add(new Axis("望青路与青山路", 6.7));
+            axisList.add(new Axis("岳麓大道与旺龙路", 7.9));
+            axisList.add(new Axis("岳麓大道与麓谷大道", 28.6));
+        }
+        beforeOptimizationList.put("congestionMileage", axisList);
+        //设置各路口延误时间数据
+        axisList = new ArrayList<>();
+        for(Junction junction: junctionList){
+            axisList.add(new Axis("旺龙路与尖山路", 203));
+            axisList.add(new Axis("旺龙路与青山路", 236));
+            axisList.add(new Axis("青山路与尖山路", 147));
+            axisList.add(new Axis("望青路与青山路", 154));
+            axisList.add(new Axis("岳麓大道与旺龙路", 190));
+            axisList.add(new Axis("岳麓大道与麓谷大道", 616));
+        }
+        beforeOptimizationList.put("averageDay", axisList);
+        indirection.setBeforeOptimizationList(beforeOptimizationList);
+    }
+    /**
+     * 获取优化后的各路口交通指数
+     * @param junctionList
+     * @return
+     */
+    public static void setAfterOptimizationList(List<Junction> junctionList, TrafficIndirectionCollection indirection){
+        //设置优化后的各路口交通指数
+        Map<String,List<Axis>> afterOptimizationList = new HashMap<>();
+        //设置各路口的流量数据
+        List<Axis> axisList = new ArrayList<>();
+        for(Junction junction: junctionList){
+            axisList.add(new Axis(junction.getJunctionName(), junction.getTrafficFlow()));
+        }
+        afterOptimizationList.put("trafficFlow", axisList);
+        //设置各路口车辆排队长度数据
+        axisList = new ArrayList<>();
+        for(Junction junction: junctionList){
+            axisList.add(new Axis(junction.getJunctionName(), junction.getCongestionMileage()));
+        }
+        afterOptimizationList.put("congestionMileage", axisList);
+        //设置各路口延误时间数据
+        axisList = new ArrayList<>();
+        for(Junction junction: junctionList){
+            axisList.add(new Axis(junction.getJunctionName(), junction.getAverageDelay()));
+        }
+        afterOptimizationList.put("averageDay", axisList);
+        indirection.setAfterOptimizationList(afterOptimizationList);
     }
 }

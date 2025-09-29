@@ -52,8 +52,6 @@ public class TrafficIndirectionListener implements ServletContextListener {
     @Resource
     public PredictionMapper predictionMapper;
     @Autowired
-    private GreenWaveMapper greenWaveMapper;
-    @Autowired
     private TrackMapper trackMapper;
     //一天内的平均速度
     private final Map<String, List<Double>> daySpeedMap = new HashMap<>();
@@ -143,6 +141,8 @@ public class TrafficIndirectionListener implements ServletContextListener {
             IndirectionUtil.setTotalVehicle(this.redisTemplate, indirectionCollection);
             //设置告警信息
             IndirectionUtil.setAlarming(plateList, this.redisTemplate, indirectionCollection);
+            //设置信控对比数据
+            IndirectionUtil.setOptimizationComparison(trafficLightMap, junctionList, redisTemplate, indirectionCollection);
             //获取交通流量预测数据
             getPredictionFlow();
             for(String sessionId: WebSocketServer.webSocketMap.keySet()){
@@ -167,9 +167,11 @@ public class TrafficIndirectionListener implements ServletContextListener {
         //设置车辆通过不同交通灯的停车次数
         IndirectionTrendUtil.setStopTrend(trafficLightMap, junctionList, this.redisTemplate);
         //设置不同红绿灯下的车流量
-        IndirectionTrendUtil.setFlowTrend(this.trafficLightList, this.redisTemplate);
+        IndirectionTrendUtil.setFlowTrend(trafficLightMap, this.redisTemplate);
         //设置整个地图的变化趋势数据
         IndirectionTrendUtil.setWholeTrend(this.redisTemplate);
+        //设置信控对比数据
+        IndirectionUtil.setAfterOptimizationList(junctionList, indirectionCollection);
     }
     /**
      * 获取交通流量预测数据

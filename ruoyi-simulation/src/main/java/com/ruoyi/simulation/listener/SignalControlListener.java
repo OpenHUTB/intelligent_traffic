@@ -43,6 +43,8 @@ public class SignalControlListener implements ServletContextListener {
     @Resource
     private GreenWaveMapper greenWaveMapper;
     @Resource
+    private IntervalMapper intervalMapper;
+    @Resource
     public RedisTemplate<String,Object> redisTemplate;
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -116,9 +118,10 @@ public class SignalControlListener implements ServletContextListener {
         queryWrapper.eq(FlowRecord::getDurationId, durationId);
         List<FlowRecord> recordList = this.recordMapper.selectList(queryWrapper);
         //获取所有的绿波组
-        List<GreenWave> waveList = this.greenWaveMapper.selectList(new QueryWrapper<>());
+        List<GreenWave> waveList = this.greenWaveMapper.getWaveList();
         FixedRegulation.assignSignalControl(trafficLightList, recordList, waveList);
     }
+
     private int getDurationId(List<Duration> phaseList){
         return 2;
     }

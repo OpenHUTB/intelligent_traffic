@@ -3,6 +3,7 @@ package com.ruoyi.simulation.util;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.simulation.domain.FlowRecord;
 import com.ruoyi.simulation.domain.GreenWave;
+import com.ruoyi.simulation.domain.Interval;
 import com.ruoyi.simulation.domain.TrafficLight;
 import com.ruoyi.simulation.listener.SignalControlListener;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,7 +14,7 @@ import java.util.*;
  * 固定周期信控优化方案
  */
 public class FixedRegulation {
-    private static GreenWaveRegulation regulation = null;
+    private static boolean flag = false;
     /**
      * 设置信控数据
      * @param trafficLightList
@@ -26,11 +27,11 @@ public class FixedRegulation {
         Map<Integer,List<TrafficLight>> junctionLightMap = TrafficLightUtil.getJunctionTrafficLightMap(trafficLightList);
         //将红绿灯按相位分组 路口-相位-红绿灯组
         Map<Integer, Map<Integer, TrafficLightCouple>> junctionCoupleMap = TrafficLightUtil.mergeTrafficLight(junctionLightMap);
-        Map<Integer, TrafficLight> trafficLightMap = TrafficLightUtil.getTrafficLightMap(trafficLightList);
         //获取不同红绿灯对应的平均真实流量比
         Map<Integer,List<TrafficLightCouple>> junctionMap = setCoupleFlow(recordList, junctionCoupleMap);
         //利用韦伯斯特公式获取各路口最佳周期时间 路口-周期
         Map<Integer,Integer> junctionCycleMap = WebsterUtil.getOptimalCycleTime(junctionMap);
+        Map<Integer, TrafficLight> trafficLightMap = TrafficLightUtil.getTrafficLightMap(trafficLightList);
         //获取绿波组中周期相同的红绿灯组合
         List<List<Integer>> commonJunctionList = FixedRegulation.getCommonJunctionList(waveList, trafficLightMap);
         //为绿波路段路口设置公共周期
@@ -41,8 +42,9 @@ public class FixedRegulation {
         WebsterUtil.setJunctionSignal(junctionCycleMap, junctionMap);
         TrafficLightUtil.loggerSignal(trafficLightList,"优化后信控方案");
         //绿波协同控制
-        regulation = new GreenWaveRegulation(junctionCoupleMap, junctionCycleMap, trafficLightMap);
-        regulation.setGreenWave(waveList);
+        GreenWaveRegulation.initialData(junctionCoupleMap, junctionCycleMap, trafficLightMap);
+        GreenWaveRegulation.setGreenWave(waveList);
+        flag = true;
     }
 
     /**
@@ -176,10 +178,10 @@ public class FixedRegulation {
      * @param redisTemplate
      */
     public static void setGreenWave(List<GreenWave> waveList, RedisTemplate<String,Object> redisTemplate){
-        if(regulation==null){
+        if(flag==false){
             throw new RuntimeException("基本信控数据缺失，请先进行固定信控调优！");
         }
-        List<TrafficLight> trafficLightList = regulation.setGreenWave(waveList);
+        List<TrafficLight> trafficLightList = GreenWaveRegulation.setGreenWave(waveList);
         TrafficLightUtil.initialStateArr(trafficLightList);
         SignalControlListener.setTemporarySignal(trafficLightList);
         TrafficLightUtil.setCarlaTrafficLight(redisTemplate, trafficLightList);

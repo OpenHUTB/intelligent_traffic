@@ -4,9 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.simulation.dao.GreenWaveMapper">
     <insert id="insertList" parameterType="java.util.List">
-        INSERT INTO simulation_green_wave(traffic_light_id,next_id,interval_second,group_id)VALUES
+        INSERT INTO simulation_green_wave(traffic_light_id,next_id,group_id)VALUES
         <foreach collection="list" separator="," item="item">
-            (#{item.trafficLightId},#{item.nextId},#{item.intervalSecond},#{item.groupId})
+            (#{item.trafficLightId},#{item.nextId},#{item.groupId})
         </foreach>
     </insert>
+    <select id="getWaveList" resultType="GreenWave">
+        SELECT a.wave_id,a.traffic_light_id,a.next_id,a.group_id,b.interval_second
+        FROM simulation_green_wave a LEFT JOIN simulation_interval b
+            ON a.traffic_light_id = b.start_id AND a.next_id = b.end_id
+    </select>
 </mapper>

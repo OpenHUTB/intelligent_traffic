@@ -33,13 +33,14 @@ public class GreenWave {
      */
     private Double distance;
     /**
-     * 相邻路口时间差
-     */
-    private Integer intervalSecond;
-    /**
      * 绿波组id
      */
     private Integer groupId;
+    /**
+     * 相邻路口时间差
+     */
+    @TableField(exist = false)
+    private Integer intervalSecond;
     /**
      * 上一个路口的绿波数据
      */

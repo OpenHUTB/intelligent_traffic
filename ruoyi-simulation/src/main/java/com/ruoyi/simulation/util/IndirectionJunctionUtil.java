@@ -4,9 +4,10 @@ import com.ruoyi.simulation.domain.Junction;
 import com.ruoyi.simulation.domain.TrafficLight;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.List;
 import java.util.Map;
 
-public class JunctionIndirectionUtil {
+public class IndirectionJunctionUtil {
     public static void setCongestionMileage(Map<Integer, TrafficLight> trafficLightMap, Map<Integer, Junction> junctionMap, RedisTemplate<String,Object> redisTemplate){
         for(Junction junction: junctionMap.values()) {
             //初始化所有的道路拥堵里程
@@ -95,7 +96,6 @@ public class JunctionIndirectionUtil {
             junction.setStopTimes(0d);
             junction.setStopTimesRate(0d);
         }
-
         //获取每个红绿灯对应的停车次数信息
         new ParseRespectiveIndirection(){
             @Override
@@ -129,12 +129,28 @@ public class JunctionIndirectionUtil {
     }
 
     /**
-     * 设置交通优化对比数据
+     * 设置不同红绿灯的车流量
      * @param trafficLightMap
-     * @param junctionMap
      * @param redisTemplate
      */
-    public static void setOptimizationComparison(Map<Integer, TrafficLight> trafficLightMap, Map<Integer, Junction> junctionMap, RedisTemplate<String,Object> redisTemplate){
-
+    public static void setTrafficFlow(Map<Integer,TrafficLight> trafficLightMap, Map<Integer, Junction> junctionMap, RedisTemplate<String,Object> redisTemplate){
+        for(Junction junction: junctionMap.values()){
+            //初始化路口车流量
+            junction.setTrafficFlow(0);
+        }
+        for(int trafficLightId: trafficLightMap.keySet()) {
+            String key = "traffic_light_flow"+trafficLightId;
+            Object value = redisTemplate.opsForValue().get(key);
+            int flow = 0;
+            if(value!=null){
+                flow = (int)Math.ceil(Double.parseDouble(String.valueOf(value)));
+            }
+            TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
+            trafficLight.setFlow(flow);
+            //设置路口车流量
+            int junctionId = trafficLight.getJunctionId();
+            Junction junction = junctionMap.get(junctionId);
+            junction.setTrafficFlow(flow+junction.getTrafficFlow());
+        }
     }
 }

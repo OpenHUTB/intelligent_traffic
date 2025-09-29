@@ -15,25 +15,28 @@ public class GreenWaveRegulation {
     /**
      * 交通灯id-交通灯
      */
-    private Map<Integer, TrafficLight> trafficLightMap;
+    private static Map<Integer, TrafficLight> trafficLightMap;
     /**
      * 路口-相位-红绿灯组
      */
-    private final Map<Integer, Map<Integer, TrafficLightCouple>> junctionCoupleMap;
+    private static Map<Integer, Map<Integer, TrafficLightCouple>> junctionCoupleMap;
     /**
      * 路口-周期
      */
-    private final Map<Integer,Integer> junctionCycleMap;
-    public GreenWaveRegulation(Map<Integer, Map<Integer, TrafficLightCouple>> junctionCoupleMap, Map<Integer,Integer> junctionCycleMap, Map<Integer, TrafficLight> trafficLightMap){
-        this.junctionCoupleMap = junctionCoupleMap;
-        this.junctionCycleMap = junctionCycleMap;
-        this.trafficLightMap = trafficLightMap;
+    private static Map<Integer,Integer> junctionCycleMap;
+    public static void  initialData(Map<Integer, Map<Integer, TrafficLightCouple>> coupleMap, Map<Integer,Integer> cycleMap, Map<Integer, TrafficLight> lightMap){
+        junctionCoupleMap = coupleMap;
+        junctionCycleMap = cycleMap;
+        trafficLightMap = lightMap;
     }
     /**
      * 设置绿波路段
      * @param waveList 绿波组合
      */
-    public List<TrafficLight> setGreenWave(List<GreenWave> waveList){
+    public static List<TrafficLight> setGreenWave(List<GreenWave> waveList){
+        if(junctionCycleMap==null||junctionCycleMap==null||trafficLightMap==null){
+            throw new RuntimeException("未设置初始化数据!");
+        }
         //存储已经进行了绿波调整的路口id
         Set<Integer> adjustedJunctionIdSet = new HashSet<>();
         //存储每个绿波组下的绿波红绿灯信息
@@ -54,15 +57,15 @@ public class GreenWaveRegulation {
                 List<StateStage> stageList = TrafficLightUtil.mergeStage(couple.getStageList());
                 couple.setStageList(stageList);
                 //将每一个相位下的信控数据设置到交通灯中
-                this.setTrafficLightStage(couple);
+                setTrafficLightStage(couple);
             }
         }
-        return new ArrayList<TrafficLight>(this.trafficLightMap.values());
+        return new ArrayList<TrafficLight>(trafficLightMap.values());
     }
     /**
      * 将相位中红绿灯的信控数据设置到红绿灯中
      */
-    private void setTrafficLightStage(TrafficLightCouple couple){
+    private static void setTrafficLightStage(TrafficLightCouple couple){
         for(TrafficLight trafficLight: couple.getTrafficLightList()){
             trafficLight.setStageList(couple.getStageList());
         }
@@ -72,7 +75,7 @@ public class GreenWaveRegulation {
      * @param groupWaveMap
      * @return
      */
-    private List<GreenWave> getAdjustableGroup(Map<Integer,List<GreenWave>> groupWaveMap, Set<Integer> adjustedJunctionIdSet){
+    private static List<GreenWave> getAdjustableGroup(Map<Integer,List<GreenWave>> groupWaveMap, Set<Integer> adjustedJunctionIdSet){
         for(int groupId: groupWaveMap.keySet()){
             List<GreenWave> waveList = groupWaveMap.get(groupId);
             for(GreenWave wave: waveList){
@@ -92,7 +95,7 @@ public class GreenWaveRegulation {
      * 为绿波信息制作双向链接
      * @param waveList
      */
-    private void doubleLink(List<GreenWave> waveList, Set<Integer> adjustedJunctionIdSet){
+    private static void doubleLink(List<GreenWave> waveList, Set<Integer> adjustedJunctionIdSet){
         for(GreenWave wave: waveList){
             if(wave.getNextId()==null){
                 continue;
@@ -121,7 +124,7 @@ public class GreenWaveRegulation {
      * 调整下一个路口的绿波数据
      * @param wave
      */
-    private void nextLink(GreenWave wave, Set<Integer> adjustedJunctionIdSet){
+    private static void nextLink(GreenWave wave, Set<Integer> adjustedJunctionIdSet){
         //获取下一个红绿灯对应的绿波信息
         GreenWave next = wave.getNext();
         if(next==null){
@@ -151,7 +154,7 @@ public class GreenWaveRegulation {
      * 调整上一个路口的绿波数据
      * @param wave
      */
-    private void prefixLink(GreenWave wave, Set<Integer> adjustedJunctionIdSet){
+    private static void prefixLink(GreenWave wave, Set<Integer> adjustedJunctionIdSet){
         GreenWave prefix = wave.getPrefix();
         if(prefix==null){
             return;
@@ -185,7 +188,7 @@ public class GreenWaveRegulation {
      * @param wave
      * @return
      */
-    private TrafficLightCouple getWaveCouple(GreenWave wave){
+    private static TrafficLightCouple getWaveCouple(GreenWave wave){
         int trafficLightId = wave.getTrafficLightId();
         TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
         int greenPhase = trafficLight.getGreenPhase();
@@ -199,7 +202,7 @@ public class GreenWaveRegulation {
      * @param gap
      * @param coupleMap
      */
-    private void adjustTrafficLight(int gap, Map<Integer, TrafficLightCouple> coupleMap){
+    private static void adjustTrafficLight(int gap, Map<Integer, TrafficLightCouple> coupleMap){
         for(int phase: coupleMap.keySet()){
             TrafficLightCouple couple = coupleMap.get(phase);
             List<StateStage> stageList = couple.getStageList();

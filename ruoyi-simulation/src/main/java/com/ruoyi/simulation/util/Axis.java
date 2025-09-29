@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Axis {
     private String x;
-    private Double y;
+    private double y;
 }

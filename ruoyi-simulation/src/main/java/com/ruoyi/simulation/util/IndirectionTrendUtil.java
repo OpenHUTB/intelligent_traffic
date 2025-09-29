@@ -143,14 +143,15 @@ public class IndirectionTrendUtil {
     /**
      * 设置过去一段时间不同交通灯的车流量
      */
-    public static void setFlowTrend(List<TrafficLight> trafficLightList, RedisTemplate<String,Object> redisTemplate){
-        for(TrafficLight trafficLight: trafficLightList) {
-            String key = "traffic_light_flow"+trafficLight.getTrafficLightId();
+    public static void setFlowTrend(Map<Integer,TrafficLight> trafficLightMap, RedisTemplate<String,Object> redisTemplate){
+        for(int trafficLightId: trafficLightMap.keySet()) {
+            String key = "traffic_light_flow"+trafficLightId;
             Object value = redisTemplate.opsForValue().get(key);
             int flow = 0;
             if(value!=null){
                 flow = (int)Math.ceil(Double.parseDouble(String.valueOf(value)));
             }
+            TrafficLight trafficLight = trafficLightMap.get(trafficLightId);
             trafficLight.setFlowTrend(flow);
         }
     }

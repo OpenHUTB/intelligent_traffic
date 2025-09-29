@@ -72,6 +72,11 @@ public class Junction {
     @TableField(exist = false)
     private Double averageDelayRate;
     /**
+     * 车流量
+     */
+    @TableField(exist = false)
+    private Integer trafficFlow;
+    /**
      * 交通灯对应的指数集合
      */
     @TableField(exist = false)
