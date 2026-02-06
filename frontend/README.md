@@ -1,12 +1,46 @@
-# Getting Started with Create React App
+# 模拟器前端
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+安装node 20、22
+```shell
+cd frontend
+# 根据package.json安装依赖
+npm install
+# 启动服务
+npm start
+# 浏览器打开：http://localhost:3001
+```
+.env
+
+
+frontend\src\pages\TrafficDetect\TrafficDetect.js
+
+删除div
+
+删除frontend/src/App.js中的`<TextArea/>`表示删除弹出数字人。
+
+
+
+删除`frontend/src/pages/TrafficDetect/TrafficDetect.js`中的`{bigMapShow && <Amap />}`，表示删除显示高德地图，显示像素流
+
+
+
+方案导出按钮的地址配置：
+
+frontend\src\components\rights\JunctionTimeprogress\JunctionTimeprogress.jsx
+
+  const API_BASE = 'http://localhost:8080/simulation/file'
+
+
+
+
+
+### 调试 `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.

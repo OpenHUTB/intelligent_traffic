@@ -25,11 +25,11 @@ export default function TrafficDetect() {
           <ScrollAllert />
         </div>
         <div className={styles.rightContent}>
-          <FunctionBar class={styles.functionBar} />
-          <RightTopBtn headerTitle='监控指数设置' />
-          <TotalTrafficMonitor />
-          <TrafficCongestionMonitor />
-          <TrafficCongestionData />
+          <iframe
+            title="traffic-video"
+            src="http://172.21.108.47:3000/"
+            height="100%"
+          ></iframe>
         </div>
       </div>
     </div>

@@ -17,7 +17,6 @@ export default function App() {
         <Header />
         <Nav />
         <TrafficDetect />
-        <TextArea />
       </>
     )
   }
